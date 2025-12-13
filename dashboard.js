@@ -374,46 +374,95 @@ function displayGermanyProgress() {
 	const container = document.getElementById('germany-progress-list');
 	if (!container) return;
 
-	// Only show universities that have been actively tracked (have status or were manually added)
+	// Get tracked applications from localStorage
 	const tracked = localStorage.getItem('germany-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
-	if (trackedUniversities.length === 0) {
+	// Always show universities from JSON data
+	if (germanyUniversities.length === 0) {
 		container.innerHTML =
-			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 No Applications Tracked Yet</p><p style="font-size: 14px; line-height: 1.6;">Use the form above to add universities you want to track.<br>Once added, you can monitor your application progress here.</p></div>';
+			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 Loading University Data...</p></div>';
 		return;
 	}
 
-	container.innerHTML = trackedUniversities
+	container.innerHTML = germanyUniversities
 		.map((uni) => {
-			const completedTasks = uni.tasks.filter((t) => t.completed).length;
-			const totalTasks = uni.tasks.length;
-			const progress = Math.round((completedTasks / totalTasks) * 100);
+			// Check if this university is being tracked
+			const trackedUni = trackedUniversities.find(
+				(t) => t.university === uni.university,
+			);
 
-			return `
-            <div class="progress-item">
-                <h4>${uni.university}</h4>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+			if (trackedUni) {
+				// Show progress for tracked university
+				const completedTasks = trackedUni.tasks.filter(
+					(t) => t.completed,
+				).length;
+				const totalTasks = trackedUni.tasks.length;
+				const progress = Math.round(
+					(completedTasks / totalTasks) * 100,
+				);
+
+				return `
+                <div class="progress-item">
+                    <h4>${trackedUni.university}</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+                    </div>
+                    <div class="task-checklist">
+                        ${trackedUni.tasks
+							.map(
+								(task, index) => `
+                            <div class="task-item">
+                                <input type="checkbox"
+                                    ${task.completed ? 'checked' : ''}
+                                    onchange="toggleGermanyTask('${
+										trackedUni.university
+									}', ${index})">
+                                <span>${task.name}</span>
+                            </div>
+                        `,
+							)
+							.join('')}
+                    </div>
                 </div>
-                <div class="task-checklist">
-                    ${uni.tasks
-						.map(
-							(task, index) => `
-                        <div class="task-item">
-                            <input type="checkbox"
-                                ${task.completed ? 'checked' : ''}
-                                onchange="toggleGermanyTask('${
-									uni.university
-								}', ${index})">
-                            <span>${task.name}</span>
+            `;
+			} else {
+				// Show expandable card for non-tracked university
+				return `
+                <div class="expandable-card">
+                    <div class="expandable-header" onclick="toggleExpand(this)">
+                        <h4>${uni.university}</h4>
+                        <span class="expandable-toggle">▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <div class="uni-details">
+                            <div class="detail-item"><strong>📚 Program:</strong> ${
+								uni.program
+							}</div>
+                            <div class="detail-item"><strong>⏰ Deadline:</strong> ${
+								uni.deadline
+							}</div>
+                            <div class="detail-item"><strong>💰 Tuition:</strong> ${
+								uni.tuition
+							}</div>
+                            <div class="detail-item"><strong>📍 Location:</strong> ${
+								uni.location
+							}</div>
+                            ${
+								uni.language
+									? `<div class="detail-item"><strong>🗣️ Language:</strong> ${uni.language}</div>`
+									: ''
+							}
                         </div>
-                    `,
-						)
-						.join('')}
+                        <button onclick="trackGermanyUniversity('${
+							uni.university
+						}')" class="btn btn-primary" style="margin-top: 15px;">
+                            Start Tracking
+                        </button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+			}
 		})
 		.join('');
 }
@@ -450,6 +499,54 @@ function toggleGermanyTask(universityName, taskIndex) {
 	uni.tasks[taskIndex].completed = !uni.tasks[taskIndex].completed;
 	saveGermanyApplications();
 	displayGermanyProgress();
+	updateDashboardStats();
+}
+
+function trackGermanyUniversity(universityName) {
+	const uni = germanyUniversities.find(
+		(u) => u.university === universityName,
+	);
+	if (!uni) return;
+
+	const tracked = localStorage.getItem('germany-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	// Add to tracked list with default tasks
+	trackedUniversities.push({
+		university: uni.university,
+		status: 'not_started',
+		tasks: getDefaultTasks(),
+	});
+
+	localStorage.setItem(
+		'germany-applications',
+		JSON.stringify(trackedUniversities),
+	);
+	displayGermanyProgress();
+	updateDashboardStats();
+}
+
+function trackSchengenUniversity(universityName) {
+	const uni = schengenUniversities.find(
+		(u) => u.university === universityName,
+	);
+	if (!uni) return;
+
+	const tracked = localStorage.getItem('schengen-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	// Add to tracked list with default tasks
+	trackedUniversities.push({
+		university: uni.university,
+		status: 'not_started',
+		tasks: getDefaultTasks(),
+	});
+
+	localStorage.setItem(
+		'schengen-applications',
+		JSON.stringify(trackedUniversities),
+	);
+	displaySchengenProgress();
 	updateDashboardStats();
 }
 
@@ -628,46 +725,95 @@ function displaySchengenProgress() {
 	const container = document.getElementById('schengen-progress-list');
 	if (!container) return;
 
-	// Only show universities that have been actively tracked
+	// Get tracked applications from localStorage
 	const tracked = localStorage.getItem('schengen-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
-	if (trackedUniversities.length === 0) {
+	// Always show universities from JSON data
+	if (schengenUniversities.length === 0) {
 		container.innerHTML =
-			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 No Applications Tracked Yet</p><p style="font-size: 14px; line-height: 1.6;">Use the form above to add universities you want to track.<br>Once added, you can monitor your application progress here.</p></div>';
+			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 Loading University Data...</p></div>';
 		return;
 	}
 
-	container.innerHTML = trackedUniversities
+	container.innerHTML = schengenUniversities
 		.map((uni) => {
-			const completedTasks = uni.tasks.filter((t) => t.completed).length;
-			const totalTasks = uni.tasks.length;
-			const progress = Math.round((completedTasks / totalTasks) * 100);
+			// Check if this university is being tracked
+			const trackedUni = trackedUniversities.find(
+				(t) => t.university === uni.university,
+			);
 
-			return `
-            <div class="progress-item">
-                <h4>${uni.university}</h4>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+			if (trackedUni) {
+				// Show progress for tracked university
+				const completedTasks = trackedUni.tasks.filter(
+					(t) => t.completed,
+				).length;
+				const totalTasks = trackedUni.tasks.length;
+				const progress = Math.round(
+					(completedTasks / totalTasks) * 100,
+				);
+
+				return `
+                <div class="progress-item">
+                    <h4>${trackedUni.university}</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+                    </div>
+                    <div class="task-checklist">
+                        ${trackedUni.tasks
+							.map(
+								(task, index) => `
+                            <div class="task-item">
+                                <input type="checkbox"
+                                    ${task.completed ? 'checked' : ''}
+                                    onchange="toggleSchengenTask('${
+										trackedUni.university
+									}', ${index})">
+                                <span>${task.name}</span>
+                            </div>
+                        `,
+							)
+							.join('')}
+                    </div>
                 </div>
-                <div class="task-checklist">
-                    ${uni.tasks
-						.map(
-							(task, index) => `
-                        <div class="task-item">
-                            <input type="checkbox"
-                                ${task.completed ? 'checked' : ''}
-                                onchange="toggleSchengenTask('${
-									uni.university
-								}', ${index})">
-                            <span>${task.name}</span>
+            `;
+			} else {
+				// Show expandable card for non-tracked university
+				return `
+                <div class="expandable-card">
+                    <div class="expandable-header" onclick="toggleExpand(this)">
+                        <h4>${uni.university}</h4>
+                        <span class="expandable-toggle">▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <div class="uni-details">
+                            <div class="detail-item"><strong>📚 Program:</strong> ${
+								uni.program
+							}</div>
+                            <div class="detail-item"><strong>⏰ Deadline:</strong> ${
+								uni.deadline
+							}</div>
+                            <div class="detail-item"><strong>💰 Tuition:</strong> ${
+								uni.tuition
+							}</div>
+                            <div class="detail-item"><strong>📍 Location:</strong> ${
+								uni.location
+							}</div>
+                            ${
+								uni.language
+									? `<div class="detail-item"><strong>🗣️ Language:</strong> ${uni.language}</div>`
+									: ''
+							}
                         </div>
-                    `,
-						)
-						.join('')}
+                        <button onclick="trackSchengenUniversity('${
+							uni.university
+						}')" class="btn btn-primary" style="margin-top: 15px;">
+                            Start Tracking
+                        </button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+			}
 		})
 		.join('');
 }
