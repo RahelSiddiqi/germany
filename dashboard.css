@@ -70,6 +70,11 @@ body {
 	transform: translateX(-100%);
 }
 
+.sidebar.active {
+	padding-top: 41px;
+	z-index: 99;
+}
+
 .menu {
 	list-style: none;
 }
@@ -1091,7 +1096,7 @@ body {
 	}
 
 	.nav-container {
-		padding: 12px 16px;
+		padding: 1px 15px;
 	}
 
 	.page {
