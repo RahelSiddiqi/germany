@@ -443,9 +443,9 @@ function displayGermanyProgress() {
                 <div class="expandable-card">
                     <div class="expandable-header" onclick="toggleExpand(this)">
                         <h4>${uni.university}</h4>
-                        <span class="expandable-toggle">▼</span>
+                        <span class="expandable-toggle open">▶</span>
                     </div>
-                    <div class="expandable-content">
+                    <div class="expandable-content open">
                         <div class="uni-details">
                             <div class="detail-item"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
@@ -522,6 +522,15 @@ function trackGermanyUniversity(universityName) {
 	const tracked = localStorage.getItem('germany-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
+	// Check if already tracked
+	const alreadyTracked = trackedUniversities.find(
+		(t) => t.university === uni.university,
+	);
+	if (alreadyTracked) {
+		alert('This university is already being tracked!');
+		return;
+	}
+
 	// Add to tracked list with default tasks
 	trackedUniversities.push({
 		university: uni.university,
@@ -545,6 +554,15 @@ function trackSchengenUniversity(universityName) {
 
 	const tracked = localStorage.getItem('schengen-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	// Check if already tracked
+	const alreadyTracked = trackedUniversities.find(
+		(t) => t.university === uni.university,
+	);
+	if (alreadyTracked) {
+		alert('This university is already being tracked!');
+		return;
+	}
 
 	// Add to tracked list with default tasks
 	trackedUniversities.push({
@@ -603,21 +621,28 @@ async function loadSchengenData() {
 		const response = await fetch('schengen-universities.json');
 		const data = await response.json();
 		const programs = data.cyber_security_programs || [];
-		
+
 		// Load additional Schengen universities
 		let additionalPrograms = [];
 		try {
-			const additionalResponse = await fetch('additional-schengen-cybersecurity-universities.json');
+			const additionalResponse = await fetch(
+				'additional-schengen-cybersecurity-universities.json',
+			);
 			additionalPrograms = await additionalResponse.json();
 		} catch (err) {
-			console.warn('Failed to load additional Schengen universities:', err);
+			console.warn(
+				'Failed to load additional Schengen universities:',
+				err,
+			);
 		}
-		
-		schengenUniversities = [...programs, ...additionalPrograms].sort((a, b) => {
-			const dateA = new Date(a.application_deadline);
-			const dateB = new Date(b.application_deadline);
-			return dateA - dateB;
-		});
+
+		schengenUniversities = [...programs, ...additionalPrograms].sort(
+			(a, b) => {
+				const dateA = new Date(a.application_deadline);
+				const dateB = new Date(b.application_deadline);
+				return dateA - dateB;
+			},
+		);
 
 		const saved = localStorage.getItem('schengen-applications');
 		if (saved) {
@@ -802,9 +827,9 @@ function displaySchengenProgress() {
                 <div class="expandable-card">
                     <div class="expandable-header" onclick="toggleExpand(this)">
                         <h4>${uni.university}</h4>
-                        <span class="expandable-toggle">▼</span>
+                        <span class="expandable-toggle open">▶</span>
                     </div>
-                    <div class="expandable-content">
+                    <div class="expandable-content open">
                         <div class="uni-details">
                             <div class="detail-item"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
