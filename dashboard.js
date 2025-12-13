@@ -922,7 +922,7 @@ function displayIELTSPlan() {
         <h3>DAYS 1–2: Foundations</h3>
         <table class="task-table">
             <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d1-1', 'DAY 1', '', '')}
+            ${renderTask('d1-1', 'DAY 1 (SUNDAY)', '', '')}
             ${renderTask(
 				'd1-2',
 				'9:00–11:00 AM',
@@ -931,368 +931,757 @@ function displayIELTSPlan() {
 			)}
             ${renderTask(
 				'd1-3',
-				'11:00–11:30 AM',
-				'☕ Break + light snack',
-				'30m',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd1-4',
-				'11:30 AM–1:00 PM',
+				'12:30–2:00 PM',
 				'🟨 Writing Task 1: Review all 6 diagram types (line, bar, pie, table, process, map)',
 				'1.5h',
 			)}
             ${renderTask(
 				'd1-5',
-				'1:00–2:00 PM',
-				'🍽️ Lunch break',
-				'1h',
-			)}
-            ${renderTask(
-				'd1-6',
 				'2:00–5:00 PM',
 				'🟨 Writing Task 2: Study 5 essay types (opinion, discussion, problem-solution, two-part, advantages-disadvantages)',
 				'3h',
 			)}
             ${renderTask(
-				'd1-7',
-				'5:00–5:30 PM',
-				'☕ Break + review notes',
-				'30m',
-			)}
-            ${renderTask(
-				'd1-8',
-				'5:30–7:00 PM',
+				'd1-6',
+				'5:00–7:00 PM',
 				'🟨 Write 1 Task 2 essay + self-assess against Band 8 criteria',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd1-9',
-				'7:00–8:00 PM',
-				'🍽️ Dinner break',
-				'1h',
-			)}
-            ${renderTask(
-				'd1-10',
-				'8:00–10:00 PM',
-				'🟪 Speaking: Watch Band 8-9 sample answers for all 3 parts, note vocabulary & structures',
 				'2h',
 			)}
             ${renderTask(
-				'd1-11',
-				'10:00–10:30 PM',
-				'☕ Break + stretching',
-				'30m',
+				'd1-7',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
 			)}
             ${renderTask(
-				'd1-12',
+				'd1-8',
+				'8:30–10:30 PM',
+				'🟪 Speaking: Watch Band 8-9 sample answers for all 3 parts, note vocabulary & structures used',
+				'2h',
+			)}
+            ${renderTask(
+				'd1-9',
 				'10:30–11:30 PM',
-				'<b>🟥 Mini Mock Test: Listening Section 1 (10 questions) + review answers</b>',
+				'<b>🟥 Mini Mock Test: Listening Section 1 (10 questions) + detailed review of answers</b>',
 				'1h',
 			)}
-            ${renderTask('d2-1', 'DAY 2', '', '')}
+            ${renderTask('d2-1', 'DAY 2 (MONDAY)', '', '')}
             ${renderTask(
 				'd2-2',
 				'9:00–11:00 AM',
-				'🟩 Reading: Master skimming & scanning techniques, practice with 3 passages',
+				'🟩 Reading: Master skimming & scanning techniques, practice with 3 passages, identify keywords',
 				'2h',
 			)}
             ${renderTask(
 				'd2-3',
-				'11:00–11:30 AM',
-				'☕ Break',
-				'30m',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd2-4',
-				'11:30 AM–1:00 PM',
-				'🟩 Reading: Practice all question types (MCQ, T/F/NG, matching headings, sentence completion)',
-				'1.5h',
+				'12:30–5:00 PM',
+				'🟦 Listening: Note-taking strategies, practice all 4 sections, focus on spelling accuracy & numbers',
+				'4.5h',
 			)}
             ${renderTask(
 				'd2-5',
-				'1:00–2:00 PM',
-				'🍽️ Lunch break',
-				'1h',
-			)}
-            ${renderTask(
-				'd2-6',
-				'2:00–5:00 PM',
-				'🟦 Listening: Note-taking strategies, practice Sections 1-4, focus on spelling & numbers',
-				'3h',
-			)}
-            ${renderTask(
-				'd2-7',
-				'5:00–5:30 PM',
-				'☕ Break + review errors',
-				'30m',
-			)}
-            ${renderTask(
-				'd2-8',
-				'5:30–7:00 PM',
-				'🟦 Listening: Practice with maps, diagrams, form filling - aim for 38+/40',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd2-9',
-				'7:00–8:00 PM',
-				'🍽️ Dinner break',
-				'1h',
-			)}
-            ${renderTask(
-				'd2-10',
-				'8:00–10:00 PM',
-				'🟩 Reading: Complete 2 full passages under timed conditions + detailed error analysis',
+				'5:00–7:00 PM',
+				'🟩 Reading: Complete 2 full passages under timed conditions (20 mins each) + error analysis',
 				'2h',
 			)}
             ${renderTask(
-				'd2-11',
-				'10:00–10:30 PM',
-				'☕ Break',
-				'30m',
+				'd2-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
 			)}
             ${renderTask(
-				'd2-12',
+				'd2-7',
+				'8:30–10:30 PM',
+				'🟦 Listening: Practice maps, diagrams, form filling - target 38+/40 correct answers',
+				'2h',
+			)}
+            ${renderTask(
+				'd2-8',
 				'10:30–11:30 PM',
-				'🟧 Vocabulary: Learn 30 academic words + collocations + write example sentences',
+				'🟧 Vocabulary: Learn 30 Band 8+ academic words with collocations + write example sentences',
 				'1h',
 			)}
         </table>
 
-        <h3>DAYS 3–5: Listening & Reading</h3>
+        <h3>DAYS 3–5: Listening & Reading Mastery</h3>
         <table class="task-table">
             <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d3-1', 'DAY 3', '', '')}
+            ${renderTask('d3-1', 'DAY 3 (TUESDAY)', '', '')}
             ${renderTask(
 				'd3-2',
 				'9:00–11:00 AM',
-				'🟦 Section 1: Form + MCQ',
+				'🟦 Listening Section 1: Form filling, MCQ, conversation completion - practice 5 sets',
 				'2h',
 			)}
             ${renderTask(
 				'd3-3',
-				'1:00–4:00 PM',
-				'🟦 Section 2&3: Map + Notes',
-				'3h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd3-4',
+				'12:30–5:00 PM',
+				'🟦 Listening Sections 2&3: Maps, diagrams, note completion - master spatial awareness',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd3-5',
 				'5:00–7:00 PM',
-				'�� Vocabulary: 25 terms',
+				'🟧 Vocabulary: Learn 30 topic-specific words (education, environment, technology)',
 				'2h',
 			)}
-            ${renderTask('d4-1', 'DAY 4', '', '')}
+            ${renderTask(
+				'd3-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd3-7',
+				'8:30–10:30 PM',
+				'🟦 Listening practice: Complete 2 full tests (all 4 sections) - target 35+/40',
+				'2h',
+			)}
+            ${renderTask(
+				'd3-8',
+				'10:30–11:30 PM',
+				'📊 Review listening mistakes + note common error patterns',
+				'1h',
+			)}
+            ${renderTask('d4-1', 'DAY 4 (WEDNESDAY)', '', '')}
             ${renderTask(
 				'd4-2',
 				'9:00–11:00 AM',
-				'🟩 Passage 1: Matching Headings',
+				'🟩 Reading Passage 1: Matching headings, paragraph info - learn paragraph structure analysis',
 				'2h',
 			)}
             ${renderTask(
 				'd4-3',
-				'1:00–4:00 PM',
-				'🟩 Passage 2&3: T/F/NG',
-				'3h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd4-4',
+				'12:30–5:00 PM',
+				'🟩 Reading Passages 2&3: T/F/NG, Y/N/NG questions - master inference skills',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd4-5',
 				'5:00–7:00 PM',
-				'🟦 Listening Section 4',
+				'🟦 Listening Section 4: Academic lectures, note completion - practice 4 lectures',
 				'2h',
 			)}
-            ${renderTask('d5-1', 'DAY 5', '', '')}
+            ${renderTask(
+				'd4-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd4-7',
+				'8:30–10:30 PM',
+				'🟩 Reading: Complete 3 full passages under exam conditions (60 mins) + review',
+				'2h',
+			)}
+            ${renderTask(
+				'd4-8',
+				'10:30–11:30 PM',
+				'🟧 Vocabulary: 30 advanced academic words + practice paraphrasing',
+				'1h',
+			)}
+            ${renderTask('d5-1', 'DAY 5 (THURSDAY)', '', '')}
             ${renderTask(
 				'd5-2',
 				'9:00–11:00 AM',
-				'🟦 Listening Sections 1&2',
+				'🟦 Listening: Complete Sections 1&2 practice - focus on accuracy and capturing key details',
 				'2h',
 			)}
             ${renderTask(
 				'd5-3',
-				'1:00–3:00 PM',
-				'🟨 Writing: Task 1 practice',
-				'2h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd5-4',
+				'12:30–3:00 PM',
+				'🟨 Writing Task 1: Practice all diagram types - write 3 responses (150+ words)',
+				'2.5h',
+			)}
+            ${renderTask(
+				'd5-5',
 				'3:00–5:00 PM',
-				'🟪 Speaking: Part 2 cue cards',
+				'🟪 Speaking Part 2: Practice 8 cue cards - record yourself & evaluate',
 				'2h',
+			)}
+            ${renderTask(
+				'd5-6',
+				'5:00–7:00 PM',
+				'🟪 Grammar: Master complex structures (conditionals, passives, relative clauses)',
+				'2h',
+			)}
+            ${renderTask(
+				'd5-7',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd5-8',
+				'8:30–10:30 PM',
+				'🟩 Reading: Speed practice - 3 passages in 50 minutes (target 35+/40)',
+				'2h',
+			)}
+            ${renderTask(
+				'd5-9',
+				'10:30–11:30 PM',
+				'📊 Weekly review: Progress analysis + identify weak areas',
+				'1h',
 			)}
         </table>
 
         <h3>DAYS 6–8: Writing & Speaking</h3>
         <table class="task-table">
             <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d6-1', 'DAY 6: Writing Task 1', '', '')}
+            ${renderTask('d6-1', 'DAY 6 (FRIDAY - FULL DAY)', '', '')}
             ${renderTask(
 				'd6-2',
-				'9:00–11:00 AM',
-				'🟨 Task 1 structure study',
-				'2h',
+				'8:00–11:00 AM',
+				'🟨 Writing Task 1: Deep study of structure, vocabulary, and Band 8+ samples for all diagram types',
+				'3h',
 			)}
             ${renderTask(
 				'd6-3',
-				'1:00–4:00 PM',
-				'🟨 Task 1: Graph/Table/Chart',
-				'3h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
-            ${renderTask('d6-4', '5:00–7:00 PM', '🟦 Listening practice', '2h')}
-            ${renderTask('d7-1', 'DAY 7: Writing Task 2', '', '')}
+            ${renderTask(
+				'd6-4',
+				'12:30–5:00 PM',
+				'🟨 Task 1 Practice: Write 4 responses (graph, table, chart, process) - 150+ words each',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd6-5',
+				'5:00–7:00 PM',
+				'🟦 Listening: Full practice test (all 4 sections) - aim for 36+/40',
+				'2h',
+			)}
+            ${renderTask(
+				'd6-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd6-7',
+				'8:30–10:30 PM',
+				'🟩 Reading: Practice inference & opinion questions - 2 passages',
+				'2h',
+			)}
+            ${renderTask(
+				'd6-8',
+				'10:30–11:30 PM',
+				'🟪 Vocabulary: 30 writing-specific words (trends, comparisons, data)',
+				'1h',
+			)}
+            ${renderTask(
+				'd6-9',
+				'11:30 PM–12:30 AM',
+				'🟨 Extra practice: Write 1 more Task 1 response + self-review',
+				'1h',
+			)}
+            ${renderTask('d7-1', 'DAY 7 (SATURDAY)', '', '')}
             ${renderTask(
 				'd7-2',
 				'9:00–11:00 AM',
-				'🟨 Task 2 essay structure',
+				'🟨 Writing Task 2: Study essay structures for all 5 question types + Band 8-9 samples',
 				'2h',
 			)}
-            ${renderTask('d7-3', '1:00–3:00 PM', '🟨 Essay 1: Education', '2h')}
+            ${renderTask(
+				'd7-3',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
             ${renderTask(
 				'd7-4',
+				'12:30–3:00 PM',
+				'🟨 Essay 1: Education topic (250+ words, opinion essay)',
+				'2.5h',
+			)}
+            ${renderTask(
+				'd7-5',
 				'3:00–5:00 PM',
-				'🟨 Essay 2: Environment',
+				'🟨 Essay 2: Environment topic (250+ words, problem-solution)',
 				'2h',
 			)}
-            ${renderTask('d8-1', 'DAY 8: Speaking', '', '')}
+            ${renderTask(
+				'd7-6',
+				'5:00–7:00 PM',
+				'🟨 Essay 3: Technology topic (250+ words, discussion essay)',
+				'2h',
+			)}
+            ${renderTask(
+				'd7-7',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd7-8',
+				'8:30–10:30 PM',
+				'🟪 Speaking Part 3: Practice extended responses on abstract topics + record yourself',
+				'2h',
+			)}
+            ${renderTask(
+				'd7-9',
+				'10:30–11:30 PM',
+				'🟪 Review all 3 essays + note improvements needed',
+				'1h',
+			)}
+            ${renderTask('d8-1', 'DAY 8 (SUNDAY)', '', '')}
             ${renderTask(
 				'd8-2',
 				'9:00–11:00 AM',
-				'🟪 Part 2: 3 cue cards',
+				'🟪 Speaking Part 2: Practice 6 cue cards from different topics - record responses',
 				'2h',
 			)}
-            ${renderTask('d8-3', '1:00–4:00 PM', '🟪 Part 1&3 practice', '3h')}
+            ${renderTask(
+				'd8-3',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
             ${renderTask(
 				'd8-4',
+				'12:30–5:00 PM',
+				'🟪 Speaking Parts 1&3: Practice common questions + advanced vocabulary usage',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd8-5',
 				'5:00–7:00 PM',
-				'🟦 Listening Sections 3&4',
+				'🟦 Listening: Focus on Sections 3&4 (academic contexts) - 4 practice tests',
 				'2h',
+			)}
+            ${renderTask(
+				'd8-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd8-7',
+				'8:30–10:30 PM',
+				'🟪 Speaking: Full mock speaking test (all 3 parts) with timer',
+				'2h',
+			)}
+            ${renderTask(
+				'd8-8',
+				'10:30–11:30 PM',
+				'🟪 Vocabulary: 30 speaking idioms & collocations for Band 8+',
+				'1h',
 			)}
         </table>
 
-        <h3>DAYS 9–10: Integration</h3>
+        <h3>DAYS 9–10: Integration & Weakness Focus</h3>
         <table class="task-table">
             <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d9-1', 'DAY 9: Mixed', '', '')}
+            ${renderTask('d9-1', 'DAY 9 (MONDAY)', '', '')}
             ${renderTask(
 				'd9-2',
 				'9:00–11:00 AM',
-				'🟦 Listening Sections 1&2',
+				'🟦 Listening: Sections 1&2 practice - master everyday & social contexts',
 				'2h',
 			)}
             ${renderTask(
 				'd9-3',
-				'11:00–1:00 PM',
-				'🟩 Reading Passages 1&2',
-				'2h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
-            ${renderTask('d9-4', '2:00–4:00 PM', '🟨 Writing Task 1&2', '2h')}
+            ${renderTask(
+				'd9-4',
+				'12:30–3:00 PM',
+				'🟩 Reading: Complete 2 passages focusing on difficult question types',
+				'2.5h',
+			)}
             ${renderTask(
 				'd9-5',
-				'4:00–6:00 PM',
-				'🟪 Speaking: 3 cue cards',
+				'3:00–5:00 PM',
+				'🟨 Writing: Task 1 + Task 2 under timed conditions (60 mins total)',
 				'2h',
 			)}
-            ${renderTask('d10-1', 'DAY 10: Weakness Focus', '', '')}
+            ${renderTask(
+				'd9-6',
+				'5:00–7:00 PM',
+				'🟪 Speaking: Practice 5 different cue cards + Part 3 follow-ups',
+				'2h',
+			)}
+            ${renderTask(
+				'd9-7',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd9-8',
+				'8:30–10:30 PM',
+				'📊 Review all 4 sections - identify remaining weak areas',
+				'2h',
+			)}
+            ${renderTask(
+				'd9-9',
+				'10:30–11:30 PM',
+				'🟪 Grammar: Final complex structures review',
+				'1h',
+			)}
+            ${renderTask('d10-1', 'DAY 10 (TUESDAY)', '', '')}
             ${renderTask(
 				'd10-2',
-				'9:00–1:00 PM',
-				'⚠ Focus on weakest section',
-				'4h',
+				'9:00–11:00 AM',
+				'⚠️ Focus on WEAKEST section - intensive targeted practice',
+				'2h',
 			)}
             ${renderTask(
 				'd10-3',
-				'2:00–6:00 PM',
-				'⚠ 2nd weakest section',
-				'4h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd10-4',
+				'12:30–5:00 PM',
+				'⚠️ Continue weakest section - drill specific question types',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd10-5',
+				'5:00–7:00 PM',
+				'⚠️ 2nd weakest section - focused improvement',
+				'2h',
+			)}
+            ${renderTask(
+				'd10-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd10-7',
+				'8:30–10:30 PM',
+				'⚠️ 2nd weakest section continued - practice till confidence builds',
+				'2h',
+			)}
+            ${renderTask(
+				'd10-8',
+				'10:30–11:30 PM',
+				'📊 Prepare for Mock Test tomorrow - review strategies',
+				'1h',
 			)}
         </table>
 
-        <h3>DAYS 11–12: Mock Tests</h3>
+        <h3>DAYS 11–12: Full Mock Tests</h3>
         <table class="task-table">
             <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d11-1', 'DAY 11: FULL MOCK #1', '', '')}
+            ${renderTask(
+				'd11-1',
+				'DAY 11 (WEDNESDAY - FULL MOCK TEST #1)',
+				'',
+				'',
+			)}
             ${renderTask(
 				'd11-2',
-				'9:00–11:00 AM',
-				'🟦 LISTENING: All 4 Sections',
-				'2h',
+				'9:00–10:00 AM',
+				'🟦 LISTENING: Complete test (all 4 sections, 40 questions)',
+				'1h',
 			)}
             ${renderTask(
 				'd11-3',
-				'11:00–1:00 PM',
-				'🟩 READING: All 3 Passages',
-				'2h',
+				'10:00–11:00 AM',
+				'🟩 READING: Complete test (3 passages, 40 questions)',
+				'1h',
 			)}
             ${renderTask(
 				'd11-4',
-				'2:00–4:00 PM',
-				'🟨 WRITING Task 1 + 2',
-				'2h',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
 			)}
             ${renderTask(
 				'd11-5',
-				'4:00–6:00 PM',
-				'🟪 SPEAKING: Full mock',
-				'2h',
+				'12:30–1:30 PM',
+				'🟨 WRITING: Task 1 (20 mins) + Task 2 (40 mins)',
+				'1h',
 			)}
             ${renderTask(
 				'd11-6',
-				'6:00–8:00 PM',
-				'📊 Analyze performance',
-				'2h',
-			)}
-            ${renderTask('d12-1', 'DAY 12: Review', '', '')}
-            ${renderTask('d12-2', '9:00–1:00 PM', '🟦🟩 Re-do mistakes', '4h')}
-            ${renderTask(
-				'd12-3',
-				'2:00–6:00 PM',
-				'🟨🟪 Correct & practice',
-				'4h',
-			)}
-        </table>
-
-        <h3>DAYS 13–14: Refinement & Mock #2</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d13-1', 'DAY 13: Targeted', '', '')}
-            ${renderTask('d13-2', '9:00–1:00 PM', '⚠ Weak Q types × 3', '4h')}
-            ${renderTask(
-				'd13-3',
-				'2:00–6:00 PM',
-				'🟧 Vocab & Grammar review',
-				'4h',
-			)}
-            ${renderTask('d14-1', 'DAY 14: FULL MOCK #2', '', '')}
-            ${renderTask('d14-2', '9:00–11:00 AM', '🟦 LISTENING: All 4', '2h')}
-            ${renderTask('d14-3', '11:00–1:00 PM', '🟩 READING: All 3', '2h')}
-            ${renderTask(
-				'd14-4',
-				'2:00–4:00 PM',
-				'🟨 WRITING Task 1 + 2',
-				'2h',
+				'1:30–2:00 PM',
+				'🟪 SPEAKING: Full mock interview (11-14 mins all 3 parts)',
+				'30m',
 			)}
             ${renderTask(
-				'd14-5',
-				'4:00–6:00 PM',
-				'🟪 SPEAKING: Full mock',
-				'2h',
-			)}
-        </table>
-
-        <h3>DAY 15: Final Prep</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d15-1', '9:00–11:00 AM', '🟦 Light Listening', '2h')}
-            ${renderTask('d15-2', '11:00–1:00 PM', '🟩 Light Reading', '2h')}
-            ${renderTask(
-				'd15-3',
+				'd11-7',
 				'2:00–5:00 PM',
-				'🟧 Vocabulary: Final review',
+				'📊 Mark all answers + detailed performance analysis',
 				'3h',
 			)}
             ${renderTask(
-				'd15-4',
-				'7:00–9:00 PM',
-				'✨ Rest & mental prep',
+				'd11-8',
+				'5:00–7:00 PM',
+				'📊 Review mistakes + create action plan for improvement',
 				'2h',
+			)}
+            ${renderTask(
+				'd11-9',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd11-10',
+				'8:30–11:30 PM',
+				'📝 Re-do all incorrect questions + understand why answers were wrong',
+				'3h',
+			)}
+            ${renderTask(
+				'd12-1',
+				'DAY 12 (THURSDAY - Review & Correction)',
+				'',
+				'',
+			)}
+            ${renderTask(
+				'd12-2',
+				'9:00–11:00 AM',
+				'🟦🟩 Listening & Reading: Re-practice all mistake types',
+				'2h',
+			)}
+            ${renderTask(
+				'd12-3',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd12-4',
+				'12:30–5:00 PM',
+				'🟦🟩 Continue drilling weak question types from mock test',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd12-5',
+				'5:00–7:00 PM',
+				'🟨🟪 Rewrite essays + practice speaking responses with improvements',
+				'2h',
+			)}
+            ${renderTask(
+				'd12-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd12-7',
+				'8:30–10:30 PM',
+				'🟨🟪 Writing & Speaking correction - apply feedback',
+				'2h',
+			)}
+            ${renderTask(
+				'd12-8',
+				'10:30–11:30 PM',
+				'🟪 Vocabulary: Review all words learned + add 20 new ones',
+				'1h',
+			)}
+        </table>
+
+        <h3>DAYS 13–14: Final Refinement & Mock #2</h3>
+        <table class="task-table">
+            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
+            ${renderTask('d13-1', 'DAY 13 (FRIDAY - FULL DAY)', '', '')}
+            ${renderTask(
+				'd13-2',
+				'8:00–11:00 AM',
+				'⚠️ Practice weakest question types × 4 - intensive drilling (from mock test results)',
+				'3h',
+			)}
+            ${renderTask(
+				'd13-3',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd13-4',
+				'12:30–5:00 PM',
+				'⚠️ Continue targeted practice on specific weak areas',
+				'4.5h',
+			)}
+            ${renderTask(
+				'd13-5',
+				'5:00–7:00 PM',
+				'🟧 Vocabulary & Grammar: Final comprehensive review of all learned material',
+				'2h',
+			)}
+            ${renderTask(
+				'd13-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd13-7',
+				'8:30–10:30 PM',
+				'🟧 Grammar: Review all complex structures for writing & speaking',
+				'2h',
+			)}
+            ${renderTask(
+				'd13-8',
+				'10:30–11:30 PM',
+				'📊 Prepare for final mock test tomorrow - organize materials',
+				'1h',
+			)}
+            ${renderTask(
+				'd13-9',
+				'11:30 PM–12:30 AM',
+				'🟪 Final vocabulary review: 50 essential Band 8+ words + collocations',
+				'1h',
+			)}
+            ${renderTask(
+				'd14-1',
+				'DAY 14 (SATURDAY - FULL MOCK TEST #2)',
+				'',
+				'',
+			)}
+            ${renderTask(
+				'd14-2',
+				'9:00–10:00 AM',
+				'🟦 LISTENING: Complete test (all 4 sections) - target 37+/40',
+				'1h',
+			)}
+            ${renderTask(
+				'd14-4',
+				'10:00–11:00 AM',
+				'🟩 READING: Complete test (3 passages) - target 37+/40',
+				'1h',
+			)}
+            ${renderTask(
+				'd14-4',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd14-5',
+				'12:30–1:30 PM',
+				'🟨 WRITING: Task 1 (20 mins) + Task 2 (40 mins) - aim for Band 8+',
+				'1h',
+			)}
+            ${renderTask(
+				'd14-6',
+				'1:30–2:00 PM',
+				'🟪 SPEAKING: Full mock (all 3 parts) - natural & confident',
+				'30m',
+			)}
+            ${renderTask(
+				'd14-7',
+				'2:00–5:00 PM',
+				'📊 Mark test + compare scores with Mock #1 - measure improvement',
+				'3h',
+			)}
+            ${renderTask(
+				'd14-8',
+				'5:00–7:00 PM',
+				'📊 Detailed analysis + final learning points',
+				'2h',
+			)}
+            ${renderTask(
+				'd14-9',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd14-10',
+				'8:30–11:30 PM',
+				'📝 Review only critical errors - don’t over-study before exam day',
+				'3h',
+			)}
+        </table>
+
+        <h3>DAY 15: Final Preparation (EXAM EVE - SUNDAY)</h3>
+        <table class="task-table">
+            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
+            ${renderTask(
+				'd15-1',
+				'9:00–11:00 AM',
+				'🟦 Light Listening practice - 1 test only, no stress',
+				'2h',
+			)}
+            ${renderTask(
+				'd15-2',
+				'11:00 AM–12:30 PM',
+				'🍽️ Break + Lunch',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd15-3',
+				'12:30–3:00 PM',
+				'🟩 Light Reading - 1 passage only, stay relaxed',
+				'2.5h',
+			)}
+            ${renderTask(
+				'd15-4',
+				'3:00–5:00 PM',
+				'🟧 Vocabulary: Quick review of key words & phrases (no new learning)',
+				'2h',
+			)}
+            ${renderTask(
+				'd15-5',
+				'5:00–7:00 PM',
+				'📋 Organize exam materials: ID, pencils, eraser, water bottle',
+				'2h',
+			)}
+            ${renderTask(
+				'd15-6',
+				'7:00–8:30 PM',
+				'🍽️ Dinner Break + Rest',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd15-7',
+				'8:30–9:30 PM',
+				'✨ Mental preparation: Visualization, deep breathing, positive affirmations',
+				'1h',
+			)}
+            ${renderTask(
+				'd15-8',
+				'9:30–10:30 PM',
+				'💤 Early sleep preparation - NO studying, relax & rest well',
+				'1h',
+			)}
+            ${renderTask(
+				'd15-9',
+				'10:30 PM',
+				'🛌 Sleep early! Target: 8 hours quality sleep before EXAM DAY',
+				'--',
 			)}
         </table>
 

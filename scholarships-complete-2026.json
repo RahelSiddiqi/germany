@@ -227,12 +227,8 @@
 			"EDISS (Jan 15)",
 			"RADMEP (Jan 31)"
 		],
-		"february_2026": [
-			"DEAI (Feb 1)"
-		],
-		"march_2026": [
-			"Heinrich Böll (Mar 1) - HIGH PRIORITY"
-		],
+		"february_2026": ["DEAI (Feb 1)"],
+		"march_2026": ["Heinrich Böll (Mar 1) - HIGH PRIORITY"],
 		"april_2026": [
 			"Rosa Luxemburg (Apr 1)",
 			"Friedrich Ebert (Apr 30) - HIGH PRIORITY"
