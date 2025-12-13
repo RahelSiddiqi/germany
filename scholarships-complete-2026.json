@@ -1,0 +1,260 @@
+{
+	"last_updated": "2025-12-14",
+	"total_scholarships": 16,
+	"application_strategy": "Apply to 5-7 scholarships to increase chances. Even small scholarships (€300/month) add up significantly over 2 years!",
+	"scholarships": [
+		{
+			"id": 1,
+			"name": "DAAD Study Scholarships - Master Studies",
+			"provider": "German Academic Exchange Service (DAAD)",
+			"amount": "€992/month + benefits",
+			"total_value": "€23,808/year + extras",
+			"deadline": "2025-10-31",
+			"status": "MISSED FOR WINTER 2026",
+			"next_deadline": "2026-10-31 for Winter 2027",
+			"coverage": "Monthly stipend, health insurance, travel allowance, study materials (€460/year)",
+			"eligibility": "Bachelor's degree, excellent academic record, motivation letter, 2-3 recommendation letters",
+			"countries": "Germany",
+			"website": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=50026200",
+			"note": "Most prestigious, apply for Winter 2027 intake (deadline Oct 31, 2026)"
+		},
+		{
+			"id": 2,
+			"name": "Heinrich Böll Foundation Scholarship",
+			"provider": "Heinrich-Böll-Stiftung (Green Politics Foundation)",
+			"amount": "€934/month + €300 book allowance",
+			"total_value": "€14,808/year",
+			"deadline": "2026-03-01",
+			"coverage": "Monthly stipend, health insurance, study materials, networking events, seminars",
+			"eligibility": "Commitment to green politics/sustainability, social engagement, academic excellence, max 30 years old",
+			"countries": "Germany",
+			"website": "https://www.boell.de/en/foundation/application",
+			"priority": "HIGH - Still Open!"
+		},
+		{
+			"id": 3,
+			"name": "Friedrich Ebert Foundation Scholarship",
+			"provider": "Friedrich-Ebert-Stiftung (Social Democracy Foundation)",
+			"amount": "€934/month + health insurance",
+			"total_value": "€14,208/year",
+			"deadline": "2026-04-30",
+			"coverage": "Monthly allowance, health insurance, ideological training, networking",
+			"eligibility": "Social democratic values, commitment to social justice, developing country background preferred, GPA 3.0+",
+			"countries": "Germany",
+			"website": "https://www.fes.de/studienfoerderung",
+			"priority": "HIGH - Good for developing countries"
+		},
+		{
+			"id": 4,
+			"name": "Hanns Seidel Foundation Scholarship",
+			"provider": "Hanns-Seidel-Stiftung (Christian Social Union Foundation)",
+			"amount": "€934/month + benefits",
+			"total_value": "€14,208/year",
+			"deadline": "2026-07-31",
+			"coverage": "Monthly stipend, health insurance, study allowance, seminars",
+			"eligibility": "Christian values, social engagement, academic merit, connection to Bavaria preferred",
+			"countries": "Germany",
+			"website": "https://www.hss.de/en/scholarship/",
+			"priority": "MEDIUM - Less competitive, longer deadline"
+		},
+		{
+			"id": 5,
+			"name": "Konrad-Adenauer-Stiftung (KAS) Scholarship",
+			"provider": "Konrad-Adenauer-Stiftung (CDU Foundation)",
+			"amount": "€934/month + €300 book allowance",
+			"total_value": "€14,808/year",
+			"deadline": "2026-07-15",
+			"coverage": "Monthly stipend, health insurance, study allowance, travel costs, German language course, ideological seminars",
+			"eligibility": "Outstanding academic record, social/political engagement, proficiency in German or willingness to learn, max 30 years for Masters, alignment with Christian democratic values",
+			"countries": "Germany",
+			"website": "https://www.kas.de/en/web/begabtenfoerderung-und-kultur/study-funding",
+			"priority": "MEDIUM - Requires political engagement"
+		},
+		{
+			"id": 6,
+			"name": "Rosa Luxemburg Foundation Scholarship",
+			"provider": "Rosa Luxemburg Stiftung (Left Party Foundation)",
+			"amount": "€934/month + health insurance",
+			"total_value": "€14,208/year",
+			"deadline": "2026-04-01",
+			"coverage": "Monthly allowance, health insurance, study materials, ideological training seminars, networking",
+			"eligibility": "Commitment to social justice and left-wing politics, academic excellence, involvement in political/social activities",
+			"countries": "Germany",
+			"website": "https://www.rosalux.de/en/foundation/scholarship",
+			"priority": "MEDIUM - For left-oriented students"
+		},
+		{
+			"id": 7,
+			"name": "Deutschlandstipendium (Germany Scholarship)",
+			"provider": "German Universities & Private Sponsors",
+			"amount": "€300/month",
+			"total_value": "€3,600/year",
+			"deadline": "2026-05-31",
+			"coverage": "Monthly stipend (no repayment required)",
+			"eligibility": "High academic achievement, social engagement, personal circumstances considered, available at MOST German universities",
+			"countries": "Germany",
+			"website": "https://www.deutschlandstipendium.de/",
+			"note": "Apply directly through your university after admission. Applications typically twice yearly",
+			"priority": "HIGH - Widely available, less competitive"
+		},
+		{
+			"id": 8,
+			"name": "KAAD Scholarships for Developing Countries",
+			"provider": "Catholic Academic Exchange Service",
+			"amount": "€1,200/month (Masters)",
+			"total_value": "€14,400/year + extras",
+			"deadline": "2026-06-30",
+			"coverage": "Monthly stipend, travel allowance, health insurance, study allowance, language course",
+			"eligibility": "Catholics from developing countries (Africa, Asia, Latin America, Middle East), academic excellence, social commitment, return-to-home-country commitment",
+			"countries": "Germany",
+			"website": "https://www.kaad.de/en/scholarships/",
+			"priority": "HIGH - For developing country Catholics"
+		},
+		{
+			"id": 9,
+			"name": "Erasmus Mundus CYBERSURE",
+			"provider": "European Commission",
+			"amount": "€1,400/month + €4,000/year travel",
+			"total_value": "€20,800/year + full tuition",
+			"deadline": "2026-01-15",
+			"coverage": "Full tuition waiver, monthly living allowance, travel costs, installation costs, insurance",
+			"eligibility": "Bachelor in Computer Science/Engineering, excellent academic record (GPA 3.5+), English proficiency (IELTS 6.5+)",
+			"countries": "Norway, Finland, Sweden, Denmark, Estonia, France, Austria (Schengen)",
+			"website": "https://www.cybersure-master.eu/",
+			"priority": "VERY HIGH - Premium scholarship + Joint degree from 7 universities!",
+			"note": "Study at NTNU, Aalto, KTH, DTU, Tartu, EURECOM, TU Graz"
+		},
+		{
+			"id": 10,
+			"name": "Erasmus Mundus EDISS (Data-intensive Software)",
+			"provider": "European Commission",
+			"amount": "€1,400/month + €4,000/year travel",
+			"total_value": "€20,800/year + full tuition",
+			"deadline": "2026-01-15",
+			"coverage": "Full tuition, monthly living allowance, travel costs, installation costs",
+			"eligibility": "Bachelor in CS/Engineering, strong academic record, English proficiency",
+			"countries": "Belgium, Finland, Italy, Spain (Schengen)",
+			"website": "https://www.master-ediss.eu/",
+			"priority": "HIGH - Software systems, data engineering focus"
+		},
+		{
+			"id": 11,
+			"name": "Erasmus Mundus DEAI (Data Engineering and AI)",
+			"provider": "European Commission",
+			"amount": "€1,400/month + €4,000/year travel",
+			"total_value": "€20,800/year + full tuition",
+			"deadline": "2026-02-01",
+			"coverage": "Full tuition fees, monthly living allowance, travel and installation costs, insurance",
+			"eligibility": "Bachelor's degree in CS/Engineering/Mathematics, strong programming skills, English proficiency (IELTS 6.5+)",
+			"countries": "Belgium, France, Netherlands, Sweden (Schengen)",
+			"website": "https://deai.ulb.be/",
+			"priority": "HIGH - AI and data engineering"
+		},
+		{
+			"id": 12,
+			"name": "Erasmus Mundus RADMEP (Radiation Effects)",
+			"provider": "European Commission",
+			"amount": "€1,400/month + €4,000/year travel",
+			"total_value": "€20,800/year + full tuition",
+			"deadline": "2026-01-31",
+			"coverage": "Full tuition waiver, monthly stipend, travel allowance, insurance",
+			"eligibility": "Bachelor in Physics/Engineering/Electronics, excellent academic performance, English proficiency (B2 minimum)",
+			"countries": "France, Finland, Belgium (Schengen)",
+			"website": "https://master-radmep.org/",
+			"priority": "MEDIUM - Specialized field"
+		},
+		{
+			"id": 13,
+			"name": "Bayer Foundation Scholarships",
+			"provider": "Bayer Science & Education Foundation",
+			"amount": "€1,500/year",
+			"total_value": "€1,500/year",
+			"deadline": "2026-05-15",
+			"coverage": "Annual financial support for outstanding students",
+			"eligibility": "Excellent academic performance in biology, medicine, chemistry, or related engineering fields, studying at German universities",
+			"countries": "Germany",
+			"website": "https://www.bayer-foundation.com/en/scholarships",
+			"priority": "LOW - Small amount, specific fields"
+		},
+		{
+			"id": 14,
+			"name": "TUM Scholarships",
+			"provider": "Technical University of Munich",
+			"amount": "€500-€1,500/month",
+			"total_value": "€6,000-€18,000/year",
+			"deadline": "Varies (apply after admission)",
+			"coverage": "Monthly stipend, varies by scholarship type",
+			"eligibility": "Admitted TUM students, academic excellence, specific to each scholarship program",
+			"countries": "Germany",
+			"website": "https://www.tum.de/en/studies/application",
+			"priority": "MEDIUM - Only if admitted to TUM"
+		},
+		{
+			"id": 15,
+			"name": "RWTH Aachen Scholarships",
+			"provider": "RWTH Aachen University",
+			"amount": "€300-€650/month",
+			"total_value": "€3,600-€7,800/year",
+			"deadline": "Varies (apply after admission)",
+			"coverage": "Monthly stipend",
+			"eligibility": "RWTH students, academic merit, social engagement",
+			"countries": "Germany",
+			"website": "https://www.rwth-aachen.de/",
+			"priority": "MEDIUM - Only if admitted to RWTH"
+		},
+		{
+			"id": 16,
+			"name": "NRW (North Rhine-Westphalia) Scholarships",
+			"provider": "NRW State Government",
+			"amount": "€300/month",
+			"total_value": "€3,600/year",
+			"deadline": "Varies by university",
+			"coverage": "Monthly stipend for students in NRW state universities",
+			"eligibility": "Students at universities in North Rhine-Westphalia state (RWTH, Uni Bonn, Ruhr Uni Bochum, etc.)",
+			"countries": "Germany (NRW state only)",
+			"website": "https://www.mkw.nrw/hochschule-und-forschung/studium-und-lehre/stipendien",
+			"priority": "MEDIUM - Regional, small amount"
+		}
+	],
+	"application_timeline": {
+		"december_2025": [
+			"Prepare documents for January deadlines",
+			"Draft motivation letters",
+			"Request recommendation letters"
+		],
+		"january_2026": [
+			"URGENT: CYBERSURE (Jan 15)",
+			"EDISS (Jan 15)",
+			"RADMEP (Jan 31)"
+		],
+		"february_2026": [
+			"DEAI (Feb 1)"
+		],
+		"march_2026": [
+			"Heinrich Böll (Mar 1) - HIGH PRIORITY"
+		],
+		"april_2026": [
+			"Rosa Luxemburg (Apr 1)",
+			"Friedrich Ebert (Apr 30) - HIGH PRIORITY"
+		],
+		"may_2026": [
+			"Deutschlandstipendium (May 31)",
+			"Bayer Foundation (May 15)"
+		],
+		"june_july_2026": [
+			"KAAD (Jun 30)",
+			"KAS (Jul 15)",
+			"Hanns Seidel (Jul 31)"
+		]
+	},
+	"strategy_tips": {
+		"tip_1": "Apply to at least 5-7 scholarships to maximize chances",
+		"tip_2": "Start with Erasmus Mundus (highest value, full coverage)",
+		"tip_3": "German foundation scholarships (Heinrich Böll, Friedrich Ebert, etc.) are less competitive than DAAD",
+		"tip_4": "Deutschlandstipendium is available at EVERY German university - apply after admission",
+		"tip_5": "Even small scholarships add up: €300/month = €7,200 over 2 years!",
+		"tip_6": "Tailor each application - show alignment with foundation's values",
+		"tip_7": "Strong motivation letter > perfect GPA. Show passion and clear goals!",
+		"reality_check": "With €500/month scholarship, total 2-year cost in Germany = only €10,000-€15,000!"
+	}
+}
