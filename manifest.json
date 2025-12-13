@@ -1,7 +1,7 @@
 {
-	"name": "Study Abroad Hub",
+	"name": "Study Abroad Hub v2.0",
 	"short_name": "Study Hub",
-	"description": "Track your Germany and Schengen university applications",
+	"description": "Track university applications to Germany and Schengen countries with analytics, notifications, and IELTS preparation tools",
 	"start_url": "/germany/dashboard.html",
 	"display": "standalone",
 	"background_color": "#ffffff",
@@ -13,6 +13,31 @@
 			"sizes": "any",
 			"type": "image/svg+xml",
 			"purpose": "any maskable"
+		}
+	],
+	"categories": ["education", "productivity"],
+	"screenshots": [],
+	"shortcuts": [
+		{
+			"name": "Dashboard",
+			"short_name": "Dashboard",
+			"description": "View application overview",
+			"url": "/germany/dashboard.html#dashboard",
+			"icons": []
+		},
+		{
+			"name": "Analytics",
+			"short_name": "Analytics",
+			"description": "View progress analytics",
+			"url": "/germany/dashboard.html#analytics",
+			"icons": []
+		},
+		{
+			"name": "IELTS Tracker",
+			"short_name": "IELTS",
+			"description": "Track IELTS preparation",
+			"url": "/germany/dashboard.html#ielts",
+			"icons": []
 		}
 	]
 }

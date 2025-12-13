@@ -9,10 +9,12 @@
 			name="apple-mobile-web-app-status-bar-style"
 			content="black-translucent" />
 		<meta name="mobile-web-app-capable" content="yes" />
-		<title>Study Abroad Dashboard</title>
+		<title>Study Abroad Dashboard - Band 8.0-8.5 IELTS Plan</title>
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 		<link rel="manifest" href="manifest.json" />
 		<link rel="stylesheet" href="dashboard.css" />
+		<link rel="stylesheet" href="enhancements.css" />
+		<link rel="stylesheet" href="dashboard-band8-styles.css" />
 	</head>
 	<body>
 		<nav class="navbar">
@@ -26,9 +28,16 @@
 			<ul class="menu">
 				<li>
 					<a
+						href="#band8-tracker"
+						onclick="showPage('band8-tracker')"
+						class="active"
+						>🎯 Band 8.0-8.5 IELTS Plan</a
+					>
+				</li>
+				<li>
+					<a
 						href="#dashboard"
 						onclick="showPage('dashboard')"
-						class="active"
 						>📊 Dashboard</a
 					>
 				</li>
@@ -66,6 +75,16 @@
 						>📊 Schengen Applications</a
 					>
 				</li>
+				<li>
+					<a href="#analytics" onclick="showPage('analytics')"
+						>📈 Analytics & Insights</a
+					>
+				</li>
+				<li>
+					<a href="#settings" onclick="openSettingsModal()"
+						>⚙️ Settings & Data</a
+					>
+				</li>
 			</ul>
 		</aside>
 
@@ -76,6 +95,17 @@
 			onclick="toggleMenu()"></div>
 
 		<main class="main-content">
+			<!-- Band 8.0-8.5 IELTS Tracker Page (NEW - First Priority!) -->
+			<div id="band8-tracker" class="page active">
+				<div id="band8-container">
+					<!-- Content will be populated by dashboard-band8-integration.js -->
+					<div class="loading-message">
+						<h2>Loading Band 8.0-8.5 IELTS Plan...</h2>
+						<p>Preparing your 19-day intensive schedule...</p>
+					</div>
+				</div>
+			</div>
+
 			<!-- Dashboard Page -->
 			<div id="dashboard" class="page active">
 				<h2>📊 Dashboard Overview</h2>
@@ -251,7 +281,133 @@
 				</div>
 				<div id="schengen-progress-list" class="progress-list"></div>
 			</div>
-		</main>
+
+			<!-- Analytics & Insights Page -->
+			<div id="analytics" class="page">
+		<button
+			class="fab"
+			onclick="showPage('dashboard')"
+			title="Back to Dashboard">
+			🏠
+		</button>
+
+		<!-- Load managers first -->
+		<script src="data-manager.js"></script>
+		<script src="notification-manager.js"></script>
+		<script src="analytics-manager.js"></script>
+
+		<!-- Main app -->
+		<script src="dashboard.js"></script>
+
+		<!-- Settings and utilities -->
+		<script src="settings-ui.js"></script>
+	</body>
+</html>
+		<!-- Settings Modal -->
+		<div id="settings-modal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2>⚙️ Settings & Data Management</h2>
+					<button class="modal-close" onclick="closeSettingsModal()">×</button>
+				</div>
+
+				<div class="settings-section">
+					<h3>📦 Data Management</h3>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Export All Data</h4>
+							<p>Download backup of all your progress</p>
+						</div>
+						<button class="btn btn-primary" onclick="exportData()">
+							💾 Export
+						</button>
+					</div>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Import Data</h4>
+							<p>Restore from previous backup</p>
+						</div>
+						<input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+						<button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">
+							📂 Import
+						</button>
+					</div>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Storage Usage</h4>
+							<p id="storage-usage">Calculating...</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="settings-section">
+					<h3>🔔 Notifications</h3>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Browser Notifications</h4>
+							<p>Get deadline alerts</p>
+						</div>
+						<button class="btn btn-secondary" id="enable-notifications" onclick="enableNotifications()">
+							Enable
+						</button>
+					</div>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Check Deadlines Now</h4>
+							<p>Manually check upcoming deadlines</p>
+						</div>
+						<button class="btn btn-secondary" onclick="checkDeadlinesManually()">
+							🔍 Check
+						</button>
+					</div>
+				</div>
+
+				<div class="settings-section">
+					<h3>🎨 Appearance</h3>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Dark Mode</h4>
+							<p>Toggle dark theme</p>
+						</div>
+						<button class="btn btn-secondary" id="theme-toggle" onclick="toggleDarkMode()">
+							🌙 Toggle
+						</button>
+					</div>
+				</div>
+
+				<div class="settings-section">
+					<h3>⚠️ Danger Zone</h3>
+
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Clear All Data</h4>
+							<p>Delete all progress permanently</p>
+						</div>
+						<button class="btn btn-danger" onclick="clearAllData()">
+							🗑️ Clear
+						</button>
+					</div>
+				</div>
+
+				<div class="settings-section">
+					<h3>ℹ️ About</h3>
+					<p style="color: #666; font-size: 14px; line-height: 1.6;">
+						<strong>Study Abroad Dashboard v2.0</strong><br>
+						A comprehensive application tracker for Germany and Schengen universities.<br>
+						All data stored locally in your browser.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Notification Container -->
+		<div id="notification-container" class="notification-container"></div>
 
 		<!-- Floating Action Button -->
 		<button
@@ -261,6 +417,8 @@
 			🏠
 		</button>
 
+		<script src="master-plan.js"></script>
+		<script src="dashboard-band8-integration.js"></script>
 		<script src="dashboard.js"></script>
 	</body>
 </html>
