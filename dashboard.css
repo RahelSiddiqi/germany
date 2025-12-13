@@ -67,6 +67,7 @@ body {
 	transition: transform 0.3s ease;
 	border-right: 1px solid rgba(102, 126, 234, 0.08);
 	z-index: 1100;
+	transform: translateX(-100%);
 }
 
 .menu {
@@ -896,6 +897,21 @@ body {
 
 .expandable-content.open {
 	display: block;
+}
+
+/* Desktop layout - show sidebar */
+@media (min-width: 769px) {
+	.sidebar {
+		transform: translateX(0);
+	}
+
+	.menu-toggle {
+		display: none;
+	}
+
+	.sidebar-overlay {
+		display: none !important;
+	}
 }
 
 @media (max-width: 768px) {
