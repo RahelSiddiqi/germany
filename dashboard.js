@@ -304,18 +304,16 @@ function displayGermanyUniversities() {
 			(uni) => `
         <div class="expandable-card">
             <div class="expandable-header" onclick="toggleExpand(this)">
-                <div style="flex: 1;">
-                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${
-				uni.ranking || ''
-			}</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${
-						uni.program
-					}</p>
+                <h3>${uni.university} ${uni.ranking || ''}</h3>
+                <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.4;">${
+					uni.program
+				}</p>
+                <div class="expandable-header-bottom">
+                    <span class="deadline-badge">⏰ ${
+						uni.application_deadline
+					}</span>
+                    <span class="expandable-toggle">▶</span>
                 </div>
-                <span class="deadline-badge">⏰ ${
-					uni.application_deadline
-				}</span>
-                <span class="expandable-toggle">▶</span>
             </div>
             <div class="expandable-content">
                 <div class="uni-card">
@@ -641,23 +639,21 @@ function displaySchengenUniversities() {
 			(uni) => `
         <div class="expandable-card">
             <div class="expandable-header" onclick="toggleExpand(this)">
-                <div style="flex: 1;">
-                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${
-				uni.country
-			}</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${
-						uni.program
-					}</p>
-                    ${
-						uni.ranking
-							? `<p style="font-size: 0.85em; color: #666; margin: 2px 0 0 0;">${uni.ranking}</p>`
-							: ''
-					}
+                <h3>${uni.university} ${uni.country}</h3>
+                <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.4;">${
+					uni.program
+				}</p>
+                ${
+					uni.ranking
+						? `<p style="margin: 0; font-size: 13px; color: #888;">${uni.ranking}</p>`
+						: ''
+				}
+                <div class="expandable-header-bottom">
+                    <span class="deadline-badge">⏰ ${
+						uni.application_deadline
+					}</span>
+                    <span class="expandable-toggle">▶</span>
                 </div>
-                <span class="deadline-badge">⏰ ${
-					uni.application_deadline
-				}</span>
-                <span class="expandable-toggle">▶</span>
             </div>
             <div class="expandable-content">
                 <div class="uni-card">
@@ -1253,7 +1249,7 @@ function updateDashboardStats() {
 			: 0;
 
 	document.getElementById(
-		'germany-progress',
+		'germany-progress-stat',
 	).textContent = `${germanyProgress}%`;
 	document.getElementById(
 		'germany-unis',
@@ -1270,7 +1266,7 @@ function updateDashboardStats() {
 			: 0;
 
 	document.getElementById(
-		'schengen-progress',
+		'schengen-progress-stat',
 	).textContent = `${schengenProgress}%`;
 	document.getElementById(
 		'schengen-unis',
