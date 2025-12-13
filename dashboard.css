@@ -124,9 +124,12 @@ body {
 	animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 	background: white;
 	padding: 28px;
+	padding-top: 40px;
 	border-radius: 16px;
 	box-shadow: 0 2px 15px rgba(102, 126, 234, 0.06);
 	margin: 0;
+	overflow-y: auto;
+	max-height: calc(100vh - 56px);
 }
 
 .page.active {
@@ -158,6 +161,7 @@ body {
 
 .page h2 {
 	color: #333;
+	margin-top: 0;
 	margin-bottom: 28px;
 	font-size: 26px;
 	font-weight: 700;
