@@ -45,7 +45,7 @@ function showPage(pageId) {
 	}
 
 	document.getElementById('sidebar').classList.remove('open');
-	
+
 	// Close mobile sidebar on page change
 	if (window.innerWidth <= 768) {
 		document.getElementById('sidebar').classList.remove('active');
@@ -152,14 +152,34 @@ function displayScholarships() {
 						<div class="scholarship-card">
 							<h4 style="color: #667eea; margin: 0 0 12px 0;">${s.name}</h4>
 							<div class="scholarship-details">
-								<div class="detail-row"><span class="label">💵 Amount:</span> <span class="value">${s.amount || 'N/A'}</span></div>
-								<div class="detail-row"><span class="label">⏱️ Duration:</span> <span class="value">${s.duration || 'N/A'}</span></div>
-								<div class="detail-row"><span class="label">📅 Deadline:</span> <span class="value">${s.deadline || 'N/A'}</span></div>
-								<div class="detail-row"><span class="label">✅ Eligibility:</span> <span class="value">${s.eligibility || 'N/A'}</span></div>
-								${s.success_rate ? `<div class="detail-row"><span class="label">📊 Success Rate:</span> <span class="value" style="color: #4CAF50; font-weight: 600;">${s.success_rate}</span></div>` : ''}
+								<div class="detail-row"><span class="label">💵 Amount:</span> <span class="value">${
+									s.amount || 'N/A'
+								}</span></div>
+								<div class="detail-row"><span class="label">⏱️ Duration:</span> <span class="value">${
+									s.duration || 'N/A'
+								}</span></div>
+								<div class="detail-row"><span class="label">📅 Deadline:</span> <span class="value">${
+									s.deadline || 'N/A'
+								}</span></div>
+								<div class="detail-row"><span class="label">✅ Eligibility:</span> <span class="value">${
+									s.eligibility || 'N/A'
+								}</span></div>
+								${
+									s.success_rate
+										? `<div class="detail-row"><span class="label">📊 Success Rate:</span> <span class="value" style="color: #4CAF50; font-weight: 600;">${s.success_rate}</span></div>`
+										: ''
+								}
 							</div>
-							${s.note ? `<div style="margin-top:12px; padding: 10px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px; font-size:0.9em;">💡 ${s.note}</div>` : ''}
-							${s.website ? `<a href="${s.website}" target="_blank" class="btn btn-primary" style="margin-top: 12px; display: inline-block;">Visit Website →</a>` : ''}
+							${
+								s.note
+									? `<div style="margin-top:12px; padding: 10px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px; font-size:0.9em;">💡 ${s.note}</div>`
+									: ''
+							}
+							${
+								s.website
+									? `<a href="${s.website}" target="_blank" class="btn btn-primary" style="margin-top: 12px; display: inline-block;">Visit Website →</a>`
+									: ''
+							}
 						</div>
 					`,
 					)
@@ -171,7 +191,14 @@ function displayScholarships() {
 		<div class="scholarship-section">
 			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">📝 Application Tips</h3>
 			<div class="tips-list">
-				${application_tips.map((tip, index) => `<div class="tip-item"><span class="tip-number">${index + 1}</span><span>${tip}</span></div>`).join('')}
+				${application_tips
+					.map(
+						(tip, index) =>
+							`<div class="tip-item"><span class="tip-number">${
+								index + 1
+							}</span><span>${tip}</span></div>`,
+					)
+					.join('')}
 			</div>
 		</div>`;
 
@@ -179,15 +206,28 @@ function displayScholarships() {
 		<div class="scholarship-section">
 			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏠 Living Cost Reality</h3>
 			<div class="info-card">
-				${living_costs_reality.monthly_minimum ? `<div class="highlight-box"><strong>Monthly Minimum:</strong> ${living_costs_reality.monthly_minimum}</div>` : ''}
+				${
+					living_costs_reality.monthly_minimum
+						? `<div class="highlight-box"><strong>Monthly Minimum:</strong> ${living_costs_reality.monthly_minimum}</div>`
+						: ''
+				}
 				${
 					living_costs_reality.breakdown
-						? `<h4 style="margin: 20px 0 10px 0;">Cost Breakdown:</h4><div class="breakdown-grid">${Object.entries(living_costs_reality.breakdown)
-								.map(([k, v]) => `<div class="breakdown-item"><span>${k}:</span> <strong>${v}</strong></div>`)
+						? `<h4 style="margin: 20px 0 10px 0;">Cost Breakdown:</h4><div class="breakdown-grid">${Object.entries(
+								living_costs_reality.breakdown,
+						  )
+								.map(
+									([k, v]) =>
+										`<div class="breakdown-item"><span>${k}:</span> <strong>${v}</strong></div>`,
+								)
 								.join('')}</div>`
 						: ''
 				}
-				${living_costs_reality.student_job_rules ? `<div style="margin-top: 16px; padding: 12px; background: #e8f5e9; border-radius: 6px;"><strong>💼 Student Jobs:</strong> ${living_costs_reality.student_job_rules}</div>` : ''}
+				${
+					living_costs_reality.student_job_rules
+						? `<div style="margin-top: 16px; padding: 12px; background: #e8f5e9; border-radius: 6px;"><strong>💼 Student Jobs:</strong> ${living_costs_reality.student_job_rules}</div>`
+						: ''
+				}
 				${
 					Array.isArray(living_costs_reality.cheapest_cities)
 						? `<div style="margin-top: 16px;"><strong>💵 Cheapest Cities:</strong><ul style="margin: 8px 0; padding-left: 24px;">${living_costs_reality.cheapest_cities
@@ -195,7 +235,11 @@ function displayScholarships() {
 								.join('')}</ul></div>`
 						: ''
 				}
-				${living_costs_reality.survival_tip ? `<div style="margin-top: 16px; padding: 12px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px;">💡 <strong>Survival Tip:</strong> ${living_costs_reality.survival_tip}</div>` : ''}
+				${
+					living_costs_reality.survival_tip
+						? `<div style="margin-top: 16px; padding: 12px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px;">💡 <strong>Survival Tip:</strong> ${living_costs_reality.survival_tip}</div>`
+						: ''
+				}
 			</div>
 		</div>`;
 
@@ -203,16 +247,38 @@ function displayScholarships() {
 		<div class="scholarship-section">
 			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏦 Blocked Account Requirement</h3>
 			<div class="info-card">
-				${blocked_account_requirement.amount ? `<div class="highlight-box"><strong>Required Amount:</strong> ${blocked_account_requirement.amount}</div>` : ''}
-				${blocked_account_requirement.purpose ? `<p style="margin: 12px 0;"><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>` : ''}
-				${blocked_account_requirement.when_needed ? `<p style="margin: 12px 0;"><strong>When Needed:</strong> ${blocked_account_requirement.when_needed}</p>` : ''}
-				${blocked_account_requirement.note ? `<div style="margin: 12px 0; padding: 10px; background: #fff3cd; border-radius: 6px;">${blocked_account_requirement.note}</div>` : ''}
 				${
-					Array.isArray(blocked_account_requirement.providers)
-						? `<p style="margin: 12px 0;"><strong>Providers:</strong> ${blocked_account_requirement.providers.join(', ')}</p>`
+					blocked_account_requirement.amount
+						? `<div class="highlight-box"><strong>Required Amount:</strong> ${blocked_account_requirement.amount}</div>`
 						: ''
 				}
-				${blocked_account_requirement.tip ? `<div style="margin-top: 12px; padding: 10px; background: #e3f2fd; border-left: 3px solid #2196F3; border-radius: 4px;">💡 ${blocked_account_requirement.tip}</div>` : ''}
+				${
+					blocked_account_requirement.purpose
+						? `<p style="margin: 12px 0;"><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>`
+						: ''
+				}
+				${
+					blocked_account_requirement.when_needed
+						? `<p style="margin: 12px 0;"><strong>When Needed:</strong> ${blocked_account_requirement.when_needed}</p>`
+						: ''
+				}
+				${
+					blocked_account_requirement.note
+						? `<div style="margin: 12px 0; padding: 10px; background: #fff3cd; border-radius: 6px;">${blocked_account_requirement.note}</div>`
+						: ''
+				}
+				${
+					Array.isArray(blocked_account_requirement.providers)
+						? `<p style="margin: 12px 0;"><strong>Providers:</strong> ${blocked_account_requirement.providers.join(
+								', ',
+						  )}</p>`
+						: ''
+				}
+				${
+					blocked_account_requirement.tip
+						? `<div style="margin-top: 12px; padding: 10px; background: #e3f2fd; border-left: 3px solid #2196F3; border-radius: 4px;">💡 ${blocked_account_requirement.tip}</div>`
+						: ''
+				}
 			</div>
 		</div>`;
 

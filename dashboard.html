@@ -4,12 +4,14 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="theme-color" content="#667eea" />
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta
+			name="apple-mobile-web-app-status-bar-style"
+			content="black-translucent" />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<title>Study Abroad Dashboard</title>
-		<link rel="icon" type="image/svg+xml" href="favicon.svg">
-		<link rel="manifest" href="manifest.json">
+		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<link rel="manifest" href="manifest.json" />
 		<link rel="stylesheet" href="dashboard.css" />
 	</head>
 	<body>
@@ -179,10 +181,15 @@
 				<h2>📈 Germany Application Progress</h2>
 				<div class="form-section">
 					<h3>➕ Add University</h3>
-					<label>University Name:
-						<input type="text" id="germany-uni-name" placeholder="e.g., TU Munich">
+					<label
+						>University Name:
+						<input
+							type="text"
+							id="germany-uni-name"
+							placeholder="e.g., TU Munich" />
 					</label>
-					<label>Status:
+					<label
+						>Status:
 						<select id="germany-uni-status">
 							<option value="not_started">🔵 Not Started</option>
 							<option value="researching">🟡 Researching</option>
@@ -192,7 +199,9 @@
 							<option value="rejected">❌ Rejected</option>
 						</select>
 					</label>
-					<button onclick="addGermanyUniversity()">Add University</button>
+					<button onclick="addGermanyUniversity()">
+						Add University
+					</button>
 				</div>
 				<div id="germany-progress-list" class="progress-list"></div>
 			</div>
@@ -208,10 +217,15 @@
 				<h2>📊 Schengen Application Progress</h2>
 				<div class="form-section">
 					<h3>➕ Add University</h3>
-					<label>University Name:
-						<input type="text" id="schengen-uni-name" placeholder="e.g., University of Tartu">
+					<label
+						>University Name:
+						<input
+							type="text"
+							id="schengen-uni-name"
+							placeholder="e.g., University of Tartu" />
 					</label>
-					<label>Status:
+					<label
+						>Status:
 						<select id="schengen-uni-status">
 							<option value="not_started">🔵 Not Started</option>
 							<option value="researching">🟡 Researching</option>
@@ -221,14 +235,19 @@
 							<option value="rejected">❌ Rejected</option>
 						</select>
 					</label>
-					<button onclick="addSchengenUniversity()">Add University</button>
+					<button onclick="addSchengenUniversity()">
+						Add University
+					</button>
 				</div>
 				<div id="schengen-progress-list" class="progress-list"></div>
 			</div>
 		</main>
 
 		<!-- Floating Action Button -->
-		<button class="fab" onclick="showPage('dashboard')" title="Back to Dashboard">
+		<button
+			class="fab"
+			onclick="showPage('dashboard')"
+			title="Back to Dashboard">
 			🏠
 		</button>
 
