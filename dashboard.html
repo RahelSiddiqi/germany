@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#1976D2" />
+		<title>Study Abroad Dashboard</title>
+		<link rel="stylesheet" href="dashboard.css" />
+	</head>
+	<body>
+		<nav class="navbar">
+			<div class="nav-container">
+				<h1 class="nav-logo">🎓 Study Abroad Hub</h1>
+				<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+			</div>
+		</nav>
+
+		<aside class="sidebar" id="sidebar">
+			<ul class="menu">
+				<li>
+					<a
+						href="#dashboard"
+						onclick="showPage('dashboard')"
+						class="active"
+						>📊 Dashboard</a
+					>
+				</li>
+				<li>
+					<a href="#ielts" onclick="showPage('ielts')"
+						>📝 IELTS Tracker</a
+					>
+				</li>
+				<li>
+					<a href="#germany" onclick="showPage('germany')"
+						>🇩🇪 Germany Universities</a
+					>
+				</li>
+				<li>
+					<a href="#scholarships" onclick="showPage('scholarships')"
+						>💰 Scholarships Guide</a
+					>
+				</li>
+				<li>
+					<a
+						href="#germany-progress"
+						onclick="showPage('germany-progress')"
+						>📈 Germany Applications</a
+					>
+				</li>
+				<li>
+					<a href="#schengen" onclick="showPage('schengen')"
+						>🇪🇺 Schengen Universities</a
+					>
+				</li>
+				<li>
+					<a
+						href="#schengen-progress"
+						onclick="showPage('schengen-progress')"
+						>📊 Schengen Applications</a
+					>
+				</li>
+			</ul>
+		</aside>
+
+		<main class="main-content">
+			<!-- Dashboard Page -->
+			<div id="dashboard" class="page active">
+				<h2>📊 Dashboard Overview</h2>
+
+				<div class="stats-grid">
+					<div class="stat-card ielts">
+						<div class="stat-icon">📝</div>
+						<div class="stat-info">
+							<h3>IELTS Progress</h3>
+							<p class="stat-value" id="ielts-progress">0%</p>
+							<p class="stat-detail" id="ielts-tasks">
+								0/0 tasks
+							</p>
+						</div>
+					</div>
+
+					<div class="stat-card germany">
+						<div class="stat-icon">🇩🇪</div>
+						<div class="stat-info">
+							<h3>Germany Applications</h3>
+							<p class="stat-value" id="germany-progress">0%</p>
+							<p class="stat-detail" id="germany-unis">
+								0/10 universities
+							</p>
+						</div>
+					</div>
+
+					<div class="stat-card schengen">
+						<div class="stat-icon">🇪🇺</div>
+						<div class="stat-info">
+							<h3>Schengen Applications</h3>
+							<p class="stat-value" id="schengen-progress">0%</p>
+							<p class="stat-detail" id="schengen-unis">
+								0/8 universities
+							</p>
+						</div>
+					</div>
+
+					<div class="stat-card deadline">
+						<div class="stat-icon">⏰</div>
+						<div class="stat-info">
+							<h3>Next Deadline</h3>
+							<p class="stat-value" id="next-deadline">May 31</p>
+							<p class="stat-detail" id="deadline-uni">
+								TU Munich
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="quick-links">
+					<h3>Quick Actions</h3>
+					<div class="button-grid">
+						<button
+							onclick="showPage('ielts')"
+							class="action-btn ielts-btn">
+							<span>📝</span> Track IELTS Progress
+						</button>
+						<button
+							onclick="showPage('germany')"
+							class="action-btn germany-btn">
+							<span>🇩🇪</span> Browse Germany Unis
+						</button>
+						<button
+							onclick="showPage('schengen')"
+							class="action-btn schengen-btn">
+							<span>🇪🇺</span> Explore Schengen
+						</button>
+						<button
+							onclick="window.open('ielts/', '_blank')"
+							class="action-btn primary-btn">
+							<span>🎯</span> Open IELTS App
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- IELTS Page -->
+			<div id="ielts" class="page">
+				<h2>📝 IELTS Band 8.5 Tracker</h2>
+				<div class="ielts-tracker-container">
+					<div class="legend">
+						<span class="legend-item listening">🟦 Listening</span>
+						<span class="legend-item reading">🟩 Reading</span>
+						<span class="legend-item writing">🟨 Writing</span>
+						<span class="legend-item speaking">🟪 Speaking</span>
+						<span class="legend-item vocab">🟧 Vocab/Grammar</span>
+						<span class="legend-item mock">🟥 Mock Test</span>
+					</div>
+
+					<div id="ielts-plan-content"></div>
+				</div>
+			</div>
+
+			<!-- Germany Universities Page -->
+			<div id="germany" class="page">
+				<h2>🇩🇪 Germany Universities - Cyber Security</h2>
+				<div id="germany-list" class="university-list"></div>
+			</div>
+
+			<!-- Scholarships Guide Page -->
+			<div id="scholarships" class="page">
+				<h2>💰 Scholarships & Funding</h2>
+				<div id="scholarship-content"></div>
+			</div>
+
+			<!-- Germany Progress Page -->
+			<div id="germany-progress" class="page">
+				<h2>📈 Germany Application Progress</h2>
+				<div class="form-section">
+					<h3>➕ Add University</h3>
+					<label>University Name:
+						<input type="text" id="germany-uni-name" placeholder="e.g., TU Munich">
+					</label>
+					<label>Status:
+						<select id="germany-uni-status">
+							<option value="not_started">🔵 Not Started</option>
+							<option value="researching">🟡 Researching</option>
+							<option value="preparing">🟠 Preparing</option>
+							<option value="submitted">🟢 Submitted</option>
+							<option value="admitted">✅ Admitted</option>
+							<option value="rejected">❌ Rejected</option>
+						</select>
+					</label>
+					<button onclick="addGermanyUniversity()">Add University</button>
+				</div>
+				<div id="germany-progress-list" class="progress-list"></div>
+			</div>
+
+			<!-- Schengen Universities Page -->
+			<div id="schengen" class="page">
+				<h2>🇪🇺 Schengen Universities - Cyber Security</h2>
+				<div id="schengen-list" class="university-list"></div>
+			</div>
+
+			<!-- Schengen Progress Page -->
+			<div id="schengen-progress" class="page">
+				<h2>📊 Schengen Application Progress</h2>
+				<div class="form-section">
+					<h3>➕ Add University</h3>
+					<label>University Name:
+						<input type="text" id="schengen-uni-name" placeholder="e.g., University of Tartu">
+					</label>
+					<label>Status:
+						<select id="schengen-uni-status">
+							<option value="not_started">🔵 Not Started</option>
+							<option value="researching">🟡 Researching</option>
+							<option value="preparing">🟠 Preparing</option>
+							<option value="submitted">🟢 Submitted</option>
+							<option value="admitted">✅ Admitted</option>
+							<option value="rejected">❌ Rejected</option>
+						</select>
+					</label>
+					<button onclick="addSchengenUniversity()">Add University</button>
+				</div>
+				<div id="schengen-progress-list" class="progress-list"></div>
+			</div>
+		</main>
+
+		<script src="dashboard.js"></script>
+	</body>
+</html>
