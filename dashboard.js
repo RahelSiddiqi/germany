@@ -448,16 +448,16 @@ function displayGermanyProgress() {
                     <div class="expandable-content">
                         <div class="uni-details">
                             <div class="detail-item"><strong>📚 Program:</strong> ${
-								uni.program
+								uni.program || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>⏰ Deadline:</strong> ${
-								uni.deadline
+								uni.application_deadline || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>💰 Tuition:</strong> ${
-								uni.tuition
+								uni.tuition || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>📍 Location:</strong> ${
-								uni.location
+								uni.location || 'N/A'
 							}</div>
                             ${
 								uni.language
@@ -807,16 +807,16 @@ function displaySchengenProgress() {
                     <div class="expandable-content">
                         <div class="uni-details">
                             <div class="detail-item"><strong>📚 Program:</strong> ${
-								uni.program
+								uni.program || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>⏰ Deadline:</strong> ${
-								uni.deadline
+								uni.application_deadline || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>💰 Tuition:</strong> ${
-								uni.tuition
+								uni.tuition || 'N/A'
 							}</div>
                             <div class="detail-item"><strong>📍 Location:</strong> ${
-								uni.location
+								uni.location || 'N/A'
 							}</div>
                             ${
 								uni.language
