@@ -55,7 +55,7 @@ body {
 .sidebar {
 	position: fixed;
 	left: 0;
-	top: 0;
+	top: 56px;
 	bottom: 0;
 	width: 240px;
 	background: rgba(255, 255, 255, 0.98);
@@ -63,7 +63,7 @@ body {
 	-webkit-backdrop-filter: blur(10px);
 	box-shadow: 2px 0 15px rgba(0, 0, 0, 0.03);
 	overflow-y: auto;
-	padding-top: 68px;
+	padding-top: 12px;
 	transition: transform 0.3s ease;
 	border-right: 1px solid rgba(102, 126, 234, 0.08);
 	z-index: 1100;
@@ -140,7 +140,7 @@ body {
 .sidebar-overlay {
 	display: none;
 	position: fixed;
-	top: 0;
+	top: 56px;
 	left: 0;
 	right: 0;
 	bottom: 0;

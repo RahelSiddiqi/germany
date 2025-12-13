@@ -1,8 +1,11 @@
 self.addEventListener('fetch', (event) => {
 	const { request } = event;
-	
+
 	// Ignore non-http(s) and extension requests to avoid cache errors
-	if (!request.url.startsWith('http://') && !request.url.startsWith('https://')) {
+	if (
+		!request.url.startsWith('http://') &&
+		!request.url.startsWith('https://')
+	) {
 		return;
 	}
 
