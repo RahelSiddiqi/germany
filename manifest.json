@@ -1,9 +1,18 @@
 {
-	"name": "IELTS Band 8.5 Tracker",
-	"short_name": "IELTS Tracker",
-	"start_url": "/germany/ielts/",
+	"name": "Study Abroad Hub",
+	"short_name": "Study Hub",
+	"description": "Track your Germany and Schengen university applications",
+	"start_url": "/germany/dashboard.html",
 	"display": "standalone",
 	"background_color": "#ffffff",
-	"theme_color": "#2196F3",
-	"orientation": "portrait"
+	"theme_color": "#667eea",
+	"orientation": "portrait",
+	"icons": [
+		{
+			"src": "favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	]
 }

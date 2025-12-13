@@ -1,88 +1,16 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="theme-color" content="#2196F3" />
-		<title>IELTS Band 8.5 Tracker</title>
-		<link rel="manifest" href="manifest.json" />
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="container">
-			<header>
-				<h1>🎯 IELTS Band 8.5</h1>
-				<p>15-Day Intensive Tracker</p>
-			</header>
-
-			<div class="tabs">
-				<button class="tab-btn active" onclick="showTab('scores')">
-					Scores
-				</button>
-				<button class="tab-btn" onclick="showTab('progress')">
-					Progress
-				</button>
-				<button class="tab-btn" onclick="showTab('plan')">Plan</button>
-			</div>
-
-			<div id="scores" class="tab-content active">
-				<h2>Track Scores</h2>
-				<div class="form">
-					<label
-						>Day: <input type="number" id="day" min="1" max="15"
-					/></label>
-					<label
-						>Listening:
-						<input
-							type="number"
-							id="listening"
-							min="0"
-							max="9"
-							step="0.5"
-					/></label>
-					<label
-						>Reading:
-						<input
-							type="number"
-							id="reading"
-							min="0"
-							max="9"
-							step="0.5"
-					/></label>
-					<label
-						>Writing:
-						<input
-							type="number"
-							id="writing"
-							min="0"
-							max="9"
-							step="0.5"
-					/></label>
-					<label
-						>Speaking:
-						<input
-							type="number"
-							id="speaking"
-							min="0"
-							max="9"
-							step="0.5"
-					/></label>
-					<button onclick="saveScore()">Save</button>
-				</div>
-				<div id="scores-list"></div>
-			</div>
-
-			<div id="progress" class="tab-content">
-				<h2>Progress</h2>
-				<div id="stats"></div>
-			</div>
-
-			<div id="plan" class="tab-content">
-				<h2>15-Day Plan</h2>
-				<div id="plan-content"></div>
-			</div>
-		</div>
-
-		<script src="app.js"></script>
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="0; url=dashboard.html">
+    <title>Study Abroad Hub - Redirecting...</title>
+    <script>
+        window.location.href = 'dashboard.html';
+    </script>
+</head>
+<body>
+    <p>Redirecting to Study Abroad Dashboard...</p>
+    <p>If you are not redirected automatically, <a href="dashboard.html">click here</a>.</p>
+</body>
 </html>
