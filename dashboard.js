@@ -16,8 +16,6 @@ async function loadAllData() {
 	updateDashboardStats();
 }
 
-
-
 // Page navigation
 function showPage(pageId) {
 	document
@@ -128,7 +126,7 @@ function displayScholarships() {
 
 	if (!scholarshipGuide) {
 		container.innerHTML =
-			'<p>Scholarship guide not loaded. Please refresh or load Germany data.</p>';
+			'<div style="text-align:center; padding: 60px 20px; color: #666;"><p style="font-size: 18px;">⚠️ Scholarship guide not loaded</p><p style="font-size: 14px;">Please refresh the page to load Germany data.</p></div>';
 		return;
 	}
 
@@ -140,111 +138,77 @@ function displayScholarships() {
 	} = scholarshipGuide;
 
 	const majorScholarshipsHtml = `
-		<div class="card">
-			<h3>Major Scholarships</h3>
-			${major_scholarships
-				.map(
-					(s) => `
-						<div style="margin-bottom: 12px; padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px;">
-							<div style="font-weight: 700;">${s.name}</div>
-							<div>Amount: ${s.amount || 'N/A'}</div>
-							<div>Duration: ${s.duration || 'N/A'}</div>
-							<div>Deadline: ${s.deadline || 'N/A'}</div>
-							<div>Eligibility: ${s.eligibility || 'N/A'}</div>
-							${
-								s.website
-									? `<div><a href="${s.website}" target="_blank">Website</a></div>`
-									: ''
-							}
-							${s.success_rate ? `<div>Success rate: ${s.success_rate}</div>` : ''}
-							${
-								s.note
-									? `<div style="margin-top:6px; font-size:0.9em; color:#555;">💡 ${s.note}</div>`
-									: ''
-							}
+		<div class="scholarship-section">
+			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">💰 Major Scholarships</h3>
+			<div class="scholarship-grid">
+				${major_scholarships
+					.map(
+						(s) => `
+						<div class="scholarship-card">
+							<h4 style="color: #667eea; margin: 0 0 12px 0;">${s.name}</h4>
+							<div class="scholarship-details">
+								<div class="detail-row"><span class="label">💵 Amount:</span> <span class="value">${s.amount || 'N/A'}</span></div>
+								<div class="detail-row"><span class="label">⏱️ Duration:</span> <span class="value">${s.duration || 'N/A'}</span></div>
+								<div class="detail-row"><span class="label">📅 Deadline:</span> <span class="value">${s.deadline || 'N/A'}</span></div>
+								<div class="detail-row"><span class="label">✅ Eligibility:</span> <span class="value">${s.eligibility || 'N/A'}</span></div>
+								${s.success_rate ? `<div class="detail-row"><span class="label">📊 Success Rate:</span> <span class="value" style="color: #4CAF50; font-weight: 600;">${s.success_rate}</span></div>` : ''}
+							</div>
+							${s.note ? `<div style="margin-top:12px; padding: 10px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px; font-size:0.9em;">💡 ${s.note}</div>` : ''}
+							${s.website ? `<a href="${s.website}" target="_blank" class="btn btn-primary" style="margin-top: 12px; display: inline-block;">Visit Website →</a>` : ''}
 						</div>
 					`,
-				)
-				.join('')}
+					)
+					.join('')}
+			</div>
 		</div>`;
 
 	const tipsHtml = `
-		<div class="card">
-			<h3>Application Tips</h3>
-			<ul>
-				${application_tips.map((tip) => `<li>${tip}</li>`).join('')}
-			</ul>
+		<div class="scholarship-section">
+			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">📝 Application Tips</h3>
+			<div class="tips-list">
+				${application_tips.map((tip, index) => `<div class="tip-item"><span class="tip-number">${index + 1}</span><span>${tip}</span></div>`).join('')}
+			</div>
 		</div>`;
 
 	const livingCostsHtml = `
-		<div class="card">
-			<h3>Living Cost Reality</h3>
-			${
-				living_costs_reality.monthly_minimum
-					? `<p><strong>Monthly minimum:</strong> ${living_costs_reality.monthly_minimum}</p>`
-					: ''
-			}
-			${
-				living_costs_reality.breakdown
-					? `<ul>${Object.entries(living_costs_reality.breakdown)
-							.map(([k, v]) => `<li>${k}: ${v}</li>`)
-							.join('')}</ul>`
-					: ''
-			}
-			${
-				living_costs_reality.student_job_rules
-					? `<p><strong>Student jobs:</strong> ${living_costs_reality.student_job_rules}</p>`
-					: ''
-			}
-			${
-				Array.isArray(living_costs_reality.cheapest_cities)
-					? `<p><strong>Cheapest cities:</strong></p><ul>${living_costs_reality.cheapest_cities
-							.map((city) => `<li>${city}</li>`)
-							.join('')}</ul>`
-					: ''
-			}
-			${
-				living_costs_reality.survival_tip
-					? `<p><strong>Survival tip:</strong> ${living_costs_reality.survival_tip}</p>`
-					: ''
-			}
+		<div class="scholarship-section">
+			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏠 Living Cost Reality</h3>
+			<div class="info-card">
+				${living_costs_reality.monthly_minimum ? `<div class="highlight-box"><strong>Monthly Minimum:</strong> ${living_costs_reality.monthly_minimum}</div>` : ''}
+				${
+					living_costs_reality.breakdown
+						? `<h4 style="margin: 20px 0 10px 0;">Cost Breakdown:</h4><div class="breakdown-grid">${Object.entries(living_costs_reality.breakdown)
+								.map(([k, v]) => `<div class="breakdown-item"><span>${k}:</span> <strong>${v}</strong></div>`)
+								.join('')}</div>`
+						: ''
+				}
+				${living_costs_reality.student_job_rules ? `<div style="margin-top: 16px; padding: 12px; background: #e8f5e9; border-radius: 6px;"><strong>💼 Student Jobs:</strong> ${living_costs_reality.student_job_rules}</div>` : ''}
+				${
+					Array.isArray(living_costs_reality.cheapest_cities)
+						? `<div style="margin-top: 16px;"><strong>💵 Cheapest Cities:</strong><ul style="margin: 8px 0; padding-left: 24px;">${living_costs_reality.cheapest_cities
+								.map((city) => `<li>${city}</li>`)
+								.join('')}</ul></div>`
+						: ''
+				}
+				${living_costs_reality.survival_tip ? `<div style="margin-top: 16px; padding: 12px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px;">💡 <strong>Survival Tip:</strong> ${living_costs_reality.survival_tip}</div>` : ''}
+			</div>
 		</div>`;
 
 	const blockedAccountHtml = `
-		<div class="card">
-			<h3>Blocked Account Requirement</h3>
-			${
-				blocked_account_requirement.amount
-					? `<p><strong>Amount:</strong> ${blocked_account_requirement.amount}</p>`
-					: ''
-			}
-			${
-				blocked_account_requirement.purpose
-					? `<p><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>`
-					: ''
-			}
-			${
-				blocked_account_requirement.when_needed
-					? `<p><strong>When needed:</strong> ${blocked_account_requirement.when_needed}</p>`
-					: ''
-			}
-			${
-				blocked_account_requirement.note
-					? `<p><strong>Note:</strong> ${blocked_account_requirement.note}</p>`
-					: ''
-			}
-			${
-				Array.isArray(blocked_account_requirement.providers)
-					? `<p><strong>Providers:</strong> ${blocked_account_requirement.providers.join(
-							', ',
-					  )}</p>`
-					: ''
-			}
-			${
-				blocked_account_requirement.tip
-					? `<p><strong>Tip:</strong> ${blocked_account_requirement.tip}</p>`
-					: ''
-			}
+		<div class="scholarship-section">
+			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏦 Blocked Account Requirement</h3>
+			<div class="info-card">
+				${blocked_account_requirement.amount ? `<div class="highlight-box"><strong>Required Amount:</strong> ${blocked_account_requirement.amount}</div>` : ''}
+				${blocked_account_requirement.purpose ? `<p style="margin: 12px 0;"><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>` : ''}
+				${blocked_account_requirement.when_needed ? `<p style="margin: 12px 0;"><strong>When Needed:</strong> ${blocked_account_requirement.when_needed}</p>` : ''}
+				${blocked_account_requirement.note ? `<div style="margin: 12px 0; padding: 10px; background: #fff3cd; border-radius: 6px;">${blocked_account_requirement.note}</div>` : ''}
+				${
+					Array.isArray(blocked_account_requirement.providers)
+						? `<p style="margin: 12px 0;"><strong>Providers:</strong> ${blocked_account_requirement.providers.join(', ')}</p>`
+						: ''
+				}
+				${blocked_account_requirement.tip ? `<div style="margin-top: 12px; padding: 10px; background: #e3f2fd; border-left: 3px solid #2196F3; border-radius: 4px;">💡 ${blocked_account_requirement.tip}</div>` : ''}
+			</div>
 		</div>`;
 
 	container.innerHTML = `${majorScholarshipsHtml}${tipsHtml}${livingCostsHtml}${blockedAccountHtml}`;
@@ -260,10 +224,16 @@ function displayGermanyUniversities() {
         <div class="expandable-card">
             <div class="expandable-header" onclick="toggleExpand(this)">
                 <div style="flex: 1;">
-                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${uni.ranking || ''}</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${uni.program}</p>
+                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${
+				uni.ranking || ''
+			}</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${
+						uni.program
+					}</p>
                 </div>
-                <span class="deadline-badge">⏰ ${uni.application_deadline}</span>
+                <span class="deadline-badge">⏰ ${
+					uni.application_deadline
+				}</span>
                 <span class="expandable-toggle">▶</span>
             </div>
             <div class="expandable-content">
@@ -281,7 +251,9 @@ function displayGermanyUniversities() {
 					}
 
                     <div class="uni-details">
-                        <div class="detail-item">📍 <strong>${uni.location}</strong></div>
+                        <div class="detail-item">📍 <strong>${
+							uni.location
+						}</strong></div>
                         <div class="detail-item">⏱️ ${uni.duration}</div>
                         <div class="detail-item">💰 ${uni.tuition}</div>
                         <div class="detail-item">🌐 ${uni.language}</div>
@@ -294,7 +266,9 @@ function displayGermanyUniversities() {
                     <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
                         <strong>💰 Scholarships Available:</strong>
                         <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                            ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
+                            ${uni.scholarships
+								.map((s) => `<li>${s}</li>`)
+								.join('')}
                         </ul>
                     </div>
                     `
@@ -308,8 +282,12 @@ function displayGermanyUniversities() {
 					}
 
                     <div class="uni-footer">
-                        <a href="${uni.website}" target="_blank" class="btn btn-primary">Visit Website</a>
-                        <button onclick="updateGermanyStatus('${uni.university}')" class="btn btn-secondary">
+                        <a href="${
+							uni.website
+						}" target="_blank" class="btn btn-primary">Visit Website</a>
+                        <button onclick="updateGermanyStatus('${
+							uni.university
+						}')" class="btn btn-secondary">
                             ${getStatusLabel(uni.status)}
                         </button>
                     </div>
@@ -325,12 +303,17 @@ function displayGermanyProgress() {
 	const container = document.getElementById('germany-progress-list');
 	if (!container) return;
 
-	if (germanyUniversities.length === 0) {
-		container.innerHTML = '<div style="text-align:center; padding: 60px 20px; color: #999; background: #f9f9f9; border-radius: 10px;"><p style="font-size: 16px; margin: 20px 0;">📝 No universities yet</p><p style="font-size: 14px;">Use the form above to add your first university and start tracking your applications.</p></div>';
+	// Only show universities that have been actively tracked (have status or were manually added)
+	const tracked = localStorage.getItem('germany-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	if (trackedUniversities.length === 0) {
+		container.innerHTML =
+			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 No Applications Tracked Yet</p><p style="font-size: 14px; line-height: 1.6;">Use the form above to add universities you want to track.<br>Once added, you can monitor your application progress here.</p></div>';
 		return;
 	}
 
-	container.innerHTML = germanyUniversities
+	container.innerHTML = trackedUniversities
 		.map((uni) => {
 			const completedTasks = uni.tasks.filter((t) => t.completed).length;
 			const totalTasks = uni.tasks.length;
@@ -406,8 +389,6 @@ function saveGermanyApplications() {
 		tasks: uni.tasks,
 	}));
 	localStorage.setItem('germany-applications', JSON.stringify(dataToSave));
-
-
 }
 
 function addGermanyUniversity() {
@@ -483,15 +464,21 @@ function displaySchengenUniversities() {
         <div class="expandable-card">
             <div class="expandable-header" onclick="toggleExpand(this)">
                 <div style="flex: 1;">
-                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${uni.country}</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${uni.program}</p>
+                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${
+				uni.country
+			}</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${
+						uni.program
+					}</p>
                     ${
 						uni.ranking
 							? `<p style="font-size: 0.85em; color: #666; margin: 2px 0 0 0;">${uni.ranking}</p>`
 							: ''
 					}
                 </div>
-                <span class="deadline-badge">⏰ ${uni.application_deadline}</span>
+                <span class="deadline-badge">⏰ ${
+					uni.application_deadline
+				}</span>
                 <span class="expandable-toggle">▶</span>
             </div>
             <div class="expandable-content">
@@ -503,10 +490,14 @@ function displaySchengenUniversities() {
 					}
 
                     <div class="uni-details">
-                        <div class="detail-item">📍 <strong>${uni.location}</strong></div>
+                        <div class="detail-item">📍 <strong>${
+							uni.location
+						}</strong></div>
                         <div class="detail-item">⏱️ ${uni.duration}</div>
                         <div class="detail-item">💰 ${uni.tuition}</div>
-                        <div class="detail-item">🏠 Living: ${uni.living_costs || 'N/A'}</div>
+                        <div class="detail-item">🏠 Living: ${
+							uni.living_costs || 'N/A'
+						}</div>
                         <div class="detail-item">🌐 ${uni.language}</div>
                         <div class="detail-item">📝 ${uni.requirements}</div>
                     </div>
@@ -529,7 +520,9 @@ function displaySchengenUniversities() {
                     <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
                         <strong>💰 Scholarships Available:</strong>
                         <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                            ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
+                            ${uni.scholarships
+								.map((s) => `<li>${s}</li>`)
+								.join('')}
                         </ul>
                     </div>
                     `
@@ -543,8 +536,12 @@ function displaySchengenUniversities() {
 					}
 
                     <div class="uni-footer">
-                        <a href="${uni.website}" target="_blank" class="btn btn-primary">Visit Website</a>
-                        <button onclick="updateSchengenStatus('${uni.university}')" class="btn btn-secondary">
+                        <a href="${
+							uni.website
+						}" target="_blank" class="btn btn-primary">Visit Website</a>
+                        <button onclick="updateSchengenStatus('${
+							uni.university
+						}')" class="btn btn-secondary">
                             ${getStatusLabel(uni.status)}
                         </button>
                     </div>
@@ -560,12 +557,17 @@ function displaySchengenProgress() {
 	const container = document.getElementById('schengen-progress-list');
 	if (!container) return;
 
-	if (schengenUniversities.length === 0) {
-		container.innerHTML = '<div style="text-align:center; padding: 60px 20px; color: #999; background: #f9f9f9; border-radius: 10px;"><p style="font-size: 16px; margin: 20px 0;">📝 No universities yet</p><p style="font-size: 14px;">Use the form above to add your first university and start tracking your applications.</p></div>';
+	// Only show universities that have been actively tracked
+	const tracked = localStorage.getItem('schengen-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	if (trackedUniversities.length === 0) {
+		container.innerHTML =
+			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 No Applications Tracked Yet</p><p style="font-size: 14px; line-height: 1.6;">Use the form above to add universities you want to track.<br>Once added, you can monitor your application progress here.</p></div>';
 		return;
 	}
 
-	container.innerHTML = schengenUniversities
+	container.innerHTML = trackedUniversities
 		.map((uni) => {
 			const completedTasks = uni.tasks.filter((t) => t.completed).length;
 			const totalTasks = uni.tasks.length;
@@ -641,8 +643,6 @@ function saveSchengenApplications() {
 		tasks: uni.tasks,
 	}));
 	localStorage.setItem('schengen-applications', JSON.stringify(dataToSave));
-
-
 }
 
 function addSchengenUniversity() {

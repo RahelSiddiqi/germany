@@ -670,13 +670,15 @@ body {
 }
 
 .expandable-toggle {
-	font-size: 18px;
+	font-size: 16px;
 	transition: transform 0.3s;
 	color: #667eea;
+	font-weight: bold;
+	margin-left: 12px;
 }
 
 .expandable-toggle.open {
-	transform: rotate(180deg);
+	transform: rotate(90deg);
 }
 
 .expandable-content {
@@ -718,4 +720,112 @@ body {
 	.nav-logo {
 		font-size: 18px;
 	}
+}
+
+/* Scholarship Page Styles */
+.scholarship-section {
+	margin-bottom: 40px;
+}
+
+.scholarship-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 20px;
+}
+
+.scholarship-card {
+	background: white;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: all 0.3s;
+}
+
+.scholarship-card:hover {
+	box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+	transform: translateY(-2px);
+}
+
+.scholarship-details {
+	margin: 12px 0;
+}
+
+.detail-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 0;
+	border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-row .label {
+	color: #666;
+	font-size: 14px;
+}
+
+.detail-row .value {
+	color: #333;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.tips-list {
+	background: white;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tip-item {
+	display: flex;
+	gap: 12px;
+	padding: 12px;
+	margin-bottom: 10px;
+	background: #f8f9fb;
+	border-radius: 6px;
+	align-items: flex-start;
+}
+
+.tip-number {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	color: white;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 14px;
+	flex-shrink: 0;
+}
+
+.info-card {
+	background: white;
+	border-radius: 10px;
+	padding: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.highlight-box {
+	padding: 16px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border-radius: 8px;
+	font-size: 18px;
+	margin-bottom: 16px;
+}
+
+.breakdown-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.breakdown-item {
+	padding: 12px;
+	background: #f8f9fb;
+	border-radius: 6px;
+	border-left: 3px solid #667eea;
 }
