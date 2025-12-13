@@ -26,9 +26,12 @@ function showPage(pageId) {
 		.forEach((link) => link.classList.remove('active'));
 
 	document.getElementById(pageId).classList.add('active');
-	document
-		.querySelector(`[onclick="showPage('${pageId}')"]`)
-		?.classList.add('active');
+	
+	// Set active class on the clicked menu link
+	const activeLink = document.querySelector(`.menu a[href="#${pageId}"]`);
+	if (activeLink) {
+		activeLink.classList.add('active');
+	}
 
 	if (pageId === 'ielts') {
 		displayIELTSPlan();
