@@ -7,12 +7,23 @@ exclude:
   - .github/
   - node_modules/
   - vendor/
+  - "*-backup.js"
+  - "*-backup.json"
+  - "*.md"
 
 # Include files
 include:
   - dashboard.html
   - dashboard.css
   - dashboard.js
+  - dashboard-band8-integration.js
+  - dashboard-band8-styles.css
+  - data-manager.js
+  - notification-manager.js
+  - analytics-manager.js
+  - settings-ui.js
+  - master-plan.js
+  - enhancements.css
   - sw.js
   - manifest.json
   - index.html
@@ -20,6 +31,9 @@ include:
   - app.js
   - germany-universities.json
   - schengen-universities.json
+  - additional-schengen-cybersecurity-universities.json
+  - scholarships-complete-2026.json
+  - favicon.svg
 
 # Plugins
 plugins: []
