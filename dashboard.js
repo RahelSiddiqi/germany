@@ -257,66 +257,63 @@ function displayGermanyUniversities() {
 	container.innerHTML = germanyUniversities
 		.map(
 			(uni) => `
-        <div class="uni-card">
-            <div class="uni-header">
-                <div>
-                    <h3>${uni.university} ${uni.ranking || ''}</h3>
-                    <p class="program">${uni.program}</p>
+        <div class="expandable-card">
+            <div class="expandable-header" onclick="toggleExpand(this)">
+                <div style="flex: 1;">
+                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${uni.ranking || ''}</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${uni.program}</p>
+                </div>
+                <span class="deadline-badge">⏰ ${uni.application_deadline}</span>
+                <span class="expandable-toggle">▶</span>
+            </div>
+            <div class="expandable-content">
+                <div class="uni-card">
                     ${
 						uni.highlights
 							? `<p style="font-size: 0.9em; color: #666; margin-top: 5px;">💡 ${uni.highlights}</p>`
 							: ''
 					}
+
+                    ${
+						uni.application_opens
+							? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
+							: ''
+					}
+
+                    <div class="uni-details">
+                        <div class="detail-item">📍 <strong>${uni.location}</strong></div>
+                        <div class="detail-item">⏱️ ${uni.duration}</div>
+                        <div class="detail-item">💰 ${uni.tuition}</div>
+                        <div class="detail-item">🌐 ${uni.language}</div>
+                        <div class="detail-item">📝 ${uni.requirements}</div>
+                    </div>
+
+                    ${
+						uni.scholarships && uni.scholarships.length > 0
+							? `
+                    <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
+                        <strong>💰 Scholarships Available:</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
+                            ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                    `
+							: ''
+					}
+
+                    ${
+						uni.notes
+							? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Important:</strong> ${uni.notes}</div>`
+							: ''
+					}
+
+                    <div class="uni-footer">
+                        <a href="${uni.website}" target="_blank" class="btn btn-primary">Visit Website</a>
+                        <button onclick="updateGermanyStatus('${uni.university}')" class="btn btn-secondary">
+                            ${getStatusLabel(uni.status)}
+                        </button>
+                    </div>
                 </div>
-                <span class="deadline-badge">⏰ ${
-					uni.application_deadline
-				}</span>
-            </div>
-
-            ${
-				uni.application_opens
-					? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
-					: ''
-			}
-
-            <div class="uni-details">
-                <div class="detail-item">📍 <strong>${
-					uni.location
-				}</strong></div>
-                <div class="detail-item">⏱️ ${uni.duration}</div>
-                <div class="detail-item">💰 ${uni.tuition}</div>
-                <div class="detail-item">🌐 ${uni.language}</div>
-                <div class="detail-item">📝 ${uni.requirements}</div>
-            </div>
-
-            ${
-				uni.scholarships && uni.scholarships.length > 0
-					? `
-            <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
-                <strong>💰 Scholarships Available:</strong>
-                <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                    ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
-                </ul>
-            </div>
-            `
-					: ''
-			}
-
-            ${
-				uni.notes
-					? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Important:</strong> ${uni.notes}</div>`
-					: ''
-			}
-
-            <div class="uni-footer">
-                <a href="${
-					uni.website
-				}" target="_blank" class="btn btn-primary">Visit Website</a>
-                <button onclick="updateGermanyStatus('${
-					uni.university
-				}')" class="btn btn-secondary">
-                    ${getStatusLabel(uni.status)}
-                </button>
             </div>
         </div>
     `,
@@ -483,81 +480,75 @@ function displaySchengenUniversities() {
 	container.innerHTML = schengenUniversities
 		.map(
 			(uni) => `
-        <div class="uni-card">
-            <div class="uni-header">
-                <div>
-                    <h3>${uni.university} ${uni.country}</h3>
-                    <p class="program">${uni.program}</p>
+        <div class="expandable-card">
+            <div class="expandable-header" onclick="toggleExpand(this)">
+                <div style="flex: 1;">
+                    <h3 style="margin: 0; font-size: 18px;">${uni.university} ${uni.country}</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #666;">${uni.program}</p>
                     ${
 						uni.ranking
-							? `<p style="font-size: 0.85em; color: #666; margin-top: 3px;">${uni.ranking}</p>`
+							? `<p style="font-size: 0.85em; color: #666; margin: 2px 0 0 0;">${uni.ranking}</p>`
 							: ''
 					}
                 </div>
-                <span class="deadline-badge">⏰ ${
-					uni.application_deadline
-				}</span>
+                <span class="deadline-badge">⏰ ${uni.application_deadline}</span>
+                <span class="expandable-toggle">▶</span>
             </div>
+            <div class="expandable-content">
+                <div class="uni-card">
+                    ${
+						uni.application_opens
+							? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
+							: ''
+					}
 
-            ${
-				uni.application_opens
-					? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
-					: ''
-			}
+                    <div class="uni-details">
+                        <div class="detail-item">📍 <strong>${uni.location}</strong></div>
+                        <div class="detail-item">⏱️ ${uni.duration}</div>
+                        <div class="detail-item">💰 ${uni.tuition}</div>
+                        <div class="detail-item">🏠 Living: ${uni.living_costs || 'N/A'}</div>
+                        <div class="detail-item">🌐 ${uni.language}</div>
+                        <div class="detail-item">📝 ${uni.requirements}</div>
+                    </div>
 
-            <div class="uni-details">
-                <div class="detail-item">📍 <strong>${
-					uni.location
-				}</strong></div>
-                <div class="detail-item">⏱️ ${uni.duration}</div>
-                <div class="detail-item">💰 ${uni.tuition}</div>
-                <div class="detail-item">🏠 Living: ${
-					uni.living_costs || 'N/A'
-				}</div>
-                <div class="detail-item">🌐 ${uni.language}</div>
-                <div class="detail-item">📝 ${uni.requirements}</div>
-            </div>
+                    ${
+						uni.highlights
+							? `<div style="padding: 10px; background: #e3f2fd; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">🌟 ${uni.highlights}</div>`
+							: ''
+					}
 
-            ${
-				uni.highlights
-					? `<div style="padding: 10px; background: #e3f2fd; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">🌟 ${uni.highlights}</div>`
-					: ''
-			}
+                    ${
+						uni.why_best
+							? `<div style="padding: 10px; background: #f3e5f5; border-radius: 5px; margin: 10px 0; font-size: 0.9em;"><strong>🏆 Why Best:</strong> ${uni.why_best}</div>`
+							: ''
+					}
 
-            ${
-				uni.why_best
-					? `<div style="padding: 10px; background: #f3e5f5; border-radius: 5px; margin: 10px 0; font-size: 0.9em;"><strong>🏆 Why Best:</strong> ${uni.why_best}</div>`
-					: ''
-			}
+                    ${
+						uni.scholarships && uni.scholarships.length > 0
+							? `
+                    <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
+                        <strong>💰 Scholarships Available:</strong>
+                        <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
+                            ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                    `
+							: ''
+					}
 
-            ${
-				uni.scholarships && uni.scholarships.length > 0
-					? `
-            <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
-                <strong>💰 Scholarships Available:</strong>
-                <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                    ${uni.scholarships.map((s) => `<li>${s}</li>`).join('')}
-                </ul>
-            </div>
-            `
-					: ''
-			}
+                    ${
+						uni.notes
+							? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Note:</strong> ${uni.notes}</div>`
+							: ''
+					}
 
-            ${
-				uni.notes
-					? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Note:</strong> ${uni.notes}</div>`
-					: ''
-			}
-
-            <div class="uni-footer">
-                <a href="${
-					uni.website
-				}" target="_blank" class="btn btn-primary">Visit Website</a>
-                <button onclick="updateSchengenStatus('${
-					uni.university
-				}')" class="btn btn-secondary">
-                    ${getStatusLabel(uni.status)}
-                </button>
+                    <div class="uni-footer">
+                        <a href="${uni.website}" target="_blank" class="btn btn-primary">Visit Website</a>
+                        <button onclick="updateSchengenStatus('${uni.university}')" class="btn btn-secondary">
+                            ${getStatusLabel(uni.status)}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     `,
