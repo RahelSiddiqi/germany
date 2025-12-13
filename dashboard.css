@@ -137,15 +137,19 @@ body {
 }
 
 /* Mobile sidebar overlay */
-.sidebar.active::after {
-	content: '';
+.sidebar-overlay {
+	display: none;
 	position: fixed;
 	top: 56px;
-	left: 240px;
+	left: 0;
 	right: 0;
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.3);
 	z-index: 1099;
+}
+
+.sidebar.active ~ .sidebar-overlay {
+	display: block;
 }
 
 @keyframes fadeIn {
