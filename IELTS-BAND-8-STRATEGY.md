@@ -82,7 +82,7 @@
 
 -   [ ] Learn 50 advanced academic words (IELTS band 8 word list)
 -   [ ] Focus on: synonyms, collocations, usage in context
--   [ ] Create flashcards (Anki app recommended)
+-   [ ] Write words in notebook + create 2 example sentences each
 -   [ ] Practice using each word in sentences
 
 **Afternoon (4 hours):**
@@ -810,11 +810,12 @@ drawbacks, provided we address equity issues systematically."
 -   iTalki speaking practice: £8-12/hour (2-3 sessions minimum)
 -   Grammarly Premium: €12/month (catch grammar errors)
 
-### Apps:
+### Apps & Tools:
 
--   Anki (flashcards - FREE)
+-   Quizlet (online flashcards - FREE, no download needed)
 -   IELTS Prep App (official - FREE)
 -   Vocabulary.com (advanced words)
+-   Or simply use: Notebook + pen (traditional but effective!)
 
 ---
 
@@ -958,7 +959,7 @@ drawbacks, provided we address equity issues systematically."
 -   [ ] Giving my absolute BEST effort
 -   [ ] Accepting whatever result with pride (I tried my hardest!)
 
-**Signature:** ********\_\_******** **Date:** December 13, 2025
+**Signature:** **\*\*\*\***\_\_**\*\*\*\*** **Date:** December 13, 2025
 
 ---
 

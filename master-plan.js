@@ -60,7 +60,7 @@ const MASTER_PLAN = {
 			hours: 14,
 			tasks: [
 				'Learn 70 Band 8+ academic words (accelerated)',
-				'Create Anki flashcards',
+				'Write vocabulary in notebook + create example sentences',
 				'Review all complex grammar structures',
 				'Write 2 Task 2 essays (grammar + vocab focus)',
 				'Start DAAD motivation letter draft',
