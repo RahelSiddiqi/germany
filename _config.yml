@@ -1,0 +1,28 @@
+# Jekyll configuration for Study Abroad Dashboard
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - .gitignore
+  - .github/
+  - node_modules/
+  - vendor/
+
+# Include files
+include:
+  - dashboard.html
+  - dashboard.css
+  - dashboard.js
+  - sw.js
+  - manifest.json
+  - index.html
+  - style.css
+  - app.js
+  - germany-universities.json
+  - schengen-universities.json
+
+# Plugins
+plugins: []
+
+# No theme needed
+theme: null
