@@ -215,13 +215,13 @@
 }
 
 .university-timeline h2 {
-	font-size: 1.6em;
+	font-size: 1.2em;
 	color: #333;
 	margin-bottom: 20px;
 }
 
 .university-timeline h3 {
-	font-size: 1.3em;
+	font-size: 1em;
 	color: #555;
 	margin: 25px 0 15px 0;
 }
@@ -315,7 +315,7 @@
 .days-until.normal {
 	background: #4caf50;
 	color: white;
-	font-size: smaller;
+	font-size: x-small;
 }
 
 .documents-needed ul {

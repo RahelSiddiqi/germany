@@ -926,45 +926,135 @@ function displayIELTSPlan() {
             ${renderTask(
 				'd1-2',
 				'9:00–11:00 AM',
-				'🟦 IELTS Overview + Band Descriptors',
+				'🟦 IELTS Overview: Study all 4 sections format, Band 8.0-8.5 descriptors, scoring criteria',
 				'2h',
 			)}
             ${renderTask(
 				'd1-3',
-				'1:00–7:00 PM',
-				'🟨 Writing Task 1&2 structure review',
-				'6h',
+				'11:00–11:30 AM',
+				'☕ Break + light snack',
+				'30m',
 			)}
             ${renderTask(
 				'd1-4',
-				'9:00–11:00 PM',
-				'🟪 Speaking sample answers',
-				'2h',
+				'11:30 AM–1:00 PM',
+				'🟨 Writing Task 1: Review all 6 diagram types (line, bar, pie, table, process, map)',
+				'1.5h',
 			)}
             ${renderTask(
 				'd1-5',
-				'11:30 PM',
-				'<b>🟥 Mini Mock: Listening Section 1</b>',
-				'20m',
+				'1:00–2:00 PM',
+				'🍽️ Lunch break',
+				'1h',
+			)}
+            ${renderTask(
+				'd1-6',
+				'2:00–5:00 PM',
+				'🟨 Writing Task 2: Study 5 essay types (opinion, discussion, problem-solution, two-part, advantages-disadvantages)',
+				'3h',
+			)}
+            ${renderTask(
+				'd1-7',
+				'5:00–5:30 PM',
+				'☕ Break + review notes',
+				'30m',
+			)}
+            ${renderTask(
+				'd1-8',
+				'5:30–7:00 PM',
+				'🟨 Write 1 Task 2 essay + self-assess against Band 8 criteria',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd1-9',
+				'7:00–8:00 PM',
+				'🍽️ Dinner break',
+				'1h',
+			)}
+            ${renderTask(
+				'd1-10',
+				'8:00–10:00 PM',
+				'🟪 Speaking: Watch Band 8-9 sample answers for all 3 parts, note vocabulary & structures',
+				'2h',
+			)}
+            ${renderTask(
+				'd1-11',
+				'10:00–10:30 PM',
+				'☕ Break + stretching',
+				'30m',
+			)}
+            ${renderTask(
+				'd1-12',
+				'10:30–11:30 PM',
+				'<b>🟥 Mini Mock Test: Listening Section 1 (10 questions) + review answers</b>',
+				'1h',
 			)}
             ${renderTask('d2-1', 'DAY 2', '', '')}
             ${renderTask(
 				'd2-2',
 				'9:00–11:00 AM',
-				'🟩 Reading: Skimming/Scanning',
+				'🟩 Reading: Master skimming & scanning techniques, practice with 3 passages',
 				'2h',
 			)}
             ${renderTask(
 				'd2-3',
-				'1:00–7:00 PM',
-				'🟦 Listening: Note-taking',
-				'6h',
+				'11:00–11:30 AM',
+				'☕ Break',
+				'30m',
 			)}
             ${renderTask(
 				'd2-4',
-				'9:00–11:00 PM',
-				'🟩 Reading review + error analysis',
+				'11:30 AM–1:00 PM',
+				'🟩 Reading: Practice all question types (MCQ, T/F/NG, matching headings, sentence completion)',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd2-5',
+				'1:00–2:00 PM',
+				'🍽️ Lunch break',
+				'1h',
+			)}
+            ${renderTask(
+				'd2-6',
+				'2:00–5:00 PM',
+				'🟦 Listening: Note-taking strategies, practice Sections 1-4, focus on spelling & numbers',
+				'3h',
+			)}
+            ${renderTask(
+				'd2-7',
+				'5:00–5:30 PM',
+				'☕ Break + review errors',
+				'30m',
+			)}
+            ${renderTask(
+				'd2-8',
+				'5:30–7:00 PM',
+				'🟦 Listening: Practice with maps, diagrams, form filling - aim for 38+/40',
+				'1.5h',
+			)}
+            ${renderTask(
+				'd2-9',
+				'7:00–8:00 PM',
+				'🍽️ Dinner break',
+				'1h',
+			)}
+            ${renderTask(
+				'd2-10',
+				'8:00–10:00 PM',
+				'🟩 Reading: Complete 2 full passages under timed conditions + detailed error analysis',
 				'2h',
+			)}
+            ${renderTask(
+				'd2-11',
+				'10:00–10:30 PM',
+				'☕ Break',
+				'30m',
+			)}
+            ${renderTask(
+				'd2-12',
+				'10:30–11:30 PM',
+				'🟧 Vocabulary: Learn 30 academic words + collocations + write example sentences',
+				'1h',
 			)}
         </table>
 
