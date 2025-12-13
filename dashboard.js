@@ -18,6 +18,7 @@ async function loadAllData() {
 
 // Page navigation
 function showPage(pageId) {
+	// Remove active class from all pages and links
 	document
 		.querySelectorAll('.page')
 		.forEach((page) => page.classList.remove('active'));
@@ -25,13 +26,19 @@ function showPage(pageId) {
 		.querySelectorAll('.menu a')
 		.forEach((link) => link.classList.remove('active'));
 
-	document.getElementById(pageId).classList.add('active');
-
-	// Set active class on the clicked menu link
-	const activeLink = document.querySelector(`.menu a[href="#${pageId}"]`);
-	if (activeLink) {
-		activeLink.classList.add('active');
+	// Show the selected page
+	const page = document.getElementById(pageId);
+	if (page) {
+		page.classList.add('active');
 	}
+
+	// Add active class to the corresponding menu link
+	document.querySelectorAll('.menu a').forEach((link) => {
+		const href = link.getAttribute('href');
+		if (href === `#${pageId}`) {
+			link.classList.add('active');
+		}
+	});
 
 	if (pageId === 'ielts') {
 		displayIELTSPlan();
