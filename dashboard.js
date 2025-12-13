@@ -45,10 +45,15 @@ function showPage(pageId) {
 	}
 
 	document.getElementById('sidebar').classList.remove('open');
+	
+	// Close mobile sidebar on page change
+	if (window.innerWidth <= 768) {
+		document.getElementById('sidebar').classList.remove('active');
+	}
 }
 
 function toggleMenu() {
-	document.getElementById('sidebar').classList.toggle('open');
+	document.getElementById('sidebar').classList.toggle('active');
 }
 
 // Toggle expand/collapse for accordion cards
