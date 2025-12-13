@@ -921,15 +921,17 @@ body {
 
 	.sidebar {
 		transform: translateX(-100%);
+		width: 80vw;
+		max-width: 280px;
 	}
 
-	.sidebar.open {
+	.sidebar.active {
 		transform: translateX(0);
 	}
 
 	.main-content {
 		margin-left: 0;
-		padding: 20px 15px;
+		padding: 16px;
 	}
 
 	.stats-grid {
