@@ -4,14 +4,20 @@ const CACHE_ASSETS = [
 	'/germany/dashboard.html',
 	'/germany/dashboard.css',
 	'/germany/dashboard.js',
+	'/germany/dashboard-band8-integration.js',
+	'/germany/dashboard-band8-styles.css',
 	'/germany/enhancements.css',
 	'/germany/data-manager.js',
 	'/germany/notification-manager.js',
 	'/germany/analytics-manager.js',
 	'/germany/settings-ui.js',
+	'/germany/master-plan.js',
 	'/germany/manifest.json',
 	'/germany/germany-universities.json',
 	'/germany/schengen-universities.json',
+	'/germany/additional-schengen-cybersecurity-universities.json',
+	'/germany/scholarships-complete-2026.json',
+	'/germany/favicon.svg',
 ];
 
 // Install event - cache assets
