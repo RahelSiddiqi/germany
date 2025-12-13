@@ -108,7 +108,10 @@ async function loadGermanyData() {
 	try {
 		const response = await fetch('germany-universities.json');
 		const data = await response.json();
-		germanyUniversities = data.cyber_security_programs || [];
+		germanyUniversities = [
+			...(data.cyber_security_programs || []),
+			...(data.additional_universities || []),
+		];
 		scholarshipGuide = data.scholarship_guide || null;
 
 		const saved = localStorage.getItem('germany-applications');
@@ -600,7 +603,17 @@ async function loadSchengenData() {
 		const response = await fetch('schengen-universities.json');
 		const data = await response.json();
 		const programs = data.cyber_security_programs || [];
-		schengenUniversities = programs.sort((a, b) => {
+		
+		// Load additional Schengen universities
+		let additionalPrograms = [];
+		try {
+			const additionalResponse = await fetch('additional-schengen-cybersecurity-universities.json');
+			additionalPrograms = await additionalResponse.json();
+		} catch (err) {
+			console.warn('Failed to load additional Schengen universities:', err);
+		}
+		
+		schengenUniversities = [...programs, ...additionalPrograms].sort((a, b) => {
 			const dateA = new Date(a.application_deadline);
 			const dateB = new Date(b.application_deadline);
 			return dateA - dateB;

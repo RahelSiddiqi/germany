@@ -12,6 +12,7 @@ const CACHE_ASSETS = [
 	'/germany/manifest.json',
 	'/germany/germany-universities.json',
 	'/germany/schengen-universities.json',
+	'/germany/additional-schengen-cybersecurity-universities.json',
 ];
 
 // Install event - cache assets
