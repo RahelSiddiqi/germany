@@ -610,7 +610,7 @@ async function loadSchengenData() {
 			const additionalResponse = await fetch('additional-schengen-cybersecurity-universities.json');
 			additionalPrograms = await additionalResponse.json();
 		} catch (err) {
-			console.warn('Additional Schengen universities file not found:', err);
+			console.warn('Failed to load additional Schengen universities:', err);
 		}
 		
 		schengenUniversities = [...programs, ...additionalPrograms].sort((a, b) => {
