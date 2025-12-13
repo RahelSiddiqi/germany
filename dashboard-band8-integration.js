@@ -125,7 +125,7 @@ class Band8Dashboard {
                 </div>
 
                 <div class="today-schedule">
-                    <h3>📅 Day ${today.day}/21 - ${today.date}</h3>
+                    <h3 style="font-size: larger;">📅 Day ${today.day}/21 - ${today.date}</h3>
                     <div class="focus-area">
                         <strong>Focus:</strong> ${today.focus}
                     </div>
