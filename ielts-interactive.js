@@ -802,6 +802,194 @@ const IELTS_VOCABULARY = {
 			level: 'B2',
 		},
 	],
+	// Day 4: Environment & Nature
+	environment: [
+		{ word: 'biodiversity', definition: 'Variety of life forms', example: 'Rainforests have high biodiversity.', level: 'B2' },
+		{ word: 'ecosystem', definition: 'Community of organisms', example: 'The coral reef ecosystem is fragile.', level: 'B2' },
+		{ word: 'habitat', definition: 'Natural home', example: 'Deforestation destroys habitats.', level: 'B1' },
+		{ word: 'species', definition: 'Type of organism', example: 'Many species are endangered.', level: 'B1' },
+		{ word: 'extinct', definition: 'No longer existing', example: 'Dinosaurs became extinct.', level: 'B2' },
+		{ word: 'endangered', definition: 'At risk of extinction', example: 'Tigers are endangered animals.', level: 'B2' },
+		{ word: 'conservation', definition: 'Protection of nature', example: 'Wildlife conservation is essential.', level: 'B2' },
+		{ word: 'emission', definition: 'Substance released', example: 'Carbon emissions cause warming.', level: 'B2' },
+		{ word: 'pollutant', definition: 'Harmful substance', example: 'Factories release pollutants.', level: 'B2' },
+		{ word: 'deforestation', definition: 'Clearing of forests', example: 'Deforestation accelerates climate change.', level: 'B2' },
+		{ word: 'erosion', definition: 'Gradual wearing away', example: 'Soil erosion affects farming.', level: 'B2' },
+		{ word: 'drought', definition: 'Prolonged dry period', example: 'The drought destroyed crops.', level: 'B2' },
+		{ word: 'renewable', definition: 'Can be replenished', example: 'Solar is a renewable energy source.', level: 'B2' },
+		{ word: 'depletion', definition: 'Using up resources', example: 'Overfishing caused fish stock depletion.', level: 'B2' },
+		{ word: 'ecological', definition: 'Related to ecosystems', example: 'Ecological balance is disrupted.', level: 'B2' },
+	],
+	// Day 4-5: Science & Research
+	science: [
+		{ word: 'phenomenon', definition: 'Observable event', example: 'Climate change is a global phenomenon.', level: 'B2' },
+		{ word: 'theory', definition: 'System of ideas', example: "Darwin's theory of evolution.", level: 'B1' },
+		{ word: 'evidence', definition: 'Proof', example: 'Scientific evidence supports this.', level: 'B1' },
+		{ word: 'experiment', definition: 'Scientific test', example: 'The experiment proved the hypothesis.', level: 'B1' },
+		{ word: 'variable', definition: 'Changeable factor', example: 'Control all variables in research.', level: 'B2' },
+		{ word: 'data', definition: 'Facts/statistics', example: 'The data supports our conclusion.', level: 'B1' },
+		{ word: 'sample', definition: 'Representative group', example: 'A sample of 500 people was used.', level: 'B1' },
+		{ word: 'survey', definition: 'Questionnaire study', example: 'We conducted a nationwide survey.', level: 'B1' },
+		{ word: 'correlation', definition: 'Statistical relationship', example: "There's a correlation between X and Y.", level: 'B2' },
+		{ word: 'causation', definition: 'Cause-effect relationship', example: "Correlation doesn't imply causation.", level: 'C1' },
+		{ word: 'methodology', definition: 'Research methods', example: 'The methodology was rigorous.', level: 'B2' },
+		{ word: 'significant', definition: 'Statistically important', example: 'Results were statistically significant.', level: 'B2' },
+		{ word: 'preliminary', definition: 'Initial; first stage', example: 'Preliminary results show progress.', level: 'B2' },
+		{ word: 'conclusive', definition: 'Definitive; final', example: 'The evidence is not conclusive.', level: 'B2' },
+		{ word: 'hypothesis', definition: 'Proposed explanation', example: 'The hypothesis was tested.', level: 'B2' },
+	],
+	// Day 5: Writing Task 1 - Trends
+	trends: [
+		{ word: 'increase', definition: 'Go up; rise', example: 'Sales increased by 20%.', level: 'B1' },
+		{ word: 'decrease', definition: 'Go down; fall', example: 'Costs decreased significantly.', level: 'B1' },
+		{ word: 'rise', definition: 'Go up', example: 'There was a sharp rise in prices.', level: 'B1' },
+		{ word: 'fall', definition: 'Go down', example: 'Unemployment fell by 3%.', level: 'B1' },
+		{ word: 'grow', definition: 'Increase; develop', example: 'The economy grew steadily.', level: 'B1' },
+		{ word: 'decline', definition: 'Decrease gradually', example: 'Population declined over the decade.', level: 'B2' },
+		{ word: 'fluctuate', definition: 'Rise and fall irregularly', example: 'Prices fluctuated throughout the year.', level: 'B2' },
+		{ word: 'stabilize', definition: 'Become steady', example: 'The market stabilized in Q4.', level: 'B2' },
+		{ word: 'peak', definition: 'Reach highest point', example: 'Sales peaked in December.', level: 'B2' },
+		{ word: 'dip', definition: 'Fall briefly', example: 'There was a slight dip in March.', level: 'B2' },
+		{ word: 'surge', definition: 'Rise suddenly', example: 'Demand surged unexpectedly.', level: 'B2' },
+		{ word: 'plummet', definition: 'Fall rapidly', example: 'Share prices plummeted.', level: 'C1' },
+		{ word: 'soar', definition: 'Rise quickly', example: 'Profits soared to record levels.', level: 'B2' },
+		{ word: 'level off', definition: 'Become flat', example: 'Growth leveled off in Q3.', level: 'B2' },
+		{ word: 'remain constant', definition: 'Stay the same', example: 'The rate remained constant.', level: 'B2' },
+		{ word: 'dramatically', definition: 'Very significantly', example: 'Sales increased dramatically.', level: 'B2' },
+		{ word: 'substantially', definition: 'To a large degree', example: 'Profits grew substantially.', level: 'B2' },
+		{ word: 'marginally', definition: 'Slightly; a little', example: 'Prices rose marginally.', level: 'B2' },
+		{ word: 'gradually', definition: 'Slowly; step by step', example: 'Temperatures increased gradually.', level: 'B2' },
+		{ word: 'exponentially', definition: 'At increasing rate', example: 'Data is growing exponentially.', level: 'C1' },
+	],
+	// Day 6: Process & Map Vocabulary
+	process: [
+		{ word: 'initially', definition: 'At the beginning', example: 'Initially, raw materials are collected.', level: 'B2' },
+		{ word: 'subsequently', definition: 'After that', example: 'Subsequently, they are sorted.', level: 'B2' },
+		{ word: 'eventually', definition: 'In the end', example: 'Eventually, the product is packaged.', level: 'B1' },
+		{ word: 'simultaneously', definition: 'At the same time', example: 'Two processes occur simultaneously.', level: 'B2' },
+		{ word: 'prior to', definition: 'Before', example: 'Prior to processing, materials are inspected.', level: 'B2' },
+		{ word: 'thereafter', definition: 'After that', example: 'Thereafter, it is transported to stores.', level: 'C1' },
+		{ word: 'collect', definition: 'Gather', example: 'Raw materials are collected.', level: 'B1' },
+		{ word: 'transport', definition: 'Move from place to place', example: 'Materials are transported to the factory.', level: 'B1' },
+		{ word: 'filter', definition: 'Remove impurities', example: 'Water is filtered to remove particles.', level: 'B2' },
+		{ word: 'compress', definition: 'Press together', example: 'The material is compressed.', level: 'B2' },
+		{ word: 'distribute', definition: 'Deliver to places', example: 'Goods are distributed to retailers.', level: 'B2' },
+		{ word: 'convert', definition: 'Change form', example: 'Energy is converted to electricity.', level: 'B2' },
+		{ word: 'extract', definition: 'Remove from source', example: 'Oil is extracted from seeds.', level: 'B2' },
+		{ word: 'refine', definition: 'Purify', example: 'Crude oil is refined.', level: 'B2' },
+		{ word: 'assemble', definition: 'Put together', example: 'Parts are assembled into products.', level: 'B2' },
+		{ word: 'construct', definition: 'Build', example: 'A new road was constructed.', level: 'B2' },
+		{ word: 'demolish', definition: 'Destroy (building)', example: 'The old factory was demolished.', level: 'B2' },
+		{ word: 'relocate', definition: 'Move to new place', example: 'The factory was relocated.', level: 'B2' },
+		{ word: 'renovate', definition: 'Restore; update', example: 'The building was renovated.', level: 'B2' },
+		{ word: 'expand', definition: 'Grow; become bigger', example: 'The town expanded significantly.', level: 'B2' },
+	],
+	// Day 7-8: History & Society
+	history: [
+		{ word: 'ancient', definition: 'Very old', example: 'Ancient civilizations built pyramids.', level: 'B1' },
+		{ word: 'medieval', definition: 'Middle Ages', example: 'Medieval Europe was feudal.', level: 'B2' },
+		{ word: 'contemporary', definition: 'Of the same period', example: 'Contemporary accounts describe...', level: 'B2' },
+		{ word: 'era', definition: 'Historical period', example: 'The Victorian era was transformative.', level: 'B2' },
+		{ word: 'civilization', definition: 'Advanced society', example: 'The Roman civilization lasted centuries.', level: 'B1' },
+		{ word: 'dynasty', definition: 'Ruling family', example: 'The Ming Dynasty ruled China.', level: 'B2' },
+		{ word: 'empire', definition: 'Large territory ruled', example: 'The British Empire was vast.', level: 'B1' },
+		{ word: 'revolution', definition: 'Sudden change', example: 'The Industrial Revolution changed society.', level: 'B1' },
+		{ word: 'reform', definition: 'Change for improvement', example: 'Social reforms improved conditions.', level: 'B2' },
+		{ word: 'migration', definition: 'Movement of people', example: 'Mass migration occurred in the 1800s.', level: 'B2' },
+		{ word: 'settlement', definition: 'Established community', example: 'The first settlement was in 1607.', level: 'B2' },
+		{ word: 'indigenous', definition: 'Native; original', example: 'Indigenous peoples lived there for millennia.', level: 'B2' },
+		{ word: 'heritage', definition: 'Cultural inheritance', example: 'Protect our cultural heritage.', level: 'B2' },
+		{ word: 'archaeology', definition: 'Study of ancient remains', example: 'Archaeology reveals past civilizations.', level: 'B2' },
+		{ word: 'artifact', definition: 'Historical object', example: 'The museum displays ancient artifacts.', level: 'B2' },
+	],
+	// Day 9+: Band 8.5 Advanced Vocabulary
+	band85: [
+		{ word: 'unequivocally', definition: 'Without doubt; clearly', example: 'The evidence unequivocally supports this.', level: 'C1' },
+		{ word: 'ubiquitous', definition: 'Present everywhere', example: 'Smartphones are now ubiquitous.', level: 'C1' },
+		{ word: 'unprecedented', definition: 'Never happened before', example: 'This is an unprecedented situation.', level: 'C1' },
+		{ word: 'undermine', definition: 'Weaken gradually', example: 'This will undermine public trust.', level: 'B2' },
+		{ word: 'synonymous', definition: 'Having same meaning', example: 'Quality is synonymous with this brand.', level: 'C1' },
+		{ word: 'scrutinize', definition: 'Examine closely', example: 'We must scrutinize the data.', level: 'C1' },
+		{ word: 'proliferate', definition: 'Increase rapidly', example: 'Fake news continues to proliferate.', level: 'C1' },
+		{ word: 'precipitate', definition: 'Cause to happen suddenly', example: 'This could precipitate a crisis.', level: 'C1' },
+		{ word: 'perpetuate', definition: 'Make continue', example: "Don't perpetuate harmful stereotypes.", level: 'C1' },
+		{ word: 'paradigm shift', definition: 'Fundamental change', example: 'AI represents a paradigm shift.', level: 'C1' },
+		{ word: 'nuanced', definition: 'Having subtle differences', example: 'A nuanced understanding is required.', level: 'C1' },
+		{ word: 'multifaceted', definition: 'Having many aspects', example: 'This is a multifaceted problem.', level: 'C1' },
+		{ word: 'juxtapose', definition: 'Place side by side', example: 'Juxtapose the two images to compare.', level: 'C1' },
+		{ word: 'intrinsic', definition: 'Belonging naturally', example: 'There is intrinsic value in education.', level: 'C1' },
+		{ word: 'holistic', definition: 'Considering the whole', example: 'Take a holistic approach to health.', level: 'C1' },
+		{ word: 'extraneous', definition: 'Irrelevant; not essential', example: 'Remove extraneous details.', level: 'C1' },
+		{ word: 'dichotomy', definition: 'Division into two parts', example: 'The dichotomy between work and life.', level: 'C1' },
+		{ word: 'concomitant', definition: 'Accompanying', example: 'With success come concomitant challenges.', level: 'C2' },
+		{ word: 'commensurate', definition: 'Proportional; corresponding', example: 'Salary should be commensurate with experience.', level: 'C1' },
+		{ word: 'albeit', definition: 'Although', example: 'He succeeded, albeit with difficulty.', level: 'C1' },
+	],
+	// Day 8: Speaking Idioms
+	idioms: [
+		{ word: 'at the end of the day', definition: 'Ultimately', example: 'At the end of the day, family matters most.', level: 'B2' },
+		{ word: 'on the other hand', definition: 'Alternatively', example: "It's expensive, but on the other hand, it's high quality.", level: 'B2' },
+		{ word: 'to be honest', definition: 'Speaking frankly', example: "To be honest, I wasn't impressed.", level: 'B1' },
+		{ word: 'as a matter of fact', definition: 'Actually', example: "As a matter of fact, I've been there twice.", level: 'B2' },
+		{ word: 'time and again', definition: 'Repeatedly', example: "I've told him time and again.", level: 'B2' },
+		{ word: 'more often than not', definition: 'Usually', example: 'More often than not, I cook at home.', level: 'B2' },
+		{ word: 'in the long run', definition: 'Eventually', example: 'In the long run, this will save money.', level: 'B2' },
+		{ word: 'from time to time', definition: 'Occasionally', example: 'I visit my grandparents from time to time.', level: 'B1' },
+		{ word: 'once in a while', definition: 'Rarely', example: 'I go to the cinema once in a while.', level: 'B1' },
+		{ word: 'by and large', definition: 'Generally', example: 'By and large, the experience was positive.', level: 'B2' },
+		{ word: 'all things considered', definition: 'Overall', example: 'All things considered, it was a success.', level: 'B2' },
+		{ word: 'having said that', definition: 'However', example: "Having said that, there's room for improvement.", level: 'B2' },
+		{ word: 'for the most part', definition: 'Mostly', example: 'For the most part, I agree.', level: 'B2' },
+		{ word: 'in a nutshell', definition: 'Briefly', example: 'In a nutshell, it was a great trip.', level: 'B2' },
+		{ word: 'from my perspective', definition: 'Personal view', example: 'From my perspective, this is the best option.', level: 'B2' },
+		{ word: 'I would argue that', definition: 'I contend', example: 'I would argue that this is necessary.', level: 'B2' },
+		{ word: 'it seems to me that', definition: 'I think', example: 'It seems to me that this is fair.', level: 'B2' },
+		{ word: "I'm firmly convinced that", definition: 'Strong belief', example: "I'm firmly convinced that this works.", level: 'B2' },
+	],
+	// Day 8: Speaking Collocations
+	collocations: [
+		{ word: 'make a decision', definition: 'Decide', example: "It's time to make a decision.", level: 'B1' },
+		{ word: 'take action', definition: 'Act; do something', example: 'We need to take action now.', level: 'B1' },
+		{ word: 'pay attention', definition: 'Focus; concentrate', example: 'Students should pay attention in class.', level: 'B1' },
+		{ word: 'have an impact', definition: 'Make a difference', example: 'Technology has an impact on society.', level: 'B2' },
+		{ word: 'raise awareness', definition: 'Inform people', example: 'Campaigns raise awareness about issues.', level: 'B2' },
+		{ word: 'face challenges', definition: 'Deal with problems', example: 'Countries face challenges in development.', level: 'B2' },
+		{ word: 'meet expectations', definition: 'Satisfy requirements', example: "The product didn't meet expectations.", level: 'B2' },
+		{ word: 'draw conclusions', definition: 'Decide based on evidence', example: 'We can draw conclusions from the data.', level: 'B2' },
+		{ word: 'take responsibility', definition: 'Accept accountability', example: 'People should take responsibility for their actions.', level: 'B2' },
+		{ word: 'make progress', definition: 'Advance; improve', example: 'Students make progress through practice.', level: 'B1' },
+		{ word: 'keep in touch', definition: 'Stay connected', example: 'I keep in touch with friends online.', level: 'B1' },
+		{ word: 'lead a healthy lifestyle', definition: 'Live healthily', example: "It's important to lead a healthy lifestyle.", level: 'B2' },
+		{ word: 'broaden one\'s horizons', definition: 'Expand knowledge', example: 'Travel broadens your horizons.', level: 'B2' },
+		{ word: 'gain experience', definition: 'Acquire skills', example: 'Internships help you gain experience.', level: 'B2' },
+		{ word: 'strike a balance', definition: 'Find middle ground', example: 'We need to strike a balance between work and life.', level: 'B2' },
+		{ word: 'undergo transformation', definition: 'Change significantly', example: 'Cities have undergone transformation.', level: 'B2' },
+		{ word: 'make a contribution', definition: 'Help; give', example: 'Everyone can make a contribution.', level: 'B2' },
+		{ word: 'come to terms with', definition: 'Accept reality', example: 'He came to terms with the situation.', level: 'B2' },
+	],
+	// Day 9: Mixed Practice Academic
+	mixedAcademic: [
+		{ word: 'accommodate', definition: 'Provide space for', example: 'The hotel can accommodate 200 guests.', level: 'B2' },
+		{ word: 'acknowledge', definition: 'Accept or recognize', example: 'She acknowledged her mistake.', level: 'B2' },
+		{ word: 'advocate', definition: 'Publicly support', example: 'They advocate for equal rights.', level: 'C1' },
+		{ word: 'allocate', definition: 'Distribute for a purpose', example: 'Funds were allocated to education.', level: 'C1' },
+		{ word: 'anticipate', definition: 'Expect something', example: 'We anticipate a busy season.', level: 'B2' },
+		{ word: 'approximately', definition: 'Close to an exact amount', example: 'It costs approximately $100.', level: 'B1' },
+		{ word: 'assess', definition: 'Evaluate or judge', example: 'We need to assess the situation.', level: 'B2' },
+		{ word: 'assume', definition: 'Suppose without proof', example: 'I assumed you knew.', level: 'B2' },
+		{ word: 'attain', definition: 'Achieve or reach', example: 'She attained her goal.', level: 'C1' },
+		{ word: 'authorize', definition: 'Give official permission', example: 'Only managers can authorize this.', level: 'C1' },
+		{ word: 'beneficial', definition: 'Having a good effect', example: 'Exercise is beneficial for health.', level: 'B2' },
+		{ word: 'capacity', definition: 'Maximum amount', example: 'The stadium has a capacity of 50,000.', level: 'B2' },
+		{ word: 'circumstances', definition: 'Conditions or situation', example: 'Under the circumstances, we had no choice.', level: 'B2' },
+		{ word: 'coincide', definition: 'Happen at same time', example: 'The events coincided.', level: 'C1' },
+		{ word: 'collapse', definition: 'Fall down suddenly', example: 'The building collapsed.', level: 'B2' },
+		{ word: 'commence', definition: 'Begin', example: 'The meeting will commence at 9 AM.', level: 'C1' },
+		{ word: 'commodity', definition: 'Product that can be traded', example: 'Oil is a valuable commodity.', level: 'C1' },
+		{ word: 'communicate', definition: 'Share information', example: "It's important to communicate clearly.", level: 'B1' },
+		{ word: 'complexity', definition: 'State of being complicated', example: 'The complexity of the problem is high.', level: 'B2' },
+		{ word: 'component', definition: 'Part of a larger whole', example: 'Each component is essential.', level: 'B2' },
+	],
 };
 
 let flashcardState = {
@@ -2204,36 +2392,52 @@ function initResourcesTool() {
 						<span>🌐</span> Free Online Practice
 					</h4>
 					<div class="grid gap-3 sm:grid-cols-2">
+						<a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests" target="_blank"
+							class="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors border-2 border-blue-300 dark:border-blue-700">
+							<span class="text-2xl">🎯</span>
+							<div>
+								<div class="text-sm font-bold text-blue-700 dark:text-blue-300">BC Practice Tests</div>
+								<div class="text-xs text-blue-600 dark:text-blue-400">Official FREE mock tests ⭐</div>
+							</div>
+						</a>
 						<a href="https://ieltsliz.com/" target="_blank"
 							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
 							<span class="text-2xl">👩‍🏫</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">IELTS Liz</div>
-								<div class="text-xs text-gray-500">Free lessons & tips</div>
+								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS Liz</div>
+								<div class="text-xs text-gray-600 dark:text-gray-400">Free lessons & tips</div>
 							</div>
 						</a>
 						<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank"
 							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
 							<span class="text-2xl">📝</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">IELTS.org</div>
-								<div class="text-xs text-gray-500">Official sample tests</div>
+								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS.org</div>
+								<div class="text-xs text-gray-600 dark:text-gray-400">Official sample tests</div>
 							</div>
 						</a>
 						<a href="https://www.britishcouncil.org/exam/ielts/prepare" target="_blank"
 							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
 							<span class="text-2xl">🇬🇧</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">British Council</div>
-								<div class="text-xs text-gray-500">Free prep materials</div>
+								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">British Council</div>
+								<div class="text-xs text-gray-600 dark:text-gray-400">Free prep materials</div>
 							</div>
 						</a>
 						<a href="https://www.idp.com/australia/ielts/prepare/" target="_blank"
 							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
 							<span class="text-2xl">🌏</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">IDP IELTS</div>
-								<div class="text-xs text-gray-500">Practice & resources</div>
+								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IDP IELTS</div>
+								<div class="text-xs text-gray-600 dark:text-gray-400">Practice & resources</div>
+							</div>
+						</a>
+						<a href="https://www.ieltsadvantage.com/free-ielts-practice-tests/" target="_blank"
+							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
+							<span class="text-2xl">📊</span>
+							<div>
+								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS Advantage</div>
+								<div class="text-xs text-gray-600 dark:text-gray-400">Free practice tests</div>
 							</div>
 						</a>
 					</div>
@@ -2249,32 +2453,32 @@ function initResourcesTool() {
 							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
 							<span class="text-2xl">🎬</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">IELTS with Abo Rameen</div>
-								<div class="text-xs text-gray-500">Band 9 strategies</div>
+								<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS with Abo Rameen</div>
+								<div class="text-xs text-red-600 dark:text-red-400">Band 9 strategies</div>
 							</div>
 						</a>
 						<a href="https://www.youtube.com/@IELTSLiz" target="_blank"
 							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
 							<span class="text-2xl">🎬</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">IELTS Liz</div>
-								<div class="text-xs text-gray-500">All sections covered</div>
+								<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS Liz</div>
+								<div class="text-xs text-red-600 dark:text-red-400">All sections covered</div>
 							</div>
 						</a>
 						<a href="https://www.youtube.com/@E2IELTS" target="_blank"
 							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
 							<span class="text-2xl">🎬</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">E2 IELTS</div>
-								<div class="text-xs text-gray-500">High-quality lessons</div>
+								<div class="text-sm font-medium text-red-700 dark:text-red-300">E2 IELTS</div>
+								<div class="text-xs text-red-600 dark:text-red-400">High-quality lessons</div>
 							</div>
 						</a>
 						<a href="https://www.youtube.com/@AsadYaqub" target="_blank"
 							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
 							<span class="text-2xl">🎬</span>
 							<div>
-								<div class="text-sm font-medium text-gray-700 dark:text-gray-300">Asad Yaqub</div>
-								<div class="text-xs text-gray-500">Tips & mock tests</div>
+								<div class="text-sm font-medium text-red-700 dark:text-red-300">Asad Yaqub</div>
+								<div class="text-xs text-red-600 dark:text-red-400">Tips & mock tests</div>
 							</div>
 						</a>
 					</div>

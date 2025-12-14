@@ -4,6 +4,7 @@ class NotificationManager {
 	constructor() {
 		this.NOTIFICATION_KEY = 'notification-settings';
 		this.DISMISSED_KEY = 'dismissed-notifications';
+		this.REMINDER_KEY = 'study-reminders';
 		this.init();
 	}
 
@@ -12,6 +13,8 @@ class NotificationManager {
 		if ('Notification' in window && Notification.permission === 'default') {
 			this.requestPermission();
 		}
+		// Set up daily study reminder check
+		this.checkStudyReminders();
 	}
 
 	async requestPermission() {
@@ -20,6 +23,61 @@ class NotificationManager {
 			return permission === 'granted';
 		}
 		return false;
+	}
+
+	// Study reminder settings
+	getStudyReminderSettings() {
+		const defaults = {
+			enabled: true,
+			ieltsReminder: true,
+			deadlineReminder: true,
+			dailyStudyGoal: 2, // hours
+			reminderTime: '09:00',
+		};
+		const saved = localStorage.getItem(this.REMINDER_KEY);
+		return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+	}
+
+	saveStudyReminderSettings(settings) {
+		localStorage.setItem(this.REMINDER_KEY, JSON.stringify(settings));
+	}
+
+	// Check study reminders
+	checkStudyReminders() {
+		const settings = this.getStudyReminderSettings();
+		if (!settings.enabled) return;
+
+		// Check IELTS study reminder
+		if (settings.ieltsReminder) {
+			const lastStudy = localStorage.getItem('ielts-last-study-date');
+			const today = new Date().toDateString();
+			if (lastStudy !== today) {
+				this.showInAppNotification(
+					'📚 Time for IELTS practice! Keep your streak going.',
+					'info',
+					8000
+				);
+			}
+		}
+
+		// Check for today's deadlines
+		if (settings.deadlineReminder) {
+			const urgentDeadlines = this.getUpcomingDeadlines(7).filter(
+				d => d.daysRemaining <= 7 && d.status !== 'submitted' && d.status !== 'admitted'
+			);
+			if (urgentDeadlines.length > 0) {
+				this.showInAppNotification(
+					`🚨 ${urgentDeadlines.length} deadline${urgentDeadlines.length > 1 ? 's' : ''} within 7 days!`,
+					'deadline',
+					10000
+				);
+			}
+		}
+	}
+
+	// Mark IELTS study for today
+	markIELTSStudy() {
+		localStorage.setItem('ielts-last-study-date', new Date().toDateString());
 	}
 
 	// Check upcoming deadlines
