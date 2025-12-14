@@ -1,125 +1,84 @@
-# 🗣️ English IPA Reference for IELTS Learners
+# 🗣️ IPA Quick Reference - Day 1
 
-A concise, learner-friendly table of IPA sounds with examples, common spellings, and Bangla hints. Use this alongside the vocabulary list for accurate pronunciation.
-
----
-
-## Vowels
-
-| Symbol | Key Sound          | Example (UK)      | Common Spellings | বাংলা হিন্ট        |
-| ------ | ------------------ | ----------------- | ---------------- | ------------------ |
-| /iː/   | long ee            | "seat" /siːt/     | ee, ea           | ই দীর্ঘ            |
-| /ɪ/    | short i            | "sit" /sɪt/       | i                | ই সংক্ষিপ্ত        |
-| /e/    | short e            | "bed" /bed/       | e                | এ সংক্ষিপ্ত        |
-| /æ/    | a as in cat        | "cat" /kæt/       | a                | অ্যা (ক্যাট)       |
-| /ɑː/   | long ah            | "father" /ˈfɑːðə/ | a, ar            | আ দীর্ঘ            |
-| /ɒ/    | short o (UK)       | "lot" /lɒt/       | o                | অ (UK উচ্চারণ)     |
-| /ɔː/   | long aw            | "law" /lɔː/       | aw, au, or       | অ-ও দীর্ঘ          |
-| /ʊ/    | short oo           | "book" /bʊk/      | oo, u            | উ সংক্ষিপ্ত        |
-| /uː/   | long oo            | "goose" /ɡuːs/    | oo, u, ue        | উ দীর্ঘ            |
-| /ʌ/    | uh                 | "cup" /kʌp/       | u, o             | অ (কাপ)            |
-| /ɜː/   | er (stressed)      | "bird" /bɜːd/     | ir, ur, er       | আর দীর্ঘ (বার্ড)   |
-| /ə/    | schwa (unstressed) | "sofa" /ˈsəʊfə/   | a, e, o          | অ (হালকা, নির্জীব) |
-| /eɪ/   | ay                 | "face" /feɪs/     | a_e, ai, ay      | এ-ই                |
-| /aɪ/   | eye                | "price" /praɪs/   | i_e, y, ie       | আই                 |
-| /ɔɪ/   | oi                 | "choice" /ˈtʃɔɪs/ | oi, oy           | অই                 |
-| /əʊ/   | oh                 | "goat" /ɡəʊt/     | o_e, oa, ow      | ও-উ                |
-| /aʊ/   | ow                 | "mouth" /maʊθ/    | ou, ow           | আউ                 |
-| /ɪə/   | ear                | "near" /nɪə/      | ear, eer         | ই-অ                |
-| /eə/   | air                | "square" /skweə/  | air, are         | এ-অ                |
-| /ʊə/   | sure               | "cure" /kjʊə/     | ure, our         | উ-অ                |
+> International Phonetic Alphabet guide for IELTS pronunciation
 
 ---
 
-## Consonants
+## 📁 Phonetics Files
 
-| Symbol | Key Sound         | Example (UK)      | Common Spellings | বাংলা হিন্ট |
-| ------ | ----------------- | ----------------- | ---------------- | ----------- |
-| /p/    | p                 | "pen" /pen/       | p                | প           |
-| /b/    | b                 | "bat" /bæt/       | b                | ব           |
-| /t/    | t                 | "tea" /tiː/       | t                | ট/ত         |
-| /d/    | d                 | "dog" /dɒɡ/       | d                | ড/দ         |
-| /k/    | k                 | "cat" /kæt/       | c, k             | ক           |
-| /ɡ/    | g                 | "go" /ɡəʊ/        | g                | গ           |
-| /tʃ/   | ch                | "church" /tʃɜːtʃ/ | ch               | চ/ছ         |
-| /dʒ/   | j                 | "judge" /dʒʌdʒ/   | j, g             | জ           |
-| /f/    | f                 | "fish" /fɪʃ/      | f, ph            | ফ           |
-| /v/    | v                 | "voice" /vɔɪs/    | v                | ভ/ভি        |
-| /θ/    | th (voiceless)    | "think" /θɪŋk/    | th               | থ (নরম)     |
-| /ð/    | th (voiced)       | "this" /ðɪs/      | th               | দ্/ধ (নরম)  |
-| /s/    | s                 | "sun" /sʌn/       | s, c             | স           |
-| /z/    | z                 | "zoo" /zuː/       | z, s             | জ়          |
-| /ʃ/    | sh                | "ship" /ʃɪp/      | sh               | শ           |
-| /ʒ/    | zh                | "vision" /ˈvɪʒən/ | s, g             | ঝ (নরম)     |
-| /h/    | h                 | "hat" /hæt/       | h                | হ           |
-| /m/    | m                 | "man" /mæn/       | m                | ম           |
-| /n/    | n                 | "no" /nəʊ/        | n                | ন           |
-| /ŋ/    | ng                | "sing" /sɪŋ/      | ng, n            | ঙ           |
-| /l/    | l                 | "leg" /leɡ/       | l                | ল           |
-| /r/    | r (UK non-rhotic) | "red" /red/       | r                | র           |
-| /j/    | y                 | "yes" /jes/       | y, i             | ইয়         |
-| /w/    | w                 | "we" /wiː/        | w                | ওয়         |
+| File                           | Content                                          | বাংলা        |
+| ------------------------------ | ------------------------------------------------ | ------------ |
+| [vowels.md](vowels.md)         | All vowel sounds + diphthongs + minimal pairs    | স্বরধ্বনি    |
+| [consonants.md](consonants.md) | All consonant sounds by category + minimal pairs | ব্যঞ্জনধ্বনি |
+| [vocab.md](vocab.md)           | 70 IELTS vocabulary words with pronunciation     | শব্দভাণ্ডার  |
 
 ---
 
-## Stress & Schwa
+## Stress Marks
 
--   Primary stress mark: `ˈ` (e.g., /ˈkɒmpjʊtə/) — মূল জোর
--   Secondary stress mark: `ˌ` (e.g., /ˌdɪsəˈɡriː/) — হালকা জোর
--   Schwa: `/ə/` — ইংরেজিতে সবচেয়ে সাধারণ স্বরধ্বনি; দুর্বল ও দ্রুত
-
----
-
-## Quick Practice
-
--   Read the word, find the IPA in `vocab.md`, match symbol here.
--   Shadowing: Listen and repeat 3× focusing on vowel length and stress.
--   Minimal pairs (length): /iː/ vs /ɪ/ → seat vs sit; /uː/ vs /ʊ/ → food vs foot.
+| Symbol | Name             | বাংলা     | Example                   |
+| ------ | ---------------- | --------- | ------------------------- |
+| ˈ      | Primary stress   | মূল জোর   | /ˈkɒmpjʊtə/ (COM-pu-ter)  |
+| ˌ      | Secondary stress | হালকা জোর | /ˌdɪsəˈɡriː/ (dis-a-GREE) |
 
 ---
 
-## Tips
+## Schwa /ə/ - Most Common Sound
 
--   UK-English, non-rhotic: final `r` is often silent unless followed by a vowel.
--   Vowel length matters in IELTS: long vs short changes meaning and rhythm.
--   Schwa dominates connected speech: practice reducing unstressed syllables.
+The **schwa** `/ə/` is the most important English sound:
 
----
+-   It appears in almost every **unstressed syllable**
+-   Sounds like a quick, weak "uh"
+-   বাংলা: অ (হালকা, নির্জীব)
 
-## Minimal Pairs (Top 10 Tricky Contrasts)
+**Examples:**
 
-Practice 3× per pair. Focus on vowel length and mouth shape.
-
-| Contrast     | Pair 1                          | Pair 2                                      | Pair 3                             |
-| ------------ | ------------------------------- | ------------------------------------------- | ---------------------------------- |
-| /iː/ vs /ɪ/  | seat /siːt/ vs sit /sɪt/        | deep /diːp/ vs dip /dɪp/                    | leave /liːv/ vs live /lɪv/         |
-| /uː/ vs /ʊ/  | food /fuːd/ vs foot /fʊt/       | pool /puːl/ vs pull /pʊl/                   | lose /luːz/ vs look /lʊk/          |
-| /ɔː/ vs /ɒ/  | caught /kɔːt/ vs cot /kɒt/      | law /lɔː/ vs lot /lɒt/                      | dawn /dɔːn/ vs Don /dɒn/           |
-| /ɜː/ vs /ə/  | bird /bɜːd/ vs abroad /əˈbrɔːd/ | nurse /nɜːs/ vs about /əˈbaʊt/              | learn /lɜːn/ vs alone /əˈləʊn/     |
-| /e/ vs /æ/   | bed /bed/ vs bad /bæd/          | pen /pen/ vs pan /pæn/                      | men /men/ vs man /mæn/             |
-| /θ/ vs /ð/   | think /θɪŋk/ vs this /ðɪs/      | thin /θɪn/ vs then /ðen/                    | teeth /tiːθ/ vs teethe /tiːð/      |
-| /s/ vs /z/   | ice /aɪs/ vs eyes /aɪz/         | close /kləʊs/ (adj) vs close /kləʊz/ (verb) | race /reɪs/ vs raise /reɪz/        |
-| /ʃ/ vs /ʒ/   | ship /ʃɪp/ vs genre /ˈʒɒ̃rə/     | pressure /ˈpreʃə/ vs pleasure /ˈpleʒə/      | mission /ˈmɪʃn/ vs vision /ˈvɪʒən/ |
-| /tʃ/ vs /dʒ/ | cheap /tʃiːp/ vs jeep /dʒiːp/   | choke /tʃəʊk/ vs joke /dʒəʊk/               | rich /rɪtʃ/ vs ridge /rɪdʒ/        |
-| /r/ vs /l/   | right /raɪt/ vs light /laɪt/    | road /rəʊd/ vs load /ləʊd/                  | pray /preɪ/ vs play /pleɪ/         |
+-   **a**bout /əˈbaʊt/
+-   sof**a** /ˈsəʊfə/
+-   doct**o**r /ˈdɒktə/
 
 ---
 
-## 5-Minute Daily Drills
+## Quick Sound Count
 
--   Shadowing: Pick 10 words from `vocab.md`. Read IPA, listen, repeat 3×.
--   Stress clap: Clap on `ˈ` stressed syllables while speaking the word.
--   Length focus: Contrast long vs short vowels using minimal pairs above.
--   Schwa sweep: Reduce unstressed syllables to `/ə/` in multi-syllable words.
+| Category     | Count | Sounds                                         |
+| ------------ | ----- | ---------------------------------------------- |
+| Short Vowels | 6     | /ɪ/, /e/, /æ/, /ɒ/, /ʊ/, /ʌ/                   |
+| Long Vowels  | 5     | /iː/, /ɑː/, /ɔː/, /uː/, /ɜː/                   |
+| Schwa        | 1     | /ə/                                            |
+| Diphthongs   | 8     | /eɪ/, /aɪ/, /ɔɪ/, /əʊ/, /aʊ/, /ɪə/, /eə/, /ʊə/ |
+| Consonants   | 24    | See [consonants.md](consonants.md)             |
 
 ---
 
-## Audio References
+## 5-Minute Daily Drill
 
--   Cambridge Dictionary: Search word → tap speaker for UK/US audio.
--   YouGlish: Real YouTube clips pronouncing words in context.
+1. **Pick 10 words** from [vocab.md](vocab.md)
+2. **Find IPA** and identify stress mark (ˈ)
+3. **Listen** on Cambridge Dictionary or YouGlish
+4. **Repeat 3×** focusing on:
+    - Vowel length (long ː vs short)
+    - Stress position
+    - Schwa in unstressed syllables
 
-Use these quick links (replace WORD):
+---
 
--   Cambridge UK: https://dictionary.cambridge.org/dictionary/english/WORD
--   YouGlish: https://youglish.com/pronounce/WORD/english
+## Audio Resources
+
+| Resource  | Link                     | Use For              |
+| --------- | ------------------------ | -------------------- |
+| Cambridge | dictionary.cambridge.org | UK/US audio          |
+| YouGlish  | youglish.com             | Real speech examples |
+
+**Quick link format:**
+
+-   Cambridge: `https://dictionary.cambridge.org/dictionary/english/WORD`
+-   YouGlish: `https://youglish.com/pronounce/WORD/english`
+
+---
+
+## UK English Notes
+
+-   **Non-rhotic**: Final `r` is often silent (water = /ˈwɔːtə/)
+-   **Vowel length matters**: seat ≠ sit, food ≠ foot
+-   **Schwa everywhere**: Reduce unstressed syllables in connected speech

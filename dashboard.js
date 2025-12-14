@@ -7,8 +7,9 @@ let scholarshipGuide = null;
 document.addEventListener('DOMContentLoaded', () => {
 	loadAllData();
 	updateDashboardStats();
-	// Default to band8-tracker page
-	showPage('band8-tracker');
+	// Restore last page or default to band8-tracker
+	const savedPage = localStorage.getItem('currentPage') || 'band8-tracker';
+	showPage(savedPage);
 	// Update storage display
 	if (typeof updateStorageDisplay === 'function') {
 		updateStorageDisplay();
@@ -27,6 +28,9 @@ async function loadAllData() {
 
 // Page navigation
 function showPage(pageId) {
+	// Save current page to localStorage
+	localStorage.setItem('currentPage', pageId);
+
 	// Remove active class from all pages and links
 	document
 		.querySelectorAll('.page')

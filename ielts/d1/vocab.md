@@ -1,8 +1,10 @@
-# 📚 IELTS Vocabulary - 30 Minute Learning Plan (70 Words)
+# 📚 IELTS Vocabulary - Day 1 (70 Words)
 
 ---
 
-> For pronunciation help, see the IPA guide: [ielts/d1/ipa.md](ielts/d1/ipa.md)
+> **Pronunciation Guide:** [vowels.md](vowels.md) | [consonants.md](consonants.md) | [ipa.md](ipa.md)
+
+---
 
 ## GROUP 1: OPINION & ARGUMENT (Words 1-10)
 

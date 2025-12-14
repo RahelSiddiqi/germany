@@ -1088,6 +1088,37 @@ div[style*='background: #f3e5f5'] {
 	border-bottom: none;
 }
 
+/* Audio button in tables */
+.audio-cell {
+	width: 40px;
+	text-align: center !important;
+	padding: 6px !important;
+}
+
+.audio-btn {
+	width: 32px;
+	height: 32px;
+	border: none;
+	border-radius: 50%;
+	background: var(--accent);
+	color: var(--accent-contrast);
+	cursor: pointer;
+	font-size: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.15s, background 0.15s;
+}
+
+.audio-btn:hover {
+	background: var(--accent-hover);
+	transform: scale(1.1);
+}
+
+.audio-btn:active {
+	transform: scale(0.95);
+}
+
 /* ===== QUIZ STYLES ===== */
 .quiz-container {
 	margin-top: 16px;
@@ -1263,6 +1294,26 @@ div[style*='background: #f3e5f5'] {
 
 /* ===== COMPACT MOBILE STYLES ===== */
 @media (max-width: 768px) {
+	/* Main content - remove top padding gap */
+	.main-content {
+		padding: 12px !important;
+		margin-top: 49px !important;
+	}
+
+	/* Pages - compact, no extra gap at top */
+	.page {
+		padding: 12px !important;
+		padding-top: 12px !important;
+		border-radius: 8px;
+		margin: 0;
+	}
+
+	.page h2 {
+		font-size: 1.2rem;
+		margin-bottom: 10px;
+		margin-top: 0;
+	}
+
 	/* Navbar */
 	.navbar {
 		padding: 8px 12px;
@@ -1282,41 +1333,49 @@ div[style*='background: #f3e5f5'] {
 		font-size: 14px;
 	}
 
-	/* Pages */
-	.page {
-		padding: 16px;
-		border-radius: 0;
-	}
-
-	.page h2 {
-		font-size: 1.3rem;
-		margin-bottom: 12px;
-	}
-
 	/* Stats grid - 2 columns on mobile */
 	.stats-grid {
-		grid-template-columns: repeat(2, 1fr);
-		gap: 10px;
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 8px;
 	}
 
 	.stat-card {
-		padding: 12px;
+		padding: 10px;
 	}
 
 	.stat-icon {
-		font-size: 20px;
-	}
-
-	.stat-info h3 {
-		font-size: 11px;
-	}
-
-	.stat-value {
 		font-size: 18px;
 	}
 
-	.stat-detail {
+	.stat-info h3 {
 		font-size: 10px;
+	}
+
+	.stat-value {
+		font-size: 16px;
+	}
+
+	.stat-detail {
+		font-size: 9px;
+	}
+
+	/* Combined progress grid - fix for mobile */
+	.combined-progress {
+		grid-template-columns: 1fr !important;
+		gap: 8px !important;
+	}
+
+	.combined-progress .card {
+		padding: 8px 10px !important;
+	}
+
+	/* Day status banner - compact */
+	.day-status-banner {
+		padding: 12px !important;
+	}
+
+	.day-status-banner > div:first-child {
+		gap: 12px !important;
 	}
 
 	/* Buttons */
@@ -1330,18 +1389,26 @@ div[style*='background: #f3e5f5'] {
 		font-size: 14px;
 	}
 
-	/* Folder grid - 2 columns */
+	/* Folder grid - 3 columns for 15 days */
 	.folder-grid {
-		grid-template-columns: repeat(2, 1fr);
-		gap: 10px;
+		grid-template-columns: repeat(3, 1fr) !important;
+		gap: 8px;
 	}
 
 	.folder-card {
-		padding: 16px 12px;
+		padding: 12px 8px;
 	}
 
 	.folder-icon {
-		font-size: 28px;
+		font-size: 24px;
+	}
+
+	.folder-name {
+		font-size: 12px;
+	}
+
+	.folder-count {
+		font-size: 10px;
 	}
 
 	/* File cards */

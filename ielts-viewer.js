@@ -1,9 +1,46 @@
 // IELTS Practice Folder Browser & Markdown Viewer
 // Theme-aware and mobile-friendly
 
+// Text-to-Speech for vocabulary
+function speakWord(word) {
+	if ('speechSynthesis' in window) {
+		// Cancel any ongoing speech
+		window.speechSynthesis.cancel();
+
+		const utterance = new SpeechSynthesisUtterance(word);
+		utterance.lang = 'en-GB'; // British English
+		utterance.rate = 0.85; // Slightly slower for clarity
+
+		// Get available voices and prefer British English
+		const voices = window.speechSynthesis.getVoices();
+		const britishVoice = voices.find(
+			(v) => v.lang === 'en-GB' || v.lang.startsWith('en-GB'),
+		);
+		if (britishVoice) {
+			utterance.voice = britishVoice;
+		}
+
+		window.speechSynthesis.speak(utterance);
+	} else {
+		console.warn('Speech synthesis not supported');
+	}
+}
+
+// Preload voices
+if ('speechSynthesis' in window) {
+	window.speechSynthesis.getVoices();
+	window.speechSynthesis.onvoiceschanged = () => {
+		window.speechSynthesis.getVoices();
+	};
+}
+
 // Define available folders and their contents (15-day plan)
 const IELTS_FOLDERS = {
-	d1: { name: 'Day 1', icon: '📅', files: ['vocab.md', 'ipa.md'] },
+	d1: {
+		name: 'Day 1',
+		icon: '📅',
+		files: ['vocab.md', 'ipa.md', 'vowels.md', 'consonants.md'],
+	},
 	d2: { name: 'Day 2', icon: '📅', files: [] },
 	d3: { name: 'Day 3', icon: '📅', files: [] },
 	d4: { name: 'Day 4', icon: '📅', files: [] },
@@ -542,11 +579,13 @@ function renderMarkdownProper(md) {
 function renderTable(rows) {
 	if (rows.length < 2) return rows.join('\n');
 
-	// Parse rows into cells
-	const parsedRows = rows.map((r) => {
-		const cleaned = r.replace(/^\||\|$/g, '');
-		return cleaned.split('|').map((c) => c.trim());
-	});
+	// Parse rows into cells, filter out undefined/null
+	const parsedRows = rows
+		.filter((r) => r != null && typeof r === 'string')
+		.map((r) => {
+			const cleaned = r.replace(/^\||\|$/g, '');
+			return cleaned.split('|').map((c) => c.trim());
+		});
 
 	// Find and remove separator row
 	const dataRows = parsedRows.filter(
@@ -558,19 +597,63 @@ function renderTable(rows) {
 	const headerRow = dataRows[0];
 	const bodyRows = dataRows.slice(1);
 
-	const thead = `<tr>${headerRow
+	// Check if this is a vocabulary table (has "Word" column)
+	const wordColIndex = headerRow.findIndex((h) =>
+		h.toLowerCase().includes('word'),
+	);
+	const hasAudioColumn = headerRow.some((h) =>
+		h.toLowerCase().includes('audio'),
+	);
+
+	// Remove Audio column if present
+	let filteredHeaderRow = headerRow;
+	let filteredBodyRows = bodyRows;
+	if (hasAudioColumn) {
+		const audioColIndex = headerRow.findIndex((h) =>
+			h.toLowerCase().includes('audio'),
+		);
+		filteredHeaderRow = headerRow.filter((_, i) => i !== audioColIndex);
+		filteredBodyRows = bodyRows.map((row) =>
+			row.filter((_, i) => i !== audioColIndex),
+		);
+	}
+
+	// Add audio column header if it's a vocab table
+	const finalHeaderRow =
+		wordColIndex >= 0 ? [...filteredHeaderRow, '🔊'] : filteredHeaderRow;
+
+	const thead = `<tr>${finalHeaderRow
 		.map((c) => `<th>${processInlineMarkdown(escapeHtml(c))}</th>`)
 		.join('')}</tr>`;
-	const tbody = bodyRows
-		.map(
-			(row) =>
-				`<tr>${row
-					.map(
-						(c) =>
-							`<td>${processInlineMarkdown(escapeHtml(c))}</td>`,
-					)
-					.join('')}</tr>`,
-		)
+
+	const tbody = filteredBodyRows
+		.map((row) => {
+			// Get the word for audio (clean markdown bold)
+			const word =
+				wordColIndex >= 0 && row[wordColIndex]
+					? row[wordColIndex].replace(/\*\*/g, '').trim()
+					: null;
+
+			const cells = row
+				.map(
+					(c) =>
+						`<td>${processInlineMarkdown(
+							escapeHtml(c || ''),
+						)}</td>`,
+				)
+				.join('');
+
+			// Add audio button cell if it's a vocab table
+			const audioCell =
+				wordColIndex >= 0 && word
+					? `<td class="audio-cell"><button class="audio-btn" onclick="speakWord('${word.replace(
+							/'/g,
+							"\\'",
+					  )}')">▶</button></td>`
+					: '';
+
+			return `<tr>${cells}${audioCell}</tr>`;
+		})
 		.join('');
 
 	return `<div class="table-wrapper"><table class="themed-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;

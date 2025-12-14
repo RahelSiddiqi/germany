@@ -152,12 +152,18 @@ class Band8Dashboard {
 		const scheduledDay = this.getScheduledDay();
 		const dayProgress = this.getDayProgress(actualDay);
 
-		// Aggregate local checklist tasks from app plan (optional)
-		const planTasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-		const planCompleted = Object.values(planTasks).filter(Boolean).length;
-		const planTotal = Object.keys(planTasks).length || 0;
+		// Calculate total tasks from MASTER_PLAN
+		let totalAllTasks = 0;
+		let completedAllTasks = 0;
+		if (typeof MASTER_PLAN !== 'undefined') {
+			MASTER_PLAN.ieltsSchedule.forEach((daySchedule) => {
+				totalAllTasks += daySchedule.tasks.length;
+				const completed = this.getTasksCompleted(daySchedule.day);
+				completedAllTasks += completed.length;
+			});
+		}
 
-		// Today summary from Band8 tracker (optional)
+		// Today summary
 		const todayCompleted = today ? (today.completed || []).length : 0;
 		const todayTotal = today ? today.tasks.length : 0;
 		const todayHoursLogged = today ? this.getHoursLogged(today.day) : 0;
@@ -177,27 +183,21 @@ class Band8Dashboard {
 
 		// Fallback when master plan isn't loaded yet
 		if (!today) {
-			const planTasks =
-				JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-			const planCompleted =
-				Object.values(planTasks).filter(Boolean).length;
-			const planTotal = Object.keys(planTasks).length || 0;
 			return `
 				<div class="ielts-tracker">
 					<div class="tracker-header">
 						<h2>🎯 IELTS Band 8.0-8.5 Prep</h2>
 						<div class="exam-countdown">
 							<span class="countdown-number">${daysRemaining}</span>
-							<span class="countdown-label">days until exam</span>
+							<span class="countdown-label">days left</span>
 						</div>
 					</div>
 					<div class="progress-bar-container">
 						<div class="progress-bar" style="width: ${progress}%"></div>
-						<span class="progress-text">${progress}% Complete (Checklist)</span>
+						<span class="progress-text">${progress}%</span>
 					</div>
-					<div class="combined-progress" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin:12px 0;">
-						<div class="card"><strong>✅ Tasks Completed</strong><div>${planCompleted}/${planTotal} checklist tasks</div></div>
-						<div class="card"><strong>ℹ️ Note</strong><div>Master plan data not loaded; showing checklist summary.</div></div>
+					<div class="loading-message" style="text-align:center; padding:20px;">
+						<p>Loading plan data...</p>
 					</div>
 				</div>
 			`;
@@ -206,75 +206,59 @@ class Band8Dashboard {
 		return `
             <div class="ielts-tracker">
                 <div class="tracker-header">
-                    <h2>🎯 IELTS Band 8.0-8.5 Intensive Prep</h2>
+                    <h2>🎯 IELTS Band 8.0-8.5</h2>
                     <div class="exam-countdown">
                         <span class="countdown-number">${daysRemaining}</span>
-                        <span class="countdown-label">days until exam</span>
+                        <span class="countdown-label">days left</span>
                     </div>
                 </div>
 
                 <div class="progress-bar-container">
 					<div class="progress-bar" style="width: ${progress}%"></div>
-					<span class="progress-text">${progress}% Complete (Checklist)</span>
+					<span class="progress-text">${progress}% (${completedAllTasks}/${totalAllTasks} tasks)</span>
                 </div>
 
                 <div class="current-phase">
                     <h3>${phase}</h3>
                 </div>
 
-				<div class="day-status-banner" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: var(--accent-contrast); padding: 16px; border-radius: 12px; margin: 16px 0; text-align: center;">
-					<div style="display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap;">
+				<div class="day-status-banner" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: var(--accent-contrast); padding: 12px; border-radius: 10px; margin: 12px 0; text-align: center;">
+					<div style="display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap;">
 						<div>
-							<div style="font-size: 2rem; font-weight: bold;">Day ${actualDay}</div>
-							<div style="font-size: 0.85rem; opacity: 0.9;">Your Actual Progress</div>
+							<div style="font-size: 1.5rem; font-weight: bold;">Day ${actualDay}</div>
+							<div style="font-size: 0.75rem; opacity: 0.9;">Actual</div>
 						</div>
-						<div style="font-size: 1.5rem;">→</div>
+						<div style="font-size: 1.2rem;">→</div>
 						<div>
-							<div style="font-size: 1.2rem;">📅 Scheduled: Day ${scheduledDay}</div>
-							<div style="margin-top: 4px;">${behindMessage}</div>
+							<div style="font-size: 1rem;">📅 Day ${scheduledDay}</div>
+							<div style="font-size: 0.75rem;">${behindMessage}</div>
 						</div>
 					</div>
-					<div style="margin-top: 12px;">
-						<div style="background: rgba(255,255,255,0.2); border-radius: 8px; height: 8px; overflow: hidden;">
+					<div style="margin-top: 10px;">
+						<div style="background: rgba(255,255,255,0.2); border-radius: 6px; height: 6px; overflow: hidden;">
 							<div style="background: white; height: 100%; width: ${dayProgress}%; transition: width 0.3s;"></div>
 						</div>
-						<div style="font-size: 0.85rem; margin-top: 4px;">Day ${actualDay} Progress: ${dayProgress}% (${todayCompleted}/${todayTotal} tasks)</div>
-					</div>
-				</div>
-
-				<div class="combined-progress" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin:12px 0;">
-					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
-						<div><strong>📊 Overall Progress</strong></div>
-						<div>${progress}% complete</div>
-					</div>
-					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
-						<div><strong>✅ Tasks Done</strong></div>
-						<div>${planCompleted}/${planTotal} total tasks</div>
-					</div>
-					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
-						<div><strong>⏱️ Hours Today</strong></div>
-						<div>${todayHoursLogged}/${today ? today.hours : 0} hours</div>
+						<div style="font-size: 0.75rem; margin-top: 4px;">${todayCompleted}/${todayTotal} tasks today</div>
 					</div>
 				</div>
 
                 <div class="today-schedule">
-                    <h3 style="font-size: larger;">📅 Day ${today.day}/21 - ${
-			today.date
-		}</h3>
-					<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
-						<em>Complete all tasks below to advance to Day ${today.day + 1}</em>
+                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">📅 Day ${
+						today.day
+					} - ${today.date}</h3>
+					<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">
+						Complete all tasks to advance to Day ${today.day + 1}
 					</p>
-                    <div class="focus-area">
+                    <div class="focus-area" style="font-size: 0.9rem;">
                         <strong>Focus:</strong> ${today.focus}
                     </div>
-                    <div class="study-hours">
-                        <strong>Study Hours:</strong> ${today.hours} hours
-                    </div>
-                    <div class="target-score">
-                        <strong>Target:</strong> ${today.targetScore}
+                    <div class="study-hours" style="font-size: 0.9rem;">
+                        <strong>Hours:</strong> ${todayHoursLogged}/${
+			today.hours
+		}h
                     </div>
 
-                    <h4>✅ Today's Tasks (${todayCompleted}/${todayTotal}):</h4>
+                    <h4 style="margin-top: 12px; font-size: 0.95rem;">✅ Tasks (${todayCompleted}/${todayTotal}):</h4>
                     <ul class="task-list">
                         ${today.tasks
 							.map(
