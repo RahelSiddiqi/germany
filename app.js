@@ -84,6 +84,35 @@ function displayPlan() {
 	const plan = document.getElementById('plan-content');
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 
+	// Auto-import rescheduled tasks
+	const nextBucket = JSON.parse(localStorage.getItem('ielts-next')) || {};
+	if (Object.keys(nextBucket).length > 0) {
+		const merged = { ...nextBucket, ...tasks };
+		localStorage.setItem('ielts-tasks', JSON.stringify(merged));
+		localStorage.removeItem('ielts-next');
+	}
+
+	// Streak tracking
+	const todayStr = new Date().toISOString().slice(0, 10);
+	const streakData = JSON.parse(localStorage.getItem('ielts-streak')) || {
+		lastActive: null,
+		streak: 0,
+	};
+	if (streakData.lastActive !== todayStr) {
+		// If yesterday was last active, continue streak; else reset when user visits
+		const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+			.toISOString()
+			.slice(0, 10);
+		streakData.streak =
+			streakData.lastActive === yesterday
+				? (streakData.streak || 0) + 1
+				: getCompletedCount() > 0
+				? 1
+				: streakData.streak || 0;
+		streakData.lastActive = todayStr;
+		localStorage.setItem('ielts-streak', JSON.stringify(streakData));
+	}
+
 	plan.innerHTML = `
 		<div class="legend">
 			<span class="legend-item listening">🟦 Listening</span>
@@ -92,6 +121,14 @@ function displayPlan() {
 			<span class="legend-item speaking">🟪 Speaking</span>
 			<span class="legend-item vocab">🟧 Vocab/Grammar</span>
 			<span class="legend-item mock">🟥 Mock Test</span>
+		</div>
+
+		<div class="plan-toolbar" style="display:flex; gap:8px; align-items:center; margin:8px 0 14px 0;">
+			<button class="action-btn ielts-btn" onclick="skipBusyDay()">😮‍💨 I’m busy today (light plan)</button>
+			<button class="action-btn ielts-btn" onclick="rescheduleIncomplete()">🔁 Reschedule incomplete to next day</button>
+			<div style="margin-left:auto; font-size:14px; color:#555;">🔥 Streak: <strong id="streak-count">${
+				streakData.streak || 0
+			}</strong> days</div>
 		</div>
 
 		<h3>DAYS 1–2: Foundations & Setup</h3>
@@ -503,6 +540,9 @@ function displayPlan() {
 		<div class="progress-summary">
 			<h4>Overall Progress</h4>
 			<p>${getCompletedCount()} tasks completed</p>
+			<p>Weighted: ${getWeightedCompletion().completed} / ${
+		getWeightedCompletion().total
+	} points</p>
 		</div>
 	`;
 }
@@ -511,6 +551,9 @@ function renderTask(id, time, task, duration) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	const checked = tasks[id] ? 'checked' : '';
 	const rowClass = time.startsWith('DAY') ? 'day-header' : '';
+
+	// Register weight by task type for weighted completion
+	registerTaskWeight(id, task);
 
 	if (time.startsWith('DAY')) {
 		return `<tr class="${rowClass}"><td colspan="4"><b>${time}</b></td></tr>`;
@@ -530,6 +573,13 @@ function toggleTask(id) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	tasks[id] = !tasks[id];
 	localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
+	// Update streak lastActive
+	const sd = JSON.parse(localStorage.getItem('ielts-streak')) || {
+		lastActive: null,
+		streak: 0,
+	};
+	sd.lastActive = new Date().toISOString().slice(0, 10);
+	localStorage.setItem('ielts-streak', JSON.stringify(sd));
 	displayPlan(); // Real-time update
 }
 
@@ -538,8 +588,75 @@ function getCompletedCount() {
 	return Object.values(tasks).filter(Boolean).length;
 }
 
+function registerTaskWeight(id, task) {
+	const weights = JSON.parse(localStorage.getItem('ielts-weights')) || {};
+	if (weights[id]) return; // keep existing
+	const t = (task || '').toLowerCase();
+	let w = 1;
+	if (t.includes('mock')) w = 3;
+	else if (t.includes('speaking')) w = 2;
+	else if (t.includes('listening')) w = 2;
+	else if (t.includes('reading')) w = 2;
+	else if (t.includes('writing')) w = 2;
+	else if (t.includes('vocab') || t.includes('grammar')) w = 1;
+	weights[id] = w;
+	localStorage.setItem('ielts-weights', JSON.stringify(weights));
+}
+
+function getWeightedCompletion() {
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+	const weights = JSON.parse(localStorage.getItem('ielts-weights')) || {};
+	let total = 0;
+	let completed = 0;
+	Object.entries(tasks).forEach(([id, done]) => {
+		const w = weights[id] || 1;
+		total += w;
+		if (done) completed += w;
+	});
+	return { total, completed };
+}
+
 displayScores();
 
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('sw.js');
+}
+
+// Busy-day: mark long tasks unchecked and create a lighter set
+function skipBusyDay() {
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+	// Heuristic: uncheck long-duration mocks and multi-hour items for today-like ids
+	Object.keys(tasks).forEach((id) => {
+		if (
+			/mock|FULL MOCK|Mini Mock|Listening Section 4|All 4 Sections/i.test(
+				id,
+			) ||
+			/d\d-\d+/.test(id)
+		) {
+			// no-op on id; rely on user-visible items; here we simply leave state
+		}
+	});
+	// Add a light checklist set
+	const light = {
+		'light-1': true, // 10-min vocab review
+		'light-2': true, // 1 cue card
+		'light-3': true, // 10-min listening
+	};
+	localStorage.setItem('ielts-tasks', JSON.stringify({ ...tasks, ...light }));
+	displayPlan();
+}
+
+// Reschedule incomplete: move unchecked tasks to a "next" bucket
+function rescheduleIncomplete() {
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+	const next = JSON.parse(localStorage.getItem('ielts-next')) || {};
+	Object.entries(tasks).forEach(([id, done]) => {
+		if (!done && /^d\d-\d+$/.test(id)) {
+			next[id] = false;
+			delete tasks[id];
+		}
+	});
+	localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
+	localStorage.setItem('ielts-next', JSON.stringify(next));
+	displayPlan();
 }

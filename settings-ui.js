@@ -89,10 +89,33 @@ function clearAllData() {
 
 // Update storage usage display
 function updateStorageDisplay() {
-	const stats = dataManager.getStorageStats();
-	const display = document.getElementById('storage-usage');
-	if (display) {
-		display.textContent = `Using ${stats.total.sizeKB} KB of storage`;
+	try {
+		const stats = dataManager.getStorageStats();
+		const display = document.getElementById('storage-usage');
+		if (display) {
+			display.textContent = `Using ${stats.total.sizeKB} KB of storage`;
+		}
+	} catch (e) {
+		const display = document.getElementById('storage-usage');
+		if (display) {
+			display.textContent = 'Storage info not available';
+		}
+	}
+}
+
+// Update analytics page with task stats
+function updateAnalyticsPage() {
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+	const completed = Object.values(tasks).filter(Boolean).length;
+	const total = Object.keys(tasks).length;
+
+	const tasksEl = document.getElementById('insights-tasks');
+	const weightedEl = document.getElementById('insights-weighted');
+
+	if (tasksEl) tasksEl.textContent = `${completed} / ${total}`;
+	if (weightedEl) {
+		// Simple weighted calculation
+		weightedEl.textContent = `${completed * 2} points`;
 	}
 }
 

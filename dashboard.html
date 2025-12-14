@@ -27,23 +27,28 @@
 		<aside class="sidebar" id="sidebar">
 			<ul class="menu">
 				<li>
-					<a
-						href="#band8-tracker"
-						onclick="showPage('band8-tracker')"
-						class="active"
-						>🎯 Band 8.0-8.5 IELTS Plan</a
-					>
-				</li>
-				<li>
-					<a
-						href="#dashboard"
-						onclick="showPage('dashboard')"
+					<a href="#dashboard" onclick="showPage('dashboard')"
 						>📊 Dashboard</a
 					>
 				</li>
 				<li>
+					<a
+						href="#band8-tracker"
+						onclick="showPage('band8-tracker')"
+						class="active"
+						>🎯 IELTS 15-Day Plan</a
+					>
+				</li>
+				<li>
+					<a
+						href="#ielts-practice"
+						onclick="showPage('ielts-practice')"
+						>📚 IELTS Practice</a
+					>
+				</li>
+				<li>
 					<a href="#ielts" onclick="showPage('ielts')"
-						>📝 IELTS Preparation & Practice Tests</a
+						>📝 IELTS Tracker</a
 					>
 				</li>
 				<li>
@@ -81,35 +86,32 @@
 					>
 				</li>
 				<li>
-					<a href="#settings" onclick="openSettingsModal()"
-						>⚙️ Settings & Data</a
+					<a href="#settings" onclick="showPage('settings')"
+						>⚙️ Settings</a
 					>
 				</li>
 			</ul>
 		</aside>
 
-		<!-- Sidebar overlay for mobile -->
 		<div
 			class="sidebar-overlay"
 			id="sidebar-overlay"
 			onclick="toggleMenu()"></div>
 
 		<main class="main-content">
-			<!-- Band 8.0-8.5 IELTS Tracker Page (NEW - First Priority!) -->
+			<!-- Band 8.0-8.5 IELTS Tracker Page -->
 			<div id="band8-tracker" class="page active">
 				<div id="band8-container">
-					<!-- Content will be populated by dashboard-band8-integration.js -->
 					<div class="loading-message">
 						<h2>Loading Band 8.0-8.5 IELTS Plan...</h2>
-						<p>Preparing your 19-day intensive schedule...</p>
+						<p>Preparing your intensive schedule...</p>
 					</div>
 				</div>
 			</div>
 
 			<!-- Dashboard Page -->
-			<div id="dashboard" class="page active">
+			<div id="dashboard" class="page">
 				<h2>📊 Dashboard Overview</h2>
-
 				<div class="stats-grid">
 					<div class="stat-card ielts">
 						<div class="stat-icon">📝</div>
@@ -121,33 +123,30 @@
 							</p>
 						</div>
 					</div>
-
 					<div class="stat-card germany">
 						<div class="stat-icon">🇩🇪</div>
 						<div class="stat-info">
-							<h3>Germany Applications</h3>
+							<h3>Germany Apps</h3>
 							<p class="stat-value" id="germany-progress-stat">
 								0%
 							</p>
 							<p class="stat-detail" id="germany-unis">
-								0/10 universities
+								0/10 unis
 							</p>
 						</div>
 					</div>
-
 					<div class="stat-card schengen">
 						<div class="stat-icon">🇪🇺</div>
 						<div class="stat-info">
-							<h3>Schengen Applications</h3>
+							<h3>Schengen Apps</h3>
 							<p class="stat-value" id="schengen-progress-stat">
 								0%
 							</p>
 							<p class="stat-detail" id="schengen-unis">
-								0/8 universities
+								0/8 unis
 							</p>
 						</div>
 					</div>
-
 					<div class="stat-card deadline">
 						<div class="stat-icon">⏰</div>
 						<div class="stat-info">
@@ -159,35 +158,76 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="quick-links">
 					<h3>Quick Actions</h3>
 					<div class="button-grid">
 						<button
-							onclick="showPage('ielts')"
+							onclick="showPage('ielts-practice')"
 							class="action-btn ielts-btn">
-							<span>📝</span> Track IELTS Progress
+							<span>📚</span> Practice IELTS
 						</button>
 						<button
 							onclick="showPage('germany')"
 							class="action-btn germany-btn">
-							<span>🇩🇪</span> Browse Germany Unis
+							<span>🇩🇪</span> Germany Unis
 						</button>
 						<button
 							onclick="showPage('schengen')"
 							class="action-btn schengen-btn">
-							<span>🇪🇺</span> Explore Schengen
-						</button>
-						<button
-							onclick="window.open('ielts/', '_blank')"
-							class="action-btn primary-btn">
-							<span>🎯</span> Open IELTS App
+							<span>🇪🇺</span> Schengen Unis
 						</button>
 					</div>
 				</div>
 			</div>
 
-			<!-- IELTS Page -->
+			<!-- IELTS Practice Page (Folder Browser) -->
+			<div id="ielts-practice" class="page">
+				<h2>📚 IELTS Practice Materials</h2>
+				<p class="page-subtitle">Study materials organized by day</p>
+
+				<div class="folder-grid" id="ielts-folder-list">
+					<!-- Folders will be loaded dynamically -->
+				</div>
+
+				<div
+					id="ielts-file-list"
+					class="file-list"
+					style="display: none">
+					<button
+						class="btn btn-secondary back-btn"
+						onclick="showIELTSFolders()">
+						← Back to Folders
+					</button>
+					<h3 id="current-folder-name">Day 1</h3>
+					<div id="ielts-files"></div>
+				</div>
+
+				<div
+					id="ielts-content-viewer"
+					class="md-viewer-container"
+					style="display: none">
+					<button
+						class="btn btn-secondary back-btn"
+						onclick="backToFiles()">
+						← Back to Files
+					</button>
+					<div id="ielts-md-content" class="md-content"></div>
+				</div>
+
+				<div
+					id="ielts-quiz-container"
+					class="quiz-container"
+					style="display: none">
+					<button
+						class="btn btn-secondary back-btn"
+						onclick="backToFiles()">
+						← Back
+					</button>
+					<div id="quiz-content"></div>
+				</div>
+			</div>
+
+			<!-- IELTS Tracker Page -->
 			<div id="ielts" class="page">
 				<h2>📝 IELTS Band 8.5 Tracker</h2>
 				<div class="ielts-tracker-container">
@@ -196,10 +236,9 @@
 						<span class="legend-item reading">🟩 Reading</span>
 						<span class="legend-item writing">🟨 Writing</span>
 						<span class="legend-item speaking">🟪 Speaking</span>
-						<span class="legend-item vocab">🟧 Vocab/Grammar</span>
-						<span class="legend-item mock">🟥 Mock Test</span>
+						<span class="legend-item vocab">🟧 Vocab</span>
+						<span class="legend-item mock">🟥 Mock</span>
 					</div>
-
 					<div id="ielts-plan-content"></div>
 				</div>
 			</div>
@@ -226,8 +265,8 @@
 						<input
 							type="text"
 							id="germany-uni-name"
-							placeholder="e.g., TU Munich" />
-					</label>
+							placeholder="e.g., TU Munich"
+					/></label>
 					<label
 						>Status:
 						<select id="germany-uni-status">
@@ -262,8 +301,8 @@
 						<input
 							type="text"
 							id="schengen-uni-name"
-							placeholder="e.g., University of Tartu" />
-					</label>
+							placeholder="e.g., University of Tartu"
+					/></label>
 					<label
 						>Status:
 						<select id="schengen-uni-status">
@@ -284,36 +323,45 @@
 
 			<!-- Analytics & Insights Page -->
 			<div id="analytics" class="page">
-		<button
-			class="fab"
-			onclick="showPage('dashboard')"
-			title="Back to Dashboard">
-			🏠
-		</button>
-
-		<!-- Load managers first -->
-		<script src="data-manager.js"></script>
-		<script src="notification-manager.js"></script>
-		<script src="analytics-manager.js"></script>
-
-		<!-- Main app -->
-		<script src="dashboard.js"></script>
-
-		<!-- Settings and utilities -->
-		<script src="settings-ui.js"></script>
-	</body>
-</html>
-		<!-- Settings Modal -->
-		<div id="settings-modal" class="modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2>⚙️ Settings & Data Management</h2>
-					<button class="modal-close" onclick="closeSettingsModal()">×</button>
+				<h2>📈 Analytics & Insights</h2>
+				<div class="card" style="padding: 16px; margin-bottom: 16px">
+					<h3>📊 Study Progress</h3>
+					<p>
+						Tasks completed: <strong id="insights-tasks">0</strong>
+					</p>
+					<p>
+						Weighted points:
+						<strong id="insights-weighted">0</strong>
+					</p>
 				</div>
+				<div class="card" style="padding: 16px">
+					<h3>🔔 Quick Actions</h3>
+					<div
+						style="
+							display: flex;
+							gap: 8px;
+							flex-wrap: wrap;
+							margin-top: 12px;
+						">
+						<button
+							class="btn btn-secondary"
+							onclick="checkDeadlinesManually()">
+							🔍 Check Deadlines
+						</button>
+						<button
+							class="btn btn-secondary"
+							onclick="enableNotifications()">
+							🔔 Enable Notifications
+						</button>
+					</div>
+				</div>
+			</div>
 
+			<!-- Settings Page -->
+			<div id="settings" class="page">
+				<h2>⚙️ Settings & Data Management</h2>
 				<div class="settings-section">
 					<h3>📦 Data Management</h3>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Export All Data</h4>
@@ -323,18 +371,23 @@
 							💾 Export
 						</button>
 					</div>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Import Data</h4>
 							<p>Restore from previous backup</p>
 						</div>
-						<input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
-						<button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">
+						<input
+							type="file"
+							id="import-file"
+							accept=".json"
+							style="display: none"
+							onchange="importData(this)" />
+						<button
+							class="btn btn-secondary"
+							onclick="document.getElementById('import-file').click()">
 							📂 Import
 						</button>
 					</div>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Storage Usage</h4>
@@ -342,48 +395,36 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="settings-section">
 					<h3>🔔 Notifications</h3>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Browser Notifications</h4>
 							<p>Get deadline alerts</p>
 						</div>
-						<button class="btn btn-secondary" id="enable-notifications" onclick="enableNotifications()">
+						<button
+							class="btn btn-secondary"
+							onclick="enableNotifications()">
 							Enable
 						</button>
 					</div>
-
-					<div class="settings-option">
-						<div class="option-label">
-							<h4>Check Deadlines Now</h4>
-							<p>Manually check upcoming deadlines</p>
-						</div>
-						<button class="btn btn-secondary" onclick="checkDeadlinesManually()">
-							🔍 Check
-						</button>
-					</div>
 				</div>
-
 				<div class="settings-section">
 					<h3>🎨 Appearance</h3>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Dark Mode</h4>
 							<p>Toggle dark theme</p>
 						</div>
-						<button class="btn btn-secondary" id="theme-toggle" onclick="toggleDarkMode()">
+						<button
+							class="btn btn-secondary"
+							onclick="toggleDarkMode()">
 							🌙 Toggle
 						</button>
 					</div>
 				</div>
-
 				<div class="settings-section">
 					<h3>⚠️ Danger Zone</h3>
-
 					<div class="settings-option">
 						<div class="option-label">
 							<h4>Clear All Data</h4>
@@ -394,17 +435,15 @@
 						</button>
 					</div>
 				</div>
-
 				<div class="settings-section">
 					<h3>ℹ️ About</h3>
-					<p style="color: #666; font-size: 14px; line-height: 1.6;">
-						<strong>Study Abroad Dashboard v2.0</strong><br>
-						A comprehensive application tracker for Germany and Schengen universities.<br>
-						All data stored locally in your browser.
+					<p>
+						Study Abroad Dashboard v2.1<br />All data stored locally
+						in your browser.
 					</p>
 				</div>
 			</div>
-		</div>
+		</main>
 
 		<!-- Notification Container -->
 		<div id="notification-container" class="notification-container"></div>
@@ -417,8 +456,15 @@
 			🏠
 		</button>
 
+		<!-- Scripts -->
 		<script src="master-plan.js"></script>
-		<script src="dashboard-band8-integration.js"></script>
+		<script src="data-manager.js"></script>
+		<script src="notification-manager.js"></script>
+		<script src="analytics-manager.js"></script>
 		<script src="dashboard.js"></script>
+		<script src="dashboard-band8-integration.js"></script>
+		<script src="ielts-viewer.js"></script>
+		<script src="ielts-quiz.js"></script>
+		<script src="settings-ui.js"></script>
 	</body>
 </html>

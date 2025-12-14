@@ -7,7 +7,16 @@ let scholarshipGuide = null;
 document.addEventListener('DOMContentLoaded', () => {
 	loadAllData();
 	updateDashboardStats();
-	showPage('dashboard');
+	// Default to band8-tracker page
+	showPage('band8-tracker');
+	// Update storage display
+	if (typeof updateStorageDisplay === 'function') {
+		updateStorageDisplay();
+	}
+	// Update analytics
+	if (typeof updateAnalyticsPage === 'function') {
+		updateAnalyticsPage();
+	}
 });
 
 // Load all university data
@@ -40,8 +49,13 @@ function showPage(pageId) {
 		}
 	});
 
+	// Page-specific initialization
 	if (pageId === 'ielts') {
 		displayIELTSPlan();
+	} else if (pageId === 'ielts-practice') {
+		if (typeof initIELTSPractice === 'function') {
+			initIELTSPractice();
+		}
 	} else if (pageId === 'germany') {
 		displayGermanyUniversities();
 	} else if (pageId === 'germany-progress') {
@@ -52,13 +66,21 @@ function showPage(pageId) {
 		displaySchengenProgress();
 	} else if (pageId === 'scholarships') {
 		displayScholarships();
+	} else if (pageId === 'analytics') {
+		if (typeof updateAnalyticsPage === 'function') {
+			updateAnalyticsPage();
+		}
+	} else if (pageId === 'settings') {
+		if (typeof updateStorageDisplay === 'function') {
+			updateStorageDisplay();
+		}
 	}
 
-	document.getElementById('sidebar').classList.remove('open');
-
-	// Close mobile sidebar on page change
-	if (window.innerWidth <= 768) {
-		document.getElementById('sidebar').classList.remove('active');
+	// Close sidebar
+	const sidebar = document.getElementById('sidebar');
+	if (sidebar) {
+		sidebar.classList.remove('open');
+		sidebar.classList.remove('active');
 	}
 }
 

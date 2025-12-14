@@ -1,0 +1,601 @@
+// IELTS Practice Folder Browser & Markdown Viewer
+// Theme-aware and mobile-friendly
+
+// Define available folders and their contents (15-day plan)
+const IELTS_FOLDERS = {
+	d1: { name: 'Day 1', icon: '📅', files: ['vocab.md', 'ipa.md'] },
+	d2: { name: 'Day 2', icon: '📅', files: [] },
+	d3: { name: 'Day 3', icon: '📅', files: [] },
+	d4: { name: 'Day 4', icon: '📅', files: [] },
+	d5: { name: 'Day 5', icon: '📅', files: [] },
+	d6: { name: 'Day 6', icon: '📅', files: [] },
+	d7: { name: 'Day 7', icon: '📅', files: [] },
+	d8: { name: 'Day 8', icon: '📅', files: [] },
+	d9: { name: 'Day 9', icon: '📅', files: [] },
+	d10: { name: 'Day 10', icon: '📅', files: [] },
+	d11: { name: 'Day 11', icon: '📅', files: [] },
+	d12: { name: 'Day 12', icon: '📅', files: [] },
+	d13: { name: 'Day 13', icon: '📅', files: [] },
+	d14: { name: 'Day 14', icon: '📅', files: [] },
+	d15: { name: 'Day 15', icon: '📅', files: [] },
+};
+
+let currentFolder = null;
+let currentFile = null;
+
+// Initialize folder view when page loads
+function initIELTSPractice() {
+	showIELTSFolders();
+}
+
+// Show folder grid
+function showIELTSFolders() {
+	const container = document.getElementById('ielts-folder-list');
+	const fileList = document.getElementById('ielts-file-list');
+	const viewer = document.getElementById('ielts-content-viewer');
+	const quiz = document.getElementById('ielts-quiz-container');
+
+	if (!container) return;
+
+	// Show folders, hide others
+	container.style.display = 'grid';
+	if (fileList) fileList.style.display = 'none';
+	if (viewer) viewer.style.display = 'none';
+	if (quiz) quiz.style.display = 'none';
+
+	// Render folder cards
+	container.innerHTML = Object.entries(IELTS_FOLDERS)
+		.map(
+			([key, folder]) => `
+		<div class="folder-card" onclick="openIELTSFolder('${key}')">
+			<div class="folder-icon">${folder.icon}</div>
+			<div class="folder-name">${folder.name}</div>
+			<div class="folder-count">${folder.files.length} file${
+				folder.files.length !== 1 ? 's' : ''
+			}</div>
+		</div>
+	`,
+		)
+		.join('');
+
+	if (Object.keys(IELTS_FOLDERS).length === 0) {
+		container.innerHTML =
+			'<div class="empty-state"><p>No practice folders yet</p></div>';
+	}
+}
+
+// Open a folder and show its files
+async function openIELTSFolder(folderId) {
+	const folder = IELTS_FOLDERS[folderId];
+	if (!folder) return;
+
+	currentFolder = folderId;
+
+	const container = document.getElementById('ielts-folder-list');
+	const fileList = document.getElementById('ielts-file-list');
+	const filesDiv = document.getElementById('ielts-files');
+	const folderName = document.getElementById('current-folder-name');
+
+	if (container) container.style.display = 'none';
+	if (fileList) fileList.style.display = 'block';
+	if (folderName) folderName.textContent = folder.name;
+
+	let files = folder.files;
+
+	if (filesDiv) {
+		if (files.length === 0) {
+			filesDiv.innerHTML = `
+				<div class="empty-state">
+					<p>No files in this folder yet</p>
+					<p class="hint">Add .md files to ielts/${folderId}/</p>
+				</div>
+			`;
+		} else {
+			filesDiv.innerHTML = files
+				.map((file) => {
+					const isVocab = file.includes('vocab');
+					const isIPA = file.includes('ipa');
+					const icon = isVocab ? '🔤' : isIPA ? '🔈' : '📄';
+					const name = file.replace('.md', '').replace(/_/g, ' ');
+
+					return `
+					<div class="file-card">
+						<div class="file-info" onclick="openIELTSFile('${folderId}', '${file}')">
+							<span class="file-icon">${icon}</span>
+							<span class="file-name">${name}</span>
+						</div>
+						<div class="file-actions">
+							<button class="btn-icon" onclick="openIELTSFile('${folderId}', '${file}')" title="View">
+								👁️
+							</button>
+							${
+								isVocab
+									? `<button class="btn-icon" onclick="startQuizFromFile('${folderId}', '${file}')" title="Quiz">
+								🧪
+							</button>`
+									: ''
+							}
+						</div>
+					</div>
+				`;
+				})
+				.join('');
+		}
+	}
+}
+
+// Open a file and render its content
+async function openIELTSFile(folderId, filename) {
+	const path = `ielts/${folderId}/${filename}`;
+	currentFile = { folder: folderId, file: filename };
+
+	const fileList = document.getElementById('ielts-file-list');
+	const viewer = document.getElementById('ielts-content-viewer');
+	const content = document.getElementById('ielts-md-content');
+
+	if (fileList) fileList.style.display = 'none';
+	if (viewer) viewer.style.display = 'block';
+
+	if (content) {
+		content.innerHTML = '<div class="loading">Loading...</div>';
+
+		try {
+			const res = await fetch(path);
+			if (!res.ok) throw new Error(`Failed to load ${path}`);
+			const md = await res.text();
+			content.innerHTML = renderMarkdownThemed(md);
+		} catch (err) {
+			content.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
+		}
+	}
+}
+
+// Back to file list
+function backToFiles() {
+	const viewer = document.getElementById('ielts-content-viewer');
+	const quiz = document.getElementById('ielts-quiz-container');
+	const fileList = document.getElementById('ielts-file-list');
+
+	if (viewer) viewer.style.display = 'none';
+	if (quiz) quiz.style.display = 'none';
+	if (fileList) fileList.style.display = 'block';
+}
+
+// Start quiz from file
+async function startQuizFromFile(folderId, filename) {
+	const path = `ielts/${folderId}/${filename}`;
+
+	const fileList = document.getElementById('ielts-file-list');
+	const quiz = document.getElementById('ielts-quiz-container');
+	const quizContent = document.getElementById('quiz-content');
+
+	if (fileList) fileList.style.display = 'none';
+	if (quiz) quiz.style.display = 'block';
+
+	if (quizContent) {
+		quizContent.innerHTML = '<div class="loading">Generating quiz...</div>';
+
+		try {
+			const res = await fetch(path);
+			if (!res.ok) throw new Error(`Failed to load ${path}`);
+			const md = await res.text();
+			const questions = parseVocabForQuiz(md);
+
+			if (questions.length === 0) {
+				quizContent.innerHTML =
+					'<div class="error-state">No vocabulary table found for quiz</div>';
+				return;
+			}
+
+			renderQuiz(questions.slice(0, 10), quizContent);
+		} catch (err) {
+			quizContent.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
+		}
+	}
+}
+
+// Parse vocabulary table for quiz
+function parseVocabForQuiz(md) {
+	const questions = [];
+	const tableMatch = md.match(/\|(.+)\|[\s\S]*?(?=\n\n|\n#|$)/g);
+
+	if (!tableMatch) return questions;
+
+	tableMatch.forEach((table) => {
+		const rows = table.split('\n').filter((r) => r.trim().startsWith('|'));
+		const dataRows = rows.slice(2);
+
+		dataRows.forEach((row) => {
+			const cells = row
+				.split('|')
+				.map((c) => c.trim())
+				.filter(Boolean);
+			if (cells.length >= 2) {
+				questions.push({
+					word: cells[0].replace(/\*\*/g, ''),
+					meaning: cells[1],
+					ipa: cells[2] || '',
+				});
+			}
+		});
+	});
+
+	return questions;
+}
+
+// Render quiz
+function renderQuiz(questions, container) {
+	const shuffled = [...questions].sort(() => Math.random() - 0.5);
+
+	const html = `
+		<div class="quiz-wrapper">
+			<h3>🧪 Vocabulary Quiz</h3>
+			<p class="quiz-info">${shuffled.length} questions</p>
+
+			<form id="vocab-quiz-form" onsubmit="gradeQuiz(event)">
+				${shuffled
+					.map((q, i) => {
+						const wrongAnswers = questions
+							.filter((x) => x.word !== q.word)
+							.sort(() => Math.random() - 0.5)
+							.slice(0, 3)
+							.map((x) => x.meaning);
+
+						const options = [...wrongAnswers, q.meaning].sort(
+							() => Math.random() - 0.5,
+						);
+
+						return `
+						<div class="quiz-question">
+							<div class="question-text">
+								<strong>${i + 1}.</strong> What does "<span class="quiz-word">${
+							q.word
+						}</span>" mean?
+								${q.ipa ? `<span class="quiz-ipa">${q.ipa}</span>` : ''}
+							</div>
+							<div class="quiz-options">
+								${options
+									.map(
+										(opt) => `
+									<label class="quiz-option">
+										<input type="radio" name="q${i}" value="${opt}" data-correct="${q.meaning}">
+										<span class="option-text">${opt}</span>
+									</label>
+								`,
+									)
+									.join('')}
+							</div>
+						</div>
+					`;
+					})
+					.join('')}
+
+				<button type="submit" class="btn btn-primary quiz-submit">📊 Check Answers</button>
+			</form>
+
+			<div id="quiz-results" style="display:none"></div>
+		</div>
+	`;
+
+	container.innerHTML = html;
+}
+
+// Grade quiz
+function gradeQuiz(event) {
+	event.preventDefault();
+
+	const form = document.getElementById('vocab-quiz-form');
+	const results = document.getElementById('quiz-results');
+	const questions = form.querySelectorAll('.quiz-question');
+
+	let correct = 0;
+	let total = questions.length;
+
+	questions.forEach((q, i) => {
+		const selected = form.querySelector(`input[name="q${i}"]:checked`);
+		const correctAnswer = form.querySelector(`input[name="q${i}"]`).dataset
+			.correct;
+
+		if (selected) {
+			const isCorrect = selected.value === correctAnswer;
+			if (isCorrect) {
+				correct++;
+				q.classList.add('correct');
+				q.classList.remove('incorrect');
+			} else {
+				q.classList.add('incorrect');
+				q.classList.remove('correct');
+			}
+		} else {
+			q.classList.add('unanswered');
+		}
+	});
+
+	const percentage = Math.round((correct / total) * 100);
+	const emoji =
+		percentage >= 90
+			? '🏆'
+			: percentage >= 70
+			? '👍'
+			: percentage >= 50
+			? '📚'
+			: '💪';
+
+	results.innerHTML = `
+		<div class="quiz-summary">
+			<div class="score-circle ${percentage >= 70 ? 'passing' : 'failing'}">
+				<span class="score-emoji">${emoji}</span>
+				<span class="score-value">${percentage}%</span>
+			</div>
+			<p class="score-text">${correct}/${total} correct</p>
+			<button class="btn btn-secondary" onclick="backToFiles()">Try Another</button>
+		</div>
+	`;
+	results.style.display = 'block';
+	form.querySelector('.quiz-submit').style.display = 'none';
+}
+
+// Theme-aware markdown renderer
+function renderMarkdownThemed(md) {
+	// First, extract and convert tables before escaping HTML
+	// Match tables: lines starting with | that have at least 2 rows
+	const tableRegex = /(?:^|\n)((?:\|[^\n]+\|\n?)+)/gm;
+
+	let html = md;
+
+	// Process tables first (before HTML escaping)
+	html = html.replace(tableRegex, (match, tableBlock) => {
+		const rows = tableBlock
+			.trim()
+			.split('\n')
+			.filter((r) => r.trim().startsWith('|'));
+		if (rows.length < 2) return match;
+
+		// Parse each row into cells
+		const parsedRows = rows.map((r) => {
+			// Remove leading/trailing pipes and split by |
+			const cleaned = r.trim().replace(/^\||\|$/g, '');
+			return cleaned.split('|').map((c) => c.trim());
+		});
+
+		// Skip separator rows (like |---|---|)
+		const dataRows = parsedRows.filter(
+			(row) => !row.every((c) => /^:?-+:?$/.test(c)),
+		);
+
+		if (dataRows.length < 1) return match;
+
+		// First row is header
+		const headerRow = dataRows[0];
+		const bodyRows = dataRows.slice(1);
+
+		// Build HTML table
+		const thead = `<tr>${headerRow
+			.map((c) => `<th>${escapeHtml(c)}</th>`)
+			.join('')}</tr>`;
+		const tbody = bodyRows
+			.map(
+				(row) =>
+					`<tr>${row
+						.map(
+							(c) =>
+								`<td>${processInlineMarkdown(
+									escapeHtml(c),
+								)}</td>`,
+						)
+						.join('')}</tr>`,
+			)
+			.join('');
+
+		return `\n<div class="table-wrapper"><table class="themed-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>\n`;
+	});
+
+	// Now escape remaining HTML (but not in already-converted tables)
+	// We need a different approach - escape before table processing
+
+	// Actually, let's rebuild this more carefully
+	return renderMarkdownProper(md);
+}
+
+// Helper: escape HTML
+function escapeHtml(str) {
+	return str.replace(
+		/[&<>"']/g,
+		(c) =>
+			({
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#39;',
+			}[c]),
+	);
+}
+
+// Helper: process inline markdown (bold, italic, links, code)
+function processInlineMarkdown(str) {
+	return str
+		.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+		.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+		.replace(/\*(.*?)\*/g, '<em>$1</em>')
+		.replace(/`([^`]+)`/g, '<code>$1</code>')
+		.replace(
+			/\[(.*?)\]\((.*?)\)/g,
+			'<a href="$2" target="_blank" rel="noopener">$1</a>',
+		);
+}
+
+// Proper markdown renderer
+function renderMarkdownProper(md) {
+	const lines = md.split('\n');
+	const output = [];
+	let inTable = false;
+	let tableRows = [];
+	let inList = false;
+	let listItems = [];
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+		const trimmed = line.trim();
+
+		// Table detection
+		if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+			if (!inTable) {
+				inTable = true;
+				tableRows = [];
+			}
+			tableRows.push(trimmed);
+			continue;
+		} else if (inTable) {
+			// End of table
+			output.push(renderTable(tableRows));
+			inTable = false;
+			tableRows = [];
+		}
+
+		// List items
+		if (/^[-*]\s+/.test(trimmed)) {
+			if (!inList) {
+				inList = true;
+				listItems = [];
+			}
+			listItems.push(trimmed.replace(/^[-*]\s+/, ''));
+			continue;
+		} else if (inList) {
+			output.push(
+				'<ul>' +
+					listItems
+						.map(
+							(li) =>
+								`<li>${processInlineMarkdown(
+									escapeHtml(li),
+								)}</li>`,
+						)
+						.join('') +
+					'</ul>',
+			);
+			inList = false;
+			listItems = [];
+		}
+
+		// Headings
+		if (/^#{1,6}\s/.test(trimmed)) {
+			const level = trimmed.match(/^#+/)[0].length;
+			const text = trimmed.replace(/^#+\s+/, '');
+			output.push(
+				`<h${level}>${processInlineMarkdown(
+					escapeHtml(text),
+				)}</h${level}>`,
+			);
+			continue;
+		}
+
+		// Horizontal rule
+		if (/^---+$/.test(trimmed)) {
+			output.push('<hr>');
+			continue;
+		}
+
+		// Blockquote
+		if (/^>\s*/.test(trimmed)) {
+			const text = trimmed.replace(/^>\s*/, '');
+			output.push(
+				`<blockquote>${processInlineMarkdown(
+					escapeHtml(text),
+				)}</blockquote>`,
+			);
+			continue;
+		}
+
+		// Empty line
+		if (trimmed === '') {
+			continue;
+		}
+
+		// Regular paragraph
+		output.push(`<p>${processInlineMarkdown(escapeHtml(trimmed))}</p>`);
+	}
+
+	// Handle remaining table
+	if (inTable && tableRows.length > 0) {
+		output.push(renderTable(tableRows));
+	}
+
+	// Handle remaining list
+	if (inList && listItems.length > 0) {
+		output.push(
+			'<ul>' +
+				listItems
+					.map(
+						(li) =>
+							`<li>${processInlineMarkdown(escapeHtml(li))}</li>`,
+					)
+					.join('') +
+				'</ul>',
+		);
+	}
+
+	return output.join('\n');
+}
+
+// Render a markdown table to HTML
+function renderTable(rows) {
+	if (rows.length < 2) return rows.join('\n');
+
+	// Parse rows into cells
+	const parsedRows = rows.map((r) => {
+		const cleaned = r.replace(/^\||\|$/g, '');
+		return cleaned.split('|').map((c) => c.trim());
+	});
+
+	// Find and remove separator row
+	const dataRows = parsedRows.filter(
+		(row) => !row.every((c) => /^:?-+:?$/.test(c)),
+	);
+
+	if (dataRows.length < 1) return rows.join('\n');
+
+	const headerRow = dataRows[0];
+	const bodyRows = dataRows.slice(1);
+
+	const thead = `<tr>${headerRow
+		.map((c) => `<th>${processInlineMarkdown(escapeHtml(c))}</th>`)
+		.join('')}</tr>`;
+	const tbody = bodyRows
+		.map(
+			(row) =>
+				`<tr>${row
+					.map(
+						(c) =>
+							`<td>${processInlineMarkdown(escapeHtml(c))}</td>`,
+					)
+					.join('')}</tr>`,
+		)
+		.join('');
+
+	return `<div class="table-wrapper"><table class="themed-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+}
+
+// Legacy function
+async function loadIELTSMarkdown(path) {
+	const container = document.getElementById('ielts-md-viewer');
+	if (!container) return;
+
+	container.innerHTML = '<div class="loading">Loading...</div>';
+
+	try {
+		const res = await fetch(path);
+		if (!res.ok) throw new Error('Failed to load ' + path);
+		const md = await res.text();
+		container.innerHTML = renderMarkdownThemed(md);
+	} catch (err) {
+		container.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
+	}
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+	if (document.getElementById('ielts-folder-list')) {
+		initIELTSPractice();
+	}
+});

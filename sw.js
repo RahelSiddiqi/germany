@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'study-abroad-v2.0';
+const CACHE_VERSION = 'study-abroad-v2.1';
 const CACHE_ASSETS = [
 	'/germany/',
 	'/germany/dashboard.html',
@@ -13,6 +13,11 @@ const CACHE_ASSETS = [
 	'/germany/germany-universities.json',
 	'/germany/schengen-universities.json',
 	'/germany/additional-schengen-cybersecurity-universities.json',
+	'/germany/master-plan.js',
+	'/germany/dashboard-band8-integration.js',
+	'/germany/dashboard-band8-styles.css',
+	'/germany/ielts-viewer.js',
+	'/germany/app.js',
 ];
 
 // Install event - cache assets

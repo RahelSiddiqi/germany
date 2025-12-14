@@ -4,29 +4,77 @@
 class Band8Dashboard {
 	constructor() {
 		this.today = new Date();
-		this.examDate = new Date('2025-12-28');
-		this.startDate = new Date('2025-12-13');
+		this.examDate = new Date('2025-12-29'); // Exam Day
+		this.startDate = new Date('2025-12-14'); // Day 1 starts today
 		this.loadProgress();
 	}
 
-	// Calculate which day of 15-day plan we're on
-	getCurrentDay() {
+	// Calculate SCHEDULED day based on calendar (where you SHOULD be)
+	getScheduledDay() {
 		const daysPassed = Math.floor(
 			(this.today - this.startDate) / (1000 * 60 * 60 * 24),
 		);
 		return Math.min(Math.max(daysPassed + 1, 1), 16); // Day 1-16 (15 days prep + exam day)
 	}
 
-	// Get today's tasks from master plan
+	// Calculate ACTUAL day based on completed tasks (where you REALLY are)
+	getActualDay() {
+		if (typeof MASTER_PLAN === 'undefined') return 1;
+
+		const totalDays = MASTER_PLAN.ieltsSchedule.length;
+
+		// Check each day's completion status
+		for (let dayNum = 1; dayNum <= totalDays; dayNum++) {
+			const daySchedule = MASTER_PLAN.ieltsSchedule.find(
+				(d) => d.day === dayNum,
+			);
+			if (!daySchedule) continue;
+
+			const completedTasks = this.getTasksCompleted(dayNum);
+			const totalTasks = daySchedule.tasks.length;
+
+			// If this day is not 100% complete, this is our actual day
+			if (completedTasks.length < totalTasks) {
+				return dayNum;
+			}
+		}
+
+		// All days complete!
+		return totalDays;
+	}
+
+	// Get day completion percentage for a specific day
+	getDayProgress(dayNum) {
+		if (typeof MASTER_PLAN === 'undefined') return 0;
+
+		const daySchedule = MASTER_PLAN.ieltsSchedule.find(
+			(d) => d.day === dayNum,
+		);
+		if (!daySchedule) return 0;
+
+		const completedTasks = this.getTasksCompleted(dayNum);
+		const totalTasks = daySchedule.tasks.length;
+
+		return totalTasks > 0
+			? Math.round((completedTasks.length / totalTasks) * 100)
+			: 0;
+	}
+
+	// Legacy: getCurrentDay now returns actual day (task-based)
+	getCurrentDay() {
+		return this.getActualDay();
+	}
+
+	// Get today's tasks from master plan (based on ACTUAL progress, not calendar)
 	getTodaysTasks() {
 		if (typeof MASTER_PLAN === 'undefined') {
 			console.error('MASTER_PLAN not loaded!');
-			return [];
+			return null;
 		}
 
-		const currentDay = this.getCurrentDay();
+		const actualDay = this.getActualDay();
 		const todaySchedule = MASTER_PLAN.ieltsSchedule.find(
-			(day) => day.day === currentDay,
+			(day) => day.day === actualDay,
 		);
 
 		if (todaySchedule) {
@@ -38,7 +86,7 @@ class Band8Dashboard {
 				hours: todaySchedule.hours,
 				tasks: todaySchedule.tasks,
 				targetScore: todaySchedule.targetScore,
-				completed: this.getTasksCompleted(currentDay),
+				completed: this.getTasksCompleted(actualDay),
 			};
 		}
 
@@ -53,23 +101,36 @@ class Band8Dashboard {
 		return Math.max(0, daysLeft);
 	}
 
-	// Progress percentage
+	// Progress percentage - based on ACTUAL task completion across all days
 	getProgressPercentage() {
-		const totalDays = Math.ceil(
-			(this.examDate - this.startDate) / (1000 * 60 * 60 * 24),
-		);
-		const daysPassed = Math.floor(
-			(this.today - this.startDate) / (1000 * 60 * 60 * 24),
-		);
-		return Math.min(
-			100,
-			Math.max(0, Math.round((daysPassed / totalDays) * 100)),
-		);
+		if (typeof MASTER_PLAN === 'undefined') {
+			// Fallback to localStorage checklist if master plan not loaded
+			const planTasks =
+				JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+			const planCompleted =
+				Object.values(planTasks).filter(Boolean).length;
+			const planTotal = Object.keys(planTasks).length || 0;
+			if (planTotal === 0) return 0; // No tasks = 0% progress
+			return Math.min(100, Math.round((planCompleted / planTotal) * 100));
+		}
+
+		// Calculate total tasks and completed tasks across ALL days
+		let totalTasks = 0;
+		let completedTasks = 0;
+
+		MASTER_PLAN.ieltsSchedule.forEach((daySchedule) => {
+			totalTasks += daySchedule.tasks.length;
+			const completed = this.getTasksCompleted(daySchedule.day);
+			completedTasks += completed.length;
+		});
+
+		if (totalTasks === 0) return 0;
+		return Math.min(100, Math.round((completedTasks / totalTasks) * 100));
 	}
 
-	// Current phase of preparation
+	// Current phase of preparation (based on ACTUAL progress)
 	getCurrentPhase() {
-		const day = this.getCurrentDay();
+		const day = this.getActualDay();
 		if (day <= 3) return '🔍 Diagnosis & Foundation';
 		if (day <= 11) return '💪 Intensive Section Practice';
 		if (day === 12) return '📝 Mock Test #1';
@@ -87,22 +148,59 @@ class Band8Dashboard {
 		const daysRemaining = this.getDaysRemaining();
 		const progress = this.getProgressPercentage();
 		const phase = this.getCurrentPhase();
+		const actualDay = this.getActualDay();
+		const scheduledDay = this.getScheduledDay();
+		const dayProgress = this.getDayProgress(actualDay);
 
+		// Aggregate local checklist tasks from app plan (optional)
+		const planTasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+		const planCompleted = Object.values(planTasks).filter(Boolean).length;
+		const planTotal = Object.keys(planTasks).length || 0;
+
+		// Today summary from Band8 tracker (optional)
+		const todayCompleted = today ? (today.completed || []).length : 0;
+		const todayTotal = today ? today.tasks.length : 0;
+		const todayHoursLogged = today ? this.getHoursLogged(today.day) : 0;
+
+		// Check if behind schedule
+		const behindDays = scheduledDay - actualDay;
+		const behindMessage =
+			behindDays > 0
+				? `<span class="behind-schedule">⚠️ ${behindDays} day${
+						behindDays > 1 ? 's' : ''
+				  } behind schedule</span>`
+				: behindDays < 0
+				? `<span class="ahead-schedule">🚀 ${Math.abs(behindDays)} day${
+						Math.abs(behindDays) > 1 ? 's' : ''
+				  } ahead!</span>`
+				: `<span class="on-schedule">✅ On schedule</span>`;
+
+		// Fallback when master plan isn't loaded yet
 		if (!today) {
+			const planTasks =
+				JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+			const planCompleted =
+				Object.values(planTasks).filter(Boolean).length;
+			const planTotal = Object.keys(planTasks).length || 0;
 			return `
-                <div class="ielts-tracker">
-                    <h2>🎯 IELTS Band 8.0-8.5 Intensive Prep</h2>
-                    <p>Exam Date: <strong>December 28, 2025</strong></p>
-                    <p>Days Remaining: <strong>${daysRemaining} days</strong></p>
-                    <div class="alert alert-info">
-                        ${
-							daysRemaining > 0
-								? 'Your exam is approaching! Stay focused!'
-								: "🎉 EXAM DAY! You've got this!"
-						}
-                    </div>
-                </div>
-            `;
+				<div class="ielts-tracker">
+					<div class="tracker-header">
+						<h2>🎯 IELTS Band 8.0-8.5 Prep</h2>
+						<div class="exam-countdown">
+							<span class="countdown-number">${daysRemaining}</span>
+							<span class="countdown-label">days until exam</span>
+						</div>
+					</div>
+					<div class="progress-bar-container">
+						<div class="progress-bar" style="width: ${progress}%"></div>
+						<span class="progress-text">${progress}% Complete (Checklist)</span>
+					</div>
+					<div class="combined-progress" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin:12px 0;">
+						<div class="card"><strong>✅ Tasks Completed</strong><div>${planCompleted}/${planTotal} checklist tasks</div></div>
+						<div class="card"><strong>ℹ️ Note</strong><div>Master plan data not loaded; showing checklist summary.</div></div>
+					</div>
+				</div>
+			`;
 		}
 
 		return `
@@ -116,16 +214,56 @@ class Band8Dashboard {
                 </div>
 
                 <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: ${progress}%"></div>
-                    <span class="progress-text">${progress}% Complete</span>
+					<div class="progress-bar" style="width: ${progress}%"></div>
+					<span class="progress-text">${progress}% Complete (Checklist)</span>
                 </div>
 
                 <div class="current-phase">
                     <h3>${phase}</h3>
                 </div>
 
+				<div class="day-status-banner" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: var(--accent-contrast); padding: 16px; border-radius: 12px; margin: 16px 0; text-align: center;">
+					<div style="display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap;">
+						<div>
+							<div style="font-size: 2rem; font-weight: bold;">Day ${actualDay}</div>
+							<div style="font-size: 0.85rem; opacity: 0.9;">Your Actual Progress</div>
+						</div>
+						<div style="font-size: 1.5rem;">→</div>
+						<div>
+							<div style="font-size: 1.2rem;">📅 Scheduled: Day ${scheduledDay}</div>
+							<div style="margin-top: 4px;">${behindMessage}</div>
+						</div>
+					</div>
+					<div style="margin-top: 12px;">
+						<div style="background: rgba(255,255,255,0.2); border-radius: 8px; height: 8px; overflow: hidden;">
+							<div style="background: white; height: 100%; width: ${dayProgress}%; transition: width 0.3s;"></div>
+						</div>
+						<div style="font-size: 0.85rem; margin-top: 4px;">Day ${actualDay} Progress: ${dayProgress}% (${todayCompleted}/${todayTotal} tasks)</div>
+					</div>
+				</div>
+
+				<div class="combined-progress" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin:12px 0;">
+					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
+						<div><strong>📊 Overall Progress</strong></div>
+						<div>${progress}% complete</div>
+					</div>
+					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
+						<div><strong>✅ Tasks Done</strong></div>
+						<div>${planCompleted}/${planTotal} total tasks</div>
+					</div>
+					<div class="card" style="padding:10px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px;">
+						<div><strong>⏱️ Hours Today</strong></div>
+						<div>${todayHoursLogged}/${today ? today.hours : 0} hours</div>
+					</div>
+				</div>
+
                 <div class="today-schedule">
-                    <h3 style="font-size: larger;">📅 Day ${today.day}/21 - ${today.date}</h3>
+                    <h3 style="font-size: larger;">📅 Day ${today.day}/21 - ${
+			today.date
+		}</h3>
+					<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+						<em>Complete all tasks below to advance to Day ${today.day + 1}</em>
+					</p>
                     <div class="focus-area">
                         <strong>Focus:</strong> ${today.focus}
                     </div>
@@ -136,7 +274,7 @@ class Band8Dashboard {
                         <strong>Target:</strong> ${today.targetScore}
                     </div>
 
-                    <h4>✅ Today's Tasks:</h4>
+                    <h4>✅ Today's Tasks (${todayCompleted}/${todayTotal}):</h4>
                     <ul class="task-list">
                         ${today.tasks
 							.map(
@@ -567,20 +705,15 @@ class Band8Dashboard {
 let band8Dashboard;
 
 document.addEventListener('DOMContentLoaded', function () {
-	// Load master plan first
-	const script = document.createElement('script');
-	script.src = 'master-plan.js';
-	script.onload = function () {
-		band8Dashboard = new Band8Dashboard();
+	// MASTER_PLAN is already loaded via script tag in HTML
+	// Just initialize the dashboard directly
+	band8Dashboard = new Band8Dashboard();
 
-		// Add to existing dashboard if element exists
-		const dashboardContainer = document.getElementById('band8-container');
-		if (dashboardContainer) {
-			dashboardContainer.innerHTML =
-				band8Dashboard.renderCompleteDashboard();
-		}
-	};
-	document.head.appendChild(script);
+	// Render dashboard if container exists
+	const dashboardContainer = document.getElementById('band8-container');
+	if (dashboardContainer) {
+		dashboardContainer.innerHTML = band8Dashboard.renderCompleteDashboard();
+	}
 });
 
 // Export for use

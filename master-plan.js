@@ -3,8 +3,8 @@
 
 const MASTER_PLAN = {
 	targetIELTS: 8.5,
-	examDate: '2025-12-28', // December 28, 2025
-	startDate: '2025-12-13', // Today
+	examDate: '2025-12-29', // December 29, 2025
+	startDate: '2025-12-14', // Day 1 starts today
 	daysRemaining: 15,
 
 	// Critical Milestones
@@ -12,11 +12,11 @@ const MASTER_PLAN = {
 		ielts: {
 			registration: '2025-12-14',
 			booksOrder: '2025-12-14',
-			diagnosticTest: '2025-12-13',
-			mockTest1: '2025-12-20',
-			mockTest2: '2025-12-24',
-			examDay: '2025-12-28',
-			resultsDay: '2026-01-10', // 13 days after exam
+			diagnosticTest: '2025-12-14',
+			mockTest1: '2025-12-21',
+			mockTest2: '2025-12-25',
+			examDay: '2025-12-29',
+			resultsDay: '2026-01-11', // 13 days after exam
 		},
 		scholarships: {
 			daadStart: '2025-12-16',
@@ -38,7 +38,7 @@ const MASTER_PLAN = {
 	ieltsSchedule: [
 		{
 			day: 1,
-			date: '2025-12-13',
+			date: '2025-12-14',
 			phase: 'Diagnosis',
 			focus: 'Diagnostic Test + Baseline Assessment',
 			hours: 14,
@@ -54,7 +54,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 2,
-			date: '2025-12-14',
+			date: '2025-12-15',
 			phase: 'Foundation',
 			focus: 'Vocabulary + Grammar Combined',
 			hours: 14,
@@ -70,7 +70,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 3,
-			date: '2025-12-15',
+			date: '2025-12-16',
 			phase: 'Section Practice',
 			focus: 'LISTENING Mastery - Target 37-39/40',
 			hours: 14,
@@ -86,7 +86,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 4,
-			date: '2025-12-16',
+			date: '2025-12-17',
 			phase: 'Section Practice',
 			focus: 'READING Mastery - Target 37-39/40',
 			hours: 14,
@@ -102,7 +102,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 5,
-			date: '2025-12-17',
+			date: '2025-12-18',
 			phase: 'Section Practice',
 			focus: 'WRITING Task 1 + Task 2 Combined',
 			hours: 14,
@@ -118,7 +118,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 6,
-			date: '2025-12-18',
+			date: '2025-12-19',
 			phase: 'Section Practice',
 			focus: 'SPEAKING Parts 1, 2 & 3 Combined',
 			hours: 14,
@@ -134,7 +134,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 7,
-			date: '2025-12-19',
+			date: '2025-12-20',
 			phase: 'Intensive Practice',
 			focus: 'Listening + Reading Combined',
 			hours: 14,
@@ -150,7 +150,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 8,
-			date: '2025-12-20',
+			date: '2025-12-21',
 			phase: 'Assessment',
 			focus: 'FULL MOCK TEST #1',
 			hours: 14,
@@ -166,7 +166,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 9,
-			date: '2025-12-21',
+			date: '2025-12-22',
 			phase: 'Refinement',
 			focus: 'Weakest Section Intensive',
 			hours: 14,
@@ -182,7 +182,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 10,
-			date: '2025-12-22',
+			date: '2025-12-23',
 			phase: 'Refinement',
 			focus: 'Writing Perfection + Speaking Fluency',
 			hours: 14,
@@ -198,7 +198,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 11,
-			date: '2025-12-23',
+			date: '2025-12-24',
 			phase: 'Intensive Practice',
 			focus: 'All Sections Combined Practice',
 			hours: 14,
@@ -214,7 +214,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 12,
-			date: '2025-12-24',
+			date: '2025-12-25',
 			phase: 'Assessment',
 			focus: 'FULL MOCK TEST #2 + Christmas',
 			hours: 12,
@@ -230,7 +230,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 13,
-			date: '2025-12-25',
+			date: '2025-12-26',
 			phase: 'Strategic Rest',
 			focus: 'Christmas - Light Review Only',
 			hours: 4,
@@ -246,7 +246,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 14,
-			date: '2025-12-26',
+			date: '2025-12-27',
 			phase: 'Final Polish',
 			focus: 'Fine-tuning All Sections',
 			hours: 12,
@@ -262,7 +262,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 15,
-			date: '2025-12-27',
+			date: '2025-12-28',
 			phase: 'Rest & Prep',
 			focus: 'Final Rest Day Before Exam',
 			hours: 3,
@@ -278,7 +278,7 @@ const MASTER_PLAN = {
 		},
 		{
 			day: 16,
-			date: '2025-12-28',
+			date: '2025-12-29',
 			phase: 'EXAM DAY',
 			focus: 'CRUSH THE EXAM!',
 			hours: 0,
