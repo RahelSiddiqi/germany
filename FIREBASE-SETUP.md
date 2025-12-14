@@ -41,12 +41,12 @@ Open `firebase-sync.js` and replace the config:
 
 ```javascript
 const firebaseConfig = {
-    apiKey: "YOUR_ACTUAL_API_KEY",
-    authDomain: "your-project.firebaseapp.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abc123"
+	apiKey: 'YOUR_ACTUAL_API_KEY',
+	authDomain: 'your-project.firebaseapp.com',
+	projectId: 'your-project-id',
+	storageBucket: 'your-project.appspot.com',
+	messagingSenderId: '123456789',
+	appId: '1:123456789:web:abc123',
 };
 ```
 
@@ -79,38 +79,42 @@ After setup:
 
 ## Features
 
-- ✅ **Anonymous Sync**: No account needed, works immediately
-- ✅ **Google Sign In**: Persistent sync tied to your Google account
-- ✅ **Real-time Sync**: Changes appear on other devices instantly
-- ✅ **Offline Support**: Works offline, syncs when back online
-- ✅ **Auto-sync**: Changes upload automatically
+-   ✅ **Anonymous Sync**: No account needed, works immediately
+-   ✅ **Google Sign In**: Persistent sync tied to your Google account
+-   ✅ **Real-time Sync**: Changes appear on other devices instantly
+-   ✅ **Offline Support**: Works offline, syncs when back online
+-   ✅ **Auto-sync**: Changes upload automatically
 
 ## Troubleshooting
 
 ### "Cloud sync not configured"
-- Make sure you updated `firebase-sync.js` with your config
+
+-   Make sure you updated `firebase-sync.js` with your config
 
 ### "Permission denied"
-- Check your Firestore security rules
-- Make sure Authentication is enabled
+
+-   Check your Firestore security rules
+-   Make sure Authentication is enabled
 
 ### Data not syncing
-- Check browser console for errors
-- Try "Sync Now" button in Settings
-- Make sure you're signed in
+
+-   Check browser console for errors
+-   Try "Sync Now" button in Settings
+-   Make sure you're signed in
 
 ## Free Tier Limits
 
 Firebase free tier is very generous:
-- **Firestore**: 1GB storage, 50K reads/day, 20K writes/day
-- **Authentication**: Unlimited users
-- **Hosting**: 10GB storage, 360MB/day transfer
+
+-   **Firestore**: 1GB storage, 50K reads/day, 20K writes/day
+-   **Authentication**: Unlimited users
+-   **Hosting**: 10GB storage, 360MB/day transfer
 
 For personal use, you'll never hit these limits!
 
 ## Security Notes
 
-- Your API key is safe to expose (Firebase uses security rules)
-- Security rules protect your data
-- Each user can only access their own data
-- Anonymous users get a unique ID per device
+-   Your API key is safe to expose (Firebase uses security rules)
+-   Security rules protect your data
+-   Each user can only access their own data
+-   Anonymous users get a unique ID per device

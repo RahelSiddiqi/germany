@@ -375,10 +375,10 @@ async function manualSync() {
 	}
 
 	notificationManager.showInAppNotification('🔄 Syncing...', 'info');
-	
+
 	// Push local changes to cloud
 	const pushSuccess = await cloudSync.syncToCloud();
-	
+
 	// Pull cloud changes to local
 	const pullSuccess = await cloudSync.syncFromCloud();
 

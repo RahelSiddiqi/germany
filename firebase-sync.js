@@ -167,7 +167,8 @@ class CloudSyncManager {
 
 	// Upload local data to cloud
 	async syncToCloud() {
-		if (!this.syncEnabled || !this.user || this.syncInProgress) return false;
+		if (!this.syncEnabled || !this.user || this.syncInProgress)
+			return false;
 
 		this.syncInProgress = true;
 		this.updateSyncStatus('syncing');
