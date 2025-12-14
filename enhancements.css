@@ -993,8 +993,6 @@ div[style*='background: #f3e5f5'] {
 .md-content {
 	background: var(--card-bg);
 	color: var(--text);
-	border: 1px solid var(--border);
-	border-radius: 12px;
 }
 
 .md-content h1,
