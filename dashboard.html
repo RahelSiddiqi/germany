@@ -413,6 +413,46 @@
 			<div id="settings" class="page">
 				<h2>⚙️ Settings & Data Management</h2>
 				<div class="settings-section">
+					<h3>☁️ Cloud Sync</h3>
+					<p style="color: var(--text-secondary); margin-bottom: 16px;">
+						Sync your progress across all devices (mobile, desktop, tablet)
+					</p>
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Enable Cloud Sync</h4>
+							<p id="sync-user-info">Not connected</p>
+						</div>
+						<div id="sync-status" class="sync-status"></div>
+					</div>
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Quick Sync (Anonymous)</h4>
+							<p>No account needed - works across devices</p>
+						</div>
+						<button class="btn btn-primary" id="sync-button" onclick="toggleCloudSync()">
+							☁️ Enable Cloud Sync
+						</button>
+					</div>
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Sign in with Google</h4>
+							<p>For persistent sync with your account</p>
+						</div>
+						<button class="btn btn-secondary" onclick="signInWithGoogle()">
+							🔗 Google Sign In
+						</button>
+					</div>
+					<div class="settings-option">
+						<div class="option-label">
+							<h4>Manual Sync</h4>
+							<p>Force sync now</p>
+						</div>
+						<button class="btn btn-secondary" onclick="manualSync()">
+							🔄 Sync Now
+						</button>
+					</div>
+				</div>
+				<div class="settings-section">
 					<h3>📦 Data Management</h3>
 					<div class="settings-option">
 						<div class="option-label">
@@ -509,6 +549,11 @@
 		</button>
 
 		<!-- Scripts -->
+		<!-- Firebase SDK (Cloud Sync) -->
+		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+		<script src="firebase-sync.js"></script>
 		<script src="master-plan.js"></script>
 		<script src="data-manager.js"></script>
 		<script src="notification-manager.js"></script>

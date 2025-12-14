@@ -307,3 +307,116 @@ setTimeout(() => {
 		localStorage.setItem('first-visit', 'done');
 	}
 }, 3000);
+
+// ==========================================
+// Cloud Sync UI Functions
+// ==========================================
+
+// Toggle cloud sync (anonymous sign in)
+async function toggleCloudSync() {
+	if (typeof cloudSync === 'undefined') {
+		notificationManager.showInAppNotification(
+			'☁️ Cloud sync is not configured yet',
+			'info',
+		);
+		showCloudSyncSetupInstructions();
+		return;
+	}
+
+	if (cloudSync.user) {
+		// Already signed in, sign out
+		await cloudSync.signOut();
+		notificationManager.showInAppNotification(
+			'Cloud sync disabled',
+			'info',
+		);
+	} else {
+		// Sign in anonymously
+		const user = await cloudSync.signInAnonymously();
+		if (user) {
+			cloudSync.setupAutoSync();
+			notificationManager.showInAppNotification(
+				'☁️ Cloud sync enabled! Your progress will sync across devices.',
+				'success',
+			);
+		}
+	}
+}
+
+// Sign in with Google
+async function signInWithGoogle() {
+	if (typeof cloudSync === 'undefined') {
+		notificationManager.showInAppNotification(
+			'☁️ Cloud sync is not configured yet',
+			'info',
+		);
+		showCloudSyncSetupInstructions();
+		return;
+	}
+
+	const user = await cloudSync.signInWithGoogle();
+	if (user) {
+		cloudSync.setupAutoSync();
+		notificationManager.showInAppNotification(
+			`☁️ Signed in as ${user.displayName || user.email}`,
+			'success',
+		);
+	}
+}
+
+// Manual sync
+async function manualSync() {
+	if (typeof cloudSync === 'undefined' || !cloudSync.user) {
+		notificationManager.showInAppNotification(
+			'Please enable cloud sync first',
+			'info',
+		);
+		return;
+	}
+
+	notificationManager.showInAppNotification('🔄 Syncing...', 'info');
+	
+	// Push local changes to cloud
+	const pushSuccess = await cloudSync.syncToCloud();
+	
+	// Pull cloud changes to local
+	const pullSuccess = await cloudSync.syncFromCloud();
+
+	if (pushSuccess && pullSuccess) {
+		notificationManager.showInAppNotification(
+			'✅ Sync completed successfully!',
+			'success',
+		);
+	} else {
+		notificationManager.showInAppNotification(
+			'⚠️ Sync had some issues, please try again',
+			'warning',
+		);
+	}
+}
+
+// Show setup instructions
+function showCloudSyncSetupInstructions() {
+	const instructions = `
+To enable cloud sync:
+
+1. Go to Firebase Console (https://console.firebase.google.com)
+2. Create a new project
+3. Enable Authentication (Anonymous + Google)
+4. Enable Firestore Database
+5. Copy your config to firebase-sync.js
+
+For detailed steps, check FIREBASE-SETUP.md in the project.
+	`;
+	alert(instructions);
+}
+
+// Update sync UI on page load
+document.addEventListener('DOMContentLoaded', () => {
+	// Update sync status after a delay to allow Firebase to initialize
+	setTimeout(() => {
+		if (typeof cloudSync !== 'undefined') {
+			cloudSync.updateSyncUI();
+		}
+	}, 1000);
+});

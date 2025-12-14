@@ -1369,3 +1369,71 @@ textarea:focus-visible {
 	font-size: 48px;
 	margin-bottom: 16px;
 }
+
+/* Cloud Sync Styles */
+.sync-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.sync-status.synced {
+	background: rgba(16, 185, 129, 0.1);
+	color: #10b981;
+}
+
+.sync-status.syncing {
+	background: rgba(59, 130, 246, 0.1);
+	color: #3b82f6;
+}
+
+.sync-status.syncing .sync-icon {
+	animation: spin 1s linear infinite;
+}
+
+.sync-status.error {
+	background: rgba(239, 68, 68, 0.1);
+	color: #ef4444;
+}
+
+.sync-status.offline {
+	background: rgba(156, 163, 175, 0.1);
+	color: #9ca3af;
+}
+
+#sync-button.active {
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+	color: white;
+}
+
+.sync-notification {
+	animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideOut {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+}
+
