@@ -14,7 +14,7 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
 			rel="stylesheet" />
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script>
@@ -23,7 +23,12 @@
 				theme: {
 					extend: {
 						fontFamily: {
-							sans: ['Inter', 'system-ui', 'sans-serif'],
+							sans: [
+								'Plus Jakarta Sans',
+								'Inter',
+								'system-ui',
+								'sans-serif',
+							],
 						},
 						colors: {
 							teal: {
@@ -45,7 +50,8 @@
 			};
 		</script>
 	</head>
-	<body class="bg-gray-50 dark:bg-gray-900 font-sans antialiased">
+	<body
+		class="bg-gray-50 dark:bg-gray-900 font-sans antialiased leading-relaxed tracking-normal text-gray-800 dark:text-gray-200">
 		<!-- Loading Screen -->
 		<div
 			id="loading-screen"
@@ -384,6 +390,9 @@
 						</div>
 					</div>
 
+					<!-- Spacer -->
+					<div class="h-2 sm:h-4"></div>
+
 					<!-- Urgent Deadlines Widget -->
 					<div
 						id="urgent-deadlines-widget"
@@ -463,27 +472,66 @@
 					</div>
 
 					<div id="ielts-file-list" class="hidden">
-						<button
-							onclick="showIELTSFolders()"
-							class="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium mb-4 text-sm">
-							<svg
-								class="w-4 h-4 sm:w-5 sm:h-5"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M15 19l-7-7 7-7" />
-							</svg>
-							Back to Folders
-						</button>
-						<h2
-							id="current-folder-name"
-							class="text-xl font-bold text-gray-900 dark:text-white mb-4">
-							Day 1
-						</h2>
+						<!-- Back + Day Navigator -->
+						<div class="flex items-center justify-between mb-4">
+							<button
+								onclick="showIELTSFolders()"
+								class="inline-flex items-center gap-1.5 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium text-sm">
+								<svg
+									class="w-4 h-4"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M15 19l-7-7 7-7" />
+								</svg>
+								Back
+							</button>
+
+							<!-- Day Navigator -->
+							<div class="flex items-center gap-2">
+								<button
+									onclick="navigateIELTSDay(-1)"
+									id="ielts-prev-day"
+									class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+									<svg
+										class="w-4 h-4"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M15 19l-7-7 7-7" />
+									</svg>
+								</button>
+								<span
+									id="current-folder-name"
+									class="px-3 py-1 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full text-sm font-semibold min-w-[70px] text-center"
+									>Day 1</span
+								>
+								<button
+									onclick="navigateIELTSDay(1)"
+									id="ielts-next-day"
+									class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+									<svg
+										class="w-4 h-4"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M9 5l7 7-7 7" />
+									</svg>
+								</button>
+							</div>
+						</div>
 						<div id="ielts-files" class="space-y-2"></div>
 					</div>
 
@@ -704,6 +752,25 @@
 							Financial aid opportunities
 						</p>
 					</div>
+
+					<!-- Scholarship Tracker Section -->
+					<div
+						class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-6">
+						<div class="flex items-center justify-between mb-4">
+							<h3
+								class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+								<span class="text-lg">📊</span> My Scholarship
+								Tracker
+							</h3>
+							<span
+								id="scholarship-tracker-summary"
+								class="text-sm text-gray-500 dark:text-gray-400"></span>
+						</div>
+						<div id="scholarship-tracker-list" class="space-y-3">
+							<!-- Scholarship tracker items will be populated by JS -->
+						</div>
+					</div>
+
 					<div id="scholarship-content"></div>
 				</div>
 

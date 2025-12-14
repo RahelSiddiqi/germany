@@ -495,8 +495,19 @@ class Band8Dashboard {
 						<h4 class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">✅ Tasks (${viewCompleted}/${viewTotal})</h4>
 						<ul class="space-y-1.5 sm:space-y-2">
 							${viewingDayData.tasks
-								.map(
-									(task, index) => `
+								.map((taskItem, index) => {
+									// Handle both old format (string) and new format (object with time/task)
+									const isObject =
+										typeof taskItem === 'object' &&
+										taskItem !== null;
+									const taskTime = isObject
+										? taskItem.time
+										: '';
+									const taskText = isObject
+										? taskItem.task
+										: taskItem;
+
+									return `
 								<li class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg ${
 									viewingDayData.completed.includes(index)
 										? 'bg-green-50 dark:bg-green-900/20'
@@ -508,18 +519,23 @@ class Band8Dashboard {
 										   ${viewingDayData.completed.includes(index) ? 'checked' : ''}
 										   onchange="band8Dashboard.toggleTask(${viewingDayData.day}, ${index})">
 									<label for="task-${index}"
-										   class="flex-1 text-xs sm:text-sm cursor-pointer leading-relaxed ${
+										   class="flex-1 cursor-pointer leading-relaxed ${
 												viewingDayData.completed.includes(
 													index,
 												)
 													? 'text-gray-500 dark:text-gray-400 line-through'
 													: 'text-gray-700 dark:text-gray-300'
 											}">
-										${task}
+										${
+											taskTime
+												? `<span class="inline-block px-2 py-0.5 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 text-[10px] sm:text-xs font-mono rounded mr-2 font-medium">${taskTime}</span>`
+												: ''
+										}
+										<span class="text-xs sm:text-sm">${taskText}</span>
 									</label>
 								</li>
-							`,
-								)
+							`;
+								})
 								.join('')}
 						</ul>
 					</div>

@@ -1834,23 +1834,36 @@ function updateFlashcardDisplay() {
 
 	container.innerHTML = `
 		<div class="space-y-4">
-			<!-- Category Tabs -->
-			<div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
-				${Object.keys(IELTS_VOCABULARY)
-					.map(
-						(cat) => `
-					<button onclick="changeVocabCategory('${cat}')"
-						class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors
-						${
-							flashcardState.currentCategory === cat
-								? 'bg-teal-600 text-white'
-								: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-						}">
-						${cat.charAt(0).toUpperCase() + cat.slice(1)} (${IELTS_VOCABULARY[cat].length})
-					</button>
-				`,
-					)
-					.join('')}
+			<!-- Category Dropdown -->
+			<div class="flex items-center justify-between gap-3">
+				<div class="relative flex-1">
+					<select onchange="changeVocabCategory(this.value)"
+						class="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent cursor-pointer">
+						${Object.keys(IELTS_VOCABULARY)
+							.map(
+								(cat) => `
+							<option value="${cat}" ${
+									flashcardState.currentCategory === cat
+										? 'selected'
+										: ''
+								}>
+								${cat.charAt(0).toUpperCase() + cat.slice(1)} (${
+									IELTS_VOCABULARY[cat].length
+								} words)
+							</option>
+						`,
+							)
+							.join('')}
+					</select>
+					<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+						<svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+						</svg>
+					</div>
+				</div>
+				<span class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+					${flashcardState.learned.length} learned
+				</span>
 			</div>
 
 			<!-- Progress -->
@@ -1860,7 +1873,6 @@ function updateFlashcardDisplay() {
 					<span class="px-2 py-0.5 rounded ${levelColor} text-xs font-medium">${
 		currentWord.level || 'B2'
 	}</span>
-					<span>${flashcardState.learned.length} learned</span>
 				</span>
 			</div>
 
@@ -1880,9 +1892,18 @@ function updateFlashcardDisplay() {
 						<button onclick="event.stopPropagation(); flipFlashcard()" class="text-xs text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400">↩️ Flip back</button>
 					`
 							: `
-						<p class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">${currentWord.word}</p>
-						${currentWord.phonetic ? `<p class="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>` : ''}
-						<button onclick="event.stopPropagation(); pronounceWord('${currentWord.word.replace(/'/g, "\\'")}')"
+						<p class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">${
+							currentWord.word
+						}</p>
+						${
+							currentWord.phonetic
+								? `<p class="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>`
+								: ''
+						}
+						<button onclick="event.stopPropagation(); pronounceWord('${currentWord.word.replace(
+							/'/g,
+							"\\'",
+						)}')"
 							class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors flex items-center gap-1 mb-3">
 							<span>🔊</span> Listen
 						</button>
@@ -1979,24 +2000,27 @@ function pronounceWord(word) {
 	if ('speechSynthesis' in window) {
 		// Cancel any ongoing speech
 		window.speechSynthesis.cancel();
-		
+
 		const utterance = new SpeechSynthesisUtterance(word);
 		utterance.lang = 'en-GB'; // British English for IELTS
 		utterance.rate = 0.85; // Slightly slower for clarity
 		utterance.pitch = 1;
-		
+
 		// Try to use a British voice if available
 		const voices = window.speechSynthesis.getVoices();
-		const britishVoice = voices.find(voice => 
-			voice.lang.includes('en-GB') || voice.name.includes('British')
+		const britishVoice = voices.find(
+			(voice) =>
+				voice.lang.includes('en-GB') || voice.name.includes('British'),
 		);
 		if (britishVoice) {
 			utterance.voice = britishVoice;
 		}
-		
+
 		window.speechSynthesis.speak(utterance);
 	} else {
-		alert('Speech synthesis not supported in this browser. Try Chrome or Safari.');
+		alert(
+			'Speech synthesis not supported in this browser. Try Chrome or Safari.',
+		);
 	}
 }
 
@@ -3226,34 +3250,102 @@ function initResourcesTool() {
 					<p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Click any book for free online practice tests with answers</p>
 					<div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2">
 						${[
-							{ num: 20, url: 'https://practicepteonline.com/official-ielts-tests-book-20/', new: true },
-							{ num: 19, url: 'https://practicepteonline.com/official-ielts-book-19/', new: true },
-							{ num: 18, url: 'https://practicepteonline.com/official-ielts-tests-book-18/' },
-							{ num: 17, url: 'https://practicepteonline.com/official-ielts-tests-book-17/' },
-							{ num: 16, url: 'https://practicepteonline.com/official-ielts-tests-book-16/' },
-							{ num: 15, url: 'https://practicepteonline.com/official-ielts-tests-book-15/' },
-							{ num: 14, url: 'https://practicepteonline.com/official-ielts-tests-book-14/' },
-							{ num: 13, url: 'https://practicepteonline.com/official-ielts-tests-book-13/' },
-							{ num: 12, url: 'https://practicepteonline.com/official-ielts-tests-book-12/' },
-							{ num: 11, url: 'https://practicepteonline.com/official-ielts-tests-book-11/' },
-							{ num: 10, url: 'https://practicepteonline.com/official-ielts-tests-book-10/' },
-							{ num: 9, url: 'https://practicepteonline.com/official-ielts-tests-book-9/' },
-							{ num: 8, url: 'https://practicepteonline.com/official-ielts-tests-book-8/' },
-							{ num: 7, url: 'https://practicepteonline.com/official-ielts-tests-book-7/' },
-							{ num: 6, url: 'https://practicepteonline.com/official-ielts-tests-book-6/' },
-							{ num: 5, url: 'https://practicepteonline.com/official-ielts-tests-book-5/' },
-							{ num: 4, url: 'https://practicepteonline.com/official-ielts-tests-book-4/' },
-							{ num: 3, url: 'https://practicepteonline.com/official-ielts-tests-book-3/' },
-							{ num: 2, url: 'https://practicepteonline.com/official-ielts-tests-book-2/' },
-							{ num: 1, url: 'https://practicepteonline.com/official-ielts-tests-book-1/' },
+							{
+								num: 20,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-20/',
+								new: true,
+							},
+							{
+								num: 19,
+								url: 'https://practicepteonline.com/official-ielts-book-19/',
+								new: true,
+							},
+							{
+								num: 18,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-18/',
+							},
+							{
+								num: 17,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-17/',
+							},
+							{
+								num: 16,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-16/',
+							},
+							{
+								num: 15,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-15/',
+							},
+							{
+								num: 14,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-14/',
+							},
+							{
+								num: 13,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-13/',
+							},
+							{
+								num: 12,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-12/',
+							},
+							{
+								num: 11,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-11/',
+							},
+							{
+								num: 10,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-10/',
+							},
+							{
+								num: 9,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-9/',
+							},
+							{
+								num: 8,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-8/',
+							},
+							{
+								num: 7,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-7/',
+							},
+							{
+								num: 6,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-6/',
+							},
+							{
+								num: 5,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-5/',
+							},
+							{
+								num: 4,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-4/',
+							},
+							{
+								num: 3,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-3/',
+							},
+							{
+								num: 2,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-2/',
+							},
+							{
+								num: 1,
+								url: 'https://practicepteonline.com/official-ielts-tests-book-1/',
+							},
 						]
 							.map(
 								(book) => `
 							<a href="${book.url}" target="_blank"
 								class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600 relative">
-								${book.new ? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>' : ''}
+								${
+									book.new
+										? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>'
+										: ''
+								}
 								<div class="text-lg mb-0.5">📕</div>
-								<div class="text-[10px] sm:text-xs font-medium text-gray-700 dark:text-gray-300">Book ${book.num}</div>
+								<div class="text-[10px] sm:text-xs font-medium text-gray-700 dark:text-gray-300">Book ${
+									book.num
+								}</div>
 							</a>
 						`,
 							)

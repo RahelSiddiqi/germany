@@ -120,6 +120,7 @@ function showPage(pageId) {
 		displaySchengenProgress();
 	} else if (pageId === 'scholarships') {
 		displayScholarships();
+		displayScholarshipTracker();
 	} else if (pageId === 'analytics') {
 		if (typeof updateAnalyticsPage === 'function') {
 			updateAnalyticsPage();
@@ -300,37 +301,86 @@ function displayScholarships() {
 					${major_scholarships
 						.map(
 							(s) => `
-						<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-							<h4 class="font-semibold text-teal-600 dark:text-teal-400 mb-3">${s.name}</h4>
-							<div class="space-y-2 text-sm">
-								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">💵 Amount:</span><span class="text-gray-900 dark:text-white">${
-									s.amount || 'N/A'
-								}</span></div>
-								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">⏱️ Duration:</span><span class="text-gray-900 dark:text-white">${
-									s.duration || 'N/A'
-								}</span></div>
-								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">📅 Deadline:</span><span class="text-gray-900 dark:text-white">${
-									s.deadline || 'N/A'
-								}</span></div>
-								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">✅ Eligibility:</span><span class="text-gray-900 dark:text-white">${
-									s.eligibility || 'N/A'
-								}</span></div>
+						<div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
+							<h4 class="font-bold text-lg text-teal-600 dark:text-teal-400 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">${
+								s.name
+							}</h4>
+							<div class="space-y-3 text-sm">
+								<div class="flex items-start gap-3">
+									<span class="text-lg">💵</span>
+									<div>
+										<span class="text-gray-500 dark:text-gray-400 text-xs block">Amount</span>
+										<span class="text-gray-900 dark:text-white font-medium">${
+											s.amount || 'N/A'
+										}</span>
+									</div>
+								</div>
+								<div class="flex items-start gap-3">
+									<span class="text-lg">⏱️</span>
+									<div>
+										<span class="text-gray-500 dark:text-gray-400 text-xs block">Duration</span>
+										<span class="text-gray-900 dark:text-white font-medium">${
+											s.duration || 'N/A'
+										}</span>
+									</div>
+								</div>
+								<div class="flex items-start gap-3">
+									<span class="text-lg">📅</span>
+									<div>
+										<span class="text-gray-500 dark:text-gray-400 text-xs block">Deadline</span>
+										<span class="text-red-600 dark:text-red-400 font-bold">${
+											s.deadline || 'N/A'
+										}</span>
+									</div>
+								</div>
+								<div class="flex items-start gap-3">
+									<span class="text-lg">✅</span>
+									<div>
+										<span class="text-gray-500 dark:text-gray-400 text-xs block">Eligibility</span>
+										<span class="text-gray-900 dark:text-white">${s.eligibility || 'N/A'}</span>
+									</div>
+								</div>
 								${
 									s.success_rate
-										? `<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">📊 Success Rate:</span><span class="font-medium text-green-600 dark:text-green-400">${s.success_rate}</span></div>`
+										? `
+								<div class="flex items-start gap-3">
+									<span class="text-lg">📊</span>
+									<div>
+										<span class="text-gray-500 dark:text-gray-400 text-xs block">Success Rate</span>
+										<span class="font-bold text-green-600 dark:text-green-400">${s.success_rate}</span>
+									</div>
+								</div>
+								`
 										: ''
 								}
 							</div>
 							${
 								s.note
-									? `<div class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded text-sm text-amber-700 dark:text-amber-300">💡 ${s.note}</div>`
+									? `
+							<div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-400 rounded-r-lg">
+								<p class="text-sm text-amber-800 dark:text-amber-200 font-medium">💡 ${s.note}</p>
+							</div>
+							`
 									: ''
 							}
-							${
-								s.website
-									? `<a href="${s.website}" target="_blank" class="inline-block mt-3 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website →</a>`
-									: ''
-							}
+							<div class="flex items-center gap-2 mt-4">
+								${
+									s.website
+										? `
+								<a href="${s.website}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors shadow-md hover:shadow-lg">
+									<span>Visit Website</span>
+									<span>→</span>
+								</a>
+								`
+										: ''
+								}
+								<button onclick="trackScholarship('${
+									s.name
+								}')" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors shadow-md hover:shadow-lg">
+									<span>📋</span>
+									<span>Track</span>
+								</button>
+							</div>
 						</div>
 					`,
 						)
@@ -517,38 +567,38 @@ function displayGermanyUniversities() {
 			)}</span>
 				</div>
 			</div>
-			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
 				${
 					uni.highlights
-						? `<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">💡 ${uni.highlights}</p>`
+						? `<p class="text-sm text-amber-600 dark:text-amber-400 mb-4 font-medium">💡 ${uni.highlights}</p>`
 						: ''
 				}
 				${
 					uni.application_opens
 						? `
-					<div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg mb-4 text-sm text-green-700 dark:text-green-300">
+					<div class="p-3 bg-green-100 dark:bg-green-900/40 rounded-lg mb-4 text-sm text-green-800 dark:text-green-300 font-medium">
 						⏰ Applications open: <strong>${uni.application_opens}</strong>
 					</div>
 				`
 						: ''
 				}
 				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
-					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
 						uni.location
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
 						uni.duration
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
 						uni.tuition
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
 						uni.language
 					}</div>
 				</div>
 				${
 					uni.requirements
-						? `<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">📝 ${uni.requirements}</p>`
+						? `<p class="text-sm text-gray-700 dark:text-gray-300 mb-4">📝 ${uni.requirements}</p>`
 						: ''
 				}
 				${
@@ -572,15 +622,40 @@ function displayGermanyUniversities() {
 				`
 						: ''
 				}
-				<div class="flex gap-3">
+				<div class="flex gap-3 items-center">
 					<a href="${
 						uni.website
 					}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
-					<button onclick="updateGermanyStatus('${
-						uni.university
-					}')" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
-						Change Status
-					</button>
+					<div class="relative">
+						<select onchange="changeGermanyStatus('${uni.university}', this.value)"
+							class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-teal-500 cursor-pointer">
+							<option value="not_started" ${
+								uni.status === 'not_started' ? 'selected' : ''
+							}>📋 Not Started</option>
+							<option value="in_progress" ${
+								uni.status === 'in_progress' ? 'selected' : ''
+							}>🔄 In Progress</option>
+							<option value="documents_ready" ${
+								uni.status === 'documents_ready'
+									? 'selected'
+									: ''
+							}>📑 Docs Ready</option>
+							<option value="submitted" ${
+								uni.status === 'submitted' ? 'selected' : ''
+							}>✅ Submitted</option>
+							<option value="admitted" ${
+								uni.status === 'admitted' ? 'selected' : ''
+							}>🎉 Admitted</option>
+							<option value="rejected" ${
+								uni.status === 'rejected' ? 'selected' : ''
+							}>❌ Rejected</option>
+						</select>
+						<div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+							<svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+							</svg>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -619,51 +694,90 @@ function displayGermanyProgress() {
 				const progress = Math.round(
 					(completedTasks / totalTasks) * 100,
 				);
+				const progressColor =
+					progress === 100
+						? 'bg-green-500'
+						: progress >= 50
+						? 'bg-teal-500'
+						: 'bg-amber-500';
+				const statusIcon =
+					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-					<h4 class="font-semibold text-gray-900 dark:text-white mb-3">${
-						trackedUni.university
-					}</h4>
-					<div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
-						<div class="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+					<!-- Collapsed Header with Progress -->
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
+						<div class="flex items-center justify-between gap-3">
+							<div class="flex items-center gap-3 flex-1 min-w-0">
+								<span class="text-xl">${statusIcon}</span>
+								<div class="flex-1 min-w-0">
+									<h4 class="font-semibold text-gray-900 dark:text-white truncate">${
+										trackedUni.university
+									}</h4>
+									<div class="flex items-center gap-2 mt-1">
+										<div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+											<div class="h-full ${progressColor} rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+										</div>
+										<span class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">${progress}%</span>
+									</div>
+								</div>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="text-xs text-gray-500 dark:text-gray-400">${completedTasks}/${totalTasks}</span>
+								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
+							</div>
+						</div>
 					</div>
-					<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${completedTasks}/${totalTasks} tasks completed (${progress}%)</p>
-					<div class="space-y-2">
-						${trackedUni.tasks
-							.map(
-								(task, index) => `
-							<label class="flex items-center gap-3 p-3 rounded-lg ${
-								task.completed
-									? 'bg-green-50 dark:bg-green-900/20'
-									: 'bg-gray-50 dark:bg-gray-700/50'
-							} cursor-pointer transition-colors">
-								<input type="checkbox"
-									   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
-									   ${task.completed ? 'checked' : ''}
-									   onchange="toggleGermanyTask('${trackedUni.university}', ${index})">
-								<span class="text-sm ${
+
+					<!-- Expanded Details -->
+					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
+						<div class="space-y-2">
+							${trackedUni.tasks
+								.map(
+									(task, index) => `
+								<label class="flex items-center gap-3 p-3 rounded-lg ${
 									task.completed
-										? 'text-gray-500 dark:text-gray-400 line-through'
-										: 'text-gray-700 dark:text-gray-300'
-								}">${task.name}</span>
-							</label>
-						`,
-							)
-							.join('')}
+										? 'bg-green-50 dark:bg-green-900/20'
+										: 'bg-white dark:bg-gray-800'
+								} cursor-pointer transition-colors border border-gray-100 dark:border-gray-700">
+									<input type="checkbox"
+										   class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
+										   ${task.completed ? 'checked' : ''}
+										   onchange="toggleGermanyTask('${trackedUni.university}', ${index})">
+									<span class="text-sm flex-1 ${
+										task.completed
+											? 'text-gray-500 dark:text-gray-400 line-through'
+											: 'text-gray-700 dark:text-gray-300'
+									}">${task.name}</span>
+									${task.completed ? '<span class="text-green-500">✓</span>' : ''}
+								</label>
+							`,
+								)
+								.join('')}
+						</div>
+						<button onclick="untrackGermanyUniversity('${trackedUni.university}')"
+							class="mt-4 w-full px-4 py-2 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+							Remove from Tracker
+						</button>
 					</div>
 				</div>
 			`;
 			} else {
 				return `
 				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleExpand(this)">
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between">
-							<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
-							<span class="expand-toggle text-gray-400 text-sm">▼</span>
+							<div class="flex items-center gap-3">
+								<span class="text-xl">📝</span>
+								<div>
+									<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
+									<span class="text-xs text-gray-500 dark:text-gray-400">Not tracked yet</span>
+								</div>
+							</div>
+							<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 						</div>
 					</div>
-					<div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
 						<div class="space-y-2 text-sm mb-4">
 							<p class="text-gray-600 dark:text-gray-400"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
@@ -691,6 +805,47 @@ function displayGermanyProgress() {
 		.join('');
 }
 
+// Toggle expand/collapse for progress items
+function toggleProgressExpand(element) {
+	const parent = element.parentElement;
+	const details = parent.querySelector('.hidden, .block');
+	const toggle = element.querySelector('.expand-toggle');
+
+	if (details) {
+		const isHidden = details.classList.contains('hidden');
+		details.classList.toggle('hidden', !isHidden);
+		details.classList.toggle('block', isHidden);
+		if (toggle) {
+			toggle.style.transform = isHidden
+				? 'rotate(90deg)'
+				: 'rotate(0deg)';
+		}
+	}
+}
+
+// Untrack university
+function untrackGermanyUniversity(universityName) {
+	const tracked = localStorage.getItem('germany-applications');
+	let trackedUniversities = tracked ? JSON.parse(tracked) : [];
+	trackedUniversities = trackedUniversities.filter(
+		(u) => u.university !== universityName,
+	);
+	localStorage.setItem(
+		'germany-applications',
+		JSON.stringify(trackedUniversities),
+	);
+	displayGermanyProgress();
+	updateDashboardStats();
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`Removed ${universityName} from tracker`,
+			'info',
+			3000,
+		);
+	}
+}
+
 function updateGermanyStatus(universityName) {
 	const statuses = [
 		'not_started',
@@ -712,6 +867,30 @@ function updateGermanyStatus(universityName) {
 	saveGermanyApplications();
 	displayGermanyUniversities();
 	updateDashboardStats();
+}
+
+// Change status directly via dropdown
+function changeGermanyStatus(universityName, newStatus) {
+	const uni = germanyUniversities.find(
+		(u) => u.university === universityName,
+	);
+	if (!uni) return;
+
+	uni.status = newStatus;
+	saveGermanyApplications();
+	displayGermanyUniversities();
+	updateDashboardStats();
+
+	// Show feedback
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`✅ ${universityName} status updated to ${getStatusLabel(
+				newStatus,
+			)}`,
+			'success',
+			3000,
+		);
+	}
 }
 
 function toggleGermanyTask(universityName, taskIndex) {
@@ -919,15 +1098,40 @@ function displaySchengenUniversities() {
 				`
 						: ''
 				}
-				<div class="flex gap-3">
+				<div class="flex gap-3 items-center">
 					<a href="${
 						uni.website
 					}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
-					<button onclick="updateSchengenStatus('${
-						uni.university
-					}')" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
-						Change Status
-					</button>
+					<div class="relative">
+						<select onchange="changeSchengenStatus('${uni.university}', this.value)"
+							class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-teal-500 cursor-pointer">
+							<option value="not_started" ${
+								uni.status === 'not_started' ? 'selected' : ''
+							}>📋 Not Started</option>
+							<option value="in_progress" ${
+								uni.status === 'in_progress' ? 'selected' : ''
+							}>🔄 In Progress</option>
+							<option value="documents_ready" ${
+								uni.status === 'documents_ready'
+									? 'selected'
+									: ''
+							}>📑 Docs Ready</option>
+							<option value="submitted" ${
+								uni.status === 'submitted' ? 'selected' : ''
+							}>✅ Submitted</option>
+							<option value="admitted" ${
+								uni.status === 'admitted' ? 'selected' : ''
+							}>🎉 Admitted</option>
+							<option value="rejected" ${
+								uni.status === 'rejected' ? 'selected' : ''
+							}>❌ Rejected</option>
+						</select>
+						<div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+							<svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+							</svg>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -966,51 +1170,87 @@ function displaySchengenProgress() {
 				const progress = Math.round(
 					(completedTasks / totalTasks) * 100,
 				);
+				const progressColor =
+					progress === 100
+						? 'bg-green-500'
+						: progress >= 50
+						? 'bg-teal-500'
+						: 'bg-amber-500';
+				const statusIcon =
+					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-					<h4 class="font-semibold text-gray-900 dark:text-white mb-3">${
-						trackedUni.university
-					}</h4>
-					<div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
-						<div class="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
+						<div class="flex items-center justify-between gap-3">
+							<div class="flex items-center gap-3 flex-1 min-w-0">
+								<span class="text-xl">${statusIcon}</span>
+								<div class="flex-1 min-w-0">
+									<h4 class="font-semibold text-gray-900 dark:text-white truncate">${
+										trackedUni.university
+									}</h4>
+									<div class="flex items-center gap-2 mt-1">
+										<div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+											<div class="h-full ${progressColor} rounded-full transition-all" style="width: ${progress}%"></div>
+										</div>
+										<span class="text-xs text-gray-500 dark:text-gray-400">${progress}%</span>
+									</div>
+								</div>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="text-xs text-gray-500 dark:text-gray-400">${completedTasks}/${totalTasks}</span>
+								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
+							</div>
+						</div>
 					</div>
-					<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${completedTasks}/${totalTasks} tasks completed (${progress}%)</p>
-					<div class="space-y-2">
-						${trackedUni.tasks
-							.map(
-								(task, index) => `
-							<label class="flex items-center gap-3 p-3 rounded-lg ${
-								task.completed
-									? 'bg-green-50 dark:bg-green-900/20'
-									: 'bg-gray-50 dark:bg-gray-700/50'
-							} cursor-pointer transition-colors">
-								<input type="checkbox"
-									   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
-									   ${task.completed ? 'checked' : ''}
-									   onchange="toggleSchengenTask('${trackedUni.university}', ${index})">
-								<span class="text-sm ${
+					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
+						<div class="space-y-2">
+							${trackedUni.tasks
+								.map(
+									(task, index) => `
+								<label class="flex items-center gap-3 p-3 rounded-lg ${
 									task.completed
-										? 'text-gray-500 dark:text-gray-400 line-through'
-										: 'text-gray-700 dark:text-gray-300'
-								}">${task.name}</span>
-							</label>
-						`,
-							)
-							.join('')}
+										? 'bg-green-50 dark:bg-green-900/20'
+										: 'bg-white dark:bg-gray-800'
+								} cursor-pointer transition-colors border border-gray-100 dark:border-gray-700">
+									<input type="checkbox"
+										   class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
+										   ${task.completed ? 'checked' : ''}
+										   onchange="toggleSchengenTask('${trackedUni.university}', ${index})">
+									<span class="text-sm flex-1 ${
+										task.completed
+											? 'text-gray-500 dark:text-gray-400 line-through'
+											: 'text-gray-700 dark:text-gray-300'
+									}">${task.name}</span>
+									${task.completed ? '<span class="text-green-500">✓</span>' : ''}
+								</label>
+							`,
+								)
+								.join('')}
+						</div>
+						<button onclick="untrackSchengenUniversity('${trackedUni.university}')"
+							class="mt-4 w-full px-4 py-2 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+							Remove from Tracker
+						</button>
 					</div>
 				</div>
 			`;
 			} else {
 				return `
 				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleExpand(this)">
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between">
-							<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
-							<span class="expand-toggle text-gray-400 text-sm">▼</span>
+							<div class="flex items-center gap-3">
+								<span class="text-xl">📝</span>
+								<div>
+									<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
+									<span class="text-xs text-gray-500 dark:text-gray-400">Not tracked yet</span>
+								</div>
+							</div>
+							<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 						</div>
 					</div>
-					<div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
 						<div class="space-y-2 text-sm mb-4">
 							<p class="text-gray-600 dark:text-gray-400"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
@@ -1038,6 +1278,29 @@ function displaySchengenProgress() {
 		.join('');
 }
 
+// Untrack Schengen university
+function untrackSchengenUniversity(universityName) {
+	const tracked = localStorage.getItem('schengen-applications');
+	let trackedUniversities = tracked ? JSON.parse(tracked) : [];
+	trackedUniversities = trackedUniversities.filter(
+		(u) => u.university !== universityName,
+	);
+	localStorage.setItem(
+		'schengen-applications',
+		JSON.stringify(trackedUniversities),
+	);
+	displaySchengenProgress();
+	updateDashboardStats();
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`Removed ${universityName} from tracker`,
+			'info',
+			3000,
+		);
+	}
+}
+
 function updateSchengenStatus(universityName) {
 	const statuses = [
 		'not_started',
@@ -1059,6 +1322,30 @@ function updateSchengenStatus(universityName) {
 	saveSchengenApplications();
 	displaySchengenUniversities();
 	updateDashboardStats();
+}
+
+// Change Schengen status directly via dropdown
+function changeSchengenStatus(universityName, newStatus) {
+	const uni = schengenUniversities.find(
+		(u) => u.university === universityName,
+	);
+	if (!uni) return;
+
+	uni.status = newStatus;
+	saveSchengenApplications();
+	displaySchengenUniversities();
+	updateDashboardStats();
+
+	// Show feedback
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`✅ ${universityName} status updated to ${getStatusLabel(
+				newStatus,
+			)}`,
+			'success',
+			3000,
+		);
+	}
 }
 
 function toggleSchengenTask(universityName, taskIndex) {
@@ -1111,6 +1398,263 @@ function saveSchengenApplications() {
 		tasks: uni.tasks,
 	}));
 	localStorage.setItem('schengen-applications', JSON.stringify(dataToSave));
+}
+
+// SCHOLARSHIP TRACKING FUNCTIONS
+function getDefaultScholarshipTasks() {
+	return [
+		{ task: 'Research eligibility requirements', completed: false },
+		{ task: 'Prepare motivation letter', completed: false },
+		{ task: 'Get recommendation letters', completed: false },
+		{ task: 'Gather academic transcripts', completed: false },
+		{ task: 'Complete online application', completed: false },
+		{ task: 'Submit before deadline', completed: false },
+	];
+}
+
+function displayScholarshipTracker() {
+	const container = document.getElementById('scholarship-tracker-list');
+	const summary = document.getElementById('scholarship-tracker-summary');
+	if (!container) return;
+
+	const tracked = localStorage.getItem('scholarship-applications');
+	const trackedScholarships = tracked ? JSON.parse(tracked) : [];
+
+	if (trackedScholarships.length === 0) {
+		container.innerHTML = `
+			<div class="text-center py-8 text-gray-500 dark:text-gray-400">
+				<p class="text-4xl mb-2">📋</p>
+				<p>No scholarships tracked yet</p>
+				<p class="text-sm mt-1">Click "Track" on any scholarship below to start tracking</p>
+			</div>
+		`;
+		if (summary) summary.textContent = '0 tracked';
+		return;
+	}
+
+	if (summary) summary.textContent = `${trackedScholarships.length} tracked`;
+
+	container.innerHTML = trackedScholarships
+		.map((scholarship, index) => {
+			const completedTasks = scholarship.tasks.filter(
+				(t) => t.completed,
+			).length;
+			const totalTasks = scholarship.tasks.length;
+			const progress = Math.round((completedTasks / totalTasks) * 100);
+
+			const statusColors = {
+				not_started:
+					'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+				researching:
+					'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+				preparing:
+					'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
+				submitted:
+					'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+				awarded:
+					'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
+				rejected:
+					'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
+			};
+
+			const statusColor =
+				statusColors[scholarship.status] || statusColors.not_started;
+
+			return `
+				<div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden" data-expanded="false">
+					<div class="p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="toggleProgressExpand(this)">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-3 flex-1 min-w-0">
+								<span class="expand-toggle text-gray-400 transition-transform text-sm">▶</span>
+								<div class="min-w-0 flex-1">
+									<h4 class="font-semibold text-gray-900 dark:text-white truncate">${
+										scholarship.name
+									}</h4>
+									<div class="flex items-center gap-2 mt-1">
+										<span class="text-xs ${statusColor} px-2 py-0.5 rounded-full">${getStatusLabel(
+				scholarship.status,
+			)}</span>
+										<span class="text-xs text-gray-500 dark:text-gray-400">${completedTasks}/${totalTasks} tasks</span>
+									</div>
+								</div>
+							</div>
+							<div class="flex items-center gap-2">
+								<div class="w-16 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+									<div class="h-full bg-teal-500 rounded-full transition-all" style="width: ${progress}%"></div>
+								</div>
+								<span class="text-xs font-medium text-gray-600 dark:text-gray-300 w-8">${progress}%</span>
+							</div>
+						</div>
+					</div>
+					<div class="hidden border-t border-gray-200 dark:border-gray-600">
+						<div class="p-4 space-y-3">
+							<div class="flex items-center gap-2 mb-3">
+								<label class="text-xs text-gray-500 dark:text-gray-400">Status:</label>
+								<select onchange="changeScholarshipStatus('${scholarship.name}', this.value)"
+									class="text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+									<option value="not_started" ${
+										scholarship.status === 'not_started'
+											? 'selected'
+											: ''
+									}>Not Started</option>
+									<option value="researching" ${
+										scholarship.status === 'researching'
+											? 'selected'
+											: ''
+									}>Researching</option>
+									<option value="preparing" ${
+										scholarship.status === 'preparing'
+											? 'selected'
+											: ''
+									}>Preparing</option>
+									<option value="submitted" ${
+										scholarship.status === 'submitted'
+											? 'selected'
+											: ''
+									}>Submitted</option>
+									<option value="awarded" ${
+										scholarship.status === 'awarded'
+											? 'selected'
+											: ''
+									}>Awarded</option>
+									<option value="rejected" ${
+										scholarship.status === 'rejected'
+											? 'selected'
+											: ''
+									}>Rejected</option>
+								</select>
+							</div>
+							${scholarship.tasks
+								.map(
+									(task, taskIndex) => `
+								<label class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600/50 cursor-pointer">
+									<input type="checkbox" ${task.completed ? 'checked' : ''}
+										onchange="toggleScholarshipTask('${scholarship.name}', ${taskIndex})"
+										class="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+									<span class="${
+										task.completed
+											? 'line-through text-gray-400 dark:text-gray-500'
+											: 'text-gray-700 dark:text-gray-300'
+									} text-sm">${task.task}</span>
+								</label>
+							`,
+								)
+								.join('')}
+							<button onclick="untrackScholarship('${scholarship.name}')"
+								class="mt-3 w-full py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+								🗑️ Remove from Tracker
+							</button>
+						</div>
+					</div>
+				</div>
+			`;
+		})
+		.join('');
+}
+
+function trackScholarship(scholarshipName) {
+	const tracked = localStorage.getItem('scholarship-applications');
+	const trackedScholarships = tracked ? JSON.parse(tracked) : [];
+
+	const alreadyTracked = trackedScholarships.find(
+		(s) => s.name === scholarshipName,
+	);
+	if (alreadyTracked) {
+		if (typeof notificationManager !== 'undefined') {
+			notificationManager.showInAppNotification(
+				'This scholarship is already being tracked!',
+				'info',
+				3000,
+			);
+		}
+		return;
+	}
+
+	trackedScholarships.push({
+		name: scholarshipName,
+		status: 'not_started',
+		tasks: getDefaultScholarshipTasks(),
+	});
+
+	localStorage.setItem(
+		'scholarship-applications',
+		JSON.stringify(trackedScholarships),
+	);
+	displayScholarshipTracker();
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`📋 Now tracking ${scholarshipName}`,
+			'success',
+			3000,
+		);
+	}
+}
+
+function untrackScholarship(scholarshipName) {
+	const tracked = localStorage.getItem('scholarship-applications');
+	let trackedScholarships = tracked ? JSON.parse(tracked) : [];
+	trackedScholarships = trackedScholarships.filter(
+		(s) => s.name !== scholarshipName,
+	);
+	localStorage.setItem(
+		'scholarship-applications',
+		JSON.stringify(trackedScholarships),
+	);
+	displayScholarshipTracker();
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`Removed ${scholarshipName} from tracker`,
+			'info',
+			3000,
+		);
+	}
+}
+
+function toggleScholarshipTask(scholarshipName, taskIndex) {
+	const tracked = localStorage.getItem('scholarship-applications');
+	const trackedScholarships = tracked ? JSON.parse(tracked) : [];
+
+	const scholarship = trackedScholarships.find(
+		(s) => s.name === scholarshipName,
+	);
+	if (!scholarship) return;
+
+	scholarship.tasks[taskIndex].completed =
+		!scholarship.tasks[taskIndex].completed;
+	localStorage.setItem(
+		'scholarship-applications',
+		JSON.stringify(trackedScholarships),
+	);
+	displayScholarshipTracker();
+}
+
+function changeScholarshipStatus(scholarshipName, newStatus) {
+	const tracked = localStorage.getItem('scholarship-applications');
+	const trackedScholarships = tracked ? JSON.parse(tracked) : [];
+
+	const scholarship = trackedScholarships.find(
+		(s) => s.name === scholarshipName,
+	);
+	if (!scholarship) return;
+
+	scholarship.status = newStatus;
+	localStorage.setItem(
+		'scholarship-applications',
+		JSON.stringify(trackedScholarships),
+	);
+	displayScholarshipTracker();
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`✅ ${scholarshipName} status updated to ${getStatusLabel(
+				newStatus,
+			)}`,
+			'success',
+			3000,
+		);
+	}
 }
 
 // IELTS FUNCTIONS
@@ -1188,16 +1732,16 @@ function displayIELTSPlan() {
 			<div class="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-900/20 dark:to-teal-900/20 rounded-none sm:rounded-xl p-3 sm:p-4 border-y sm:border border-blue-200 dark:border-blue-800">
 				<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📚 Essential Resources for Band 8.0+</h4>
 				<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] sm:text-xs">
-					<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+					<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
 						<span>🎯</span> <span class="truncate">Official IELTS</span>
 					</a>
-					<a href="https://ieltsliz.com/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+					<a href="https://ieltsliz.com/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
 						<span>👩‍🏫</span> <span class="truncate">IELTS Liz</span>
 					</a>
-					<a href="https://takeielts.britishcouncil.org/take-ielts/prepare" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+					<a href="https://takeielts.britishcouncil.org/take-ielts/prepare" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
 						<span>🇬🇧</span> <span class="truncate">British Council</span>
 					</a>
-					<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+					<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
 						<span>▶️</span> <span class="truncate">E2 IELTS</span>
 					</a>
 				</div>

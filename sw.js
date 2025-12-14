@@ -1,10 +1,8 @@
-const CACHE_VERSION = 'study-abroad-v2.6';
+const CACHE_VERSION = 'study-abroad-v2.7';
 const CACHE_ASSETS = [
 	'/germany/',
 	'/germany/dashboard.html',
-	'/germany/dashboard.css',
 	'/germany/dashboard.js',
-	'/germany/enhancements.css',
 	'/germany/data-manager.js',
 	'/germany/notification-manager.js',
 	'/germany/analytics-manager.js',
@@ -15,8 +13,8 @@ const CACHE_ASSETS = [
 	'/germany/additional-schengen-cybersecurity-universities.json',
 	'/germany/master-plan.js',
 	'/germany/dashboard-band8-integration.js',
-	'/germany/dashboard-band8-styles.css',
 	'/germany/ielts-viewer.js',
+	'/germany/ielts-interactive.js',
 	'/germany/app.js',
 ];
 
@@ -99,3 +97,91 @@ self.addEventListener('fetch', (event) => {
 		}),
 	);
 });
+
+// Push notification event
+self.addEventListener('push', (event) => {
+	let data = {
+		title: 'Study Abroad Reminder',
+		body: 'Check your deadlines!',
+	};
+
+	if (event.data) {
+		try {
+			data = event.data.json();
+		} catch (e) {
+			data.body = event.data.text();
+		}
+	}
+
+	const options = {
+		body: data.body,
+		icon: '/germany/favicon.svg',
+		badge: '/germany/favicon.svg',
+		vibrate: [200, 100, 200],
+		tag: data.tag || 'study-abroad-notification',
+		requireInteraction: true,
+		actions: [
+			{ action: 'open', title: '📖 Open App' },
+			{ action: 'dismiss', title: '✕ Dismiss' },
+		],
+		data: {
+			url: data.url || '/germany/dashboard.html',
+		},
+	};
+
+	event.waitUntil(self.registration.showNotification(data.title, options));
+});
+
+// Notification click event
+self.addEventListener('notificationclick', (event) => {
+	event.notification.close();
+
+	if (event.action === 'dismiss') {
+		return;
+	}
+
+	const urlToOpen = event.notification.data?.url || '/germany/dashboard.html';
+
+	event.waitUntil(
+		clients
+			.matchAll({ type: 'window', includeUncontrolled: true })
+			.then((windowClients) => {
+				// Check if app is already open
+				for (const client of windowClients) {
+					if (client.url.includes('/germany/') && 'focus' in client) {
+						return client.focus();
+					}
+				}
+				// Open new window
+				if (clients.openWindow) {
+					return clients.openWindow(urlToOpen);
+				}
+			}),
+	);
+});
+
+// Background sync for checking deadlines
+self.addEventListener('sync', (event) => {
+	if (event.tag === 'check-deadlines') {
+		event.waitUntil(checkDeadlinesInBackground());
+	}
+});
+
+async function checkDeadlinesInBackground() {
+	// This runs in background to check deadlines
+	const scheduled = JSON.parse(
+		localStorage.getItem('scheduled-notifications') || '[]',
+	);
+	const now = Date.now();
+
+	for (const notif of scheduled) {
+		if (!notif.shown && notif.scheduledTime <= now) {
+			await self.registration.showNotification(notif.title, {
+				body: notif.body,
+				icon: '/germany/favicon.svg',
+				tag: notif.tag,
+				requireInteraction: true,
+			});
+		}
+	}
+}

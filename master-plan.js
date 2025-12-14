@@ -34,7 +34,7 @@ const MASTER_PLAN = {
 		},
 	},
 
-	// 15-Day IELTS ULTRA-INTENSIVE Schedule
+	// 15-Day IELTS ULTRA-INTENSIVE Schedule (with time slots)
 	ieltsSchedule: [
 		{
 			day: 1,
@@ -43,12 +43,39 @@ const MASTER_PLAN = {
 			focus: 'Diagnostic Test + Baseline Assessment',
 			hours: 14,
 			tasks: [
-				'Take Cambridge IELTS 18 Test 1 (full, timed)',
-				'Score yourself honestly',
-				'Identify weak areas per section',
-				'Register for IELTS exam (Dec 28)',
-				'Order Cambridge IELTS books 13-18',
-				'Set up ultra-intensive study schedule (13-15 hrs/day)',
+				{ time: '06:00-06:30', task: 'Wake up, breakfast, prepare' },
+				{
+					time: '06:30-09:30',
+					task: 'Take Cambridge IELTS 18 Test 1 (full, timed)',
+				},
+				{ time: '09:30-10:00', task: 'Break + light snack' },
+				{
+					time: '10:00-12:00',
+					task: 'Score yourself honestly + analyze mistakes',
+				},
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-15:00',
+					task: 'Identify weak areas per section (detailed notes)',
+				},
+				{ time: '15:00-15:30', task: 'Break' },
+				{
+					time: '15:30-17:00',
+					task: 'Register for IELTS exam (Dec 29)',
+				},
+				{
+					time: '17:00-18:00',
+					task: 'Order Cambridge IELTS books 13-18',
+				},
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-21:00',
+					task: 'Set up ultra-intensive study schedule',
+				},
+				{
+					time: '21:00-22:00',
+					task: 'Review plan + vocabulary flashcards',
+				},
 			],
 			targetScore: 'Establish baseline',
 		},
@@ -59,12 +86,39 @@ const MASTER_PLAN = {
 			focus: 'Vocabulary + Grammar Combined',
 			hours: 14,
 			tasks: [
-				'Learn 70 Band 8+ academic words (accelerated)',
-				'Write vocabulary in notebook + create example sentences',
-				'Review all complex grammar structures',
-				'Write 2 Task 2 essays (grammar + vocab focus)',
-				'Start DAAD motivation letter draft',
-				'Request recommendation letters',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-09:00',
+					task: 'Learn 35 Band 8+ academic words (Session 1)',
+				},
+				{ time: '09:00-09:30', task: 'Break' },
+				{
+					time: '09:30-12:00',
+					task: 'Write vocabulary in notebook + example sentences',
+				},
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-15:00',
+					task: 'Review complex grammar structures (conditionals, passive)',
+				},
+				{ time: '15:00-15:30', task: 'Break' },
+				{
+					time: '15:30-17:30',
+					task: 'Write Task 2 Essay #1 (timed 40 min) + self-review',
+				},
+				{ time: '17:30-18:30', task: 'Dinner break' },
+				{
+					time: '18:30-20:00',
+					task: 'Write Task 2 Essay #2 (timed 40 min) + self-review',
+				},
+				{
+					time: '20:00-21:00',
+					task: 'Learn 35 more Band 8+ words (Session 2)',
+				},
+				{
+					time: '21:00-22:00',
+					task: 'Start DAAD motivation letter draft',
+				},
 			],
 			targetScore: '70+ advanced words + zero grammar errors',
 		},
@@ -75,12 +129,40 @@ const MASTER_PLAN = {
 			focus: 'LISTENING Mastery - Target 37-39/40',
 			hours: 14,
 			tasks: [
-				'Cambridge 17 Listening Tests 1-2',
-				'Cambridge 16 Listening Tests 1-2',
-				'Analyze every mistake deeply',
-				'Practice note-taking at native speed',
-				'BBC Radio exposure (accent training)',
-				'Synonym matching drills',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Cambridge 17 Listening Test 1 (40 min + analysis)',
+				},
+				{
+					time: '08:00-09:30',
+					task: 'Cambridge 17 Listening Test 2 (40 min + analysis)',
+				},
+				{ time: '09:30-10:00', task: 'Break' },
+				{
+					time: '10:00-11:30',
+					task: 'Cambridge 16 Listening Test 1 (40 min + analysis)',
+				},
+				{
+					time: '11:30-13:00',
+					task: 'Cambridge 16 Listening Test 2 (40 min + analysis)',
+				},
+				{ time: '13:00-14:00', task: 'Lunch break' },
+				{
+					time: '14:00-16:00',
+					task: 'Analyze every mistake deeply (error journal)',
+				},
+				{ time: '16:00-16:30', task: 'Break' },
+				{
+					time: '16:30-18:30',
+					task: 'Practice note-taking at native speed',
+				},
+				{ time: '18:30-19:30', task: 'Dinner break' },
+				{
+					time: '19:30-21:00',
+					task: 'BBC Radio exposure (accent training)',
+				},
+				{ time: '21:00-22:00', task: 'Synonym matching drills' },
 			],
 			targetScore: 'L: 37-39/40',
 		},
@@ -91,12 +173,42 @@ const MASTER_PLAN = {
 			focus: 'READING Mastery - Target 37-39/40',
 			hours: 14,
 			tasks: [
-				'Cambridge 17 Reading Tests 1-2 (60 min strict)',
-				'Cambridge 16 Reading Tests 1-2',
-				'True/False/Not Given deep dive',
-				'Speed reading drills',
-				'Vocabulary from passages (50 words)',
-				'Time management optimization',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-07:30',
+					task: 'Cambridge 17 Reading Test 1 (60 min strict)',
+				},
+				{ time: '07:30-08:30', task: 'Analyze mistakes Test 1' },
+				{ time: '08:30-09:00', task: 'Break' },
+				{
+					time: '09:00-10:00',
+					task: 'Cambridge 17 Reading Test 2 (60 min strict)',
+				},
+				{ time: '10:00-11:00', task: 'Analyze mistakes Test 2' },
+				{
+					time: '11:00-12:00',
+					task: 'Cambridge 16 Reading Test 1 (60 min strict)',
+				},
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-14:00',
+					task: 'Analyze mistakes + Cambridge 16 Test 2',
+				},
+				{
+					time: '14:00-15:30',
+					task: 'True/False/Not Given deep dive techniques',
+				},
+				{ time: '15:30-16:00', task: 'Break' },
+				{ time: '16:00-18:00', task: 'Speed reading drills' },
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-20:30',
+					task: 'Vocabulary from passages (50 words)',
+				},
+				{
+					time: '20:30-22:00',
+					task: 'Time management optimization practice',
+				},
 			],
 			targetScore: 'R: 37-39/40 within 60 mins',
 		},
@@ -107,12 +219,55 @@ const MASTER_PLAN = {
 			focus: 'WRITING Task 1 + Task 2 Combined',
 			hours: 14,
 			tasks: [
-				'Study Band 8-9 Task 1 models',
-				'Write 4 Task 1 essays (all types)',
-				'Study Band 8-9 Task 2 models',
-				'Write 3 Task 2 essays',
-				'Get professional feedback (Fiverr)',
-				'Complex grammar structures practice',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Study Band 8-9 Task 1 models (graphs, charts)',
+				},
+				{
+					time: '08:00-09:00',
+					task: 'Write Task 1 Essay #1 (20 min) + self-review',
+				},
+				{ time: '09:00-09:30', task: 'Break' },
+				{
+					time: '09:30-10:30',
+					task: 'Write Task 1 Essay #2 (process diagram)',
+				},
+				{
+					time: '10:30-11:30',
+					task: 'Write Task 1 Essay #3 (map/comparison)',
+				},
+				{
+					time: '11:30-12:30',
+					task: 'Write Task 1 Essay #4 (multiple graphs)',
+				},
+				{ time: '12:30-13:30', task: 'Lunch break' },
+				{
+					time: '13:30-15:00',
+					task: 'Study Band 8-9 Task 2 models (essay types)',
+				},
+				{ time: '15:00-15:30', task: 'Break' },
+				{
+					time: '15:30-16:30',
+					task: 'Write Task 2 Essay #1 (40 min timed)',
+				},
+				{
+					time: '16:30-17:30',
+					task: 'Write Task 2 Essay #2 (40 min timed)',
+				},
+				{ time: '17:30-18:30', task: 'Dinner break' },
+				{
+					time: '18:30-19:30',
+					task: 'Write Task 2 Essay #3 (40 min timed)',
+				},
+				{
+					time: '19:30-21:00',
+					task: 'Get professional feedback (Fiverr/submit)',
+				},
+				{
+					time: '21:00-22:00',
+					task: 'Complex grammar structures practice',
+				},
 			],
 			targetScore: 'W: Band 8.0+',
 		},
@@ -123,12 +278,43 @@ const MASTER_PLAN = {
 			focus: 'SPEAKING Parts 1, 2 & 3 Combined',
 			hours: 14,
 			tasks: [
-				'Study Band 8-9 speaking videos',
-				'Practice 50 Part 1 topics (record)',
-				'Prepare 20 cue cards (Part 2)',
-				'Practice 50 Part 3 abstract questions',
-				'Record all answers and self-evaluate',
-				'iTalki practice session (if possible)',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Study Band 8-9 speaking videos (YouTube)',
+				},
+				{
+					time: '08:00-10:00',
+					task: 'Practice 25 Part 1 topics (record answers)',
+				},
+				{ time: '10:00-10:30', task: 'Break' },
+				{
+					time: '10:30-12:30',
+					task: 'Practice 25 more Part 1 topics (record)',
+				},
+				{ time: '12:30-13:30', task: 'Lunch break' },
+				{
+					time: '13:30-15:30',
+					task: 'Prepare 10 cue cards (Part 2) with notes',
+				},
+				{ time: '15:30-16:00', task: 'Break' },
+				{
+					time: '16:00-18:00',
+					task: 'Prepare 10 more cue cards (Part 2)',
+				},
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-20:30',
+					task: 'Practice 50 Part 3 abstract questions (record)',
+				},
+				{
+					time: '20:30-21:30',
+					task: 'Self-evaluate all recorded answers',
+				},
+				{
+					time: '21:30-22:30',
+					task: 'iTalki practice session (if scheduled)',
+				},
 			],
 			targetScore: 'S: Band 8.0+',
 		},
@@ -139,12 +325,45 @@ const MASTER_PLAN = {
 			focus: 'Listening + Reading Combined',
 			hours: 14,
 			tasks: [
-				'Cambridge 15 Listening Tests 1-3',
-				'Cambridge 15 Reading Tests 1-3',
-				'Error pattern analysis',
-				'Speed drills for both sections',
-				'Vocabulary review (200+ words total)',
-				'Timed practice under pressure',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Cambridge 15 Listening Test 1 + analysis',
+				},
+				{
+					time: '08:00-09:30',
+					task: 'Cambridge 15 Listening Test 2 + analysis',
+				},
+				{ time: '09:30-10:00', task: 'Break' },
+				{
+					time: '10:00-11:30',
+					task: 'Cambridge 15 Listening Test 3 + analysis',
+				},
+				{
+					time: '11:30-12:30',
+					task: 'Cambridge 15 Reading Test 1 (60 min)',
+				},
+				{ time: '12:30-13:30', task: 'Lunch break' },
+				{
+					time: '13:30-14:30',
+					task: 'Cambridge 15 Reading Test 2 (60 min)',
+				},
+				{
+					time: '14:30-15:30',
+					task: 'Cambridge 15 Reading Test 3 (60 min)',
+				},
+				{ time: '15:30-16:00', task: 'Break' },
+				{
+					time: '16:00-17:30',
+					task: 'Error pattern analysis (L+R combined)',
+				},
+				{ time: '17:30-18:30', task: 'Speed drills for both sections' },
+				{ time: '18:30-19:30', task: 'Dinner break' },
+				{
+					time: '19:30-21:00',
+					task: 'Vocabulary review (200+ words total)',
+				},
+				{ time: '21:00-22:00', task: 'Timed practice under pressure' },
 			],
 			targetScore: 'L+R: Both 37-39/40',
 		},
@@ -155,12 +374,51 @@ const MASTER_PLAN = {
 			focus: 'FULL MOCK TEST #1',
 			hours: 14,
 			tasks: [
-				'Cambridge IELTS 14 (all sections, timed)',
-				'Score strictly',
-				'Deep analysis of all mistakes',
-				'Calculate band scores',
-				'Identify remaining gaps',
-				'Create targeted improvement plan',
+				{
+					time: '06:00-06:30',
+					task: 'Wake up, light breakfast (exam simulation)',
+				},
+				{
+					time: '06:30-07:15',
+					task: 'MOCK Listening (40 min - exam conditions)',
+				},
+				{
+					time: '07:15-08:15',
+					task: 'MOCK Reading (60 min - exam conditions)',
+				},
+				{
+					time: '08:15-09:15',
+					task: 'MOCK Writing (60 min - exam conditions)',
+				},
+				{ time: '09:15-09:30', task: 'Short break' },
+				{
+					time: '09:30-10:00',
+					task: 'MOCK Speaking (simulate with timer)',
+				},
+				{ time: '10:00-11:00', task: 'Score Listening strictly' },
+				{ time: '11:00-12:00', task: 'Score Reading strictly' },
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-15:00',
+					task: 'Deep analysis - Listening mistakes',
+				},
+				{
+					time: '15:00-17:00',
+					task: 'Deep analysis - Reading mistakes',
+				},
+				{
+					time: '17:00-18:00',
+					task: 'Deep analysis - Writing (use rubric)',
+				},
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-20:30',
+					task: 'Calculate band scores + identify gaps',
+				},
+				{
+					time: '20:30-22:00',
+					task: 'Create targeted improvement plan',
+				},
 			],
 			targetScore: 'Overall: 7.5-8.0 minimum',
 		},
@@ -171,12 +429,39 @@ const MASTER_PLAN = {
 			focus: 'Weakest Section Intensive',
 			hours: 14,
 			tasks: [
-				'Focus 10 hours on weakest section from Mock #1',
-				'If Listening: 8-10 tests',
-				'If Reading: 8-10 passages',
-				'If Writing: 6-8 essays with feedback',
-				'If Speaking: 30+ recorded responses',
-				'Vocabulary mastery (1000+ words total)',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:30',
+					task: 'Weakest section practice (Session 1)',
+				},
+				{
+					time: '08:30-10:30',
+					task: 'Weakest section practice (Session 2)',
+				},
+				{ time: '10:30-11:00', task: 'Break' },
+				{
+					time: '11:00-13:00',
+					task: 'Weakest section practice (Session 3)',
+				},
+				{ time: '13:00-14:00', task: 'Lunch break' },
+				{
+					time: '14:00-16:00',
+					task: 'Weakest section practice (Session 4)',
+				},
+				{ time: '16:00-16:30', task: 'Break' },
+				{
+					time: '16:30-18:30',
+					task: 'Weakest section practice (Session 5)',
+				},
+				{ time: '18:30-19:30', task: 'Dinner break' },
+				{
+					time: '19:30-21:00',
+					task: 'Error analysis + technique refinement',
+				},
+				{
+					time: '21:00-22:00',
+					task: 'Vocabulary mastery review (1000+ words)',
+				},
 			],
 			targetScore: 'Weak section → 8.0+',
 		},
@@ -187,12 +472,56 @@ const MASTER_PLAN = {
 			focus: 'Writing Perfection + Speaking Fluency',
 			hours: 14,
 			tasks: [
-				'Write 4 Task 1 essays (perfect structure)',
-				'Write 4 Task 2 essays (complex arguments)',
-				'Get all essays reviewed',
-				'Practice 40 speaking questions',
-				'Record and analyze fluency',
-				'Grammar error elimination',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-07:30',
+					task: 'Write Task 1 Essay #1 (graph) + self-review',
+				},
+				{
+					time: '07:30-08:30',
+					task: 'Write Task 1 Essay #2 (process) + self-review',
+				},
+				{ time: '08:30-09:00', task: 'Break' },
+				{
+					time: '09:00-10:00',
+					task: 'Write Task 1 Essay #3 (map) + self-review',
+				},
+				{
+					time: '10:00-11:00',
+					task: 'Write Task 1 Essay #4 (table) + self-review',
+				},
+				{
+					time: '11:00-12:30',
+					task: 'Write Task 2 Essay #1 (opinion) - 40 min',
+				},
+				{ time: '12:30-13:30', task: 'Lunch break' },
+				{
+					time: '13:30-14:30',
+					task: 'Write Task 2 Essay #2 (discuss both views)',
+				},
+				{
+					time: '14:30-15:30',
+					task: 'Write Task 2 Essay #3 (problem-solution)',
+				},
+				{ time: '15:30-16:00', task: 'Break' },
+				{
+					time: '16:00-17:00',
+					task: 'Write Task 2 Essay #4 (advantage-disadvantage)',
+				},
+				{ time: '17:00-18:00', task: 'Submit all 8 essays for review' },
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-20:30',
+					task: 'Practice 40 speaking questions (record)',
+				},
+				{
+					time: '20:30-21:30',
+					task: 'Analyze recorded fluency + grammar',
+				},
+				{
+					time: '21:30-22:00',
+					task: 'Grammar error elimination practice',
+				},
 			],
 			targetScore: 'W+S: Both Band 8.0+',
 		},
@@ -203,12 +532,54 @@ const MASTER_PLAN = {
 			focus: 'All Sections Combined Practice',
 			hours: 14,
 			tasks: [
-				'Cambridge 13 Listening Tests 1-2',
-				'Cambridge 13 Reading Tests 1-2',
-				'Write 2 complete Writing tests',
-				'Practice 20 speaking topics',
-				'Maintain sharpness in all areas',
-				'Review all common mistakes',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Cambridge 13 Listening Test 1 + analysis',
+				},
+				{
+					time: '08:00-09:30',
+					task: 'Cambridge 13 Listening Test 2 + analysis',
+				},
+				{ time: '09:30-10:00', task: 'Break' },
+				{
+					time: '10:00-11:00',
+					task: 'Cambridge 13 Reading Test 1 (60 min)',
+				},
+				{
+					time: '11:00-12:00',
+					task: 'Cambridge 13 Reading Test 2 (60 min)',
+				},
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-14:00',
+					task: 'Write complete Writing test #1 (Task 1 + 2)',
+				},
+				{
+					time: '14:00-15:00',
+					task: 'Write complete Writing test #2 (Task 1 + 2)',
+				},
+				{ time: '15:00-15:30', task: 'Break' },
+				{
+					time: '15:30-17:00',
+					task: 'Practice 20 speaking topics (Part 1, 2, 3)',
+				},
+				{
+					time: '17:00-18:00',
+					task: 'Maintain sharpness - quick drills all sections',
+				},
+				{
+					time: '18:00-19:00',
+					task: 'Dinner break + Christmas Eve prep',
+				},
+				{
+					time: '19:00-21:00',
+					task: 'Review all common mistakes (error journal)',
+				},
+				{
+					time: '21:00-22:00',
+					task: 'Light review + early rest (Christmas Eve)',
+				},
 			],
 			targetScore: 'All sections consistent 8.0+',
 		},
@@ -219,12 +590,39 @@ const MASTER_PLAN = {
 			focus: 'FULL MOCK TEST #2 + Christmas',
 			hours: 12,
 			tasks: [
-				'Cambridge IELTS 13 (all sections, exam conditions)',
-				'Score strictly',
-				'Compare with Mock #1 (improvement?)',
-				'Final gap identification',
-				'Celebrate Christmas (light evening)',
-				'SUBMIT DAAD APPLICATION (Deadline: Dec 28)',
+				{
+					time: '06:00-06:30',
+					task: 'Wake up, light breakfast (exam simulation)',
+				},
+				{
+					time: '06:30-07:15',
+					task: 'MOCK Listening - Cambridge 13 (40 min)',
+				},
+				{
+					time: '07:15-08:15',
+					task: 'MOCK Reading - Cambridge 13 (60 min)',
+				},
+				{
+					time: '08:15-09:15',
+					task: 'MOCK Writing (60 min - exam conditions)',
+				},
+				{
+					time: '09:15-09:45',
+					task: 'MOCK Speaking (simulate with timer)',
+				},
+				{ time: '09:45-10:00', task: 'Short break' },
+				{ time: '10:00-12:00', task: 'Score all sections strictly' },
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-15:00',
+					task: 'Compare with Mock #1 (improvement analysis)',
+				},
+				{ time: '15:00-16:00', task: 'Final gap identification' },
+				{ time: '16:00-17:00', task: 'SUBMIT DAAD APPLICATION' },
+				{
+					time: '17:00-22:00',
+					task: '🎄 Celebrate Christmas! (you earned it!)',
+				},
 			],
 			targetScore: 'Overall: 8.0-8.5 target',
 		},
@@ -235,12 +633,28 @@ const MASTER_PLAN = {
 			focus: 'Christmas - Light Review Only',
 			hours: 4,
 			tasks: [
-				'Review vocabulary flashcards (1000+ words)',
-				'Watch Band 8-9 videos',
-				'Light reading (2 passages)',
-				'Rest and mental preparation',
-				'Family time (you deserve it!)',
-				'Early sleep for recovery',
+				{
+					time: '09:00-10:00',
+					task: 'Sleep in! Wake up late, relaxed breakfast',
+				},
+				{
+					time: '10:00-11:00',
+					task: 'Review vocabulary flashcards (1000+ words)',
+				},
+				{
+					time: '11:00-12:00',
+					task: 'Watch Band 8-9 speaking videos (YouTube)',
+				},
+				{ time: '12:00-14:00', task: 'Lunch + Family time' },
+				{
+					time: '14:00-15:00',
+					task: 'Light reading (2 passages - relaxed pace)',
+				},
+				{
+					time: '15:00-21:00',
+					task: '🎄 Family time - REST (you deserve it!)',
+				},
+				{ time: '21:00-22:00', task: 'Early sleep for recovery' },
 			],
 			targetScore: 'Mental recovery + consolidation',
 		},
@@ -251,12 +665,51 @@ const MASTER_PLAN = {
 			focus: 'Fine-tuning All Sections',
 			hours: 12,
 			tasks: [
-				'2 listening tests (maintain sharpness)',
-				'2 reading passages (speed maintenance)',
-				'2 writing essays (both tasks)',
-				'Speaking fluency drills (15 topics)',
-				'Review all error patterns',
-				'Mental confidence building',
+				{ time: '06:00-06:30', task: 'Wake up, morning routine' },
+				{
+					time: '06:30-08:00',
+					task: 'Listening Test 1 (maintain sharpness)',
+				},
+				{
+					time: '08:00-09:30',
+					task: 'Listening Test 2 (maintain sharpness)',
+				},
+				{ time: '09:30-10:00', task: 'Break' },
+				{
+					time: '10:00-11:00',
+					task: 'Reading passage 1 (speed maintenance)',
+				},
+				{
+					time: '11:00-12:00',
+					task: 'Reading passage 2 (speed maintenance)',
+				},
+				{ time: '12:00-13:00', task: 'Lunch break' },
+				{
+					time: '13:00-14:00',
+					task: 'Write Task 1 essay (perfect structure)',
+				},
+				{
+					time: '14:00-15:00',
+					task: 'Write Task 2 essay (complex argument)',
+				},
+				{ time: '15:00-15:30', task: 'Break' },
+				{
+					time: '15:30-17:00',
+					task: 'Speaking fluency drills (15 topics - record)',
+				},
+				{
+					time: '17:00-18:00',
+					task: 'Review all error patterns (final check)',
+				},
+				{ time: '18:00-19:00', task: 'Dinner break' },
+				{
+					time: '19:00-20:30',
+					task: 'Mental confidence building + visualization',
+				},
+				{
+					time: '20:30-22:00',
+					task: 'Light review + early sleep preparation',
+				},
 			],
 			targetScore: 'Confidence at peak',
 		},
@@ -267,12 +720,42 @@ const MASTER_PLAN = {
 			focus: 'Final Rest Day Before Exam',
 			hours: 3,
 			tasks: [
-				'1 listening test only (ear sharpness)',
-				'Light vocabulary review (20 min)',
-				'Organize exam materials (ID, pencils, confirmation)',
-				'Pack everything for exam',
-				'Relaxation and visualization',
-				'EARLY SLEEP (9 PM) - Critical!',
+				{
+					time: '08:00-09:00',
+					task: 'Sleep in! Wake up naturally, relaxed',
+				},
+				{
+					time: '09:00-09:40',
+					task: '1 listening test only (ear sharpness)',
+				},
+				{
+					time: '09:40-10:00',
+					task: 'Light vocabulary review (20 min)',
+				},
+				{
+					time: '10:00-12:00',
+					task: 'Relax - watch a movie, go for a walk',
+				},
+				{ time: '12:00-13:00', task: 'Healthy lunch' },
+				{
+					time: '13:00-14:00',
+					task: 'Organize exam materials (ID, pencils, confirmation)',
+				},
+				{
+					time: '14:00-15:00',
+					task: 'Pack everything for exam + check venue location',
+				},
+				{
+					time: '15:00-18:00',
+					task: 'Complete relaxation - NO STUDYING!',
+				},
+				{ time: '18:00-19:00', task: 'Light dinner (nothing heavy)' },
+				{
+					time: '19:00-20:30',
+					task: 'Relaxation and positive visualization',
+				},
+				{ time: '20:30-21:00', task: 'Prepare clothes, final check' },
+				{ time: '21:00', task: '💤 EARLY SLEEP (9 PM) - Critical!' },
 			],
 			targetScore: 'Well-rested, fully prepared',
 		},
@@ -280,17 +763,40 @@ const MASTER_PLAN = {
 			day: 16,
 			date: '2025-12-29',
 			phase: 'EXAM DAY',
-			focus: 'CRUSH THE EXAM!',
+			focus: '🏆 CRUSH THE EXAM!',
 			hours: 0,
 			tasks: [
-				'Wake up 3 hours before exam',
-				'Healthy breakfast',
-				'Arrive 30 minutes early',
-				'Stay calm, trust your preparation',
-				'Remember all techniques',
-				'ACHIEVE BAND 8.0-8.5!',
+				{ time: '05:00-05:30', task: 'Wake up (3 hours before exam)' },
+				{ time: '05:30-06:15', task: 'Light exercise + shower' },
+				{
+					time: '06:15-07:00',
+					task: 'Healthy breakfast (protein + carbs)',
+				},
+				{ time: '07:00-07:30', task: 'Final review of key vocabulary' },
+				{ time: '07:30-08:00', task: 'Travel to exam venue' },
+				{
+					time: '08:00-08:30',
+					task: 'Arrive 30 minutes early, check-in',
+				},
+				{
+					time: '08:30-09:00',
+					task: 'Relax, stay calm, trust your preparation',
+				},
+				{
+					time: '09:00-12:00',
+					task: '📝 EXAM: Listening → Reading → Writing',
+				},
+				{
+					time: '12:00-14:00',
+					task: 'Lunch break + Speaking test prep',
+				},
+				{
+					time: '14:00-15:00',
+					task: '🎤 Speaking test - be confident!',
+				},
+				{ time: '15:00+', task: '🎉 CELEBRATE! You did it!' },
 			],
-			targetScore: 'Band 8.0-8.5 ACHIEVED!',
+			targetScore: '🏆 Band 8.0-8.5 ACHIEVED!',
 		},
 	],
 

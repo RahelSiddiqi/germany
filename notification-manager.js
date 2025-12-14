@@ -15,6 +15,11 @@ class NotificationManager {
 		}
 		// Set up daily study reminder check
 		this.checkStudyReminders();
+
+		// Schedule task reminders after a short delay (to ensure other modules are loaded)
+		setTimeout(() => {
+			this.scheduleTaskReminders();
+		}, 2000);
 	}
 
 	async requestPermission() {
@@ -47,16 +52,25 @@ class NotificationManager {
 		const settings = this.getStudyReminderSettings();
 		if (!settings.enabled) return;
 
-		// Check IELTS study reminder
+		// Check IELTS study reminder with current task
 		if (settings.ieltsReminder) {
-			const lastStudy = localStorage.getItem('ielts-last-study-date');
-			const today = new Date().toDateString();
-			if (lastStudy !== today) {
+			const currentTask = this.getCurrentScheduledTask();
+			if (currentTask) {
 				this.showInAppNotification(
-					'📚 Time for IELTS practice! Keep your streak going.',
+					`📚 Current Task (${currentTask.time}): ${currentTask.task}`,
 					'info',
-					8000,
+					10000,
 				);
+			} else {
+				const lastStudy = localStorage.getItem('ielts-last-study-date');
+				const today = new Date().toDateString();
+				if (lastStudy !== today) {
+					this.showInAppNotification(
+						'📚 Time for IELTS practice! Keep your streak going.',
+						'info',
+						8000,
+					);
+				}
 			}
 		}
 
@@ -78,6 +92,176 @@ class NotificationManager {
 				);
 			}
 		}
+	}
+
+	// Get current scheduled task based on time of day
+	getCurrentScheduledTask() {
+		if (
+			typeof MASTER_PLAN === 'undefined' ||
+			typeof band8Dashboard === 'undefined'
+		) {
+			return null;
+		}
+
+		const currentDay = band8Dashboard.getActualDay();
+		const dayData = band8Dashboard.getDayData(currentDay);
+		if (!dayData || !dayData.tasks) return null;
+
+		const now = new Date();
+		const currentHour = now.getHours();
+		const currentMinute = now.getMinutes();
+		const currentTimeMinutes = currentHour * 60 + currentMinute;
+
+		// Find the current task based on time
+		for (const taskItem of dayData.tasks) {
+			if (typeof taskItem === 'object' && taskItem.time) {
+				// Parse time like "06:30-08:00" or "21:00"
+				const timeMatch = taskItem.time.match(
+					/(\d{2}):(\d{2})(?:-(\d{2}):(\d{2}))?/,
+				);
+				if (timeMatch) {
+					const startHour = parseInt(timeMatch[1]);
+					const startMinute = parseInt(timeMatch[2]);
+					const endHour = timeMatch[3]
+						? parseInt(timeMatch[3])
+						: startHour + 1;
+					const endMinute = timeMatch[4]
+						? parseInt(timeMatch[4])
+						: startMinute;
+
+					const startMinutes = startHour * 60 + startMinute;
+					const endMinutes = endHour * 60 + endMinute;
+
+					if (
+						currentTimeMinutes >= startMinutes &&
+						currentTimeMinutes < endMinutes
+					) {
+						return {
+							time: taskItem.time,
+							task: taskItem.task,
+							day: currentDay,
+						};
+					}
+				}
+			}
+		}
+
+		// Return next upcoming task if no current task
+		return this.getNextScheduledTask();
+	}
+
+	// Get next upcoming task
+	getNextScheduledTask() {
+		if (
+			typeof MASTER_PLAN === 'undefined' ||
+			typeof band8Dashboard === 'undefined'
+		) {
+			return null;
+		}
+
+		const currentDay = band8Dashboard.getActualDay();
+		const dayData = band8Dashboard.getDayData(currentDay);
+		if (!dayData || !dayData.tasks) return null;
+
+		const now = new Date();
+		const currentHour = now.getHours();
+		const currentMinute = now.getMinutes();
+		const currentTimeMinutes = currentHour * 60 + currentMinute;
+
+		// Find the next task
+		for (const taskItem of dayData.tasks) {
+			if (typeof taskItem === 'object' && taskItem.time) {
+				const timeMatch = taskItem.time.match(/(\d{2}):(\d{2})/);
+				if (timeMatch) {
+					const startHour = parseInt(timeMatch[1]);
+					const startMinute = parseInt(timeMatch[2]);
+					const startMinutes = startHour * 60 + startMinute;
+
+					if (startMinutes > currentTimeMinutes) {
+						return {
+							time: taskItem.time,
+							task: taskItem.task,
+							day: currentDay,
+							isNext: true,
+						};
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	// Schedule task reminders for the day (for mobile notifications)
+	scheduleTaskReminders() {
+		if (
+			typeof MASTER_PLAN === 'undefined' ||
+			typeof band8Dashboard === 'undefined'
+		) {
+			return;
+		}
+
+		const currentDay = band8Dashboard.getActualDay();
+		const dayData = band8Dashboard.getDayData(currentDay);
+		if (!dayData || !dayData.tasks) return;
+
+		const now = new Date();
+		const today = now.toDateString();
+		const scheduledKey = `task-reminders-scheduled-${today}`;
+
+		// Don't reschedule if already done today
+		if (localStorage.getItem(scheduledKey)) return;
+
+		dayData.tasks.forEach((taskItem, index) => {
+			if (typeof taskItem === 'object' && taskItem.time) {
+				const timeMatch = taskItem.time.match(/(\d{2}):(\d{2})/);
+				if (timeMatch) {
+					const startHour = parseInt(timeMatch[1]);
+					const startMinute = parseInt(timeMatch[2]);
+
+					const taskTime = new Date();
+					taskTime.setHours(startHour, startMinute, 0, 0);
+
+					// Only schedule if in the future
+					if (taskTime > now) {
+						// Schedule 5 minutes before
+						const reminderTime = new Date(
+							taskTime.getTime() - 5 * 60 * 1000,
+						);
+
+						const delay = reminderTime.getTime() - now.getTime();
+						if (delay > 0) {
+							setTimeout(() => {
+								this.sendTaskReminder(
+									taskItem,
+									currentDay,
+									index,
+								);
+							}, delay);
+						}
+					}
+				}
+			}
+		});
+
+		localStorage.setItem(scheduledKey, 'true');
+		console.log('📅 Task reminders scheduled for Day', currentDay);
+	}
+
+	// Send task reminder (both in-app and push)
+	sendTaskReminder(taskItem, day, taskIndex) {
+		const taskText =
+			typeof taskItem === 'object' ? taskItem.task : taskItem;
+		const taskTime = typeof taskItem === 'object' ? taskItem.time : '';
+
+		const title = `⏰ IELTS Day ${day} - Next Task`;
+		const body = taskTime ? `${taskTime}: ${taskText}` : taskText;
+
+		// Show in-app notification
+		this.showInAppNotification(body, 'info', 15000);
+
+		// Send system/push notification
+		this.sendSystemNotification(title, body, 'task-reminder');
 	}
 
 	// Mark IELTS study for today
@@ -215,7 +399,15 @@ class NotificationManager {
 		}
 
 		const notification = document.createElement('div');
-		notification.className = `notification notification-${type}`;
+
+		// Define colors based on type
+		const colors = {
+			info: 'bg-blue-600 border-blue-700',
+			success: 'bg-green-600 border-green-700',
+			warning: 'bg-amber-500 border-amber-600',
+			error: 'bg-red-600 border-red-700',
+			deadline: 'bg-red-600 border-red-700',
+		};
 
 		const icons = {
 			info: 'ℹ️',
@@ -225,10 +417,16 @@ class NotificationManager {
 			deadline: '⏰',
 		};
 
+		notification.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border-2 text-white font-medium text-sm animate-slide-in ${
+			colors[type] || colors.info
+		}`;
+		notification.style.cssText =
+			'animation: slideIn 0.3s ease-out; margin-bottom: 8px;';
+
 		notification.innerHTML = `
-			<span class="notification-icon">${icons[type] || icons.info}</span>
-			<span class="notification-message">${message}</span>
-			<button class="notification-close" onclick="this.parentElement.remove()">×</button>
+			<span class="text-xl flex-shrink-0">${icons[type] || icons.info}</span>
+			<span class="flex-1">${message}</span>
+			<button onclick="this.parentElement.remove()" class="ml-2 text-white/80 hover:text-white text-xl font-bold leading-none">&times;</button>
 		`;
 
 		container.appendChild(notification);
@@ -236,7 +434,9 @@ class NotificationManager {
 		// Auto-remove after duration
 		if (duration > 0) {
 			setTimeout(() => {
+				notification.style.animation = 'slideOut 0.3s ease-in';
 				notification.style.opacity = '0';
+				notification.style.transform = 'translateX(100%)';
 				setTimeout(() => notification.remove(), 300);
 			}, duration);
 		}
@@ -248,9 +448,121 @@ class NotificationManager {
 		if (!document.getElementById('notification-container')) {
 			const container = document.createElement('div');
 			container.id = 'notification-container';
-			container.className = 'notification-container';
+			container.style.cssText =
+				'position: fixed; top: 16px; right: 16px; z-index: 9999; max-width: 360px; width: calc(100% - 32px);';
 			document.body.appendChild(container);
+
+			// Add animation styles
+			const style = document.createElement('style');
+			style.textContent = `
+				@keyframes slideIn {
+					from { transform: translateX(100%); opacity: 0; }
+					to { transform: translateX(0); opacity: 1; }
+				}
+				@keyframes slideOut {
+					from { transform: translateX(0); opacity: 1; }
+					to { transform: translateX(100%); opacity: 0; }
+				}
+			`;
+			document.head.appendChild(style);
 		}
+	}
+
+	// Schedule push notification (for mobile PWA)
+	async schedulePushNotification(title, body, scheduledTime, tag) {
+		// Check if service worker and push are supported
+		if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+			console.log('Push notifications not supported');
+			return false;
+		}
+
+		try {
+			const registration = await navigator.serviceWorker.ready;
+
+			// For immediate notification
+			if (!scheduledTime) {
+				this.showBrowserNotification(title, body, tag);
+				return true;
+			}
+
+			// Store scheduled notification
+			const scheduled = JSON.parse(
+				localStorage.getItem('scheduled-notifications') || '[]',
+			);
+			scheduled.push({
+				title,
+				body,
+				scheduledTime: scheduledTime.getTime(),
+				tag,
+				shown: false,
+			});
+			localStorage.setItem(
+				'scheduled-notifications',
+				JSON.stringify(scheduled),
+			);
+
+			return true;
+		} catch (error) {
+			console.error('Error scheduling notification:', error);
+			return false;
+		}
+	}
+
+	// Check and show scheduled notifications
+	checkScheduledNotifications() {
+		const scheduled = JSON.parse(
+			localStorage.getItem('scheduled-notifications') || '[]',
+		);
+		const now = Date.now();
+		let updated = false;
+
+		scheduled.forEach((notif, index) => {
+			if (!notif.shown && notif.scheduledTime <= now) {
+				this.showBrowserNotification(
+					notif.title,
+					notif.body,
+					notif.tag,
+				);
+				scheduled[index].shown = true;
+				updated = true;
+			}
+		});
+
+		if (updated) {
+			// Remove shown notifications older than 1 day
+			const filtered = scheduled.filter(
+				(n) => !n.shown || now - n.scheduledTime < 86400000,
+			);
+			localStorage.setItem(
+				'scheduled-notifications',
+				JSON.stringify(filtered),
+			);
+		}
+	}
+
+	// Schedule daily study reminder
+	scheduleDailyReminder(hour = 9, minute = 0) {
+		const settings = this.getStudyReminderSettings();
+		settings.reminderTime = `${hour.toString().padStart(2, '0')}:${minute
+			.toString()
+			.padStart(2, '0')}`;
+		this.saveStudyReminderSettings(settings);
+
+		// Calculate next reminder time
+		const now = new Date();
+		const nextReminder = new Date();
+		nextReminder.setHours(hour, minute, 0, 0);
+
+		if (nextReminder <= now) {
+			nextReminder.setDate(nextReminder.getDate() + 1);
+		}
+
+		return this.schedulePushNotification(
+			'📚 IELTS Study Reminder',
+			'Time for your daily IELTS practice! Consistency is key to Band 8+',
+			nextReminder,
+			'daily-study-reminder',
+		);
 	}
 
 	// Check and notify about upcoming deadlines
@@ -319,9 +631,36 @@ const notificationManager = new NotificationManager();
 // Check deadlines on page load
 setTimeout(() => {
 	notificationManager.checkDeadlinesAndNotify();
+	notificationManager.checkScheduledNotifications();
 }, 2000);
 
 // Check deadlines every 4 hours
 setInterval(() => {
 	notificationManager.checkDeadlinesAndNotify();
 }, 4 * 60 * 60 * 1000);
+
+// Check scheduled notifications every minute
+setInterval(() => {
+	notificationManager.checkScheduledNotifications();
+}, 60 * 1000);
+
+// Request notification permission on user interaction
+document.addEventListener(
+	'click',
+	function requestNotifPermission() {
+		if ('Notification' in window && Notification.permission === 'default') {
+			Notification.requestPermission();
+		}
+		document.removeEventListener('click', requestNotifPermission);
+	},
+	{ once: true },
+);
+
+// Register for background sync if supported
+if ('serviceWorker' in navigator && 'SyncManager' in window) {
+	navigator.serviceWorker.ready
+		.then((registration) => {
+			return registration.sync.register('check-deadlines');
+		})
+		.catch(console.error);
+}

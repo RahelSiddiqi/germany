@@ -82,8 +82,40 @@ const IELTS_FOLDERS = {
 	d15: { name: 'Day 15', icon: '📅', files: ['final-prep.md'] },
 };
 
+// Get ordered folder keys
+const FOLDER_ORDER = Object.keys(IELTS_FOLDERS);
+
 let currentFolder = null;
 let currentFile = null;
+
+// Navigate to previous/next day
+function navigateIELTSDay(direction) {
+	if (!currentFolder) return;
+
+	const currentIndex = FOLDER_ORDER.indexOf(currentFolder);
+	const newIndex = currentIndex + direction;
+
+	if (newIndex >= 0 && newIndex < FOLDER_ORDER.length) {
+		openIELTSFolder(FOLDER_ORDER[newIndex]);
+	}
+}
+
+// Update navigation button states
+function updateDayNavButtons() {
+	const prevBtn = document.getElementById('ielts-prev-day');
+	const nextBtn = document.getElementById('ielts-next-day');
+
+	if (!currentFolder) return;
+
+	const currentIndex = FOLDER_ORDER.indexOf(currentFolder);
+
+	if (prevBtn) {
+		prevBtn.disabled = currentIndex <= 0;
+	}
+	if (nextBtn) {
+		nextBtn.disabled = currentIndex >= FOLDER_ORDER.length - 1;
+	}
+}
 
 // Initialize folder view when page loads
 function initIELTSPractice() {
@@ -146,6 +178,9 @@ async function openIELTSFolder(folderId) {
 
 	if (container) container.style.display = 'none';
 	if (fileList) fileList.style.display = 'block';
+
+	// Update navigation buttons
+	updateDayNavButtons();
 	if (folderName) folderName.textContent = folder.name;
 
 	let files = folder.files;
