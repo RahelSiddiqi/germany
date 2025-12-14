@@ -995,8 +995,6 @@ div[style*='background: #f3e5f5'] {
 	color: var(--text);
 	border: 1px solid var(--border);
 	border-radius: 12px;
-	padding: 20px;
-	margin-top: 16px;
 }
 
 .md-content h1,
@@ -1296,7 +1294,6 @@ div[style*='background: #f3e5f5'] {
 @media (max-width: 768px) {
 	/* Main content - remove top padding gap */
 	.main-content {
-		padding: 12px !important;
 		margin-top: 49px !important;
 	}
 
