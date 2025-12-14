@@ -2,14 +2,21 @@
 let germanyUniversities = [];
 let schengenUniversities = [];
 let scholarshipGuide = null;
+let dataLoaded = false;
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
-	loadAllData();
-	updateDashboardStats();
-	// Restore last page or default to band8-tracker
-	const savedPage = localStorage.getItem('currentPage') || 'band8-tracker';
+document.addEventListener('DOMContentLoaded', async () => {
+	// Load data first, then show page
+	await loadAllData();
+	dataLoaded = true;
+	
+	// Restore last page or check URL hash or default to band8-tracker
+	const hash = window.location.hash.replace('#', '');
+	const savedPage = hash || localStorage.getItem('currentPage') || 'band8-tracker';
 	showPage(savedPage);
+	
+	updateDashboardStats();
+	
 	// Update storage display
 	if (typeof updateStorageDisplay === 'function') {
 		updateStorageDisplay();
@@ -17,6 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Update analytics
 	if (typeof updateAnalyticsPage === 'function') {
 		updateAnalyticsPage();
+	}
+});
+
+// Handle hash change (back/forward navigation)
+window.addEventListener('hashchange', () => {
+	const hash = window.location.hash.replace('#', '');
+	if (hash && dataLoaded) {
+		showPage(hash);
 	}
 });
 
