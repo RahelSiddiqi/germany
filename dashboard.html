@@ -15,8 +15,55 @@
 		<link rel="stylesheet" href="dashboard.css" />
 		<link rel="stylesheet" href="enhancements.css" />
 		<link rel="stylesheet" href="dashboard-band8-styles.css" />
+		<style>
+			/* Loading screen - prevents flicker */
+			#loading-screen {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				z-index: 9999;
+				transition: opacity 0.3s ease;
+			}
+			#loading-screen.hidden {
+				opacity: 0;
+				pointer-events: none;
+			}
+			#loading-screen .spinner {
+				width: 50px;
+				height: 50px;
+				border: 4px solid rgba(255,255,255,0.3);
+				border-top-color: white;
+				border-radius: 50%;
+				animation: spin 1s linear infinite;
+			}
+			#loading-screen p {
+				color: white;
+				margin-top: 20px;
+				font-size: 18px;
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			}
+			@keyframes spin {
+				to { transform: rotate(360deg); }
+			}
+			/* Hide main content until loaded */
+			.main-content { opacity: 0; transition: opacity 0.3s ease; }
+			.main-content.loaded { opacity: 1; }
+		</style>
 	</head>
 	<body>
+		<!-- Loading Screen -->
+		<div id="loading-screen">
+			<div class="spinner"></div>
+			<p>Loading Dashboard...</p>
+		</div>
+
 		<nav class="navbar">
 			<div class="nav-container">
 				<h1 class="nav-logo">🎓 Study Abroad Hub</h1>

@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	if (typeof updateAnalyticsPage === 'function') {
 		updateAnalyticsPage();
 	}
+	
+	// Hide loading screen and show content
+	const loadingScreen = document.getElementById('loading-screen');
+	const mainContent = document.querySelector('.main-content');
+	if (loadingScreen) {
+		loadingScreen.classList.add('hidden');
+		setTimeout(() => loadingScreen.remove(), 300);
+	}
+	if (mainContent) {
+		mainContent.classList.add('loaded');
+	}
 });
 
 // Handle hash change (back/forward navigation)
