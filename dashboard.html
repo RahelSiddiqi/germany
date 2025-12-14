@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +12,27 @@
 		<title>Study Abroad Dashboard - Band 8.0-8.5 IELTS Plan</title>
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 		<link rel="manifest" href="manifest.json" />
+		<!-- Tailwind CSS + DaisyUI -->
+		<link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				darkMode: ['class', '[data-theme="dark"]'],
+				theme: {
+					extend: {
+						colors: {
+							primary: '#667eea',
+							secondary: '#764ba2',
+						}
+					}
+				}
+			}
+		</script>
+		<!-- Custom styles (override) -->
 		<link rel="stylesheet" href="dashboard.css" />
 		<link rel="stylesheet" href="enhancements.css" />
 		<link rel="stylesheet" href="dashboard-band8-styles.css" />
+		<link rel="stylesheet" href="modern-ui.css" />
 		<style>
 			/* Loading screen - prevents flicker */
 			#loading-screen {
@@ -166,9 +184,9 @@
 
 			<!-- Dashboard Page -->
 			<div id="dashboard" class="page">
-				<h2>📊 Dashboard Overview</h2>
+				<h2 class="text-2xl font-bold mb-6">📊 Dashboard Overview</h2>
 				<div class="stats-grid">
-					<div class="stat-card ielts">
+					<div class="stat-card card-modern ielts">
 						<div class="stat-icon">📝</div>
 						<div class="stat-info">
 							<h3>IELTS Progress</h3>
@@ -178,7 +196,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="stat-card germany">
+					<div class="stat-card card-modern germany">
 						<div class="stat-icon">🇩🇪</div>
 						<div class="stat-info">
 							<h3>Germany Apps</h3>
@@ -190,7 +208,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="stat-card schengen">
+					<div class="stat-card card-modern schengen">
 						<div class="stat-icon">🇪🇺</div>
 						<div class="stat-info">
 							<h3>Schengen Apps</h3>
@@ -411,14 +429,10 @@
 
 			<!-- Settings Page -->
 			<div id="settings" class="page">
-				<h2>⚙️ Settings & Data Management</h2>
-				<div class="settings-section">
-					<h3>☁️ Cloud Sync</h3>
-					<p
-						style="
-							color: var(--text-secondary);
-							margin-bottom: 16px;
-						">
+				<h2 class="text-2xl font-bold mb-6">⚙️ Settings & Data Management</h2>
+				<div class="settings-section card-modern mb-4">
+					<h3 class="text-lg font-semibold mb-4">☁️ Cloud Sync</h3>
+					<p class="text-gray-500 mb-4">
 						Sync your progress across all devices (mobile, desktop,
 						tablet)
 					</p>
@@ -435,7 +449,7 @@
 							<p>No account needed - works across devices</p>
 						</div>
 						<button
-							class="btn btn-primary"
+							class="btn-modern btn-primary-modern"
 							id="sync-button"
 							onclick="toggleCloudSync()">
 							☁️ Enable Cloud Sync
@@ -447,7 +461,7 @@
 							<p>For persistent sync with your account</p>
 						</div>
 						<button
-							class="btn btn-secondary"
+							class="btn-modern btn-secondary-modern"
 							onclick="signInWithGoogle()">
 							🔗 Google Sign In
 						</button>
@@ -458,7 +472,7 @@
 							<p>Force sync now</p>
 						</div>
 						<button
-							class="btn btn-secondary"
+							class="btn-modern btn-secondary-modern"
 							onclick="manualSync()">
 							🔄 Sync Now
 						</button>

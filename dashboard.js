@@ -1003,15 +1003,15 @@ function displayIELTSPlan() {
 		const completedClass = isChecked ? 'task-completed' : '';
 
 		if (time.startsWith('DAY')) {
-			return `<tr class="day-header"><td colspan="4"><b>${time}</b></td></tr>`;
+			return `<tr class="day-header bg-gradient-to-r from-primary/10 to-secondary/10"><td colspan="4"><b class="text-primary">${time}</b></td></tr>`;
 		}
 
 		return `
-            <tr class="${completedClass}" data-task-id="${id}">
-                <td><input type="checkbox" ${checked} onchange="toggleIELTSTask('${id}', this)"></td>
-                <td>${time}</td>
+            <tr class="${completedClass} hover:bg-base-200 transition-colors" data-task-id="${id}">
+                <td><input type="checkbox" class="checkbox checkbox-primary checkbox-sm" ${checked} onchange="toggleIELTSTask('${id}', this)"></td>
+                <td class="text-sm text-gray-500">${time}</td>
                 <td class="task-text">${task}</td>
-                <td>${duration}</td>
+                <td class="text-sm font-medium">${duration}</td>
             </tr>
         `;
 	};

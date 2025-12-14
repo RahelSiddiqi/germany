@@ -171,6 +171,10 @@ function checkDeadlinesManually() {
 function toggleDarkMode() {
 	document.body.classList.toggle('dark-mode');
 	const isDark = document.body.classList.contains('dark-mode');
+	
+	// Update DaisyUI theme
+	document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+	
 	localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
 	updateThemeButton();
 }
@@ -189,6 +193,9 @@ function loadDarkModePreference() {
 	const preference = localStorage.getItem('dark-mode');
 	if (preference === 'enabled') {
 		document.body.classList.add('dark-mode');
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.setAttribute('data-theme', 'light');
 	}
 }
 
