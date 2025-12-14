@@ -48,20 +48,76 @@ const IELTS_FOLDERS = {
 			'all-sounds-complete.md',
 		],
 	},
-	d2: { name: 'Day 2', icon: '📅', files: [] },
-	d3: { name: 'Day 3', icon: '📅', files: [] },
-	d4: { name: 'Day 4', icon: '📅', files: [] },
-	d5: { name: 'Day 5', icon: '📅', files: [] },
-	d6: { name: 'Day 6', icon: '📅', files: [] },
-	d7: { name: 'Day 7', icon: '📅', files: [] },
-	d8: { name: 'Day 8', icon: '📅', files: [] },
-	d9: { name: 'Day 9', icon: '📅', files: [] },
-	d10: { name: 'Day 10', icon: '📅', files: [] },
-	d11: { name: 'Day 11', icon: '📅', files: [] },
-	d12: { name: 'Day 12', icon: '📅', files: [] },
-	d13: { name: 'Day 13', icon: '📅', files: [] },
-	d14: { name: 'Day 14', icon: '📅', files: [] },
-	d15: { name: 'Day 15', icon: '📅', files: [] },
+	d2: {
+		name: 'Day 2',
+		icon: '📅',
+		files: ['vocab.md', 'reading-strategies.md', 'listening-strategies.md'],
+	},
+	d3: {
+		name: 'Day 3',
+		icon: '📅',
+		files: ['vocab.md', 'listening-practice.md'],
+	},
+	d4: {
+		name: 'Day 4',
+		icon: '📅',
+		files: ['vocab.md', 'reading-practice.md'],
+	},
+	d5: {
+		name: 'Day 5',
+		icon: '📅',
+		files: ['vocab.md', 'writing-task1.md', 'speaking-part2.md'],
+	},
+	d6: {
+		name: 'Day 6',
+		icon: '📅',
+		files: ['vocab.md', 'writing-task1-advanced.md'],
+	},
+	d7: {
+		name: 'Day 7',
+		icon: '📅',
+		files: ['vocab.md', 'writing-task2.md'],
+	},
+	d8: {
+		name: 'Day 8',
+		icon: '📅',
+		files: ['vocab.md', 'speaking-complete.md'],
+	},
+	d9: {
+		name: 'Day 9',
+		icon: '📅',
+		files: ['vocab.md', 'mixed-practice.md'],
+	},
+	d10: {
+		name: 'Day 10',
+		icon: '📅',
+		files: ['weakness-focus.md'],
+	},
+	d11: {
+		name: 'Day 11',
+		icon: '📅',
+		files: ['mock-test-1.md'],
+	},
+	d12: {
+		name: 'Day 12',
+		icon: '📅',
+		files: ['review-analysis.md'],
+	},
+	d13: {
+		name: 'Day 13',
+		icon: '📅',
+		files: ['vocab.md', 'targeted-practice.md'],
+	},
+	d14: {
+		name: 'Day 14',
+		icon: '📅',
+		files: ['mock-test-2.md'],
+	},
+	d15: {
+		name: 'Day 15',
+		icon: '📅',
+		files: ['final-prep.md'],
+	},
 };
 
 let currentFolder = null;
@@ -248,22 +304,31 @@ function parseVocabForQuiz(md) {
 	tableMatch.forEach((table) => {
 		const rows = table.split('\n').filter((r) => r.trim().startsWith('|'));
 		if (rows.length < 2) return;
-		
+
 		// Parse header to find column indices
 		const headerCells = rows[0]
 			.split('|')
 			.map((c) => c.trim().toLowerCase())
 			.filter(Boolean);
-		
+
 		// Find column indices (flexible matching)
-		let wordIndex = headerCells.findIndex(h => h === 'word' || h.includes('word'));
-		let meaningIndex = headerCells.findIndex(h => h === 'english meaning' || h === 'meaning' || h.includes('meaning'));
-		let ipaIndex = headerCells.findIndex(h => h === 'pronunciation' || h === 'ipa' || h.includes('pronun'));
-		
+		let wordIndex = headerCells.findIndex(
+			(h) => h === 'word' || h.includes('word'),
+		);
+		let meaningIndex = headerCells.findIndex(
+			(h) =>
+				h === 'english meaning' ||
+				h === 'meaning' ||
+				h.includes('meaning'),
+		);
+		let ipaIndex = headerCells.findIndex(
+			(h) => h === 'pronunciation' || h === 'ipa' || h.includes('pronun'),
+		);
+
 		// Fallback: if no headers found, assume simple 2-column format (word | meaning)
 		if (wordIndex === -1) wordIndex = 0;
 		if (meaningIndex === -1) meaningIndex = 1;
-		
+
 		const dataRows = rows.slice(2); // Skip header and separator rows
 
 		dataRows.forEach((row) => {
@@ -271,12 +336,22 @@ function parseVocabForQuiz(md) {
 				.split('|')
 				.map((c) => c.trim())
 				.filter(Boolean);
-			
-			const word = cells[wordIndex] ? cells[wordIndex].replace(/\*\*/g, '').trim() : '';
-			const meaning = cells[meaningIndex] ? cells[meaningIndex].trim() : '';
-			const ipa = ipaIndex >= 0 && cells[ipaIndex] ? cells[ipaIndex].trim() : '';
-			
-			if (word && meaning && !word.match(/^[-]+$/) && !word.match(/^\d+$/)) {
+
+			const word = cells[wordIndex]
+				? cells[wordIndex].replace(/\*\*/g, '').trim()
+				: '';
+			const meaning = cells[meaningIndex]
+				? cells[meaningIndex].trim()
+				: '';
+			const ipa =
+				ipaIndex >= 0 && cells[ipaIndex] ? cells[ipaIndex].trim() : '';
+
+			if (
+				word &&
+				meaning &&
+				!word.match(/^[-]+$/) &&
+				!word.match(/^\d+$/)
+			) {
 				questions.push({
 					word: word,
 					meaning: meaning,
