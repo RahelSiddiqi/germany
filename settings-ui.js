@@ -171,10 +171,13 @@ function checkDeadlinesManually() {
 function toggleDarkMode() {
 	document.body.classList.toggle('dark-mode');
 	const isDark = document.body.classList.contains('dark-mode');
-	
+
 	// Update DaisyUI theme
-	document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-	
+	document.documentElement.setAttribute(
+		'data-theme',
+		isDark ? 'dark' : 'light',
+	);
+
 	localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
 	updateThemeButton();
 }

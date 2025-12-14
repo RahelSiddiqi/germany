@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	if (typeof cloudSync !== 'undefined') {
 		await cloudSync.init();
 	}
-	
+
 	// Load data first, then show page
 	await loadAllData();
 	dataLoaded = true;
@@ -1794,7 +1794,7 @@ function toggleIELTSTask(id, checkbox) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	tasks[id] = !tasks[id];
 	localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
-	
+
 	// Update visual immediately without full re-render
 	if (checkbox) {
 		const row = checkbox.closest('tr');
@@ -1806,9 +1806,9 @@ function toggleIELTSTask(id, checkbox) {
 			}
 		}
 	}
-	
+
 	updateDashboardStats();
-	
+
 	// Sync to cloud if enabled
 	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
 		cloudSync.syncToCloud();
