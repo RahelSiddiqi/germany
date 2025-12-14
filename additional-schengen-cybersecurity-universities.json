@@ -1,230 +1,242 @@
 [
-	{
-		"university": "Delft University of Technology (TU Delft)",
-		"country": "🇳🇱 Netherlands",
-		"program": "MSc Computer Science - Cyber Security Track",
-		"location": "Delft",
-		"application_deadline": "2026-01-15",
-		"tuition": "€18,750/year (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 (min 6.0 per section) or TOEFL iBT 90",
-		"website": "https://www.tudelft.nl/en/education/programmes/masters/cs/msc-computer-science",
-		"ranking": "QS World Ranking #47, #7 in Engineering & Technology",
-		"scholarships": [
-			"TU Delft Excellence Scholarship (€5,000-€25,000/year)",
-			"Holland Scholarship (€5,000 one-time)",
-			"Justus & Louise van Effen Excellence Scholarship",
-			"Orange Tulip Scholarship (country-specific)"
-		],
-		"living_costs": "€800-€1,200/month"
-	},
-	{
-		"university": "Eindhoven University of Technology (TU/e)",
-		"country": "🇳🇱 Netherlands",
-		"program": "MSc Computer Science and Engineering - Cybersecurity Track",
-		"location": "Eindhoven",
-		"application_deadline": "2026-05-01",
-		"tuition": "€16,500/year (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 90",
-		"website": "https://www.tue.nl/en/education/graduate-school/master-computer-science-and-engineering",
-		"ranking": "QS World Ranking #120, Strong in Engineering",
-		"scholarships": [
-			"TU/e Excellence Scholarships (up to €10,000/year)",
-			"Holland Scholarship (€5,000 one-time)",
-			"ASML Henk Bodt Scholarship",
-			"Orange Tulip Scholarship"
-		],
-		"living_costs": "€800-€1,100/month"
-	},
-	{
-		"university": "KTH Royal Institute of Technology",
-		"country": "🇸🇪 Sweden",
-		"program": "MSc Information and Network Engineering - Network Security Specialization",
-		"location": "Stockholm",
-		"application_deadline": "2026-01-15",
-		"tuition": "SEK 145,000/year (~€13,000/year) (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 (min 5.5 per section) or TOEFL iBT 90",
-		"website": "https://www.kth.se/en/studies/master/information-and-network-engineering",
-		"ranking": "QS World Ranking #73, Top 50 in Engineering",
-		"scholarships": [
-			"KTH Scholarship (covers tuition fees)",
-			"Swedish Institute Scholarships for Global Professionals (SISGP)",
-			"Scholarship for Developing Countries"
-		],
-		"living_costs": "€900-€1,300/month"
-	},
-	{
-		"university": "Chalmers University of Technology",
-		"country": "🇸🇪 Sweden",
-		"program": "MSc Computer Science - Networks and Systems / Security Track",
-		"location": "Gothenburg",
-		"application_deadline": "2026-01-15",
-		"tuition": "SEK 160,000/year (~€14,300/year) (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 (min 5.5 per section) or TOEFL iBT 90",
-		"website": "https://www.chalmers.se/en/education/find-masters-programme/computer-science-msc/",
-		"ranking": "QS World Ranking #125, Top in Scandinavia for Engineering",
-		"scholarships": [
-			"Chalmers IPOET Scholarships (75% or 100% tuition waiver)",
-			"ASEA Scholarship",
-			"Adlerbertska Scholarship Foundation",
-			"Swedish Institute Scholarships"
-		],
-		"living_costs": "€850-€1,200/month"
-	},
-	{
-		"university": "Norwegian University of Science and Technology (NTNU)",
-		"country": "🇳🇴 Norway",
-		"program": "MSc Information Security and Communication Technology",
-		"location": "Trondheim/Gjøvik",
-		"application_deadline": "2025-12-01",
-		"tuition": "FREE (no tuition fees for all students)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 90",
-		"website": "https://www.ntnu.edu/studies/msisct",
-		"ranking": "QS World Ranking #292, Top in Norway for Technology",
-		"scholarships": [
-			"Norwegian State Educational Loan Fund (Lånekassen)",
-			"NTNU Scholarship (for exceptional students)",
-			"Quota Scheme for developing countries",
-			"Research Council of Norway scholarships"
-		],
-		"living_costs": "€1,000-€1,400/month"
-	},
-	{
-		"university": "Technical University of Denmark (DTU)",
-		"country": "🇩🇰 Denmark",
-		"program": "MSc Electrical Engineering - Network Technology and IT Security Track",
-		"location": "Lyngby (Copenhagen area)",
-		"application_deadline": "2026-01-15",
-		"tuition": "DKK 120,000/year (~€16,100/year) (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 88",
-		"website": "https://www.dtu.dk/english/education/msc/programmes/electrical_engineering",
-		"ranking": "QS World Ranking #104, Top Technical University in Denmark",
-		"scholarships": [
-			"DTU Tuition Fee Waivers (partial or full)",
-			"Danish Government Scholarships",
-			"Nordea Foundation Scholarship",
-			"Otto Mønsted Fund"
-		],
-		"living_costs": "€900-€1,400/month"
-	},
-	{
-		"university": "University of Twente",
-		"country": "🇳🇱 Netherlands",
-		"program": "MSc Computer Science - Cyber Security Specialization",
-		"location": "Enschede",
-		"application_deadline": "2026-05-01",
-		"tuition": "€15,500/year (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 90",
-		"website": "https://www.utwente.nl/en/education/master/programmes/computer-science/",
-		"ranking": "QS World Ranking #254, Strong in Tech Entrepreneurship",
-		"scholarships": [
-			"University of Twente Scholarship (UTS) - €6,000-€25,000/year",
-			"Holland Scholarship (€5,000 one-time)",
-			"Orange Tulip Scholarship",
-			"ATLAS Scholarship"
-		],
-		"living_costs": "€750-€1,000/month"
-	},
-	{
-		"university": "TU Wien (Vienna University of Technology)",
-		"country": "🇦🇹 Austria",
-		"program": "MSc Computer Engineering - IT Security Track",
-		"location": "Vienna",
-		"application_deadline": "2026-02-15",
-		"tuition": "€1,500/year (non-EU/EEA, reduced rate available)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 90 or equivalent",
-		"website": "https://www.tuwien.at/en/studies/master/computer-engineering",
-		"ranking": "QS World Ranking #174, Top in Austria for Engineering",
-		"scholarships": [
-			"TU Wien Performance Scholarship",
-			"Austrian Database and Artificial Intelligence Group (DBAI) Scholarship",
-			"OeAD Scholarships",
-			"Ernst Mach Grant",
-			"Austrian Government Scholarships"
-		],
-		"living_costs": "€900-€1,300/month"
-	},
-	{
-		"university": "Czech Technical University in Prague (CTU)",
-		"country": "🇨🇿 Czech Republic",
-		"program": "MSc Cybersecurity and Information Technology",
-		"location": "Prague",
-		"application_deadline": "2026-02-28",
-		"tuition": "€4,000/year (English-taught programs)",
-		"language": "English",
-		"requirements": "IELTS 6.0 or TOEFL iBT 79 or equivalent",
-		"website": "https://www.cvut.cz/en/study-options/programmes",
-		"ranking": "QS World Ranking #373, Top in Czech Republic",
-		"scholarships": [
-			"CTU Rector's Scholarship",
-			"Czech Government Scholarships",
-			"Visegrad Scholarship Program",
-			"Erasmus+ scholarships",
-			"Faculty-specific scholarships"
-		],
-		"living_costs": "€450-€700/month"
-	},
-	{
-		"university": "Aalto University",
-		"country": "🇫🇮 Finland",
-		"program": "MSc Security and Cloud Computing (EIT Digital)",
-		"location": "Espoo (Helsinki area)",
-		"application_deadline": "2026-01-08",
-		"tuition": "€15,000/year (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 or TOEFL iBT 92",
-		"website": "https://www.aalto.fi/en/study-options/security-and-cloud-computing-eit-digital-master-school",
-		"ranking": "QS World Ranking #109, Top in Nordic Countries",
-		"scholarships": [
-			"Aalto University Scholarship Programme (50% or 100% tuition waiver)",
-			"EIT Digital Master School Scholarship",
-			"Finnish Government Scholarship Pool",
-			"EDUFI Fellowships"
-		],
-		"living_costs": "€700-€1,000/month"
-	},
-	{
-		"university": "Warsaw University of Technology",
-		"country": "🇵🇱 Poland",
-		"program": "MSc Cybersecurity",
-		"location": "Warsaw",
-		"application_deadline": "2026-07-15",
-		"tuition": "€3,000/year (English-taught)",
-		"language": "English",
-		"requirements": "IELTS 6.0 or TOEFL iBT 79 or equivalent",
-		"website": "https://www.pw.edu.pl/engpw/Education/Master-s-Programmes",
-		"ranking": "QS World Ranking #451-460, Top Technical University in Poland",
-		"scholarships": [
-			"Polish National Agency for Academic Exchange (NAWA) Scholarships",
-			"Rector's Scholarship for Outstanding Students",
-			"Visegrad Scholarship Programme",
-			"Erasmus+ grants"
-		],
-		"living_costs": "€400-€650/month"
-	},
-	{
-		"university": "Linköping University",
-		"country": "🇸🇪 Sweden",
-		"program": "MSc Computer Science - Cybersecurity specialization",
-		"location": "Linköping",
-		"application_deadline": "2026-01-15",
-		"tuition": "SEK 140,000/year (~€12,500/year) (non-EU/EEA)",
-		"language": "English",
-		"requirements": "IELTS 6.5 (no section below 5.5) or TOEFL iBT 90",
-		"website": "https://liu.se/en/education/program/6mcse",
-		"ranking": "QS World Ranking #268, Strong in Computer Science",
-		"scholarships": [
-			"Linköping University Scholarship (tuition waiver)",
-			"Swedish Institute Scholarships for Global Professionals",
-			"LiU International Scholarship"
-		],
-		"living_costs": "€750-€1,100/month"
-	}
+  {
+    "university": "Delft University of Technology (TU Delft)",
+    "country": "🇳🇱 Netherlands",
+    "program": "MSc Computer Science - Cyber Security Track",
+    "location": "Delft",
+    "application_deadline": "2026-01-15",
+    "tuition": "€18,750/year (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 (min 6.0 per section) or TOEFL iBT 90",
+    "website": "https://www.tudelft.nl/en/education/programmes/masters/cs/msc-computer-science",
+    "ranking": "QS World Ranking #47, #7 in Engineering & Technology",
+    "scholarships": [
+      "TU Delft Excellence Scholarship (€5,000-€25,000/year)",
+      "Holland Scholarship (€5,000 one-time)",
+      "Justus & Louise van Effen Excellence Scholarship",
+      "Orange Tulip Scholarship (country-specific)"
+    ],
+    "living_costs": "€800-€1,200/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Eindhoven University of Technology (TU/e)",
+    "country": "🇳🇱 Netherlands",
+    "program": "MSc Computer Science and Engineering - Cybersecurity Track",
+    "location": "Eindhoven",
+    "application_deadline": "2026-05-01",
+    "tuition": "€16,500/year (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 90",
+    "website": "https://www.tue.nl/en/education/graduate-school/master-computer-science-and-engineering",
+    "ranking": "QS World Ranking #120, Strong in Engineering",
+    "scholarships": [
+      "TU/e Excellence Scholarships (up to €10,000/year)",
+      "Holland Scholarship (€5,000 one-time)",
+      "ASML Henk Bodt Scholarship",
+      "Orange Tulip Scholarship"
+    ],
+    "living_costs": "€800-€1,100/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "KTH Royal Institute of Technology",
+    "country": "🇸🇪 Sweden",
+    "program": "MSc Information and Network Engineering - Network Security Specialization",
+    "location": "Stockholm",
+    "application_deadline": "2026-01-15",
+    "tuition": "SEK 145,000/year (~€13,000/year) (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 (min 5.5 per section) or TOEFL iBT 90",
+    "website": "https://www.kth.se/en/studies/master/information-and-network-engineering",
+    "ranking": "QS World Ranking #73, Top 50 in Engineering",
+    "scholarships": [
+      "KTH Scholarship (covers tuition fees)",
+      "Swedish Institute Scholarships for Global Professionals (SISGP)",
+      "Scholarship for Developing Countries"
+    ],
+    "living_costs": "€900-€1,300/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Chalmers University of Technology",
+    "country": "🇸🇪 Sweden",
+    "program": "MSc Computer Science - Networks and Systems / Security Track",
+    "location": "Gothenburg",
+    "application_deadline": "2026-01-15",
+    "tuition": "SEK 160,000/year (~€14,300/year) (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 (min 5.5 per section) or TOEFL iBT 90",
+    "website": "https://www.chalmers.se/en/education/find-masters-programme/computer-science-msc/",
+    "ranking": "QS World Ranking #125, Top in Scandinavia for Engineering",
+    "scholarships": [
+      "Chalmers IPOET Scholarships (75% or 100% tuition waiver)",
+      "ASEA Scholarship",
+      "Adlerbertska Scholarship Foundation",
+      "Swedish Institute Scholarships"
+    ],
+    "living_costs": "€850-€1,200/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Norwegian University of Science and Technology (NTNU)",
+    "country": "🇳🇴 Norway",
+    "program": "MSc Information Security and Communication Technology",
+    "location": "Trondheim/Gjøvik",
+    "application_deadline": "2025-12-01",
+    "tuition": "FREE (no tuition fees for all students)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 90",
+    "website": "https://www.ntnu.edu/studies/msisct",
+    "ranking": "QS World Ranking #292, Top in Norway for Technology",
+    "scholarships": [
+      "Norwegian State Educational Loan Fund (Lånekassen)",
+      "NTNU Scholarship (for exceptional students)",
+      "Quota Scheme for developing countries",
+      "Research Council of Norway scholarships"
+    ],
+    "living_costs": "€1,000-€1,400/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Technical University of Denmark (DTU)",
+    "country": "🇩🇰 Denmark",
+    "program": "MSc Electrical Engineering - Network Technology and IT Security Track",
+    "location": "Lyngby (Copenhagen area)",
+    "application_deadline": "2026-01-15",
+    "tuition": "DKK 120,000/year (~€16,100/year) (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 88",
+    "website": "https://www.dtu.dk/english/education/msc/programmes/electrical_engineering",
+    "ranking": "QS World Ranking #104, Top Technical University in Denmark",
+    "scholarships": [
+      "DTU Tuition Fee Waivers (partial or full)",
+      "Danish Government Scholarships",
+      "Nordea Foundation Scholarship",
+      "Otto Mønsted Fund"
+    ],
+    "living_costs": "€900-€1,400/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "University of Twente",
+    "country": "🇳🇱 Netherlands",
+    "program": "MSc Computer Science - Cyber Security Specialization",
+    "location": "Enschede",
+    "application_deadline": "2026-05-01",
+    "tuition": "€15,500/year (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 90",
+    "website": "https://www.utwente.nl/en/education/master/programmes/computer-science/",
+    "ranking": "QS World Ranking #254, Strong in Tech Entrepreneurship",
+    "scholarships": [
+      "University of Twente Scholarship (UTS) - €6,000-€25,000/year",
+      "Holland Scholarship (€5,000 one-time)",
+      "Orange Tulip Scholarship",
+      "ATLAS Scholarship"
+    ],
+    "living_costs": "€750-€1,000/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "TU Wien (Vienna University of Technology)",
+    "country": "🇦🇹 Austria",
+    "program": "MSc Computer Engineering - IT Security Track",
+    "location": "Vienna",
+    "application_deadline": "2026-02-15",
+    "tuition": "€1,500/year (non-EU/EEA, reduced rate available)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 90 or equivalent",
+    "website": "https://www.tuwien.at/en/studies/master/computer-engineering",
+    "ranking": "QS World Ranking #174, Top in Austria for Engineering",
+    "scholarships": [
+      "TU Wien Performance Scholarship",
+      "Austrian Database and Artificial Intelligence Group (DBAI) Scholarship",
+      "OeAD Scholarships",
+      "Ernst Mach Grant",
+      "Austrian Government Scholarships"
+    ],
+    "living_costs": "€900-€1,300/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Czech Technical University in Prague (CTU)",
+    "country": "🇨🇿 Czech Republic",
+    "program": "MSc Cybersecurity and Information Technology",
+    "location": "Prague",
+    "application_deadline": "2026-02-28",
+    "tuition": "€4,000/year (English-taught programs)",
+    "language": "English",
+    "requirements": "IELTS 6.0 or TOEFL iBT 79 or equivalent",
+    "website": "https://www.cvut.cz/en/study-options/programmes",
+    "ranking": "QS World Ranking #373, Top in Czech Republic",
+    "scholarships": [
+      "CTU Rector's Scholarship",
+      "Czech Government Scholarships",
+      "Visegrad Scholarship Program",
+      "Erasmus+ scholarships",
+      "Faculty-specific scholarships"
+    ],
+    "living_costs": "€450-€700/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Aalto University",
+    "country": "🇫🇮 Finland",
+    "program": "MSc Security and Cloud Computing (EIT Digital)",
+    "location": "Espoo (Helsinki area)",
+    "application_deadline": "2026-01-08",
+    "tuition": "€15,000/year (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 or TOEFL iBT 92",
+    "website": "https://www.aalto.fi/en/study-options/security-and-cloud-computing-eit-digital-master-school",
+    "ranking": "QS World Ranking #109, Top in Nordic Countries",
+    "scholarships": [
+      "Aalto University Scholarship Programme (50% or 100% tuition waiver)",
+      "EIT Digital Master School Scholarship",
+      "Finnish Government Scholarship Pool",
+      "EDUFI Fellowships"
+    ],
+    "living_costs": "€700-€1,000/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Warsaw University of Technology",
+    "country": "🇵🇱 Poland",
+    "program": "MSc Cybersecurity",
+    "location": "Warsaw",
+    "application_deadline": "2026-07-15",
+    "tuition": "€3,000/year (English-taught)",
+    "language": "English",
+    "requirements": "IELTS 6.0 or TOEFL iBT 79 or equivalent",
+    "website": "https://www.pw.edu.pl/engpw/Education/Master-s-Programmes",
+    "ranking": "QS World Ranking #451-460, Top Technical University in Poland",
+    "scholarships": [
+      "Polish National Agency for Academic Exchange (NAWA) Scholarships",
+      "Rector's Scholarship for Outstanding Students",
+      "Visegrad Scholarship Programme",
+      "Erasmus+ grants"
+    ],
+    "living_costs": "€400-€650/month",
+    "duration": "2 years"
+  },
+  {
+    "university": "Linköping University",
+    "country": "🇸🇪 Sweden",
+    "program": "MSc Computer Science - Cybersecurity specialization",
+    "location": "Linköping",
+    "application_deadline": "2026-01-15",
+    "tuition": "SEK 140,000/year (~€12,500/year) (non-EU/EEA)",
+    "language": "English",
+    "requirements": "IELTS 6.5 (no section below 5.5) or TOEFL iBT 90",
+    "website": "https://liu.se/en/education/program/6mcse",
+    "ranking": "QS World Ranking #268, Strong in Computer Science",
+    "scholarships": [
+      "Linköping University Scholarship (tuition waiver)",
+      "Swedish Institute Scholarships for Global Professionals",
+      "LiU International Scholarship"
+    ],
+    "living_costs": "€750-€1,100/month",
+    "duration": "2 years"
+  }
 ]

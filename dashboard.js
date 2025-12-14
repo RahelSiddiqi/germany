@@ -209,11 +209,14 @@ function getDefaultTasks() {
 function getStatusLabel(status) {
 	const labels = {
 		not_started: '🔵 Not Started',
-		researching: '🟡 Researching',
-		preparing: '🟠 Preparing',
-		submitted: '🟢 Submitted',
-		admitted: '✅ Admitted',
+		researching: '🔍 Researching',
+		preparing: '📝 Preparing',
+		in_progress: '🔄 In Progress',
+		documents_ready: '📑 Docs Ready',
+		submitted: '✅ Submitted',
+		admitted: '🎉 Admitted',
 		rejected: '❌ Rejected',
+		awarded: '🏆 Awarded',
 	};
 	return labels[status] || labels['not_started'];
 }
@@ -223,15 +226,21 @@ function getStatusBadgeClass(status) {
 		not_started:
 			'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
 		researching:
-			'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
+			'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
 		preparing:
+			'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
+		in_progress:
 			'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
+		documents_ready:
+			'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
 		submitted:
 			'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
 		admitted:
 			'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
 		rejected:
 			'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
+		awarded:
+			'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
 	};
 	return classes[status] || classes['not_started'];
 }
@@ -584,16 +593,16 @@ function displayGermanyUniversities() {
 				}
 				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
 					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
-						uni.location
+						uni.location || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
-						uni.duration
+						uni.duration || '2 years'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
-						uni.tuition
+						uni.tuition || 'Check website'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
-						uni.language
+						uni.language || 'English'
 					}</div>
 				</div>
 				${
@@ -702,17 +711,27 @@ function displayGermanyProgress() {
 						: 'bg-amber-500';
 				const statusIcon =
 					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
-				
+
 				const statusColors = {
-					not_started: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
-					researching: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-					preparing: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
-					submitted: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
-					admitted: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
-					rejected: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
+					not_started:
+						'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+					researching:
+						'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+					preparing:
+						'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
+					submitted:
+						'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+					admitted:
+						'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+					rejected:
+						'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
 				};
-				const statusColor = statusColors[trackedUni.status] || statusColors.not_started;
-				const note = getUniversityNote('germany', trackedUni.university);
+				const statusColor =
+					statusColors[trackedUni.status] || statusColors.not_started;
+				const note = getUniversityNote(
+					'germany',
+					trackedUni.university,
+				);
 
 				return `
 				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow">
@@ -728,8 +747,14 @@ function displayGermanyProgress() {
 										trackedUni.university
 									}</h4>
 									<div class="flex items-center gap-2 mt-1 flex-wrap">
-										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(trackedUni.status)}</span>
-										${uni.application_deadline ? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>` : ''}
+										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(
+					trackedUni.status,
+				)}</span>
+										${
+											uni.application_deadline
+												? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>`
+												: ''
+										}
 									</div>
 								</div>
 							</div>
@@ -738,7 +763,11 @@ function displayGermanyProgress() {
 									<div class="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
 										<div class="h-full ${progressColor} rounded-full transition-all duration-500" style="width: ${progress}%"></div>
 									</div>
-									<span class="text-sm font-bold ${progress === 100 ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'}">${progress}%</span>
+									<span class="text-sm font-bold ${
+										progress === 100
+											? 'text-green-500'
+											: 'text-gray-600 dark:text-gray-400'
+									}">${progress}%</span>
 								</div>
 								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 							</div>
@@ -752,21 +781,55 @@ function displayGermanyProgress() {
 							<div class="flex flex-wrap items-center gap-3">
 								<div class="flex items-center gap-2">
 									<label class="text-xs text-gray-500 dark:text-gray-400">Status:</label>
-									<select onchange="changeTrackedGermanyStatus('${trackedUni.university}', this.value)"
+									<select onchange="changeTrackedGermanyStatus('${
+										trackedUni.university
+									}', this.value)"
 										class="text-xs px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium">
-										<option value="not_started" ${trackedUni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
-										<option value="researching" ${trackedUni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
-										<option value="preparing" ${trackedUni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
-										<option value="submitted" ${trackedUni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
-										<option value="admitted" ${trackedUni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
-										<option value="rejected" ${trackedUni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+										<option value="not_started" ${
+											trackedUni.status === 'not_started'
+												? 'selected'
+												: ''
+										}>📋 Not Started</option>
+										<option value="researching" ${
+											trackedUni.status === 'researching'
+												? 'selected'
+												: ''
+										}>🔍 Researching</option>
+										<option value="preparing" ${
+											trackedUni.status === 'preparing'
+												? 'selected'
+												: ''
+										}>📝 Preparing</option>
+										<option value="submitted" ${
+											trackedUni.status === 'submitted'
+												? 'selected'
+												: ''
+										}>✅ Submitted</option>
+										<option value="admitted" ${
+											trackedUni.status === 'admitted'
+												? 'selected'
+												: ''
+										}>🎉 Admitted</option>
+										<option value="rejected" ${
+											trackedUni.status === 'rejected'
+												? 'selected'
+												: ''
+										}>❌ Rejected</option>
 									</select>
 								</div>
-								${uni.tuition ? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>` : ''}
-								${uni.location ? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>` : ''}
+								${
+									uni.tuition
+										? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>`
+										: ''
+								}
+								${
+									uni.location
+										? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>`
+										: ''
+								}
 							</div>
 						</div>
-						
+
 						<!-- Tasks Section -->
 						<div class="p-4 bg-gray-50 dark:bg-gray-900/50">
 							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Application Tasks</h5>
@@ -788,28 +851,36 @@ function displayGermanyProgress() {
 												? 'text-gray-400 dark:text-gray-500 line-through'
 												: 'text-gray-700 dark:text-gray-300'
 										}">${task.name}</span>
-										${task.completed ? '<span class="text-green-500 text-lg">✓</span>' : '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'}
+										${
+											task.completed
+												? '<span class="text-green-500 text-lg">✓</span>'
+												: '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'
+										}
 									</label>
 								`,
 									)
 									.join('')}
 							</div>
 						</div>
-						
+
 						<!-- Notes Section -->
 						<div class="p-4 border-t border-gray-200 dark:border-gray-700">
 							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">📝 Personal Notes</h5>
-							<textarea 
+							<textarea
 								placeholder="Add notes about this application..."
 								onblur="saveUniversityNote('germany', '${trackedUni.university}', this.value)"
 								class="w-full p-3 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
 								rows="2">${note}</textarea>
 						</div>
-						
+
 						<!-- Actions -->
 						<div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30">
 							<div class="flex gap-3">
-								${uni.website ? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>` : ''}
+								${
+									uni.website
+										? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>`
+										: ''
+								}
 								<button onclick="untrackGermanyUniversity('${trackedUni.university}')"
 									class="px-4 py-2.5 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
 									🗑️ Remove
@@ -954,12 +1025,17 @@ function changeGermanyStatus(universityName, newStatus) {
 function changeTrackedGermanyStatus(universityName, newStatus) {
 	const tracked = localStorage.getItem('germany-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
-	
-	const uni = trackedUniversities.find(t => t.university === universityName);
+
+	const uni = trackedUniversities.find(
+		(t) => t.university === universityName,
+	);
 	if (!uni) return;
 
 	uni.status = newStatus;
-	localStorage.setItem('germany-applications', JSON.stringify(trackedUniversities));
+	localStorage.setItem(
+		'germany-applications',
+		JSON.stringify(trackedUniversities),
+	);
 	displayGermanyProgress();
 	updateDashboardStats();
 
@@ -1127,19 +1203,19 @@ function displaySchengenUniversities() {
 				}
 				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
-						uni.location
+						uni.location || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
-						uni.duration
+						uni.duration || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
-						uni.tuition
+						uni.tuition || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🏠</span> ${
 						uni.living_costs || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
-						uni.language
+						uni.language || 'N/A'
 					}</div>
 				</div>
 				${
@@ -1262,17 +1338,27 @@ function displaySchengenProgress() {
 						: 'bg-amber-500';
 				const statusIcon =
 					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
-				
+
 				const statusColors = {
-					not_started: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
-					researching: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-					preparing: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
-					submitted: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
-					admitted: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
-					rejected: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
+					not_started:
+						'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+					researching:
+						'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+					preparing:
+						'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
+					submitted:
+						'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+					admitted:
+						'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+					rejected:
+						'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
 				};
-				const statusColor = statusColors[trackedUni.status] || statusColors.not_started;
-				const note = getUniversityNote('schengen', trackedUni.university);
+				const statusColor =
+					statusColors[trackedUni.status] || statusColors.not_started;
+				const note = getUniversityNote(
+					'schengen',
+					trackedUni.university,
+				);
 
 				return `
 				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow">
@@ -1283,11 +1369,23 @@ function displaySchengenProgress() {
 									${statusIcon}
 								</div>
 								<div class="flex-1 min-w-0">
-									<h4 class="font-bold text-gray-900 dark:text-white truncate">${trackedUni.university}</h4>
+									<h4 class="font-bold text-gray-900 dark:text-white truncate">${
+										trackedUni.university
+									}</h4>
 									<div class="flex items-center gap-2 mt-1 flex-wrap">
-										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(trackedUni.status)}</span>
-										${uni.country ? `<span class="text-xs text-gray-500 dark:text-gray-400">🌍 ${uni.country}</span>` : ''}
-										${uni.application_deadline ? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>` : ''}
+										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(
+					trackedUni.status,
+				)}</span>
+										${
+											uni.country
+												? `<span class="text-xs text-gray-500 dark:text-gray-400">🌍 ${uni.country}</span>`
+												: ''
+										}
+										${
+											uni.application_deadline
+												? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>`
+												: ''
+										}
 									</div>
 								</div>
 							</div>
@@ -1296,7 +1394,11 @@ function displaySchengenProgress() {
 									<div class="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
 										<div class="h-full ${progressColor} rounded-full transition-all duration-500" style="width: ${progress}%"></div>
 									</div>
-									<span class="text-sm font-bold ${progress === 100 ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'}">${progress}%</span>
+									<span class="text-sm font-bold ${
+										progress === 100
+											? 'text-green-500'
+											: 'text-gray-600 dark:text-gray-400'
+									}">${progress}%</span>
 								</div>
 								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 							</div>
@@ -1307,18 +1409,52 @@ function displaySchengenProgress() {
 							<div class="flex flex-wrap items-center gap-3">
 								<div class="flex items-center gap-2">
 									<label class="text-xs text-gray-500 dark:text-gray-400">Status:</label>
-									<select onchange="changeTrackedSchengenStatus('${trackedUni.university}', this.value)"
+									<select onchange="changeTrackedSchengenStatus('${
+										trackedUni.university
+									}', this.value)"
 										class="text-xs px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium">
-										<option value="not_started" ${trackedUni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
-										<option value="researching" ${trackedUni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
-										<option value="preparing" ${trackedUni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
-										<option value="submitted" ${trackedUni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
-										<option value="admitted" ${trackedUni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
-										<option value="rejected" ${trackedUni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+										<option value="not_started" ${
+											trackedUni.status === 'not_started'
+												? 'selected'
+												: ''
+										}>📋 Not Started</option>
+										<option value="researching" ${
+											trackedUni.status === 'researching'
+												? 'selected'
+												: ''
+										}>🔍 Researching</option>
+										<option value="preparing" ${
+											trackedUni.status === 'preparing'
+												? 'selected'
+												: ''
+										}>📝 Preparing</option>
+										<option value="submitted" ${
+											trackedUni.status === 'submitted'
+												? 'selected'
+												: ''
+										}>✅ Submitted</option>
+										<option value="admitted" ${
+											trackedUni.status === 'admitted'
+												? 'selected'
+												: ''
+										}>🎉 Admitted</option>
+										<option value="rejected" ${
+											trackedUni.status === 'rejected'
+												? 'selected'
+												: ''
+										}>❌ Rejected</option>
 									</select>
 								</div>
-								${uni.tuition ? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>` : ''}
-								${uni.location ? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>` : ''}
+								${
+									uni.tuition
+										? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>`
+										: ''
+								}
+								${
+									uni.location
+										? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>`
+										: ''
+								}
 							</div>
 						</div>
 						<div class="p-4 bg-gray-50 dark:bg-gray-900/50">
@@ -1341,7 +1477,11 @@ function displaySchengenProgress() {
 												? 'text-gray-400 dark:text-gray-500 line-through'
 												: 'text-gray-700 dark:text-gray-300'
 										}">${task.name}</span>
-										${task.completed ? '<span class="text-green-500 text-lg">✓</span>' : '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'}
+										${
+											task.completed
+												? '<span class="text-green-500 text-lg">✓</span>'
+												: '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'
+										}
 									</label>
 								`,
 									)
@@ -1350,7 +1490,7 @@ function displaySchengenProgress() {
 						</div>
 						<div class="p-4 border-t border-gray-200 dark:border-gray-700">
 							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">📝 Personal Notes</h5>
-							<textarea 
+							<textarea
 								placeholder="Add notes about this application..."
 								onblur="saveUniversityNote('schengen', '${trackedUni.university}', this.value)"
 								class="w-full p-3 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
@@ -1358,7 +1498,11 @@ function displaySchengenProgress() {
 						</div>
 						<div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30">
 							<div class="flex gap-3">
-								${uni.website ? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>` : ''}
+								${
+									uni.website
+										? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>`
+										: ''
+								}
 								<button onclick="untrackSchengenUniversity('${trackedUni.university}')"
 									class="px-4 py-2.5 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
 									🗑️ Remove
@@ -1485,12 +1629,17 @@ function changeSchengenStatus(universityName, newStatus) {
 function changeTrackedSchengenStatus(universityName, newStatus) {
 	const tracked = localStorage.getItem('schengen-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
-	
-	const uni = trackedUniversities.find(t => t.university === universityName);
+
+	const uni = trackedUniversities.find(
+		(t) => t.university === universityName,
+	);
 	if (!uni) return;
 
 	uni.status = newStatus;
-	localStorage.setItem('schengen-applications', JSON.stringify(trackedUniversities));
+	localStorage.setItem(
+		'schengen-applications',
+		JSON.stringify(trackedUniversities),
+	);
 	displaySchengenProgress();
 	updateDashboardStats();
 
@@ -2894,44 +3043,90 @@ function toggleDeadlineReminders() {
 // ==========================================
 
 function renderUniversityCard(uni, type) {
-	const statusChangeFunc = type === 'germany' ? 'changeGermanyStatus' : 'changeSchengenStatus';
-	const countryDisplay = type === 'schengen' && uni.country ? `<span class="text-gray-500 dark:text-gray-400">🌍</span> ${uni.country}` : '';
-	
+	const statusChangeFunc =
+		type === 'germany' ? 'changeGermanyStatus' : 'changeSchengenStatus';
+	const countryDisplay =
+		type === 'schengen' && uni.country
+			? `<span class="text-gray-500 dark:text-gray-400">🌍</span> ${uni.country}`
+			: '';
+
 	return `
 		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
 			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
 				<div class="flex items-start justify-between gap-4">
 					<div class="flex-1">
-						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${uni.ranking || ''}</h3>
+						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${
+		uni.ranking || ''
+	}</h3>
 						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
 					</div>
 					<span class="expand-toggle text-gray-400 text-sm">▶</span>
 				</div>
 				<div class="flex items-center gap-3 mt-3 flex-wrap">
-					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${uni.application_deadline}</span>
-					<span class="px-3 py-1 ${getStatusBadgeClass(uni.status)} rounded-full text-xs font-medium">${getStatusLabel(uni.status)}</span>
+					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
+						uni.application_deadline
+					}</span>
+					<span class="px-3 py-1 ${getStatusBadgeClass(
+						uni.status,
+					)} rounded-full text-xs font-medium">${getStatusLabel(
+		uni.status,
+	)}</span>
 				</div>
 			</div>
 			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
-				${uni.highlights ? `<p class="text-sm text-amber-600 dark:text-amber-400 mb-4 font-medium">💡 ${uni.highlights}</p>` : ''}
+				${
+					uni.highlights
+						? `<p class="text-sm text-amber-600 dark:text-amber-400 mb-4 font-medium">💡 ${uni.highlights}</p>`
+						: ''
+				}
 				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${uni.location}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${uni.duration}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${uni.tuition}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${uni.language}</div>
-					${countryDisplay ? `<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">${countryDisplay}</div>` : ''}
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+						uni.location || 'N/A'
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+						uni.duration || '2 years'
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+						uni.tuition || 'Check website'
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+						uni.language || 'English'
+					}</div>
+					${
+						countryDisplay
+							? `<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">${countryDisplay}</div>`
+							: ''
+					}
 				</div>
-				${uni.requirements ? `<p class="text-sm text-gray-700 dark:text-gray-300 mb-4">📝 ${uni.requirements}</p>` : ''}
+				${
+					uni.requirements
+						? `<p class="text-sm text-gray-700 dark:text-gray-300 mb-4">📝 ${uni.requirements}</p>`
+						: ''
+				}
 				<div class="flex gap-3 items-center flex-wrap">
-					<a href="${uni.website}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
+					<a href="${
+						uni.website
+					}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
 					<select onchange="${statusChangeFunc}('${uni.university}', this.value)"
 						class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-teal-500 cursor-pointer">
-						<option value="not_started" ${uni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
-						<option value="researching" ${uni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
-						<option value="preparing" ${uni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
-						<option value="submitted" ${uni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
-						<option value="admitted" ${uni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
-						<option value="rejected" ${uni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+						<option value="not_started" ${
+							uni.status === 'not_started' ? 'selected' : ''
+						}>📋 Not Started</option>
+						<option value="researching" ${
+							uni.status === 'researching' ? 'selected' : ''
+						}>🔍 Researching</option>
+						<option value="preparing" ${
+							uni.status === 'preparing' ? 'selected' : ''
+						}>📝 Preparing</option>
+						<option value="submitted" ${
+							uni.status === 'submitted' ? 'selected' : ''
+						}>✅ Submitted</option>
+						<option value="admitted" ${
+							uni.status === 'admitted' ? 'selected' : ''
+						}>🎉 Admitted</option>
+						<option value="rejected" ${
+							uni.status === 'rejected' ? 'selected' : ''
+						}>❌ Rejected</option>
 					</select>
 				</div>
 			</div>
@@ -2940,17 +3135,22 @@ function renderUniversityCard(uni, type) {
 }
 
 function filterGermanyUniversities() {
-	const searchTerm = document.getElementById('germany-search')?.value.toLowerCase() || '';
-	const statusFilter = document.getElementById('germany-filter-status')?.value || 'all';
-	
+	const searchTerm =
+		document.getElementById('germany-search')?.value.toLowerCase() || '';
+	const statusFilter =
+		document.getElementById('germany-filter-status')?.value || 'all';
+
 	const container = document.getElementById('germany-list');
 	if (!container) return;
 
-	const filtered = germanyUniversities.filter(uni => {
-		const matchesSearch = uni.university.toLowerCase().includes(searchTerm) ||
+	const filtered = germanyUniversities.filter((uni) => {
+		const matchesSearch =
+			uni.university.toLowerCase().includes(searchTerm) ||
 			(uni.program && uni.program.toLowerCase().includes(searchTerm)) ||
 			(uni.location && uni.location.toLowerCase().includes(searchTerm));
-		const matchesStatus = statusFilter === 'all' || (uni.status || 'not_started') === statusFilter;
+		const matchesStatus =
+			statusFilter === 'all' ||
+			(uni.status || 'not_started') === statusFilter;
 		return matchesSearch && matchesStatus;
 	});
 
@@ -2964,22 +3164,29 @@ function filterGermanyUniversities() {
 		return;
 	}
 
-	container.innerHTML = filtered.map(uni => renderUniversityCard(uni, 'germany')).join('');
+	container.innerHTML = filtered
+		.map((uni) => renderUniversityCard(uni, 'germany'))
+		.join('');
 }
 
 function filterSchengenUniversities() {
-	const searchTerm = document.getElementById('schengen-search')?.value.toLowerCase() || '';
-	const statusFilter = document.getElementById('schengen-filter-status')?.value || 'all';
-	
+	const searchTerm =
+		document.getElementById('schengen-search')?.value.toLowerCase() || '';
+	const statusFilter =
+		document.getElementById('schengen-filter-status')?.value || 'all';
+
 	const container = document.getElementById('schengen-list');
 	if (!container) return;
 
-	const filtered = schengenUniversities.filter(uni => {
-		const matchesSearch = uni.university.toLowerCase().includes(searchTerm) ||
+	const filtered = schengenUniversities.filter((uni) => {
+		const matchesSearch =
+			uni.university.toLowerCase().includes(searchTerm) ||
 			(uni.program && uni.program.toLowerCase().includes(searchTerm)) ||
 			(uni.location && uni.location.toLowerCase().includes(searchTerm)) ||
 			(uni.country && uni.country.toLowerCase().includes(searchTerm));
-		const matchesStatus = statusFilter === 'all' || (uni.status || 'not_started') === statusFilter;
+		const matchesStatus =
+			statusFilter === 'all' ||
+			(uni.status || 'not_started') === statusFilter;
 		return matchesSearch && matchesStatus;
 	});
 
@@ -2993,7 +3200,9 @@ function filterSchengenUniversities() {
 		return;
 	}
 
-	container.innerHTML = filtered.map(uni => renderUniversityCard(uni, 'schengen')).join('');
+	container.innerHTML = filtered
+		.map((uni) => renderUniversityCard(uni, 'schengen'))
+		.join('');
 }
 
 // ==========================================
@@ -3007,7 +3216,11 @@ const DEFAULT_DOCUMENTS = [
 	{ id: 'ielts', name: 'IELTS Score Report', required: true },
 	{ id: 'motivation', name: 'Motivation Letter', required: true },
 	{ id: 'cv', name: 'CV / Resume', required: true },
-	{ id: 'recommendations', name: 'Recommendation Letters (2)', required: true },
+	{
+		id: 'recommendations',
+		name: 'Recommendation Letters (2)',
+		required: true,
+	},
 	{ id: 'photo', name: 'Passport Photos', required: true },
 	{ id: 'bank', name: 'Bank Statement / Financial Proof', required: true },
 	{ id: 'insurance', name: 'Health Insurance', required: false },
@@ -3024,21 +3237,31 @@ function displayDocumentChecklist() {
 	const checkedDocs = saved ? JSON.parse(saved) : [];
 
 	const completed = checkedDocs.length;
-	const total = DEFAULT_DOCUMENTS.filter(d => d.required).length;
-	
+	const total = DEFAULT_DOCUMENTS.filter((d) => d.required).length;
+
 	if (progressEl) {
 		progressEl.textContent = `${completed}/${total} required`;
 	}
 
-	container.innerHTML = DEFAULT_DOCUMENTS.map(doc => {
+	container.innerHTML = DEFAULT_DOCUMENTS.map((doc) => {
 		const isChecked = checkedDocs.includes(doc.id);
 		return `
-			<label class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer ${isChecked ? 'bg-green-50 dark:bg-green-900/20' : ''}">
-				<input type="checkbox" ${isChecked ? 'checked' : ''} 
+			<label class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer ${
+				isChecked ? 'bg-green-50 dark:bg-green-900/20' : ''
+			}">
+				<input type="checkbox" ${isChecked ? 'checked' : ''}
 					onchange="toggleDocument('${doc.id}')"
 					class="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
-				<span class="${isChecked ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'} text-sm flex-1">${doc.name}</span>
-				${doc.required ? '<span class="text-xs text-red-500">Required</span>' : '<span class="text-xs text-gray-400">Optional</span>'}
+				<span class="${
+					isChecked
+						? 'line-through text-gray-400 dark:text-gray-500'
+						: 'text-gray-700 dark:text-gray-300'
+				} text-sm flex-1">${doc.name}</span>
+				${
+					doc.required
+						? '<span class="text-xs text-red-500">Required</span>'
+						: '<span class="text-xs text-gray-400">Optional</span>'
+				}
 			</label>
 		`;
 	}).join('');
@@ -3049,7 +3272,7 @@ function toggleDocument(docId) {
 	let checkedDocs = saved ? JSON.parse(saved) : [];
 
 	if (checkedDocs.includes(docId)) {
-		checkedDocs = checkedDocs.filter(id => id !== docId);
+		checkedDocs = checkedDocs.filter((id) => id !== docId);
 	} else {
 		checkedDocs.push(docId);
 	}
@@ -3069,7 +3292,8 @@ function showConfirmDialog(message, onConfirm, onCancel) {
 
 	const dialog = document.createElement('div');
 	dialog.id = 'confirm-dialog';
-	dialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
+	dialog.className =
+		'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
 	dialog.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-sm w-full shadow-2xl">
 			<p class="text-gray-900 dark:text-white font-medium mb-4">${message}</p>
@@ -3113,26 +3337,26 @@ function handleConfirmDialog(confirmed) {
 
 // Wrap untrack functions with confirmation
 const originalUntrackGermany = untrackGermanyUniversity;
-untrackGermanyUniversity = function(universityName) {
+untrackGermanyUniversity = function (universityName) {
 	showConfirmDialog(
 		`Remove "${universityName}" from your tracker? Your progress will be lost.`,
-		() => originalUntrackGermany(universityName)
+		() => originalUntrackGermany(universityName),
 	);
 };
 
 const originalUntrackSchengen = untrackSchengenUniversity;
-untrackSchengenUniversity = function(universityName) {
+untrackSchengenUniversity = function (universityName) {
 	showConfirmDialog(
 		`Remove "${universityName}" from your tracker? Your progress will be lost.`,
-		() => originalUntrackSchengen(universityName)
+		() => originalUntrackSchengen(universityName),
 	);
 };
 
 const originalUntrackScholarship = untrackScholarship;
-untrackScholarship = function(scholarshipName) {
+untrackScholarship = function (scholarshipName) {
 	showConfirmDialog(
 		`Remove "${scholarshipName}" from your tracker? Your progress will be lost.`,
-		() => originalUntrackScholarship(scholarshipName)
+		() => originalUntrackScholarship(scholarshipName),
 	);
 };
 

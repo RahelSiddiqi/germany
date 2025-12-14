@@ -197,7 +197,8 @@ class CloudSyncManager {
 					localStorage.getItem(this.STORAGE_KEYS.ieltsScores) || '[]',
 				),
 				scholarships: JSON.parse(
-					localStorage.getItem(this.STORAGE_KEYS.scholarships) || '[]',
+					localStorage.getItem(this.STORAGE_KEYS.scholarships) ||
+						'[]',
 				),
 				documents: JSON.parse(
 					localStorage.getItem(this.STORAGE_KEYS.documents) || '[]',
@@ -206,13 +207,16 @@ class CloudSyncManager {
 					localStorage.getItem(this.STORAGE_KEYS.vocab) || '[]',
 				),
 				germanyNotes: JSON.parse(
-					localStorage.getItem(this.STORAGE_KEYS.germanyNotes) || '{}',
+					localStorage.getItem(this.STORAGE_KEYS.germanyNotes) ||
+						'{}',
 				),
 				schengenNotes: JSON.parse(
-					localStorage.getItem(this.STORAGE_KEYS.schengenNotes) || '{}',
+					localStorage.getItem(this.STORAGE_KEYS.schengenNotes) ||
+						'{}',
 				),
 				studyReminders: JSON.parse(
-					localStorage.getItem(this.STORAGE_KEYS.studyReminders) || '{}',
+					localStorage.getItem(this.STORAGE_KEYS.studyReminders) ||
+						'{}',
 				),
 				lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
 				deviceInfo: navigator.userAgent,
@@ -291,19 +295,28 @@ class CloudSyncManager {
 						JSON.stringify(data.vocab),
 					);
 				}
-				if (data.germanyNotes && Object.keys(data.germanyNotes).length > 0) {
+				if (
+					data.germanyNotes &&
+					Object.keys(data.germanyNotes).length > 0
+				) {
 					localStorage.setItem(
 						this.STORAGE_KEYS.germanyNotes,
 						JSON.stringify(data.germanyNotes),
 					);
 				}
-				if (data.schengenNotes && Object.keys(data.schengenNotes).length > 0) {
+				if (
+					data.schengenNotes &&
+					Object.keys(data.schengenNotes).length > 0
+				) {
 					localStorage.setItem(
 						this.STORAGE_KEYS.schengenNotes,
 						JSON.stringify(data.schengenNotes),
 					);
 				}
-				if (data.studyReminders && Object.keys(data.studyReminders).length > 0) {
+				if (
+					data.studyReminders &&
+					Object.keys(data.studyReminders).length > 0
+				) {
 					localStorage.setItem(
 						this.STORAGE_KEYS.studyReminders,
 						JSON.stringify(data.studyReminders),
