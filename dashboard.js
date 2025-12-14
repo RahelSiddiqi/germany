@@ -2728,3 +2728,276 @@ function toggleDeadlineReminders() {
 		);
 	}
 }
+
+// ==========================================
+// SEARCH & FILTER FUNCTIONS
+// ==========================================
+
+function renderUniversityCard(uni, type) {
+	const statusChangeFunc = type === 'germany' ? 'changeGermanyStatus' : 'changeSchengenStatus';
+	const countryDisplay = type === 'schengen' && uni.country ? `<span class="text-gray-500 dark:text-gray-400">🌍</span> ${uni.country}` : '';
+	
+	return `
+		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
+				<div class="flex items-start justify-between gap-4">
+					<div class="flex-1">
+						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${uni.ranking || ''}</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
+					</div>
+					<span class="expand-toggle text-gray-400 text-sm">▶</span>
+				</div>
+				<div class="flex items-center gap-3 mt-3 flex-wrap">
+					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${uni.application_deadline}</span>
+					<span class="px-3 py-1 ${getStatusBadgeClass(uni.status)} rounded-full text-xs font-medium">${getStatusLabel(uni.status)}</span>
+				</div>
+			</div>
+			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
+				${uni.highlights ? `<p class="text-sm text-amber-600 dark:text-amber-400 mb-4 font-medium">💡 ${uni.highlights}</p>` : ''}
+				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${uni.location}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${uni.duration}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${uni.tuition}</div>
+					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${uni.language}</div>
+					${countryDisplay ? `<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">${countryDisplay}</div>` : ''}
+				</div>
+				${uni.requirements ? `<p class="text-sm text-gray-700 dark:text-gray-300 mb-4">📝 ${uni.requirements}</p>` : ''}
+				<div class="flex gap-3 items-center flex-wrap">
+					<a href="${uni.website}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
+					<select onchange="${statusChangeFunc}('${uni.university}', this.value)"
+						class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-teal-500 cursor-pointer">
+						<option value="not_started" ${uni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
+						<option value="researching" ${uni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
+						<option value="preparing" ${uni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
+						<option value="submitted" ${uni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
+						<option value="admitted" ${uni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
+						<option value="rejected" ${uni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	`;
+}
+
+function filterGermanyUniversities() {
+	const searchTerm = document.getElementById('germany-search')?.value.toLowerCase() || '';
+	const statusFilter = document.getElementById('germany-filter-status')?.value || 'all';
+	
+	const container = document.getElementById('germany-list');
+	if (!container) return;
+
+	const filtered = germanyUniversities.filter(uni => {
+		const matchesSearch = uni.university.toLowerCase().includes(searchTerm) ||
+			(uni.program && uni.program.toLowerCase().includes(searchTerm)) ||
+			(uni.location && uni.location.toLowerCase().includes(searchTerm));
+		const matchesStatus = statusFilter === 'all' || (uni.status || 'not_started') === statusFilter;
+		return matchesSearch && matchesStatus;
+	});
+
+	if (filtered.length === 0) {
+		container.innerHTML = `
+			<div class="col-span-2 text-center py-8 text-gray-500 dark:text-gray-400">
+				<p class="text-4xl mb-2">🔍</p>
+				<p>No universities found matching your criteria</p>
+			</div>
+		`;
+		return;
+	}
+
+	container.innerHTML = filtered.map(uni => renderUniversityCard(uni, 'germany')).join('');
+}
+
+function filterSchengenUniversities() {
+	const searchTerm = document.getElementById('schengen-search')?.value.toLowerCase() || '';
+	const statusFilter = document.getElementById('schengen-filter-status')?.value || 'all';
+	
+	const container = document.getElementById('schengen-list');
+	if (!container) return;
+
+	const filtered = schengenUniversities.filter(uni => {
+		const matchesSearch = uni.university.toLowerCase().includes(searchTerm) ||
+			(uni.program && uni.program.toLowerCase().includes(searchTerm)) ||
+			(uni.location && uni.location.toLowerCase().includes(searchTerm)) ||
+			(uni.country && uni.country.toLowerCase().includes(searchTerm));
+		const matchesStatus = statusFilter === 'all' || (uni.status || 'not_started') === statusFilter;
+		return matchesSearch && matchesStatus;
+	});
+
+	if (filtered.length === 0) {
+		container.innerHTML = `
+			<div class="col-span-2 text-center py-8 text-gray-500 dark:text-gray-400">
+				<p class="text-4xl mb-2">🔍</p>
+				<p>No universities found matching your criteria</p>
+			</div>
+		`;
+		return;
+	}
+
+	container.innerHTML = filtered.map(uni => renderUniversityCard(uni, 'schengen')).join('');
+}
+
+// ==========================================
+// DOCUMENT CHECKLIST FUNCTIONS
+// ==========================================
+
+const DEFAULT_DOCUMENTS = [
+	{ id: 'passport', name: 'Valid Passport', required: true },
+	{ id: 'transcripts', name: 'Academic Transcripts', required: true },
+	{ id: 'degree', name: 'Degree Certificate', required: true },
+	{ id: 'ielts', name: 'IELTS Score Report', required: true },
+	{ id: 'motivation', name: 'Motivation Letter', required: true },
+	{ id: 'cv', name: 'CV / Resume', required: true },
+	{ id: 'recommendations', name: 'Recommendation Letters (2)', required: true },
+	{ id: 'photo', name: 'Passport Photos', required: true },
+	{ id: 'bank', name: 'Bank Statement / Financial Proof', required: true },
+	{ id: 'insurance', name: 'Health Insurance', required: false },
+	{ id: 'portfolio', name: 'Portfolio (if applicable)', required: false },
+	{ id: 'work_exp', name: 'Work Experience Certificate', required: false },
+];
+
+function displayDocumentChecklist() {
+	const container = document.getElementById('document-checklist');
+	const progressEl = document.getElementById('doc-checklist-progress');
+	if (!container) return;
+
+	const saved = localStorage.getItem('document-checklist');
+	const checkedDocs = saved ? JSON.parse(saved) : [];
+
+	const completed = checkedDocs.length;
+	const total = DEFAULT_DOCUMENTS.filter(d => d.required).length;
+	
+	if (progressEl) {
+		progressEl.textContent = `${completed}/${total} required`;
+	}
+
+	container.innerHTML = DEFAULT_DOCUMENTS.map(doc => {
+		const isChecked = checkedDocs.includes(doc.id);
+		return `
+			<label class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer ${isChecked ? 'bg-green-50 dark:bg-green-900/20' : ''}">
+				<input type="checkbox" ${isChecked ? 'checked' : ''} 
+					onchange="toggleDocument('${doc.id}')"
+					class="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+				<span class="${isChecked ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'} text-sm flex-1">${doc.name}</span>
+				${doc.required ? '<span class="text-xs text-red-500">Required</span>' : '<span class="text-xs text-gray-400">Optional</span>'}
+			</label>
+		`;
+	}).join('');
+}
+
+function toggleDocument(docId) {
+	const saved = localStorage.getItem('document-checklist');
+	let checkedDocs = saved ? JSON.parse(saved) : [];
+
+	if (checkedDocs.includes(docId)) {
+		checkedDocs = checkedDocs.filter(id => id !== docId);
+	} else {
+		checkedDocs.push(docId);
+	}
+
+	localStorage.setItem('document-checklist', JSON.stringify(checkedDocs));
+	displayDocumentChecklist();
+}
+
+// ==========================================
+// CONFIRMATION DIALOG FUNCTIONS
+// ==========================================
+
+function showConfirmDialog(message, onConfirm, onCancel) {
+	// Remove any existing dialog
+	const existing = document.getElementById('confirm-dialog');
+	if (existing) existing.remove();
+
+	const dialog = document.createElement('div');
+	dialog.id = 'confirm-dialog';
+	dialog.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
+	dialog.innerHTML = `
+		<div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-sm w-full shadow-2xl">
+			<p class="text-gray-900 dark:text-white font-medium mb-4">${message}</p>
+			<div class="flex gap-3">
+				<button onclick="handleConfirmDialog(false)" class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+					Cancel
+				</button>
+				<button onclick="handleConfirmDialog(true)" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+					Confirm
+				</button>
+			</div>
+		</div>
+	`;
+
+	// Store callbacks
+	dialog._onConfirm = onConfirm;
+	dialog._onCancel = onCancel;
+
+	document.body.appendChild(dialog);
+
+	// Close on backdrop click
+	dialog.addEventListener('click', (e) => {
+		if (e.target === dialog) {
+			handleConfirmDialog(false);
+		}
+	});
+}
+
+function handleConfirmDialog(confirmed) {
+	const dialog = document.getElementById('confirm-dialog');
+	if (!dialog) return;
+
+	if (confirmed && dialog._onConfirm) {
+		dialog._onConfirm();
+	} else if (!confirmed && dialog._onCancel) {
+		dialog._onCancel();
+	}
+
+	dialog.remove();
+}
+
+// Wrap untrack functions with confirmation
+const originalUntrackGermany = untrackGermanyUniversity;
+untrackGermanyUniversity = function(universityName) {
+	showConfirmDialog(
+		`Remove "${universityName}" from your tracker? Your progress will be lost.`,
+		() => originalUntrackGermany(universityName)
+	);
+};
+
+const originalUntrackSchengen = untrackSchengenUniversity;
+untrackSchengenUniversity = function(universityName) {
+	showConfirmDialog(
+		`Remove "${universityName}" from your tracker? Your progress will be lost.`,
+		() => originalUntrackSchengen(universityName)
+	);
+};
+
+const originalUntrackScholarship = untrackScholarship;
+untrackScholarship = function(scholarshipName) {
+	showConfirmDialog(
+		`Remove "${scholarshipName}" from your tracker? Your progress will be lost.`,
+		() => originalUntrackScholarship(scholarshipName)
+	);
+};
+
+// ==========================================
+// NOTES FUNCTIONS
+// ==========================================
+
+function saveUniversityNote(type, universityName, note) {
+	const key = `${type}-notes`;
+	const saved = localStorage.getItem(key);
+	const notes = saved ? JSON.parse(saved) : {};
+	notes[universityName] = note;
+	localStorage.setItem(key, JSON.stringify(notes));
+}
+
+function getUniversityNote(type, universityName) {
+	const key = `${type}-notes`;
+	const saved = localStorage.getItem(key);
+	const notes = saved ? JSON.parse(saved) : {};
+	return notes[universityName] || '';
+}
+
+// Initialize document checklist on page load
+document.addEventListener('DOMContentLoaded', () => {
+	setTimeout(() => {
+		displayDocumentChecklist();
+	}, 500);
+});
