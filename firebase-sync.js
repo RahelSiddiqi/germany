@@ -27,6 +27,12 @@ class CloudSyncManager {
 			schengen: 'schengen-applications',
 			ielts: 'ielts-tasks',
 			ieltsScores: 'ielts-scores',
+			scholarships: 'scholarship-applications',
+			documents: 'document-checklist',
+			vocab: 'learned-vocabulary',
+			germanyNotes: 'germany-notes',
+			schengenNotes: 'schengen-notes',
+			studyReminders: 'study-reminders',
 		};
 
 		// Check if Firebase config is set
@@ -190,6 +196,24 @@ class CloudSyncManager {
 				ieltsScores: JSON.parse(
 					localStorage.getItem(this.STORAGE_KEYS.ieltsScores) || '[]',
 				),
+				scholarships: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.scholarships) || '[]',
+				),
+				documents: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.documents) || '[]',
+				),
+				vocab: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.vocab) || '[]',
+				),
+				germanyNotes: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.germanyNotes) || '{}',
+				),
+				schengenNotes: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.schengenNotes) || '{}',
+				),
+				studyReminders: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.studyReminders) || '{}',
+				),
 				lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
 				deviceInfo: navigator.userAgent,
 			};
@@ -247,6 +271,42 @@ class CloudSyncManager {
 					localStorage.setItem(
 						this.STORAGE_KEYS.ieltsScores,
 						JSON.stringify(data.ieltsScores),
+					);
+				}
+				if (data.scholarships && data.scholarships.length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.scholarships,
+						JSON.stringify(data.scholarships),
+					);
+				}
+				if (data.documents && data.documents.length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.documents,
+						JSON.stringify(data.documents),
+					);
+				}
+				if (data.vocab && data.vocab.length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.vocab,
+						JSON.stringify(data.vocab),
+					);
+				}
+				if (data.germanyNotes && Object.keys(data.germanyNotes).length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.germanyNotes,
+						JSON.stringify(data.germanyNotes),
+					);
+				}
+				if (data.schengenNotes && Object.keys(data.schengenNotes).length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.schengenNotes,
+						JSON.stringify(data.schengenNotes),
+					);
+				}
+				if (data.studyReminders && Object.keys(data.studyReminders).length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.studyReminders,
+						JSON.stringify(data.studyReminders),
 					);
 				}
 

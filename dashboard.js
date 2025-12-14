@@ -702,63 +702,120 @@ function displayGermanyProgress() {
 						: 'bg-amber-500';
 				const statusIcon =
 					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
+				
+				const statusColors = {
+					not_started: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+					researching: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+					preparing: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
+					submitted: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+					admitted: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+					rejected: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
+				};
+				const statusColor = statusColors[trackedUni.status] || statusColors.not_started;
+				const note = getUniversityNote('germany', trackedUni.university);
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow">
 					<!-- Collapsed Header with Progress -->
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between gap-3">
 							<div class="flex items-center gap-3 flex-1 min-w-0">
-								<span class="text-xl">${statusIcon}</span>
+								<div class="w-12 h-12 rounded-xl ${progressColor} bg-opacity-20 flex items-center justify-center text-2xl">
+									${statusIcon}
+								</div>
 								<div class="flex-1 min-w-0">
-									<h4 class="font-semibold text-gray-900 dark:text-white truncate">${
+									<h4 class="font-bold text-gray-900 dark:text-white truncate">${
 										trackedUni.university
 									}</h4>
-									<div class="flex items-center gap-2 mt-1">
-										<div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-											<div class="h-full ${progressColor} rounded-full transition-all duration-300" style="width: ${progress}%"></div>
-										</div>
-										<span class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">${progress}%</span>
+									<div class="flex items-center gap-2 mt-1 flex-wrap">
+										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(trackedUni.status)}</span>
+										${uni.application_deadline ? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>` : ''}
 									</div>
 								</div>
 							</div>
-							<div class="flex items-center gap-2">
-								<span class="text-xs text-gray-500 dark:text-gray-400">${completedTasks}/${totalTasks}</span>
+							<div class="flex flex-col items-end gap-1">
+								<div class="flex items-center gap-2">
+									<div class="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+										<div class="h-full ${progressColor} rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+									</div>
+									<span class="text-sm font-bold ${progress === 100 ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'}">${progress}%</span>
+								</div>
 								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 							</div>
 						</div>
 					</div>
 
 					<!-- Expanded Details -->
-					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
-						<div class="space-y-2">
-							${trackedUni.tasks
-								.map(
-									(task, index) => `
-								<label class="flex items-center gap-3 p-3 rounded-lg ${
-									task.completed
-										? 'bg-green-50 dark:bg-green-900/20'
-										: 'bg-white dark:bg-gray-800'
-								} cursor-pointer transition-colors border border-gray-100 dark:border-gray-700">
-									<input type="checkbox"
-										   class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
-										   ${task.completed ? 'checked' : ''}
-										   onchange="toggleGermanyTask('${trackedUni.university}', ${index})">
-									<span class="text-sm flex-1 ${
-										task.completed
-											? 'text-gray-500 dark:text-gray-400 line-through'
-											: 'text-gray-700 dark:text-gray-300'
-									}">${task.name}</span>
-									${task.completed ? '<span class="text-green-500">✓</span>' : ''}
-								</label>
-							`,
-								)
-								.join('')}
+					<div class="hidden border-t border-gray-200 dark:border-gray-700">
+						<!-- Status & Info Bar -->
+						<div class="p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+							<div class="flex flex-wrap items-center gap-3">
+								<div class="flex items-center gap-2">
+									<label class="text-xs text-gray-500 dark:text-gray-400">Status:</label>
+									<select onchange="changeTrackedGermanyStatus('${trackedUni.university}', this.value)"
+										class="text-xs px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium">
+										<option value="not_started" ${trackedUni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
+										<option value="researching" ${trackedUni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
+										<option value="preparing" ${trackedUni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
+										<option value="submitted" ${trackedUni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
+										<option value="admitted" ${trackedUni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
+										<option value="rejected" ${trackedUni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+									</select>
+								</div>
+								${uni.tuition ? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>` : ''}
+								${uni.location ? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>` : ''}
+							</div>
 						</div>
-						<button onclick="untrackGermanyUniversity('${trackedUni.university}')"
-							class="mt-4 w-full px-4 py-2 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-							Remove from Tracker
-						</button>
+						
+						<!-- Tasks Section -->
+						<div class="p-4 bg-gray-50 dark:bg-gray-900/50">
+							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Application Tasks</h5>
+							<div class="grid gap-2">
+								${trackedUni.tasks
+									.map(
+										(task, index) => `
+									<label class="flex items-center gap-3 p-3 rounded-xl ${
+										task.completed
+											? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+											: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+									} cursor-pointer transition-all hover:shadow-sm border">
+										<input type="checkbox"
+											   class="w-5 h-5 rounded-lg border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 focus:ring-offset-0"
+											   ${task.completed ? 'checked' : ''}
+											   onchange="toggleGermanyTask('${trackedUni.university}', ${index})">
+										<span class="text-sm flex-1 ${
+											task.completed
+												? 'text-gray-400 dark:text-gray-500 line-through'
+												: 'text-gray-700 dark:text-gray-300'
+										}">${task.name}</span>
+										${task.completed ? '<span class="text-green-500 text-lg">✓</span>' : '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'}
+									</label>
+								`,
+									)
+									.join('')}
+							</div>
+						</div>
+						
+						<!-- Notes Section -->
+						<div class="p-4 border-t border-gray-200 dark:border-gray-700">
+							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">📝 Personal Notes</h5>
+							<textarea 
+								placeholder="Add notes about this application..."
+								onblur="saveUniversityNote('germany', '${trackedUni.university}', this.value)"
+								class="w-full p-3 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+								rows="2">${note}</textarea>
+						</div>
+						
+						<!-- Actions -->
+						<div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30">
+							<div class="flex gap-3">
+								${uni.website ? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>` : ''}
+								<button onclick="untrackGermanyUniversity('${trackedUni.university}')"
+									class="px-4 py-2.5 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+									🗑️ Remove
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			`;
@@ -889,6 +946,33 @@ function changeGermanyStatus(universityName, newStatus) {
 			)}`,
 			'success',
 			3000,
+		);
+	}
+}
+
+// Change status for tracked university in progress view
+function changeTrackedGermanyStatus(universityName, newStatus) {
+	const tracked = localStorage.getItem('germany-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+	
+	const uni = trackedUniversities.find(t => t.university === universityName);
+	if (!uni) return;
+
+	uni.status = newStatus;
+	localStorage.setItem('germany-applications', JSON.stringify(trackedUniversities));
+	displayGermanyProgress();
+	updateDashboardStats();
+
+	// Sync to cloud
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`✅ Status updated to ${getStatusLabel(newStatus)}`,
+			'success',
+			2000,
 		);
 	}
 }
@@ -1178,60 +1262,109 @@ function displaySchengenProgress() {
 						: 'bg-amber-500';
 				const statusIcon =
 					progress === 100 ? '✅' : progress >= 50 ? '🔄' : '📋';
+				
+				const statusColors = {
+					not_started: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+					researching: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+					preparing: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
+					submitted: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+					admitted: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+					rejected: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
+				};
+				const statusColor = statusColors[trackedUni.status] || statusColors.not_started;
+				const note = getUniversityNote('schengen', trackedUni.university);
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow">
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between gap-3">
 							<div class="flex items-center gap-3 flex-1 min-w-0">
-								<span class="text-xl">${statusIcon}</span>
+								<div class="w-12 h-12 rounded-xl ${progressColor} bg-opacity-20 flex items-center justify-center text-2xl">
+									${statusIcon}
+								</div>
 								<div class="flex-1 min-w-0">
-									<h4 class="font-semibold text-gray-900 dark:text-white truncate">${
-										trackedUni.university
-									}</h4>
-									<div class="flex items-center gap-2 mt-1">
-										<div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-											<div class="h-full ${progressColor} rounded-full transition-all" style="width: ${progress}%"></div>
-										</div>
-										<span class="text-xs text-gray-500 dark:text-gray-400">${progress}%</span>
+									<h4 class="font-bold text-gray-900 dark:text-white truncate">${trackedUni.university}</h4>
+									<div class="flex items-center gap-2 mt-1 flex-wrap">
+										<span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor}">${getStatusLabel(trackedUni.status)}</span>
+										${uni.country ? `<span class="text-xs text-gray-500 dark:text-gray-400">🌍 ${uni.country}</span>` : ''}
+										${uni.application_deadline ? `<span class="text-xs text-gray-500 dark:text-gray-400">⏰ ${uni.application_deadline}</span>` : ''}
 									</div>
 								</div>
 							</div>
-							<div class="flex items-center gap-2">
-								<span class="text-xs text-gray-500 dark:text-gray-400">${completedTasks}/${totalTasks}</span>
+							<div class="flex flex-col items-end gap-1">
+								<div class="flex items-center gap-2">
+									<div class="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+										<div class="h-full ${progressColor} rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+									</div>
+									<span class="text-sm font-bold ${progress === 100 ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'}">${progress}%</span>
+								</div>
 								<span class="expand-toggle text-gray-400 text-sm transition-transform">▶</span>
 							</div>
 						</div>
 					</div>
-					<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
-						<div class="space-y-2">
-							${trackedUni.tasks
-								.map(
-									(task, index) => `
-								<label class="flex items-center gap-3 p-3 rounded-lg ${
-									task.completed
-										? 'bg-green-50 dark:bg-green-900/20'
-										: 'bg-white dark:bg-gray-800'
-								} cursor-pointer transition-colors border border-gray-100 dark:border-gray-700">
-									<input type="checkbox"
-										   class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
-										   ${task.completed ? 'checked' : ''}
-										   onchange="toggleSchengenTask('${trackedUni.university}', ${index})">
-									<span class="text-sm flex-1 ${
-										task.completed
-											? 'text-gray-500 dark:text-gray-400 line-through'
-											: 'text-gray-700 dark:text-gray-300'
-									}">${task.name}</span>
-									${task.completed ? '<span class="text-green-500">✓</span>' : ''}
-								</label>
-							`,
-								)
-								.join('')}
+					<div class="hidden border-t border-gray-200 dark:border-gray-700">
+						<div class="p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+							<div class="flex flex-wrap items-center gap-3">
+								<div class="flex items-center gap-2">
+									<label class="text-xs text-gray-500 dark:text-gray-400">Status:</label>
+									<select onchange="changeTrackedSchengenStatus('${trackedUni.university}', this.value)"
+										class="text-xs px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium">
+										<option value="not_started" ${trackedUni.status === 'not_started' ? 'selected' : ''}>📋 Not Started</option>
+										<option value="researching" ${trackedUni.status === 'researching' ? 'selected' : ''}>🔍 Researching</option>
+										<option value="preparing" ${trackedUni.status === 'preparing' ? 'selected' : ''}>📝 Preparing</option>
+										<option value="submitted" ${trackedUni.status === 'submitted' ? 'selected' : ''}>✅ Submitted</option>
+										<option value="admitted" ${trackedUni.status === 'admitted' ? 'selected' : ''}>🎉 Admitted</option>
+										<option value="rejected" ${trackedUni.status === 'rejected' ? 'selected' : ''}>❌ Rejected</option>
+									</select>
+								</div>
+								${uni.tuition ? `<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">💰 ${uni.tuition}</span>` : ''}
+								${uni.location ? `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">📍 ${uni.location}</span>` : ''}
+							</div>
 						</div>
-						<button onclick="untrackSchengenUniversity('${trackedUni.university}')"
-							class="mt-4 w-full px-4 py-2 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-							Remove from Tracker
-						</button>
+						<div class="p-4 bg-gray-50 dark:bg-gray-900/50">
+							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Application Tasks</h5>
+							<div class="grid gap-2">
+								${trackedUni.tasks
+									.map(
+										(task, index) => `
+									<label class="flex items-center gap-3 p-3 rounded-xl ${
+										task.completed
+											? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+											: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+									} cursor-pointer transition-all hover:shadow-sm border">
+										<input type="checkbox"
+											   class="w-5 h-5 rounded-lg border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
+											   ${task.completed ? 'checked' : ''}
+											   onchange="toggleSchengenTask('${trackedUni.university}', ${index})">
+										<span class="text-sm flex-1 ${
+											task.completed
+												? 'text-gray-400 dark:text-gray-500 line-through'
+												: 'text-gray-700 dark:text-gray-300'
+										}">${task.name}</span>
+										${task.completed ? '<span class="text-green-500 text-lg">✓</span>' : '<span class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600"></span>'}
+									</label>
+								`,
+									)
+									.join('')}
+							</div>
+						</div>
+						<div class="p-4 border-t border-gray-200 dark:border-gray-700">
+							<h5 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">📝 Personal Notes</h5>
+							<textarea 
+								placeholder="Add notes about this application..."
+								onblur="saveUniversityNote('schengen', '${trackedUni.university}', this.value)"
+								class="w-full p-3 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+								rows="2">${note}</textarea>
+						</div>
+						<div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30">
+							<div class="flex gap-3">
+								${uni.website ? `<a href="${uni.website}" target="_blank" class="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium text-center transition-colors">🔗 Visit Website</a>` : ''}
+								<button onclick="untrackSchengenUniversity('${trackedUni.university}')"
+									class="px-4 py-2.5 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+									🗑️ Remove
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			`;
@@ -1344,6 +1477,33 @@ function changeSchengenStatus(universityName, newStatus) {
 			)}`,
 			'success',
 			3000,
+		);
+	}
+}
+
+// Change status for tracked Schengen university in progress view
+function changeTrackedSchengenStatus(universityName, newStatus) {
+	const tracked = localStorage.getItem('schengen-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+	
+	const uni = trackedUniversities.find(t => t.university === universityName);
+	if (!uni) return;
+
+	uni.status = newStatus;
+	localStorage.setItem('schengen-applications', JSON.stringify(trackedUniversities));
+	displaySchengenProgress();
+	updateDashboardStats();
+
+	// Sync to cloud
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
+
+	if (typeof notificationManager !== 'undefined') {
+		notificationManager.showInAppNotification(
+			`✅ Status updated to ${getStatusLabel(newStatus)}`,
+			'success',
+			2000,
 		);
 	}
 }
