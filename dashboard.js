@@ -9,14 +9,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 	// Load data first, then show page
 	await loadAllData();
 	dataLoaded = true;
-	
+
 	// Restore last page or check URL hash or default to band8-tracker
 	const hash = window.location.hash.replace('#', '');
-	const savedPage = hash || localStorage.getItem('currentPage') || 'band8-tracker';
+	const savedPage =
+		hash || localStorage.getItem('currentPage') || 'band8-tracker';
 	showPage(savedPage);
-	
+
 	updateDashboardStats();
-	
+
 	// Update storage display
 	if (typeof updateStorageDisplay === 'function') {
 		updateStorageDisplay();
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	if (typeof updateAnalyticsPage === 'function') {
 		updateAnalyticsPage();
 	}
-	
+
 	// Hide loading screen and show content
 	const loadingScreen = document.getElementById('loading-screen');
 	const mainContent = document.querySelector('.main-content');
