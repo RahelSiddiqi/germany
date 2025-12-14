@@ -6,6 +6,11 @@ let dataLoaded = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+	// Initialize cloud sync first
+	if (typeof cloudSync !== 'undefined') {
+		await cloudSync.init();
+	}
+	
 	// Load data first, then show page
 	await loadAllData();
 	dataLoaded = true;
@@ -993,17 +998,19 @@ function displayIELTSPlan() {
 
 	const renderTask = (id, time, task, duration) => {
 		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-		const checked = tasks[id] ? 'checked' : '';
+		const isChecked = tasks[id] ? true : false;
+		const checked = isChecked ? 'checked' : '';
+		const completedClass = isChecked ? 'task-completed' : '';
 
 		if (time.startsWith('DAY')) {
 			return `<tr class="day-header"><td colspan="4"><b>${time}</b></td></tr>`;
 		}
 
 		return `
-            <tr>
-                <td><input type="checkbox" ${checked} onchange="toggleIELTSTask('${id}')"></td>
+            <tr class="${completedClass}" data-task-id="${id}">
+                <td><input type="checkbox" ${checked} onchange="toggleIELTSTask('${id}', this)"></td>
                 <td>${time}</td>
-                <td>${task}</td>
+                <td class="task-text">${task}</td>
                 <td>${duration}</td>
             </tr>
         `;
@@ -1783,12 +1790,29 @@ function displayIELTSPlan() {
     `;
 }
 
-function toggleIELTSTask(id) {
+function toggleIELTSTask(id, checkbox) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	tasks[id] = !tasks[id];
 	localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
-	displayIELTSPlan();
+	
+	// Update visual immediately without full re-render
+	if (checkbox) {
+		const row = checkbox.closest('tr');
+		if (row) {
+			if (tasks[id]) {
+				row.classList.add('task-completed');
+			} else {
+				row.classList.remove('task-completed');
+			}
+		}
+	}
+	
 	updateDashboardStats();
+	
+	// Sync to cloud if enabled
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
 }
 
 function getIELTSCompletedCount() {
