@@ -39,7 +39,7 @@ const IELTS_FOLDERS = {
 	d1: {
 		name: 'Day 1',
 		icon: '📅',
-		files: ['vocab.md', 'ipa.md', 'vowels.md', 'consonants.md'],
+		files: ['vocab.md', 'ipa.md', 'vowels.md', 'consonants.md', 'pronunciation-practice.md', 'all-sounds-complete.md'],
 	},
 	d2: { name: 'Day 2', icon: '📅', files: [] },
 	d3: { name: 'Day 3', icon: '📅', files: [] },
