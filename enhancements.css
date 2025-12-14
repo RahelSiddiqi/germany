@@ -1292,7 +1292,7 @@ div[style*='background: #f3e5f5'] {
 @media (max-width: 768px) {
 	/* Main content - remove top padding gap */
 	.main-content {
-		margin-top: 49px !important;
+		margin-top: 60px !important;
 	}
 
 	/* Pages - compact, no extra gap at top */
