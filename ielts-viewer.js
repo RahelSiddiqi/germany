@@ -39,7 +39,14 @@ const IELTS_FOLDERS = {
 	d1: {
 		name: 'Day 1',
 		icon: '📅',
-		files: ['vocab.md', 'ipa.md', 'vowels.md', 'consonants.md', 'pronunciation-practice.md', 'all-sounds-complete.md'],
+		files: [
+			'vocab.md',
+			'ipa.md',
+			'vowels.md',
+			'consonants.md',
+			'pronunciation-practice.md',
+			'all-sounds-complete.md',
+		],
 	},
 	d2: { name: 'Day 2', icon: '📅', files: [] },
 	d3: { name: 'Day 3', icon: '📅', files: [] },
@@ -240,18 +247,40 @@ function parseVocabForQuiz(md) {
 
 	tableMatch.forEach((table) => {
 		const rows = table.split('\n').filter((r) => r.trim().startsWith('|'));
-		const dataRows = rows.slice(2);
+		if (rows.length < 2) return;
+		
+		// Parse header to find column indices
+		const headerCells = rows[0]
+			.split('|')
+			.map((c) => c.trim().toLowerCase())
+			.filter(Boolean);
+		
+		// Find column indices (flexible matching)
+		let wordIndex = headerCells.findIndex(h => h === 'word' || h.includes('word'));
+		let meaningIndex = headerCells.findIndex(h => h === 'english meaning' || h === 'meaning' || h.includes('meaning'));
+		let ipaIndex = headerCells.findIndex(h => h === 'pronunciation' || h === 'ipa' || h.includes('pronun'));
+		
+		// Fallback: if no headers found, assume simple 2-column format (word | meaning)
+		if (wordIndex === -1) wordIndex = 0;
+		if (meaningIndex === -1) meaningIndex = 1;
+		
+		const dataRows = rows.slice(2); // Skip header and separator rows
 
 		dataRows.forEach((row) => {
 			const cells = row
 				.split('|')
 				.map((c) => c.trim())
 				.filter(Boolean);
-			if (cells.length >= 2) {
+			
+			const word = cells[wordIndex] ? cells[wordIndex].replace(/\*\*/g, '').trim() : '';
+			const meaning = cells[meaningIndex] ? cells[meaningIndex].trim() : '';
+			const ipa = ipaIndex >= 0 && cells[ipaIndex] ? cells[ipaIndex].trim() : '';
+			
+			if (word && meaning && !word.match(/^[-]+$/) && !word.match(/^\d+$/)) {
 				questions.push({
-					word: cells[0].replace(/\*\*/g, ''),
-					meaning: cells[1],
-					ipa: cells[2] || '',
+					word: word,
+					meaning: meaning,
+					ipa: ipa,
 				});
 			}
 		});
