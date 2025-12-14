@@ -7,42 +7,49 @@ const IELTS_VOCABULARY = {
 	academic: [
 		{
 			word: 'notwithstanding',
+			phonetic: '/ˌnɒtwɪθˈstændɪŋ/',
 			definition: 'Despite; in spite of',
 			example: 'Notwithstanding the challenges, the company succeeded.',
 			level: 'C1',
 		},
 		{
 			word: 'predominantly',
+			phonetic: '/prɪˈdɒmɪnəntli/',
 			definition: 'Mainly; chiefly',
 			example: 'The region is predominantly agricultural.',
 			level: 'B2',
 		},
 		{
 			word: 'invariably',
+			phonetic: '/ɪnˈveəriəbli/',
 			definition: 'Always; without exception',
 			example: 'She invariably arrives on time.',
 			level: 'C1',
 		},
 		{
 			word: 'contentious',
+			phonetic: '/kənˈtenʃəs/',
 			definition: 'Controversial; disputed',
 			example: 'Climate change remains a contentious issue.',
 			level: 'B2',
 		},
 		{
 			word: 'plausible',
+			phonetic: '/ˈplɔːzəbl/',
 			definition: 'Believable; reasonable',
 			example: 'His explanation was plausible but not proven.',
 			level: 'B2',
 		},
 		{
 			word: 'compelling',
+			phonetic: '/kəmˈpelɪŋ/',
 			definition: 'Convincing; powerful',
 			example: 'The evidence presented was compelling.',
 			level: 'B2',
 		},
 		{
 			word: 'debatable',
+			phonetic: '/dɪˈbeɪtəbl/',
 			definition: 'Arguable; open to discussion',
 			example: 'Whether this policy is effective remains debatable.',
 			level: 'B2',
@@ -804,191 +811,997 @@ const IELTS_VOCABULARY = {
 	],
 	// Day 4: Environment & Nature
 	environment: [
-		{ word: 'biodiversity', definition: 'Variety of life forms', example: 'Rainforests have high biodiversity.', level: 'B2' },
-		{ word: 'ecosystem', definition: 'Community of organisms', example: 'The coral reef ecosystem is fragile.', level: 'B2' },
-		{ word: 'habitat', definition: 'Natural home', example: 'Deforestation destroys habitats.', level: 'B1' },
-		{ word: 'species', definition: 'Type of organism', example: 'Many species are endangered.', level: 'B1' },
-		{ word: 'extinct', definition: 'No longer existing', example: 'Dinosaurs became extinct.', level: 'B2' },
-		{ word: 'endangered', definition: 'At risk of extinction', example: 'Tigers are endangered animals.', level: 'B2' },
-		{ word: 'conservation', definition: 'Protection of nature', example: 'Wildlife conservation is essential.', level: 'B2' },
-		{ word: 'emission', definition: 'Substance released', example: 'Carbon emissions cause warming.', level: 'B2' },
-		{ word: 'pollutant', definition: 'Harmful substance', example: 'Factories release pollutants.', level: 'B2' },
-		{ word: 'deforestation', definition: 'Clearing of forests', example: 'Deforestation accelerates climate change.', level: 'B2' },
-		{ word: 'erosion', definition: 'Gradual wearing away', example: 'Soil erosion affects farming.', level: 'B2' },
-		{ word: 'drought', definition: 'Prolonged dry period', example: 'The drought destroyed crops.', level: 'B2' },
-		{ word: 'renewable', definition: 'Can be replenished', example: 'Solar is a renewable energy source.', level: 'B2' },
-		{ word: 'depletion', definition: 'Using up resources', example: 'Overfishing caused fish stock depletion.', level: 'B2' },
-		{ word: 'ecological', definition: 'Related to ecosystems', example: 'Ecological balance is disrupted.', level: 'B2' },
+		{
+			word: 'biodiversity',
+			definition: 'Variety of life forms',
+			example: 'Rainforests have high biodiversity.',
+			level: 'B2',
+		},
+		{
+			word: 'ecosystem',
+			definition: 'Community of organisms',
+			example: 'The coral reef ecosystem is fragile.',
+			level: 'B2',
+		},
+		{
+			word: 'habitat',
+			definition: 'Natural home',
+			example: 'Deforestation destroys habitats.',
+			level: 'B1',
+		},
+		{
+			word: 'species',
+			definition: 'Type of organism',
+			example: 'Many species are endangered.',
+			level: 'B1',
+		},
+		{
+			word: 'extinct',
+			definition: 'No longer existing',
+			example: 'Dinosaurs became extinct.',
+			level: 'B2',
+		},
+		{
+			word: 'endangered',
+			definition: 'At risk of extinction',
+			example: 'Tigers are endangered animals.',
+			level: 'B2',
+		},
+		{
+			word: 'conservation',
+			definition: 'Protection of nature',
+			example: 'Wildlife conservation is essential.',
+			level: 'B2',
+		},
+		{
+			word: 'emission',
+			definition: 'Substance released',
+			example: 'Carbon emissions cause warming.',
+			level: 'B2',
+		},
+		{
+			word: 'pollutant',
+			definition: 'Harmful substance',
+			example: 'Factories release pollutants.',
+			level: 'B2',
+		},
+		{
+			word: 'deforestation',
+			definition: 'Clearing of forests',
+			example: 'Deforestation accelerates climate change.',
+			level: 'B2',
+		},
+		{
+			word: 'erosion',
+			definition: 'Gradual wearing away',
+			example: 'Soil erosion affects farming.',
+			level: 'B2',
+		},
+		{
+			word: 'drought',
+			definition: 'Prolonged dry period',
+			example: 'The drought destroyed crops.',
+			level: 'B2',
+		},
+		{
+			word: 'renewable',
+			definition: 'Can be replenished',
+			example: 'Solar is a renewable energy source.',
+			level: 'B2',
+		},
+		{
+			word: 'depletion',
+			definition: 'Using up resources',
+			example: 'Overfishing caused fish stock depletion.',
+			level: 'B2',
+		},
+		{
+			word: 'ecological',
+			definition: 'Related to ecosystems',
+			example: 'Ecological balance is disrupted.',
+			level: 'B2',
+		},
 	],
 	// Day 4-5: Science & Research
 	science: [
-		{ word: 'phenomenon', definition: 'Observable event', example: 'Climate change is a global phenomenon.', level: 'B2' },
-		{ word: 'theory', definition: 'System of ideas', example: "Darwin's theory of evolution.", level: 'B1' },
-		{ word: 'evidence', definition: 'Proof', example: 'Scientific evidence supports this.', level: 'B1' },
-		{ word: 'experiment', definition: 'Scientific test', example: 'The experiment proved the hypothesis.', level: 'B1' },
-		{ word: 'variable', definition: 'Changeable factor', example: 'Control all variables in research.', level: 'B2' },
-		{ word: 'data', definition: 'Facts/statistics', example: 'The data supports our conclusion.', level: 'B1' },
-		{ word: 'sample', definition: 'Representative group', example: 'A sample of 500 people was used.', level: 'B1' },
-		{ word: 'survey', definition: 'Questionnaire study', example: 'We conducted a nationwide survey.', level: 'B1' },
-		{ word: 'correlation', definition: 'Statistical relationship', example: "There's a correlation between X and Y.", level: 'B2' },
-		{ word: 'causation', definition: 'Cause-effect relationship', example: "Correlation doesn't imply causation.", level: 'C1' },
-		{ word: 'methodology', definition: 'Research methods', example: 'The methodology was rigorous.', level: 'B2' },
-		{ word: 'significant', definition: 'Statistically important', example: 'Results were statistically significant.', level: 'B2' },
-		{ word: 'preliminary', definition: 'Initial; first stage', example: 'Preliminary results show progress.', level: 'B2' },
-		{ word: 'conclusive', definition: 'Definitive; final', example: 'The evidence is not conclusive.', level: 'B2' },
-		{ word: 'hypothesis', definition: 'Proposed explanation', example: 'The hypothesis was tested.', level: 'B2' },
+		{
+			word: 'phenomenon',
+			definition: 'Observable event',
+			example: 'Climate change is a global phenomenon.',
+			level: 'B2',
+		},
+		{
+			word: 'theory',
+			definition: 'System of ideas',
+			example: "Darwin's theory of evolution.",
+			level: 'B1',
+		},
+		{
+			word: 'evidence',
+			definition: 'Proof',
+			example: 'Scientific evidence supports this.',
+			level: 'B1',
+		},
+		{
+			word: 'experiment',
+			definition: 'Scientific test',
+			example: 'The experiment proved the hypothesis.',
+			level: 'B1',
+		},
+		{
+			word: 'variable',
+			definition: 'Changeable factor',
+			example: 'Control all variables in research.',
+			level: 'B2',
+		},
+		{
+			word: 'data',
+			definition: 'Facts/statistics',
+			example: 'The data supports our conclusion.',
+			level: 'B1',
+		},
+		{
+			word: 'sample',
+			definition: 'Representative group',
+			example: 'A sample of 500 people was used.',
+			level: 'B1',
+		},
+		{
+			word: 'survey',
+			definition: 'Questionnaire study',
+			example: 'We conducted a nationwide survey.',
+			level: 'B1',
+		},
+		{
+			word: 'correlation',
+			definition: 'Statistical relationship',
+			example: "There's a correlation between X and Y.",
+			level: 'B2',
+		},
+		{
+			word: 'causation',
+			definition: 'Cause-effect relationship',
+			example: "Correlation doesn't imply causation.",
+			level: 'C1',
+		},
+		{
+			word: 'methodology',
+			definition: 'Research methods',
+			example: 'The methodology was rigorous.',
+			level: 'B2',
+		},
+		{
+			word: 'significant',
+			definition: 'Statistically important',
+			example: 'Results were statistically significant.',
+			level: 'B2',
+		},
+		{
+			word: 'preliminary',
+			definition: 'Initial; first stage',
+			example: 'Preliminary results show progress.',
+			level: 'B2',
+		},
+		{
+			word: 'conclusive',
+			definition: 'Definitive; final',
+			example: 'The evidence is not conclusive.',
+			level: 'B2',
+		},
+		{
+			word: 'hypothesis',
+			definition: 'Proposed explanation',
+			example: 'The hypothesis was tested.',
+			level: 'B2',
+		},
 	],
 	// Day 5: Writing Task 1 - Trends
 	trends: [
-		{ word: 'increase', definition: 'Go up; rise', example: 'Sales increased by 20%.', level: 'B1' },
-		{ word: 'decrease', definition: 'Go down; fall', example: 'Costs decreased significantly.', level: 'B1' },
-		{ word: 'rise', definition: 'Go up', example: 'There was a sharp rise in prices.', level: 'B1' },
-		{ word: 'fall', definition: 'Go down', example: 'Unemployment fell by 3%.', level: 'B1' },
-		{ word: 'grow', definition: 'Increase; develop', example: 'The economy grew steadily.', level: 'B1' },
-		{ word: 'decline', definition: 'Decrease gradually', example: 'Population declined over the decade.', level: 'B2' },
-		{ word: 'fluctuate', definition: 'Rise and fall irregularly', example: 'Prices fluctuated throughout the year.', level: 'B2' },
-		{ word: 'stabilize', definition: 'Become steady', example: 'The market stabilized in Q4.', level: 'B2' },
-		{ word: 'peak', definition: 'Reach highest point', example: 'Sales peaked in December.', level: 'B2' },
-		{ word: 'dip', definition: 'Fall briefly', example: 'There was a slight dip in March.', level: 'B2' },
-		{ word: 'surge', definition: 'Rise suddenly', example: 'Demand surged unexpectedly.', level: 'B2' },
-		{ word: 'plummet', definition: 'Fall rapidly', example: 'Share prices plummeted.', level: 'C1' },
-		{ word: 'soar', definition: 'Rise quickly', example: 'Profits soared to record levels.', level: 'B2' },
-		{ word: 'level off', definition: 'Become flat', example: 'Growth leveled off in Q3.', level: 'B2' },
-		{ word: 'remain constant', definition: 'Stay the same', example: 'The rate remained constant.', level: 'B2' },
-		{ word: 'dramatically', definition: 'Very significantly', example: 'Sales increased dramatically.', level: 'B2' },
-		{ word: 'substantially', definition: 'To a large degree', example: 'Profits grew substantially.', level: 'B2' },
-		{ word: 'marginally', definition: 'Slightly; a little', example: 'Prices rose marginally.', level: 'B2' },
-		{ word: 'gradually', definition: 'Slowly; step by step', example: 'Temperatures increased gradually.', level: 'B2' },
-		{ word: 'exponentially', definition: 'At increasing rate', example: 'Data is growing exponentially.', level: 'C1' },
+		{
+			word: 'increase',
+			definition: 'Go up; rise',
+			example: 'Sales increased by 20%.',
+			level: 'B1',
+		},
+		{
+			word: 'decrease',
+			definition: 'Go down; fall',
+			example: 'Costs decreased significantly.',
+			level: 'B1',
+		},
+		{
+			word: 'rise',
+			definition: 'Go up',
+			example: 'There was a sharp rise in prices.',
+			level: 'B1',
+		},
+		{
+			word: 'fall',
+			definition: 'Go down',
+			example: 'Unemployment fell by 3%.',
+			level: 'B1',
+		},
+		{
+			word: 'grow',
+			definition: 'Increase; develop',
+			example: 'The economy grew steadily.',
+			level: 'B1',
+		},
+		{
+			word: 'decline',
+			definition: 'Decrease gradually',
+			example: 'Population declined over the decade.',
+			level: 'B2',
+		},
+		{
+			word: 'fluctuate',
+			definition: 'Rise and fall irregularly',
+			example: 'Prices fluctuated throughout the year.',
+			level: 'B2',
+		},
+		{
+			word: 'stabilize',
+			definition: 'Become steady',
+			example: 'The market stabilized in Q4.',
+			level: 'B2',
+		},
+		{
+			word: 'peak',
+			definition: 'Reach highest point',
+			example: 'Sales peaked in December.',
+			level: 'B2',
+		},
+		{
+			word: 'dip',
+			definition: 'Fall briefly',
+			example: 'There was a slight dip in March.',
+			level: 'B2',
+		},
+		{
+			word: 'surge',
+			definition: 'Rise suddenly',
+			example: 'Demand surged unexpectedly.',
+			level: 'B2',
+		},
+		{
+			word: 'plummet',
+			definition: 'Fall rapidly',
+			example: 'Share prices plummeted.',
+			level: 'C1',
+		},
+		{
+			word: 'soar',
+			definition: 'Rise quickly',
+			example: 'Profits soared to record levels.',
+			level: 'B2',
+		},
+		{
+			word: 'level off',
+			definition: 'Become flat',
+			example: 'Growth leveled off in Q3.',
+			level: 'B2',
+		},
+		{
+			word: 'remain constant',
+			definition: 'Stay the same',
+			example: 'The rate remained constant.',
+			level: 'B2',
+		},
+		{
+			word: 'dramatically',
+			definition: 'Very significantly',
+			example: 'Sales increased dramatically.',
+			level: 'B2',
+		},
+		{
+			word: 'substantially',
+			definition: 'To a large degree',
+			example: 'Profits grew substantially.',
+			level: 'B2',
+		},
+		{
+			word: 'marginally',
+			definition: 'Slightly; a little',
+			example: 'Prices rose marginally.',
+			level: 'B2',
+		},
+		{
+			word: 'gradually',
+			definition: 'Slowly; step by step',
+			example: 'Temperatures increased gradually.',
+			level: 'B2',
+		},
+		{
+			word: 'exponentially',
+			definition: 'At increasing rate',
+			example: 'Data is growing exponentially.',
+			level: 'C1',
+		},
 	],
 	// Day 6: Process & Map Vocabulary
 	process: [
-		{ word: 'initially', definition: 'At the beginning', example: 'Initially, raw materials are collected.', level: 'B2' },
-		{ word: 'subsequently', definition: 'After that', example: 'Subsequently, they are sorted.', level: 'B2' },
-		{ word: 'eventually', definition: 'In the end', example: 'Eventually, the product is packaged.', level: 'B1' },
-		{ word: 'simultaneously', definition: 'At the same time', example: 'Two processes occur simultaneously.', level: 'B2' },
-		{ word: 'prior to', definition: 'Before', example: 'Prior to processing, materials are inspected.', level: 'B2' },
-		{ word: 'thereafter', definition: 'After that', example: 'Thereafter, it is transported to stores.', level: 'C1' },
-		{ word: 'collect', definition: 'Gather', example: 'Raw materials are collected.', level: 'B1' },
-		{ word: 'transport', definition: 'Move from place to place', example: 'Materials are transported to the factory.', level: 'B1' },
-		{ word: 'filter', definition: 'Remove impurities', example: 'Water is filtered to remove particles.', level: 'B2' },
-		{ word: 'compress', definition: 'Press together', example: 'The material is compressed.', level: 'B2' },
-		{ word: 'distribute', definition: 'Deliver to places', example: 'Goods are distributed to retailers.', level: 'B2' },
-		{ word: 'convert', definition: 'Change form', example: 'Energy is converted to electricity.', level: 'B2' },
-		{ word: 'extract', definition: 'Remove from source', example: 'Oil is extracted from seeds.', level: 'B2' },
-		{ word: 'refine', definition: 'Purify', example: 'Crude oil is refined.', level: 'B2' },
-		{ word: 'assemble', definition: 'Put together', example: 'Parts are assembled into products.', level: 'B2' },
-		{ word: 'construct', definition: 'Build', example: 'A new road was constructed.', level: 'B2' },
-		{ word: 'demolish', definition: 'Destroy (building)', example: 'The old factory was demolished.', level: 'B2' },
-		{ word: 'relocate', definition: 'Move to new place', example: 'The factory was relocated.', level: 'B2' },
-		{ word: 'renovate', definition: 'Restore; update', example: 'The building was renovated.', level: 'B2' },
-		{ word: 'expand', definition: 'Grow; become bigger', example: 'The town expanded significantly.', level: 'B2' },
+		{
+			word: 'initially',
+			definition: 'At the beginning',
+			example: 'Initially, raw materials are collected.',
+			level: 'B2',
+		},
+		{
+			word: 'subsequently',
+			definition: 'After that',
+			example: 'Subsequently, they are sorted.',
+			level: 'B2',
+		},
+		{
+			word: 'eventually',
+			definition: 'In the end',
+			example: 'Eventually, the product is packaged.',
+			level: 'B1',
+		},
+		{
+			word: 'simultaneously',
+			definition: 'At the same time',
+			example: 'Two processes occur simultaneously.',
+			level: 'B2',
+		},
+		{
+			word: 'prior to',
+			definition: 'Before',
+			example: 'Prior to processing, materials are inspected.',
+			level: 'B2',
+		},
+		{
+			word: 'thereafter',
+			definition: 'After that',
+			example: 'Thereafter, it is transported to stores.',
+			level: 'C1',
+		},
+		{
+			word: 'collect',
+			definition: 'Gather',
+			example: 'Raw materials are collected.',
+			level: 'B1',
+		},
+		{
+			word: 'transport',
+			definition: 'Move from place to place',
+			example: 'Materials are transported to the factory.',
+			level: 'B1',
+		},
+		{
+			word: 'filter',
+			definition: 'Remove impurities',
+			example: 'Water is filtered to remove particles.',
+			level: 'B2',
+		},
+		{
+			word: 'compress',
+			definition: 'Press together',
+			example: 'The material is compressed.',
+			level: 'B2',
+		},
+		{
+			word: 'distribute',
+			definition: 'Deliver to places',
+			example: 'Goods are distributed to retailers.',
+			level: 'B2',
+		},
+		{
+			word: 'convert',
+			definition: 'Change form',
+			example: 'Energy is converted to electricity.',
+			level: 'B2',
+		},
+		{
+			word: 'extract',
+			definition: 'Remove from source',
+			example: 'Oil is extracted from seeds.',
+			level: 'B2',
+		},
+		{
+			word: 'refine',
+			definition: 'Purify',
+			example: 'Crude oil is refined.',
+			level: 'B2',
+		},
+		{
+			word: 'assemble',
+			definition: 'Put together',
+			example: 'Parts are assembled into products.',
+			level: 'B2',
+		},
+		{
+			word: 'construct',
+			definition: 'Build',
+			example: 'A new road was constructed.',
+			level: 'B2',
+		},
+		{
+			word: 'demolish',
+			definition: 'Destroy (building)',
+			example: 'The old factory was demolished.',
+			level: 'B2',
+		},
+		{
+			word: 'relocate',
+			definition: 'Move to new place',
+			example: 'The factory was relocated.',
+			level: 'B2',
+		},
+		{
+			word: 'renovate',
+			definition: 'Restore; update',
+			example: 'The building was renovated.',
+			level: 'B2',
+		},
+		{
+			word: 'expand',
+			definition: 'Grow; become bigger',
+			example: 'The town expanded significantly.',
+			level: 'B2',
+		},
 	],
 	// Day 7-8: History & Society
 	history: [
-		{ word: 'ancient', definition: 'Very old', example: 'Ancient civilizations built pyramids.', level: 'B1' },
-		{ word: 'medieval', definition: 'Middle Ages', example: 'Medieval Europe was feudal.', level: 'B2' },
-		{ word: 'contemporary', definition: 'Of the same period', example: 'Contemporary accounts describe...', level: 'B2' },
-		{ word: 'era', definition: 'Historical period', example: 'The Victorian era was transformative.', level: 'B2' },
-		{ word: 'civilization', definition: 'Advanced society', example: 'The Roman civilization lasted centuries.', level: 'B1' },
-		{ word: 'dynasty', definition: 'Ruling family', example: 'The Ming Dynasty ruled China.', level: 'B2' },
-		{ word: 'empire', definition: 'Large territory ruled', example: 'The British Empire was vast.', level: 'B1' },
-		{ word: 'revolution', definition: 'Sudden change', example: 'The Industrial Revolution changed society.', level: 'B1' },
-		{ word: 'reform', definition: 'Change for improvement', example: 'Social reforms improved conditions.', level: 'B2' },
-		{ word: 'migration', definition: 'Movement of people', example: 'Mass migration occurred in the 1800s.', level: 'B2' },
-		{ word: 'settlement', definition: 'Established community', example: 'The first settlement was in 1607.', level: 'B2' },
-		{ word: 'indigenous', definition: 'Native; original', example: 'Indigenous peoples lived there for millennia.', level: 'B2' },
-		{ word: 'heritage', definition: 'Cultural inheritance', example: 'Protect our cultural heritage.', level: 'B2' },
-		{ word: 'archaeology', definition: 'Study of ancient remains', example: 'Archaeology reveals past civilizations.', level: 'B2' },
-		{ word: 'artifact', definition: 'Historical object', example: 'The museum displays ancient artifacts.', level: 'B2' },
+		{
+			word: 'ancient',
+			definition: 'Very old',
+			example: 'Ancient civilizations built pyramids.',
+			level: 'B1',
+		},
+		{
+			word: 'medieval',
+			definition: 'Middle Ages',
+			example: 'Medieval Europe was feudal.',
+			level: 'B2',
+		},
+		{
+			word: 'contemporary',
+			definition: 'Of the same period',
+			example: 'Contemporary accounts describe...',
+			level: 'B2',
+		},
+		{
+			word: 'era',
+			definition: 'Historical period',
+			example: 'The Victorian era was transformative.',
+			level: 'B2',
+		},
+		{
+			word: 'civilization',
+			definition: 'Advanced society',
+			example: 'The Roman civilization lasted centuries.',
+			level: 'B1',
+		},
+		{
+			word: 'dynasty',
+			definition: 'Ruling family',
+			example: 'The Ming Dynasty ruled China.',
+			level: 'B2',
+		},
+		{
+			word: 'empire',
+			definition: 'Large territory ruled',
+			example: 'The British Empire was vast.',
+			level: 'B1',
+		},
+		{
+			word: 'revolution',
+			definition: 'Sudden change',
+			example: 'The Industrial Revolution changed society.',
+			level: 'B1',
+		},
+		{
+			word: 'reform',
+			definition: 'Change for improvement',
+			example: 'Social reforms improved conditions.',
+			level: 'B2',
+		},
+		{
+			word: 'migration',
+			definition: 'Movement of people',
+			example: 'Mass migration occurred in the 1800s.',
+			level: 'B2',
+		},
+		{
+			word: 'settlement',
+			definition: 'Established community',
+			example: 'The first settlement was in 1607.',
+			level: 'B2',
+		},
+		{
+			word: 'indigenous',
+			definition: 'Native; original',
+			example: 'Indigenous peoples lived there for millennia.',
+			level: 'B2',
+		},
+		{
+			word: 'heritage',
+			definition: 'Cultural inheritance',
+			example: 'Protect our cultural heritage.',
+			level: 'B2',
+		},
+		{
+			word: 'archaeology',
+			definition: 'Study of ancient remains',
+			example: 'Archaeology reveals past civilizations.',
+			level: 'B2',
+		},
+		{
+			word: 'artifact',
+			definition: 'Historical object',
+			example: 'The museum displays ancient artifacts.',
+			level: 'B2',
+		},
 	],
 	// Day 9+: Band 8.5 Advanced Vocabulary
 	band85: [
-		{ word: 'unequivocally', definition: 'Without doubt; clearly', example: 'The evidence unequivocally supports this.', level: 'C1' },
-		{ word: 'ubiquitous', definition: 'Present everywhere', example: 'Smartphones are now ubiquitous.', level: 'C1' },
-		{ word: 'unprecedented', definition: 'Never happened before', example: 'This is an unprecedented situation.', level: 'C1' },
-		{ word: 'undermine', definition: 'Weaken gradually', example: 'This will undermine public trust.', level: 'B2' },
-		{ word: 'synonymous', definition: 'Having same meaning', example: 'Quality is synonymous with this brand.', level: 'C1' },
-		{ word: 'scrutinize', definition: 'Examine closely', example: 'We must scrutinize the data.', level: 'C1' },
-		{ word: 'proliferate', definition: 'Increase rapidly', example: 'Fake news continues to proliferate.', level: 'C1' },
-		{ word: 'precipitate', definition: 'Cause to happen suddenly', example: 'This could precipitate a crisis.', level: 'C1' },
-		{ word: 'perpetuate', definition: 'Make continue', example: "Don't perpetuate harmful stereotypes.", level: 'C1' },
-		{ word: 'paradigm shift', definition: 'Fundamental change', example: 'AI represents a paradigm shift.', level: 'C1' },
-		{ word: 'nuanced', definition: 'Having subtle differences', example: 'A nuanced understanding is required.', level: 'C1' },
-		{ word: 'multifaceted', definition: 'Having many aspects', example: 'This is a multifaceted problem.', level: 'C1' },
-		{ word: 'juxtapose', definition: 'Place side by side', example: 'Juxtapose the two images to compare.', level: 'C1' },
-		{ word: 'intrinsic', definition: 'Belonging naturally', example: 'There is intrinsic value in education.', level: 'C1' },
-		{ word: 'holistic', definition: 'Considering the whole', example: 'Take a holistic approach to health.', level: 'C1' },
-		{ word: 'extraneous', definition: 'Irrelevant; not essential', example: 'Remove extraneous details.', level: 'C1' },
-		{ word: 'dichotomy', definition: 'Division into two parts', example: 'The dichotomy between work and life.', level: 'C1' },
-		{ word: 'concomitant', definition: 'Accompanying', example: 'With success come concomitant challenges.', level: 'C2' },
-		{ word: 'commensurate', definition: 'Proportional; corresponding', example: 'Salary should be commensurate with experience.', level: 'C1' },
-		{ word: 'albeit', definition: 'Although', example: 'He succeeded, albeit with difficulty.', level: 'C1' },
+		{
+			word: 'unequivocally',
+			definition: 'Without doubt; clearly',
+			example: 'The evidence unequivocally supports this.',
+			level: 'C1',
+		},
+		{
+			word: 'ubiquitous',
+			definition: 'Present everywhere',
+			example: 'Smartphones are now ubiquitous.',
+			level: 'C1',
+		},
+		{
+			word: 'unprecedented',
+			definition: 'Never happened before',
+			example: 'This is an unprecedented situation.',
+			level: 'C1',
+		},
+		{
+			word: 'undermine',
+			definition: 'Weaken gradually',
+			example: 'This will undermine public trust.',
+			level: 'B2',
+		},
+		{
+			word: 'synonymous',
+			definition: 'Having same meaning',
+			example: 'Quality is synonymous with this brand.',
+			level: 'C1',
+		},
+		{
+			word: 'scrutinize',
+			definition: 'Examine closely',
+			example: 'We must scrutinize the data.',
+			level: 'C1',
+		},
+		{
+			word: 'proliferate',
+			definition: 'Increase rapidly',
+			example: 'Fake news continues to proliferate.',
+			level: 'C1',
+		},
+		{
+			word: 'precipitate',
+			definition: 'Cause to happen suddenly',
+			example: 'This could precipitate a crisis.',
+			level: 'C1',
+		},
+		{
+			word: 'perpetuate',
+			definition: 'Make continue',
+			example: "Don't perpetuate harmful stereotypes.",
+			level: 'C1',
+		},
+		{
+			word: 'paradigm shift',
+			definition: 'Fundamental change',
+			example: 'AI represents a paradigm shift.',
+			level: 'C1',
+		},
+		{
+			word: 'nuanced',
+			definition: 'Having subtle differences',
+			example: 'A nuanced understanding is required.',
+			level: 'C1',
+		},
+		{
+			word: 'multifaceted',
+			definition: 'Having many aspects',
+			example: 'This is a multifaceted problem.',
+			level: 'C1',
+		},
+		{
+			word: 'juxtapose',
+			definition: 'Place side by side',
+			example: 'Juxtapose the two images to compare.',
+			level: 'C1',
+		},
+		{
+			word: 'intrinsic',
+			definition: 'Belonging naturally',
+			example: 'There is intrinsic value in education.',
+			level: 'C1',
+		},
+		{
+			word: 'holistic',
+			definition: 'Considering the whole',
+			example: 'Take a holistic approach to health.',
+			level: 'C1',
+		},
+		{
+			word: 'extraneous',
+			definition: 'Irrelevant; not essential',
+			example: 'Remove extraneous details.',
+			level: 'C1',
+		},
+		{
+			word: 'dichotomy',
+			definition: 'Division into two parts',
+			example: 'The dichotomy between work and life.',
+			level: 'C1',
+		},
+		{
+			word: 'concomitant',
+			definition: 'Accompanying',
+			example: 'With success come concomitant challenges.',
+			level: 'C2',
+		},
+		{
+			word: 'commensurate',
+			definition: 'Proportional; corresponding',
+			example: 'Salary should be commensurate with experience.',
+			level: 'C1',
+		},
+		{
+			word: 'albeit',
+			definition: 'Although',
+			example: 'He succeeded, albeit with difficulty.',
+			level: 'C1',
+		},
 	],
 	// Day 8: Speaking Idioms
 	idioms: [
-		{ word: 'at the end of the day', definition: 'Ultimately', example: 'At the end of the day, family matters most.', level: 'B2' },
-		{ word: 'on the other hand', definition: 'Alternatively', example: "It's expensive, but on the other hand, it's high quality.", level: 'B2' },
-		{ word: 'to be honest', definition: 'Speaking frankly', example: "To be honest, I wasn't impressed.", level: 'B1' },
-		{ word: 'as a matter of fact', definition: 'Actually', example: "As a matter of fact, I've been there twice.", level: 'B2' },
-		{ word: 'time and again', definition: 'Repeatedly', example: "I've told him time and again.", level: 'B2' },
-		{ word: 'more often than not', definition: 'Usually', example: 'More often than not, I cook at home.', level: 'B2' },
-		{ word: 'in the long run', definition: 'Eventually', example: 'In the long run, this will save money.', level: 'B2' },
-		{ word: 'from time to time', definition: 'Occasionally', example: 'I visit my grandparents from time to time.', level: 'B1' },
-		{ word: 'once in a while', definition: 'Rarely', example: 'I go to the cinema once in a while.', level: 'B1' },
-		{ word: 'by and large', definition: 'Generally', example: 'By and large, the experience was positive.', level: 'B2' },
-		{ word: 'all things considered', definition: 'Overall', example: 'All things considered, it was a success.', level: 'B2' },
-		{ word: 'having said that', definition: 'However', example: "Having said that, there's room for improvement.", level: 'B2' },
-		{ word: 'for the most part', definition: 'Mostly', example: 'For the most part, I agree.', level: 'B2' },
-		{ word: 'in a nutshell', definition: 'Briefly', example: 'In a nutshell, it was a great trip.', level: 'B2' },
-		{ word: 'from my perspective', definition: 'Personal view', example: 'From my perspective, this is the best option.', level: 'B2' },
-		{ word: 'I would argue that', definition: 'I contend', example: 'I would argue that this is necessary.', level: 'B2' },
-		{ word: 'it seems to me that', definition: 'I think', example: 'It seems to me that this is fair.', level: 'B2' },
-		{ word: "I'm firmly convinced that", definition: 'Strong belief', example: "I'm firmly convinced that this works.", level: 'B2' },
+		{
+			word: 'at the end of the day',
+			definition: 'Ultimately',
+			example: 'At the end of the day, family matters most.',
+			level: 'B2',
+		},
+		{
+			word: 'on the other hand',
+			definition: 'Alternatively',
+			example:
+				"It's expensive, but on the other hand, it's high quality.",
+			level: 'B2',
+		},
+		{
+			word: 'to be honest',
+			definition: 'Speaking frankly',
+			example: "To be honest, I wasn't impressed.",
+			level: 'B1',
+		},
+		{
+			word: 'as a matter of fact',
+			definition: 'Actually',
+			example: "As a matter of fact, I've been there twice.",
+			level: 'B2',
+		},
+		{
+			word: 'time and again',
+			definition: 'Repeatedly',
+			example: "I've told him time and again.",
+			level: 'B2',
+		},
+		{
+			word: 'more often than not',
+			definition: 'Usually',
+			example: 'More often than not, I cook at home.',
+			level: 'B2',
+		},
+		{
+			word: 'in the long run',
+			definition: 'Eventually',
+			example: 'In the long run, this will save money.',
+			level: 'B2',
+		},
+		{
+			word: 'from time to time',
+			definition: 'Occasionally',
+			example: 'I visit my grandparents from time to time.',
+			level: 'B1',
+		},
+		{
+			word: 'once in a while',
+			definition: 'Rarely',
+			example: 'I go to the cinema once in a while.',
+			level: 'B1',
+		},
+		{
+			word: 'by and large',
+			definition: 'Generally',
+			example: 'By and large, the experience was positive.',
+			level: 'B2',
+		},
+		{
+			word: 'all things considered',
+			definition: 'Overall',
+			example: 'All things considered, it was a success.',
+			level: 'B2',
+		},
+		{
+			word: 'having said that',
+			definition: 'However',
+			example: "Having said that, there's room for improvement.",
+			level: 'B2',
+		},
+		{
+			word: 'for the most part',
+			definition: 'Mostly',
+			example: 'For the most part, I agree.',
+			level: 'B2',
+		},
+		{
+			word: 'in a nutshell',
+			definition: 'Briefly',
+			example: 'In a nutshell, it was a great trip.',
+			level: 'B2',
+		},
+		{
+			word: 'from my perspective',
+			definition: 'Personal view',
+			example: 'From my perspective, this is the best option.',
+			level: 'B2',
+		},
+		{
+			word: 'I would argue that',
+			definition: 'I contend',
+			example: 'I would argue that this is necessary.',
+			level: 'B2',
+		},
+		{
+			word: 'it seems to me that',
+			definition: 'I think',
+			example: 'It seems to me that this is fair.',
+			level: 'B2',
+		},
+		{
+			word: "I'm firmly convinced that",
+			definition: 'Strong belief',
+			example: "I'm firmly convinced that this works.",
+			level: 'B2',
+		},
 	],
 	// Day 8: Speaking Collocations
 	collocations: [
-		{ word: 'make a decision', definition: 'Decide', example: "It's time to make a decision.", level: 'B1' },
-		{ word: 'take action', definition: 'Act; do something', example: 'We need to take action now.', level: 'B1' },
-		{ word: 'pay attention', definition: 'Focus; concentrate', example: 'Students should pay attention in class.', level: 'B1' },
-		{ word: 'have an impact', definition: 'Make a difference', example: 'Technology has an impact on society.', level: 'B2' },
-		{ word: 'raise awareness', definition: 'Inform people', example: 'Campaigns raise awareness about issues.', level: 'B2' },
-		{ word: 'face challenges', definition: 'Deal with problems', example: 'Countries face challenges in development.', level: 'B2' },
-		{ word: 'meet expectations', definition: 'Satisfy requirements', example: "The product didn't meet expectations.", level: 'B2' },
-		{ word: 'draw conclusions', definition: 'Decide based on evidence', example: 'We can draw conclusions from the data.', level: 'B2' },
-		{ word: 'take responsibility', definition: 'Accept accountability', example: 'People should take responsibility for their actions.', level: 'B2' },
-		{ word: 'make progress', definition: 'Advance; improve', example: 'Students make progress through practice.', level: 'B1' },
-		{ word: 'keep in touch', definition: 'Stay connected', example: 'I keep in touch with friends online.', level: 'B1' },
-		{ word: 'lead a healthy lifestyle', definition: 'Live healthily', example: "It's important to lead a healthy lifestyle.", level: 'B2' },
-		{ word: 'broaden one\'s horizons', definition: 'Expand knowledge', example: 'Travel broadens your horizons.', level: 'B2' },
-		{ word: 'gain experience', definition: 'Acquire skills', example: 'Internships help you gain experience.', level: 'B2' },
-		{ word: 'strike a balance', definition: 'Find middle ground', example: 'We need to strike a balance between work and life.', level: 'B2' },
-		{ word: 'undergo transformation', definition: 'Change significantly', example: 'Cities have undergone transformation.', level: 'B2' },
-		{ word: 'make a contribution', definition: 'Help; give', example: 'Everyone can make a contribution.', level: 'B2' },
-		{ word: 'come to terms with', definition: 'Accept reality', example: 'He came to terms with the situation.', level: 'B2' },
+		{
+			word: 'make a decision',
+			definition: 'Decide',
+			example: "It's time to make a decision.",
+			level: 'B1',
+		},
+		{
+			word: 'take action',
+			definition: 'Act; do something',
+			example: 'We need to take action now.',
+			level: 'B1',
+		},
+		{
+			word: 'pay attention',
+			definition: 'Focus; concentrate',
+			example: 'Students should pay attention in class.',
+			level: 'B1',
+		},
+		{
+			word: 'have an impact',
+			definition: 'Make a difference',
+			example: 'Technology has an impact on society.',
+			level: 'B2',
+		},
+		{
+			word: 'raise awareness',
+			definition: 'Inform people',
+			example: 'Campaigns raise awareness about issues.',
+			level: 'B2',
+		},
+		{
+			word: 'face challenges',
+			definition: 'Deal with problems',
+			example: 'Countries face challenges in development.',
+			level: 'B2',
+		},
+		{
+			word: 'meet expectations',
+			definition: 'Satisfy requirements',
+			example: "The product didn't meet expectations.",
+			level: 'B2',
+		},
+		{
+			word: 'draw conclusions',
+			definition: 'Decide based on evidence',
+			example: 'We can draw conclusions from the data.',
+			level: 'B2',
+		},
+		{
+			word: 'take responsibility',
+			definition: 'Accept accountability',
+			example: 'People should take responsibility for their actions.',
+			level: 'B2',
+		},
+		{
+			word: 'make progress',
+			definition: 'Advance; improve',
+			example: 'Students make progress through practice.',
+			level: 'B1',
+		},
+		{
+			word: 'keep in touch',
+			definition: 'Stay connected',
+			example: 'I keep in touch with friends online.',
+			level: 'B1',
+		},
+		{
+			word: 'lead a healthy lifestyle',
+			definition: 'Live healthily',
+			example: "It's important to lead a healthy lifestyle.",
+			level: 'B2',
+		},
+		{
+			word: "broaden one's horizons",
+			definition: 'Expand knowledge',
+			example: 'Travel broadens your horizons.',
+			level: 'B2',
+		},
+		{
+			word: 'gain experience',
+			definition: 'Acquire skills',
+			example: 'Internships help you gain experience.',
+			level: 'B2',
+		},
+		{
+			word: 'strike a balance',
+			definition: 'Find middle ground',
+			example: 'We need to strike a balance between work and life.',
+			level: 'B2',
+		},
+		{
+			word: 'undergo transformation',
+			definition: 'Change significantly',
+			example: 'Cities have undergone transformation.',
+			level: 'B2',
+		},
+		{
+			word: 'make a contribution',
+			definition: 'Help; give',
+			example: 'Everyone can make a contribution.',
+			level: 'B2',
+		},
+		{
+			word: 'come to terms with',
+			definition: 'Accept reality',
+			example: 'He came to terms with the situation.',
+			level: 'B2',
+		},
 	],
 	// Day 9: Mixed Practice Academic
 	mixedAcademic: [
-		{ word: 'accommodate', definition: 'Provide space for', example: 'The hotel can accommodate 200 guests.', level: 'B2' },
-		{ word: 'acknowledge', definition: 'Accept or recognize', example: 'She acknowledged her mistake.', level: 'B2' },
-		{ word: 'advocate', definition: 'Publicly support', example: 'They advocate for equal rights.', level: 'C1' },
-		{ word: 'allocate', definition: 'Distribute for a purpose', example: 'Funds were allocated to education.', level: 'C1' },
-		{ word: 'anticipate', definition: 'Expect something', example: 'We anticipate a busy season.', level: 'B2' },
-		{ word: 'approximately', definition: 'Close to an exact amount', example: 'It costs approximately $100.', level: 'B1' },
-		{ word: 'assess', definition: 'Evaluate or judge', example: 'We need to assess the situation.', level: 'B2' },
-		{ word: 'assume', definition: 'Suppose without proof', example: 'I assumed you knew.', level: 'B2' },
-		{ word: 'attain', definition: 'Achieve or reach', example: 'She attained her goal.', level: 'C1' },
-		{ word: 'authorize', definition: 'Give official permission', example: 'Only managers can authorize this.', level: 'C1' },
-		{ word: 'beneficial', definition: 'Having a good effect', example: 'Exercise is beneficial for health.', level: 'B2' },
-		{ word: 'capacity', definition: 'Maximum amount', example: 'The stadium has a capacity of 50,000.', level: 'B2' },
-		{ word: 'circumstances', definition: 'Conditions or situation', example: 'Under the circumstances, we had no choice.', level: 'B2' },
-		{ word: 'coincide', definition: 'Happen at same time', example: 'The events coincided.', level: 'C1' },
-		{ word: 'collapse', definition: 'Fall down suddenly', example: 'The building collapsed.', level: 'B2' },
-		{ word: 'commence', definition: 'Begin', example: 'The meeting will commence at 9 AM.', level: 'C1' },
-		{ word: 'commodity', definition: 'Product that can be traded', example: 'Oil is a valuable commodity.', level: 'C1' },
-		{ word: 'communicate', definition: 'Share information', example: "It's important to communicate clearly.", level: 'B1' },
-		{ word: 'complexity', definition: 'State of being complicated', example: 'The complexity of the problem is high.', level: 'B2' },
-		{ word: 'component', definition: 'Part of a larger whole', example: 'Each component is essential.', level: 'B2' },
+		{
+			word: 'accommodate',
+			definition: 'Provide space for',
+			example: 'The hotel can accommodate 200 guests.',
+			level: 'B2',
+		},
+		{
+			word: 'acknowledge',
+			definition: 'Accept or recognize',
+			example: 'She acknowledged her mistake.',
+			level: 'B2',
+		},
+		{
+			word: 'advocate',
+			definition: 'Publicly support',
+			example: 'They advocate for equal rights.',
+			level: 'C1',
+		},
+		{
+			word: 'allocate',
+			definition: 'Distribute for a purpose',
+			example: 'Funds were allocated to education.',
+			level: 'C1',
+		},
+		{
+			word: 'anticipate',
+			definition: 'Expect something',
+			example: 'We anticipate a busy season.',
+			level: 'B2',
+		},
+		{
+			word: 'approximately',
+			definition: 'Close to an exact amount',
+			example: 'It costs approximately $100.',
+			level: 'B1',
+		},
+		{
+			word: 'assess',
+			definition: 'Evaluate or judge',
+			example: 'We need to assess the situation.',
+			level: 'B2',
+		},
+		{
+			word: 'assume',
+			definition: 'Suppose without proof',
+			example: 'I assumed you knew.',
+			level: 'B2',
+		},
+		{
+			word: 'attain',
+			definition: 'Achieve or reach',
+			example: 'She attained her goal.',
+			level: 'C1',
+		},
+		{
+			word: 'authorize',
+			definition: 'Give official permission',
+			example: 'Only managers can authorize this.',
+			level: 'C1',
+		},
+		{
+			word: 'beneficial',
+			definition: 'Having a good effect',
+			example: 'Exercise is beneficial for health.',
+			level: 'B2',
+		},
+		{
+			word: 'capacity',
+			definition: 'Maximum amount',
+			example: 'The stadium has a capacity of 50,000.',
+			level: 'B2',
+		},
+		{
+			word: 'circumstances',
+			definition: 'Conditions or situation',
+			example: 'Under the circumstances, we had no choice.',
+			level: 'B2',
+		},
+		{
+			word: 'coincide',
+			definition: 'Happen at same time',
+			example: 'The events coincided.',
+			level: 'C1',
+		},
+		{
+			word: 'collapse',
+			definition: 'Fall down suddenly',
+			example: 'The building collapsed.',
+			level: 'B2',
+		},
+		{
+			word: 'commence',
+			definition: 'Begin',
+			example: 'The meeting will commence at 9 AM.',
+			level: 'C1',
+		},
+		{
+			word: 'commodity',
+			definition: 'Product that can be traded',
+			example: 'Oil is a valuable commodity.',
+			level: 'C1',
+		},
+		{
+			word: 'communicate',
+			definition: 'Share information',
+			example: "It's important to communicate clearly.",
+			level: 'B1',
+		},
+		{
+			word: 'complexity',
+			definition: 'State of being complicated',
+			example: 'The complexity of the problem is high.',
+			level: 'B2',
+		},
+		{
+			word: 'component',
+			definition: 'Part of a larger whole',
+			example: 'Each component is essential.',
+			level: 'B2',
+		},
 	],
 };
 
@@ -1052,22 +1865,28 @@ function updateFlashcardDisplay() {
 			</div>
 
 			<!-- Flashcard -->
-			<div onclick="flipFlashcard()" class="cursor-pointer">
+			<div class="cursor-pointer">
 				<div class="bg-white dark:bg-gray-800 rounded-xl border-2 ${
 					isLearned
 						? 'border-green-400'
 						: 'border-gray-200 dark:border-gray-700'
-				} p-4 sm:p-6 min-h-[180px] sm:min-h-[200px] flex flex-col items-center justify-center text-center transition-all hover:shadow-lg">
+				} p-4 sm:p-6 min-h-[200px] sm:min-h-[220px] flex flex-col items-center justify-center text-center transition-all hover:shadow-lg">
 					${
 						flashcardState.showingAnswer
 							? `
 						<p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2">Definition:</p>
 						<p class="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-3 sm:mb-4">${currentWord.definition}</p>
-						<p class="text-xs sm:text-sm text-teal-600 dark:text-teal-400 italic">"${currentWord.example}"</p>
+						<p class="text-xs sm:text-sm text-teal-600 dark:text-teal-400 italic mb-3">"${currentWord.example}"</p>
+						<button onclick="event.stopPropagation(); flipFlashcard()" class="text-xs text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400">↩️ Flip back</button>
 					`
 							: `
-						<p class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">${currentWord.word}</p>
-						<p class="text-xs text-gray-400 mt-3 sm:mt-4">Tap to see definition</p>
+						<p class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">${currentWord.word}</p>
+						${currentWord.phonetic ? `<p class="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>` : ''}
+						<button onclick="event.stopPropagation(); pronounceWord('${currentWord.word.replace(/'/g, "\\'")}')"
+							class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors flex items-center gap-1 mb-3">
+							<span>🔊</span> Listen
+						</button>
+						<button onclick="flipFlashcard()" class="text-xs text-gray-400 hover:text-teal-600 dark:hover:text-teal-400">👆 Tap to see definition</button>
 					`
 					}
 				</div>
@@ -1153,6 +1972,39 @@ function shuffleFlashcards() {
 	flashcardState.currentIndex = Math.floor(Math.random() * words.length);
 	flashcardState.showingAnswer = false;
 	updateFlashcardDisplay();
+}
+
+// Pronounce word using Web Speech API
+function pronounceWord(word) {
+	if ('speechSynthesis' in window) {
+		// Cancel any ongoing speech
+		window.speechSynthesis.cancel();
+		
+		const utterance = new SpeechSynthesisUtterance(word);
+		utterance.lang = 'en-GB'; // British English for IELTS
+		utterance.rate = 0.85; // Slightly slower for clarity
+		utterance.pitch = 1;
+		
+		// Try to use a British voice if available
+		const voices = window.speechSynthesis.getVoices();
+		const britishVoice = voices.find(voice => 
+			voice.lang.includes('en-GB') || voice.name.includes('British')
+		);
+		if (britishVoice) {
+			utterance.voice = britishVoice;
+		}
+		
+		window.speechSynthesis.speak(utterance);
+	} else {
+		alert('Speech synthesis not supported in this browser. Try Chrome or Safari.');
+	}
+}
+
+// Load voices when available
+if ('speechSynthesis' in window) {
+	window.speechSynthesis.onvoiceschanged = () => {
+		window.speechSynthesis.getVoices();
+	};
 }
 
 // ==================== WRITING PRACTICE TIMER ====================
@@ -2325,6 +3177,7 @@ window.changeVocabCategory = changeVocabCategory;
 window.toggleLearnedWord = toggleLearnedWord;
 window.flipFlashcard = flipFlashcard;
 window.shuffleFlashcards = shuffleFlashcards;
+window.pronounceWord = pronounceWord;
 
 // Writing functions
 window.selectWritingTask = selectWritingTask;
@@ -2365,20 +3218,42 @@ function initResourcesTool() {
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📖 IELTS Study Resources</h3>
 
 			<div class="space-y-6">
-				<!-- Cambridge IELTS Books -->
+				<!-- Cambridge IELTS Books (1-20) -->
 				<div>
 					<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-						<span>📚</span> Cambridge IELTS Books (Official)
+						<span>📚</span> Cambridge IELTS Books 1-20 (Free Practice Tests)
 					</h4>
-					<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-						${[19, 18, 17, 16, 15, 14, 13]
+					<p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Click any book for free online practice tests with answers</p>
+					<div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2">
+						${[
+							{ num: 20, url: 'https://practicepteonline.com/official-ielts-tests-book-20/', new: true },
+							{ num: 19, url: 'https://practicepteonline.com/official-ielts-book-19/', new: true },
+							{ num: 18, url: 'https://practicepteonline.com/official-ielts-tests-book-18/' },
+							{ num: 17, url: 'https://practicepteonline.com/official-ielts-tests-book-17/' },
+							{ num: 16, url: 'https://practicepteonline.com/official-ielts-tests-book-16/' },
+							{ num: 15, url: 'https://practicepteonline.com/official-ielts-tests-book-15/' },
+							{ num: 14, url: 'https://practicepteonline.com/official-ielts-tests-book-14/' },
+							{ num: 13, url: 'https://practicepteonline.com/official-ielts-tests-book-13/' },
+							{ num: 12, url: 'https://practicepteonline.com/official-ielts-tests-book-12/' },
+							{ num: 11, url: 'https://practicepteonline.com/official-ielts-tests-book-11/' },
+							{ num: 10, url: 'https://practicepteonline.com/official-ielts-tests-book-10/' },
+							{ num: 9, url: 'https://practicepteonline.com/official-ielts-tests-book-9/' },
+							{ num: 8, url: 'https://practicepteonline.com/official-ielts-tests-book-8/' },
+							{ num: 7, url: 'https://practicepteonline.com/official-ielts-tests-book-7/' },
+							{ num: 6, url: 'https://practicepteonline.com/official-ielts-tests-book-6/' },
+							{ num: 5, url: 'https://practicepteonline.com/official-ielts-tests-book-5/' },
+							{ num: 4, url: 'https://practicepteonline.com/official-ielts-tests-book-4/' },
+							{ num: 3, url: 'https://practicepteonline.com/official-ielts-tests-book-3/' },
+							{ num: 2, url: 'https://practicepteonline.com/official-ielts-tests-book-2/' },
+							{ num: 1, url: 'https://practicepteonline.com/official-ielts-tests-book-1/' },
+						]
 							.map(
-								(num) => `
-							<a href="https://www.cambridgeenglish.org/exams-and-tests/ielts/" target="_blank"
-								class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-								<div class="text-2xl mb-1">📕</div>
-								<div class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">IELTS ${num}</div>
-								<div class="text-[10px] text-gray-500">Cambridge</div>
+								(book) => `
+							<a href="${book.url}" target="_blank"
+								class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600 relative">
+								${book.new ? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>' : ''}
+								<div class="text-lg mb-0.5">📕</div>
+								<div class="text-[10px] sm:text-xs font-medium text-gray-700 dark:text-gray-300">Book ${book.num}</div>
 							</a>
 						`,
 							)

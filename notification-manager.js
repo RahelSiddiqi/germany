@@ -55,7 +55,7 @@ class NotificationManager {
 				this.showInAppNotification(
 					'📚 Time for IELTS practice! Keep your streak going.',
 					'info',
-					8000
+					8000,
 				);
 			}
 		}
@@ -63,13 +63,18 @@ class NotificationManager {
 		// Check for today's deadlines
 		if (settings.deadlineReminder) {
 			const urgentDeadlines = this.getUpcomingDeadlines(7).filter(
-				d => d.daysRemaining <= 7 && d.status !== 'submitted' && d.status !== 'admitted'
+				(d) =>
+					d.daysRemaining <= 7 &&
+					d.status !== 'submitted' &&
+					d.status !== 'admitted',
 			);
 			if (urgentDeadlines.length > 0) {
 				this.showInAppNotification(
-					`🚨 ${urgentDeadlines.length} deadline${urgentDeadlines.length > 1 ? 's' : ''} within 7 days!`,
+					`🚨 ${urgentDeadlines.length} deadline${
+						urgentDeadlines.length > 1 ? 's' : ''
+					} within 7 days!`,
 					'deadline',
-					10000
+					10000,
 				);
 			}
 		}
@@ -77,7 +82,10 @@ class NotificationManager {
 
 	// Mark IELTS study for today
 	markIELTSStudy() {
-		localStorage.setItem('ielts-last-study-date', new Date().toDateString());
+		localStorage.setItem(
+			'ielts-last-study-date',
+			new Date().toDateString(),
+		);
 	}
 
 	// Check upcoming deadlines

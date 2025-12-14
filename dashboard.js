@@ -1926,7 +1926,9 @@ function toggleIELTSTask(id, checkbox) {
 
 function getIELTSCompletedCount() {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-	const vocabLearned = JSON.parse(localStorage.getItem('ielts-vocab-learned') || '[]');
+	const vocabLearned = JSON.parse(
+		localStorage.getItem('ielts-vocab-learned') || '[]',
+	);
 	// Count tasks + bonus for vocab (1 point per 5 words learned, max 10 points)
 	const vocabBonus = Math.min(Math.floor(vocabLearned.length / 5), 10);
 	return Object.values(tasks).filter(Boolean).length + vocabBonus;
@@ -2002,7 +2004,7 @@ function updateDashboardStats() {
 
 	// Update urgent deadlines widget
 	updateUrgentDeadlinesWidget();
-	
+
 	// Update study streak
 	updateStudyStreak();
 }
@@ -2016,15 +2018,23 @@ function updateUrgentDeadlinesWidget() {
 	const today = new Date();
 	const allUniversities = [...germanyUniversities, ...schengenUniversities];
 	const urgentDeadlines = allUniversities
-		.filter(uni => {
+		.filter((uni) => {
 			const deadline = new Date(uni.application_deadline);
-			const daysRemaining = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
-			return daysRemaining <= 30 && daysRemaining >= 0 && 
-				   uni.status !== 'submitted' && uni.status !== 'admitted';
+			const daysRemaining = Math.ceil(
+				(deadline - today) / (1000 * 60 * 60 * 24),
+			);
+			return (
+				daysRemaining <= 30 &&
+				daysRemaining >= 0 &&
+				uni.status !== 'submitted' &&
+				uni.status !== 'admitted'
+			);
 		})
-		.map(uni => {
+		.map((uni) => {
 			const deadline = new Date(uni.application_deadline);
-			const daysRemaining = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+			const daysRemaining = Math.ceil(
+				(deadline - today) / (1000 * 60 * 60 * 24),
+			);
 			return { ...uni, daysRemaining };
 		})
 		.sort((a, b) => a.daysRemaining - b.daysRemaining)
@@ -2036,20 +2046,28 @@ function updateUrgentDeadlinesWidget() {
 	}
 
 	widget.classList.remove('hidden');
-	list.innerHTML = urgentDeadlines.map(uni => {
-		const urgencyClass = uni.daysRemaining <= 7 
-			? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700' 
-			: uni.daysRemaining <= 14 
-			? 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700'
-			: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800';
-		const textClass = uni.daysRemaining <= 7 
-			? 'text-red-700 dark:text-red-300' 
-			: uni.daysRemaining <= 14 
-			? 'text-amber-700 dark:text-amber-300'
-			: 'text-blue-700 dark:text-blue-300';
-		const icon = uni.daysRemaining <= 7 ? '🚨' : uni.daysRemaining <= 14 ? '⚠️' : '📅';
-		
-		return `
+	list.innerHTML = urgentDeadlines
+		.map((uni) => {
+			const urgencyClass =
+				uni.daysRemaining <= 7
+					? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700'
+					: uni.daysRemaining <= 14
+					? 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700'
+					: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800';
+			const textClass =
+				uni.daysRemaining <= 7
+					? 'text-red-700 dark:text-red-300'
+					: uni.daysRemaining <= 14
+					? 'text-amber-700 dark:text-amber-300'
+					: 'text-blue-700 dark:text-blue-300';
+			const icon =
+				uni.daysRemaining <= 7
+					? '🚨'
+					: uni.daysRemaining <= 14
+					? '⚠️'
+					: '📅';
+
+			return `
 			<div class="flex items-center justify-between p-2 sm:p-3 ${urgencyClass} rounded-lg border">
 				<div class="flex-1 min-w-0">
 					<p class="font-medium text-gray-900 dark:text-white text-xs sm:text-sm truncate">${uni.university}</p>
@@ -2061,7 +2079,8 @@ function updateUrgentDeadlinesWidget() {
 				</div>
 			</div>
 		`;
-	}).join('');
+		})
+		.join('');
 }
 
 // ==================== STUDY STREAK SYSTEM ====================
@@ -2070,38 +2089,49 @@ function updateStudyStreak() {
 	const todayTimeEl = document.getElementById('today-study-time');
 	if (!streakEl) return;
 
-	const streakData = JSON.parse(localStorage.getItem('study-streak') || '{"streak": 0, "lastDate": null, "todayMinutes": 0}');
+	const streakData = JSON.parse(
+		localStorage.getItem('study-streak') ||
+			'{"streak": 0, "lastDate": null, "todayMinutes": 0}',
+	);
 	const today = new Date().toDateString();
-	
+
 	// Check if streak is broken
 	if (streakData.lastDate) {
 		const lastDate = new Date(streakData.lastDate);
-		const diffDays = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+		const diffDays = Math.floor(
+			(new Date() - lastDate) / (1000 * 60 * 60 * 24),
+		);
 		if (diffDays > 1) {
 			streakData.streak = 0;
 		}
 	}
-	
+
 	// Reset today's minutes if it's a new day
 	if (streakData.lastDate !== today) {
 		streakData.todayMinutes = 0;
 	}
-	
+
 	streakEl.textContent = streakData.streak;
 	if (todayTimeEl) {
-		todayTimeEl.textContent = streakData.todayMinutes >= 60 
-			? `${Math.floor(streakData.todayMinutes / 60)}h ${streakData.todayMinutes % 60}m` 
-			: `${streakData.todayMinutes} min`;
+		todayTimeEl.textContent =
+			streakData.todayMinutes >= 60
+				? `${Math.floor(streakData.todayMinutes / 60)}h ${
+						streakData.todayMinutes % 60
+				  }m`
+				: `${streakData.todayMinutes} min`;
 	}
 }
 
 function logStudyTime() {
 	const minutes = prompt('How many minutes did you study?', '30');
 	if (!minutes || isNaN(parseInt(minutes))) return;
-	
-	const streakData = JSON.parse(localStorage.getItem('study-streak') || '{"streak": 0, "lastDate": null, "todayMinutes": 0}');
+
+	const streakData = JSON.parse(
+		localStorage.getItem('study-streak') ||
+			'{"streak": 0, "lastDate": null, "todayMinutes": 0}',
+	);
 	const today = new Date().toDateString();
-	
+
 	// Check if this is a new day
 	if (streakData.lastDate !== today) {
 		const yesterday = new Date();
@@ -2113,40 +2143,44 @@ function logStudyTime() {
 		}
 		streakData.todayMinutes = 0;
 	}
-	
+
 	streakData.todayMinutes += parseInt(minutes);
 	streakData.lastDate = today;
 	localStorage.setItem('study-streak', JSON.stringify(streakData));
-	
+
 	// Mark IELTS study if notification manager exists
 	if (typeof notificationManager !== 'undefined') {
 		notificationManager.markIELTSStudy();
 	}
-	
+
 	updateStudyStreak();
-	
+
 	// Show confirmation
 	if (typeof notificationManager !== 'undefined') {
 		notificationManager.showInAppNotification(
 			`✅ Logged ${minutes} minutes of study! Keep it up! 🔥`,
 			'success',
-			3000
+			3000,
 		);
 	}
 }
 
 function toggleDeadlineReminders() {
 	// Show reminder settings modal
-	const currentSettings = JSON.parse(localStorage.getItem('study-reminders') || '{}');
+	const currentSettings = JSON.parse(
+		localStorage.getItem('study-reminders') || '{}',
+	);
 	const enabled = !currentSettings.deadlineReminder;
 	currentSettings.deadlineReminder = enabled;
 	localStorage.setItem('study-reminders', JSON.stringify(currentSettings));
-	
+
 	if (typeof notificationManager !== 'undefined') {
 		notificationManager.showInAppNotification(
-			enabled ? '🔔 Deadline reminders enabled!' : '🔕 Deadline reminders disabled',
+			enabled
+				? '🔔 Deadline reminders enabled!'
+				: '🔕 Deadline reminders disabled',
 			'info',
-			3000
+			3000,
 		);
 	}
 }
