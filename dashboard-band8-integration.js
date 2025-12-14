@@ -1,12 +1,99 @@
 // Band 8.0-8.5 Dashboard Integration
 // Displays 15-day IELTS ULTRA-INTENSIVE progress tracker
+// Using Tailwind CSS classes only
 
 class Band8Dashboard {
 	constructor() {
 		this.today = new Date();
 		this.examDate = new Date('2025-12-29'); // Exam Day
 		this.startDate = new Date('2025-12-14'); // Day 1 starts today
+		this.viewingDay = null; // Track which day user is viewing (null = actual day)
 		this.loadProgress();
+	}
+
+	// Get the day currently being viewed (for navigation)
+	getViewingDay() {
+		return this.viewingDay || this.getActualDay();
+	}
+
+	// Navigate to a specific day
+	navigateToDay(dayNum) {
+		this.viewingDay = dayNum;
+		this.refreshDashboard();
+	}
+
+	// Navigate to next day
+	nextDay() {
+		const current = this.getViewingDay();
+		const totalDays =
+			typeof MASTER_PLAN !== 'undefined'
+				? MASTER_PLAN.ieltsSchedule.length
+				: 15;
+		if (current < totalDays) {
+			this.navigateToDay(current + 1);
+		}
+	}
+
+	// Navigate to previous day
+	prevDay() {
+		const current = this.getViewingDay();
+		if (current > 1) {
+			this.navigateToDay(current - 1);
+		}
+	}
+
+	// Go to actual current day
+	goToToday() {
+		this.viewingDay = null;
+		this.refreshDashboard();
+	}
+
+	// Refresh the dashboard display
+	refreshDashboard() {
+		const container = document.getElementById('band8-container');
+		if (container) {
+			container.innerHTML = this.renderCompleteDashboard();
+		}
+	}
+
+	// Get all remaining tasks across all days
+	getAllRemainingTasks() {
+		if (typeof MASTER_PLAN === 'undefined') return [];
+
+		const remaining = [];
+		MASTER_PLAN.ieltsSchedule.forEach((daySchedule) => {
+			const completed = this.getTasksCompleted(daySchedule.day);
+			daySchedule.tasks.forEach((task, index) => {
+				if (!completed.includes(index)) {
+					remaining.push({
+						day: daySchedule.day,
+						taskIndex: index,
+						task: task,
+						focus: daySchedule.focus,
+					});
+				}
+			});
+		});
+		return remaining;
+	}
+
+	// Get remaining tasks for a specific day
+	getDayRemainingTasks(dayNum) {
+		if (typeof MASTER_PLAN === 'undefined') return [];
+
+		const daySchedule = MASTER_PLAN.ieltsSchedule.find(
+			(d) => d.day === dayNum,
+		);
+		if (!daySchedule) return [];
+
+		const completed = this.getTasksCompleted(dayNum);
+		const remaining = [];
+		daySchedule.tasks.forEach((task, index) => {
+			if (!completed.includes(index)) {
+				remaining.push({ taskIndex: index, task });
+			}
+		});
+		return remaining;
 	}
 
 	// Calculate SCHEDULED day based on calendar (where you SHOULD be)
@@ -65,6 +152,27 @@ class Band8Dashboard {
 		return this.getActualDay();
 	}
 
+	// Get data for a specific day
+	getDayData(dayNum) {
+		if (typeof MASTER_PLAN === 'undefined') return null;
+
+		const daySchedule = MASTER_PLAN.ieltsSchedule.find(
+			(d) => d.day === dayNum,
+		);
+		if (!daySchedule) return null;
+
+		return {
+			day: daySchedule.day,
+			date: daySchedule.date,
+			phase: daySchedule.phase,
+			focus: daySchedule.focus,
+			hours: daySchedule.hours,
+			tasks: daySchedule.tasks,
+			targetScore: daySchedule.targetScore,
+			completed: this.getTasksCompleted(dayNum),
+		};
+	}
+
 	// Get today's tasks from master plan (based on ACTUAL progress, not calendar)
 	getTodaysTasks() {
 		if (typeof MASTER_PLAN === 'undefined') {
@@ -73,24 +181,7 @@ class Band8Dashboard {
 		}
 
 		const actualDay = this.getActualDay();
-		const todaySchedule = MASTER_PLAN.ieltsSchedule.find(
-			(day) => day.day === actualDay,
-		);
-
-		if (todaySchedule) {
-			return {
-				day: todaySchedule.day,
-				date: todaySchedule.date,
-				phase: todaySchedule.phase,
-				focus: todaySchedule.focus,
-				hours: todaySchedule.hours,
-				tasks: todaySchedule.tasks,
-				targetScore: todaySchedule.targetScore,
-				completed: this.getTasksCompleted(actualDay),
-			};
-		}
-
-		return null;
+		return this.getDayData(actualDay);
 	}
 
 	// Days remaining until exam
@@ -142,19 +233,29 @@ class Band8Dashboard {
 		return '🎯 EXAM TIME!';
 	}
 
-	// Render IELTS Band 8 Tracker
+	// Render IELTS Band 8 Tracker with Tailwind CSS
 	renderIELTSTracker() {
-		const today = this.getTodaysTasks();
 		const daysRemaining = this.getDaysRemaining();
 		const progress = this.getProgressPercentage();
 		const phase = this.getCurrentPhase();
 		const actualDay = this.getActualDay();
 		const scheduledDay = this.getScheduledDay();
-		const dayProgress = this.getDayProgress(actualDay);
+		const viewingDay = this.getViewingDay();
+
+		// Get data for the day being viewed (not necessarily actual day)
+		const viewingDayData = this.getDayData(viewingDay);
+		const dayProgress = this.getDayProgress(viewingDay);
+		const dayRemaining = this.getDayRemainingTasks(viewingDay);
+		const allRemaining = this.getAllRemainingTasks();
 
 		// Calculate total tasks from MASTER_PLAN
 		let totalAllTasks = 0;
 		let completedAllTasks = 0;
+		const totalDays =
+			typeof MASTER_PLAN !== 'undefined'
+				? MASTER_PLAN.ieltsSchedule.length
+				: 15;
+
 		if (typeof MASTER_PLAN !== 'undefined') {
 			MASTER_PLAN.ieltsSchedule.forEach((daySchedule) => {
 				totalAllTasks += daySchedule.tasks.length;
@@ -163,169 +264,320 @@ class Band8Dashboard {
 			});
 		}
 
-		// Today summary
-		const todayCompleted = today ? (today.completed || []).length : 0;
-		const todayTotal = today ? today.tasks.length : 0;
-		const todayHoursLogged = today ? this.getHoursLogged(today.day) : 0;
+		// Viewing day summary
+		const viewCompleted = viewingDayData
+			? this.getTasksCompleted(viewingDay).length
+			: 0;
+		const viewTotal = viewingDayData ? viewingDayData.tasks.length : 0;
+		const viewHoursLogged = viewingDayData
+			? this.getHoursLogged(viewingDay)
+			: 0;
 
 		// Check if behind schedule
 		const behindDays = scheduledDay - actualDay;
-		const behindMessage =
-			behindDays > 0
-				? `<span class="behind-schedule">⚠️ ${behindDays} day${
-						behindDays > 1 ? 's' : ''
-				  } behind schedule</span>`
-				: behindDays < 0
-				? `<span class="ahead-schedule">🚀 ${Math.abs(behindDays)} day${
-						Math.abs(behindDays) > 1 ? 's' : ''
-				  } ahead!</span>`
-				: `<span class="on-schedule">✅ On schedule</span>`;
+		let behindMessage = '';
+		if (behindDays > 0) {
+			behindMessage = `<span class="text-amber-600 dark:text-amber-400 text-sm font-medium">⚠️ ${behindDays} day${
+				behindDays > 1 ? 's' : ''
+			} behind</span>`;
+		} else if (behindDays < 0) {
+			behindMessage = `<span class="text-green-600 dark:text-green-400 text-sm font-medium">🚀 ${Math.abs(
+				behindDays,
+			)} day${Math.abs(behindDays) > 1 ? 's' : ''} ahead!</span>`;
+		} else {
+			behindMessage = `<span class="text-teal-600 dark:text-teal-400 text-sm font-medium">✅ On schedule</span>`;
+		}
+
+		// Is viewing a different day than actual?
+		const isViewingDifferentDay = viewingDay !== actualDay;
 
 		// Fallback when master plan isn't loaded yet
-		if (!today) {
+		if (!viewingDayData) {
 			return `
-				<div class="ielts-tracker">
-					<div class="tracker-header">
-						<h2>🎯 IELTS Band 8.0-8.5 Prep</h2>
-						<div class="exam-countdown">
-							<span class="countdown-number">${daysRemaining}</span>
-							<span class="countdown-label">days left</span>
+				<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+					<div class="flex items-center justify-between mb-6">
+						<h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+							🎯 IELTS Band 8.0-8.5 Prep
+						</h2>
+						<div class="text-center">
+							<div class="text-3xl font-bold text-teal-600 dark:text-teal-400">${daysRemaining}</div>
+							<div class="text-xs text-gray-500 dark:text-gray-400">days left</div>
 						</div>
 					</div>
-					<div class="progress-bar-container">
-						<div class="progress-bar" style="width: ${progress}%"></div>
-						<span class="progress-text">${progress}%</span>
+					<div class="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+						<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-teal-500 to-teal-600 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
 					</div>
-					<div class="loading-message" style="text-align:center; padding:20px;">
-						<p>Loading plan data...</p>
-					</div>
+					<p class="text-center text-gray-500 dark:text-gray-400 mt-4">Loading plan data...</p>
 				</div>
 			`;
 		}
 
+		// Generate day navigator buttons
+		const dayNavButtons = [];
+		for (let i = 1; i <= totalDays; i++) {
+			const dayCompletion = this.getDayProgress(i);
+			const isComplete = dayCompletion === 100;
+			const isActive = i === viewingDay;
+			const isCurrent = i === actualDay;
+
+			let btnClass =
+				'w-8 h-8 sm:w-9 sm:h-9 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 flex items-center justify-center ';
+			if (isActive) {
+				btnClass +=
+					'bg-teal-600 text-white shadow-lg ring-2 ring-teal-300 dark:ring-teal-500';
+			} else if (isComplete) {
+				btnClass +=
+					'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50';
+			} else if (isCurrent) {
+				btnClass +=
+					'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 ring-2 ring-teal-400 dark:ring-teal-500';
+			} else {
+				btnClass +=
+					'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600';
+			}
+
+			dayNavButtons.push(`
+				<button class="${btnClass}"
+						onclick="band8Dashboard.navigateToDay(${i})"
+						title="Day ${i}${isComplete ? ' ✓' : ''}${isCurrent ? ' (Current)' : ''}">
+					${isComplete && !isActive ? '✓' : i}
+				</button>
+			`);
+		}
+
 		return `
-            <div class="ielts-tracker">
-                <div class="tracker-header">
-                    <h2>🎯 IELTS Band 8.0-8.5</h2>
-                    <div class="exam-countdown">
-                        <span class="countdown-number">${daysRemaining}</span>
-                        <span class="countdown-label">days left</span>
-                    </div>
-                </div>
-
-                <div class="progress-bar-container">
-					<div class="progress-bar" style="width: ${progress}%"></div>
-					<span class="progress-text">${progress}% (${completedAllTasks}/${totalAllTasks} tasks)</span>
-                </div>
-
-                <div class="current-phase">
-                    <h3>${phase}</h3>
-                </div>
-
-				<div class="day-status-banner" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: var(--accent-contrast); padding: 12px; border-radius: 10px; margin: 12px 0; text-align: center;">
-					<div style="display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap;">
+			<div class="space-y-3 sm:space-y-6">
+				<!-- Header Card -->
+				<div class="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg -mx-2 sm:mx-0">
+					<div class="flex items-center justify-between mb-3 sm:mb-4">
 						<div>
-							<div style="font-size: 1.5rem; font-weight: bold;">Day ${actualDay}</div>
-							<div style="font-size: 0.75rem; opacity: 0.9;">Actual</div>
+							<h2 class="text-lg sm:text-xl font-bold flex items-center gap-2">🎯 IELTS Band 8.0-8.5</h2>
+							<p class="text-teal-100 text-xs sm:text-sm mt-1">${phase}</p>
 						</div>
-						<div style="font-size: 1.2rem;">→</div>
-						<div>
-							<div style="font-size: 1rem;">📅 Day ${scheduledDay}</div>
-							<div style="font-size: 0.75rem;">${behindMessage}</div>
+						<div class="text-center">
+							<div class="text-3xl sm:text-4xl font-bold">${daysRemaining}</div>
+							<div class="text-[10px] sm:text-xs text-teal-200">days left</div>
 						</div>
 					</div>
-					<div style="margin-top: 10px;">
-						<div style="background: rgba(255,255,255,0.2); border-radius: 6px; height: 6px; overflow: hidden;">
-							<div style="background: white; height: 100%; width: ${dayProgress}%; transition: width 0.3s;"></div>
-						</div>
-						<div style="font-size: 0.75rem; margin-top: 4px;">${todayCompleted}/${todayTotal} tasks today</div>
+
+					<!-- Progress Bar -->
+					<div class="relative h-2 sm:h-3 bg-teal-800/50 rounded-full overflow-hidden">
+						<div class="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+					</div>
+					<div class="flex justify-between mt-2 text-xs sm:text-sm">
+						<span class="text-teal-200">${progress}% complete</span>
+						<span class="text-teal-200">${completedAllTasks}/${totalAllTasks} tasks</span>
 					</div>
 				</div>
 
-                <div class="today-schedule">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">📅 Day ${
-						today.day
-					} - ${today.date}</h3>
-					<p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">
-						Complete all tasks to advance to Day ${today.day + 1}
+				<!-- Day Navigator -->
+				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0">
+					<div class="flex items-center justify-between mb-4">
+						<button onclick="band8Dashboard.prevDay()"
+								class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+								${viewingDay <= 1 ? 'disabled' : ''}>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+							</svg>
+						</button>
+						<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Day ${viewingDay} of ${totalDays}</span>
+						<button onclick="band8Dashboard.nextDay()"
+								class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+								${viewingDay >= totalDays ? 'disabled' : ''}>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+							</svg>
+						</button>
+					</div>
+
+					<div class="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+						${dayNavButtons.join('')}
+					</div>
+
+					${
+						isViewingDifferentDay
+							? `
+						<button onclick="band8Dashboard.goToToday()"
+								class="w-full mt-3 sm:mt-4 py-2 px-3 sm:px-4 bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors">
+							📍 Go to Current Day (Day ${actualDay})
+						</button>
+					`
+							: ''
+					}
+				</div>
+
+				<div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl -mx-2 sm:mx-0 ${
+					dayRemaining.length === 0
+						? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+						: 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800'
+				}">
+					<span class="text-xl sm:text-2xl">${
+						dayRemaining.length === 0 ? '🎉' : '📋'
+					}</span>
+					<div class="flex-1 min-w-0">
+						${
+							dayRemaining.length === 0
+								? `<p class="font-medium text-green-700 dark:text-green-400 text-sm sm:text-base">All tasks completed!</p>
+							   <p class="text-xs sm:text-sm text-green-600 dark:text-green-500">Great work!</p>`
+								: `<p class="font-medium text-amber-700 dark:text-amber-400 text-sm sm:text-base">${
+										dayRemaining.length
+								  } task${
+										dayRemaining.length > 1 ? 's' : ''
+								  } remaining</p>`
+						}
+						${
+							allRemaining.length > 0 && dayRemaining.length === 0
+								? `<p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">${allRemaining.length} total remaining</p>`
+								: ''
+						}
+					</div>
+					${
+						viewingDayData.focus
+							? `
+						<a href="#ielts-practice" onclick="showPage('ielts-practice'); openIELTSFolder && openIELTSFolder('d${viewingDay}')"
+						   class="flex-shrink-0 px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors">
+							📚 Practice
+						</a>
+					`
+							: ''
+					}
+				</div>
+
+				<!-- Status Banner -->
+				<div class="grid grid-cols-2 gap-2 sm:gap-4 -mx-2 sm:mx-0">
+					<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+						<div class="text-xl sm:text-2xl font-bold text-teal-600 dark:text-teal-400">Day ${actualDay}</div>
+						<div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">Actual Progress</div>
+					</div>
+					<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+						<div class="text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-400">📅 Day ${scheduledDay}</div>
+						<div class="mt-1 text-xs">${behindMessage}</div>
+					</div>
+				</div>
+
+				<!-- Day Progress Mini -->
+				<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0">
+					<div class="flex items-center justify-between mb-2">
+						<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Day ${viewingDay} Progress</span>
+						<span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">${viewCompleted}/${viewTotal} tasks</span>
+					</div>
+					<div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+						<div class="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-300" style="width: ${dayProgress}%"></div>
+					</div>
+				</div>
+
+				<!-- Today's Schedule -->
+				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden -mx-2 sm:mx-0">
+					<div class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+						<h3 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base">📅 Day ${
+							viewingDayData.day
+						} - ${viewingDayData.date}</h3>
+						<p class="text-[10px] sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+							${
+								viewingDay === actualDay
+									? `Complete all tasks to advance`
+									: viewingDay < actualDay
+									? 'Reviewing previous day'
+									: 'Preview of upcoming day'
+							}
+						</p>
+						<div class="flex flex-wrap gap-2 sm:gap-4 mt-2 sm:mt-3 text-xs sm:text-sm">
+							<span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white">Focus:</strong> ${
+								viewingDayData.focus
+							}</span>
+							<span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white">Hours:</strong> ${viewHoursLogged}/${
+			viewingDayData.hours
+		}h</span>
+						</div>
+					</div>
+
+					<div class="p-3 sm:p-4">
+						<h4 class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">✅ Tasks (${viewCompleted}/${viewTotal})</h4>
+						<ul class="space-y-1.5 sm:space-y-2">
+							${viewingDayData.tasks
+								.map(
+									(task, index) => `
+								<li class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg ${
+									viewingDayData.completed.includes(index)
+										? 'bg-green-50 dark:bg-green-900/20'
+										: 'bg-gray-50 dark:bg-gray-700/50'
+								} transition-colors">
+									<input type="checkbox"
+										   id="task-${index}"
+										   class="mt-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer flex-shrink-0"
+										   ${viewingDayData.completed.includes(index) ? 'checked' : ''}
+										   onchange="band8Dashboard.toggleTask(${viewingDayData.day}, ${index})">
+									<label for="task-${index}"
+										   class="flex-1 text-xs sm:text-sm cursor-pointer leading-relaxed ${
+												viewingDayData.completed.includes(
+													index,
+												)
+													? 'text-gray-500 dark:text-gray-400 line-through'
+													: 'text-gray-700 dark:text-gray-300'
+											}">
+										${task}
+									</label>
+								</li>
+							`,
+								)
+								.join('')}
+						</ul>
+					</div>
+
+					<div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+						<h4 class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">📊 Study Hours</h4>
+						<div class="flex items-center gap-2 sm:gap-3">
+							<input type="number"
+								   id="hours-logged"
+								   min="0"
+								   max="16"
+								   step="0.5"
+								   value="${viewHoursLogged}"
+								   onchange="band8Dashboard.logHours(${viewingDay}, this.value)"
+								   class="w-16 sm:w-20 px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+							<span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">/ ${
+								viewingDayData.hours
+							} hours</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mock Test Scores -->
+				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0">
+					<h4 class="font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 text-sm sm:text-base">📝 Mock Test Scores</h4>
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+						<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg sm:rounded-xl">
+							<label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mock Test #1</label>
+							<input type="text"
+								   id="mock1-score"
+								   placeholder="e.g., 7.5"
+								   value="${this.getMockScore(1)}"
+								   onchange="band8Dashboard.saveMockScore(1, this.value)"
+								   class="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+						</div>
+						<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg sm:rounded-xl">
+							<label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mock Test #2</label>
+							<input type="text"
+								   id="mock2-score"
+								   placeholder="e.g., 8.0"
+								   value="${this.getMockScore(2)}"
+								   onchange="band8Dashboard.saveMockScore(2, this.value)"
+								   class="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+						</div>
+					</div>
+				</div>
+
+				<!-- Motivation Quote -->
+				<div class="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-teal-200 dark:border-teal-800 -mx-2 sm:mx-0">
+					<p class="text-teal-800 dark:text-teal-200 text-center italic text-xs sm:text-sm">
+						"Band 8.0-8.5 = TOP 5-10% globally. Every hour counts!"
 					</p>
-                    <div class="focus-area" style="font-size: 0.9rem;">
-                        <strong>Focus:</strong> ${today.focus}
-                    </div>
-                    <div class="study-hours" style="font-size: 0.9rem;">
-                        <strong>Hours:</strong> ${todayHoursLogged}/${
-			today.hours
-		}h
-                    </div>
-
-                    <h4 style="margin-top: 12px; font-size: 0.95rem;">✅ Tasks (${todayCompleted}/${todayTotal}):</h4>
-                    <ul class="task-list">
-                        ${today.tasks
-							.map(
-								(task, index) => `
-                            <li class="task-item ${
-								today.completed.includes(index)
-									? 'completed'
-									: ''
-							}">
-                                <input type="checkbox"
-                                       id="task-${index}"
-                                       ${
-											today.completed.includes(index)
-												? 'checked'
-												: ''
-										}
-                                       onchange="band8Dashboard.toggleTask(${
-											today.day
-										}, ${index})">
-                                <label for="task-${index}">${task}</label>
-                            </li>
-                        `,
-							)
-							.join('')}
-                    </ul>
-
-                    <div class="study-log">
-                        <h4>📊 Study Hours Logged Today:</h4>
-                        <input type="number"
-                               id="hours-logged"
-                               min="0"
-                               max="16"
-                               step="0.5"
-                               value="${this.getHoursLogged(today.day)}"
-                               onchange="band8Dashboard.logHours(${
-									today.day
-								}, this.value)">
-                        <span> / ${today.hours} hours</span>
-                    </div>
-                </div>
-
-                <div class="mock-test-scores">
-                    <h4>📝 Mock Test Scores:</h4>
-                    <div class="mock-tests">
-                        <div class="mock-test">
-                            <strong>Mock Test #1 (Day 12):</strong>
-                            <input type="text" id="mock1-score" placeholder="Overall: 7.5"
-                                   value="${this.getMockScore(1)}"
-                                   onchange="band8Dashboard.saveMockScore(1, this.value)">
-                        </div>
-                        <div class="mock-test">
-                            <strong>Mock Test #2 (Day 16):</strong>
-                            <input type="text" id="mock2-score" placeholder="Overall: 8.0"
-                                   value="${this.getMockScore(2)}"
-                                   onchange="band8Dashboard.saveMockScore(2, this.value)">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="motivation-quote">
-                    <p><em>"Band 8.0-8.5 means you're in the TOP 5-10% globally. 13-15 hours/day × 15 days = YOUR FUTURE. Every hour counts!"</em></p>
-                </div>
-            </div>
-        `;
+				</div>
+			</div>
+		`;
 	}
 
-	// Render University Application Timeline
+	// Render University Application Timeline with Tailwind CSS
 	renderUniversityTimeline() {
 		if (typeof MASTER_PLAN === 'undefined') return '';
 
@@ -363,51 +615,57 @@ class Band8Dashboard {
 		});
 
 		return `
-            <div class="university-timeline">
-                <h2>🎓 University Applications Timeline</h2>
+			<div class="space-y-6 mt-8">
+				<h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+					🎓 University Applications Timeline
+				</h2>
 
-                ${
+				${
 					urgent.length > 0
 						? `
-                    <div class="urgent-applications">
-                        <h3>🔥 URGENT - Apply Within 30 Days!</h3>
-                        ${urgent
-							.map((u) => this.renderUniversityCard(u, 'urgent'))
-							.join('')}
-                    </div>
-                `
+					<div class="space-y-4">
+						<h3 class="text-lg font-semibold text-red-600 dark:text-red-400 flex items-center gap-2">
+							🔥 URGENT - Apply Within 30 Days!
+						</h3>
+						<div class="grid gap-4">
+							${urgent.map((u) => this.renderUniversityCard(u, 'urgent')).join('')}
+						</div>
+					</div>
+				`
 						: ''
 				}
 
-                ${
+				${
 					upcoming.length > 0
 						? `
-                    <div class="upcoming-applications">
-                        <h3>⏰ Upcoming (30-90 Days)</h3>
-                        ${upcoming
-							.map((u) =>
-								this.renderUniversityCard(u, 'upcoming'),
-							)
-							.join('')}
-                    </div>
-                `
+					<div class="space-y-4">
+						<h3 class="text-lg font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-2">
+							⏰ Upcoming (30-90 Days)
+						</h3>
+						<div class="grid gap-4">
+							${upcoming.map((u) => this.renderUniversityCard(u, 'upcoming')).join('')}
+						</div>
+					</div>
+				`
 						: ''
 				}
 
-                ${
+				${
 					later.length > 0
 						? `
-                    <div class="later-applications">
-                        <h3>📅 Later (90+ Days)</h3>
-                        ${later
-							.map((u) => this.renderUniversityCard(u, 'later'))
-							.join('')}
-                    </div>
-                `
+					<div class="space-y-4">
+						<h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 flex items-center gap-2">
+							📅 Later (90+ Days)
+						</h3>
+						<div class="grid gap-4">
+							${later.map((u) => this.renderUniversityCard(u, 'later')).join('')}
+						</div>
+					</div>
+				`
 						: ''
 				}
-            </div>
-        `;
+			</div>
+		`;
 	}
 
 	renderUniversityCard(university, urgency) {
@@ -417,105 +675,132 @@ class Band8Dashboard {
 
 		const statusClass = university.status || 'not_started';
 
+		// Border color based on urgency
+		let borderClass = 'border-gray-200 dark:border-gray-700';
+		if (urgency === 'urgent')
+			borderClass = 'border-red-300 dark:border-red-700';
+		else if (urgency === 'upcoming')
+			borderClass = 'border-amber-300 dark:border-amber-700';
+
+		// Priority badge styling
+		let priorityClass =
+			'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
+		if (university.priority.includes('DREAM')) {
+			priorityClass =
+				'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300';
+		} else if (university.priority.includes('Safety')) {
+			priorityClass =
+				'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300';
+		} else if (university.priority.includes('Target')) {
+			priorityClass =
+				'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300';
+		}
+
+		// Days until color
+		let daysClass = 'text-gray-600 dark:text-gray-400';
+		if (daysUntil <= 7)
+			daysClass = 'text-red-600 dark:text-red-400 font-bold';
+		else if (daysUntil <= 30)
+			daysClass = 'text-amber-600 dark:text-amber-400';
+
 		return `
-            <div class="university-card ${urgency}">
-                <div class="university-header">
-                    <h4>${university.university}</h4>
-                    <span class="priority-badge ${
-						university.priority.includes('DREAM')
-							? 'dream'
-							: university.priority.includes('Safety')
-							? 'safety'
-							: 'target'
-					}">
-                        ${university.priority}
-                    </span>
-                </div>
-                <div class="deadline-info">
-                    <strong>Deadline:</strong> ${deadline.toLocaleDateString(
-						'en-US',
-						{ month: 'short', day: 'numeric', year: 'numeric' },
-					)}
-                    <span class="days-until ${
-						daysUntil <= 7
-							? 'critical'
-							: daysUntil <= 30
-							? 'warning'
-							: 'normal'
-					}">
-                        (${daysUntil} days)
-                    </span>
-                </div>
-                <div class="documents-needed">
-                    <strong>Documents:</strong>
-                    <ul>
-                        ${university.documents
-							.map((doc) => `<li>${doc}</li>`)
-							.join('')}
-                    </ul>
-                </div>
-                <div class="fee-info">
-                    <strong>Application Fee:</strong> ${university.fee}
-                </div>
-                <div class="status-selector">
-                    <label>Status:</label>
-                    <select onchange="band8Dashboard.updateUniversityStatus('${
+			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border-2 ${borderClass}">
+				<div class="flex items-start justify-between gap-4 mb-3">
+					<h4 class="font-semibold text-gray-900 dark:text-white">${
 						university.university
-					}', this.value)">
-                        <option value="not_started" ${
+					}</h4>
+					<span class="flex-shrink-0 px-2 py-1 rounded-full text-xs font-medium ${priorityClass}">
+						${university.priority}
+					</span>
+				</div>
+
+				<div class="space-y-2 text-sm">
+					<div class="flex items-center gap-2">
+						<span class="text-gray-500 dark:text-gray-400">Deadline:</span>
+						<span class="text-gray-900 dark:text-white">${deadline.toLocaleDateString(
+							'en-US',
+							{ month: 'short', day: 'numeric', year: 'numeric' },
+						)}</span>
+						<span class="${daysClass}">(${daysUntil} days)</span>
+					</div>
+
+					<div>
+						<span class="text-gray-500 dark:text-gray-400">Documents:</span>
+						<ul class="mt-1 ml-4 list-disc text-gray-700 dark:text-gray-300">
+							${university.documents.map((doc) => `<li>${doc}</li>`).join('')}
+						</ul>
+					</div>
+
+					<div class="flex items-center gap-2">
+						<span class="text-gray-500 dark:text-gray-400">Fee:</span>
+						<span class="text-gray-900 dark:text-white">${university.fee}</span>
+					</div>
+				</div>
+
+				<div class="mt-4 flex items-center gap-2">
+					<label class="text-sm text-gray-600 dark:text-gray-400">Status:</label>
+					<select onchange="band8Dashboard.updateUniversityStatus('${
+						university.university
+					}', this.value)"
+							class="flex-1 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+						<option value="not_started" ${
 							statusClass === 'not_started' ? 'selected' : ''
 						}>Not Started</option>
-                        <option value="in_progress" ${
+						<option value="in_progress" ${
 							statusClass === 'in_progress' ? 'selected' : ''
 						}>In Progress</option>
-                        <option value="documents_ready" ${
+						<option value="documents_ready" ${
 							statusClass === 'documents_ready' ? 'selected' : ''
 						}>Documents Ready</option>
-                        <option value="submitted" ${
+						<option value="submitted" ${
 							statusClass === 'submitted' ? 'selected' : ''
 						}>Submitted</option>
-                        <option value="admitted" ${
+						<option value="admitted" ${
 							statusClass === 'admitted' ? 'selected' : ''
 						}>✅ Admitted!</option>
-                        <option value="rejected" ${
+						<option value="rejected" ${
 							statusClass === 'rejected' ? 'selected' : ''
 						}>❌ Rejected</option>
-                    </select>
-                </div>
-            </div>
-        `;
+					</select>
+				</div>
+			</div>
+		`;
 	}
 
-	// Render Scholarship Timeline
+	// Render Scholarship Timeline with Tailwind CSS
 	renderScholarshipTimeline() {
 		if (typeof MASTER_PLAN === 'undefined') return '';
 
 		const scholarships = MASTER_PLAN.scholarshipTimeline;
 
 		return `
-            <div class="scholarship-timeline">
-                <h2>💰 Scholarship Applications</h2>
-                <p class="scholarship-intro">Apply to ALL scholarships! Even €300/month = €7,200 over 2 years!</p>
+			<div class="space-y-6 mt-8">
+				<div>
+					<h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+						💰 Scholarship Applications
+					</h2>
+					<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+						Apply to ALL scholarships! Even €300/month = €7,200 over 2 years!
+					</p>
+				</div>
 
-                <div class="scholarships-grid">
-                    ${scholarships
-						.map((s) => this.renderScholarshipCard(s))
-						.join('')}
-                </div>
+				<div class="grid gap-4 md:grid-cols-2">
+					${scholarships.map((s) => this.renderScholarshipCard(s)).join('')}
+				</div>
 
-                <div class="scholarship-tips">
-                    <h3>💡 Scholarship Success Tips:</h3>
-                    <ul>
-                        <li>✅ Apply to 5-7 scholarships (60-80% get at least one!)</li>
-                        <li>✍️ Motivation letter is MOST important - explain development goals</li>
-                        <li>🌍 Emphasize how you'll help your country with cybersecurity knowledge</li>
-                        <li>📧 Contact professors before applying (shows research interest)</li>
-                        <li>📊 If GPA below 3.0, explain circumstances + show other achievements</li>
-                        <li>🇩🇪 Show German language learning (even A1 level shows commitment)</li>
-                    </ul>
-                </div>
-            </div>
-        `;
+				<div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
+					<h3 class="font-semibold text-amber-800 dark:text-amber-200 mb-3">💡 Scholarship Success Tips</h3>
+					<ul class="space-y-2 text-sm text-amber-700 dark:text-amber-300">
+						<li>✅ Apply to 5-7 scholarships (60-80% get at least one!)</li>
+						<li>✍️ Motivation letter is MOST important - explain development goals</li>
+						<li>🌍 Emphasize how you'll help your country with cybersecurity knowledge</li>
+						<li>📧 Contact professors before applying (shows research interest)</li>
+						<li>📊 If GPA below 3.0, explain circumstances + show other achievements</li>
+						<li>🇩🇪 Show German language learning (even A1 level shows commitment)</li>
+					</ul>
+				</div>
+			</div>
+		`;
 	}
 
 	renderScholarshipCard(scholarship) {
@@ -539,69 +824,96 @@ class Band8Dashboard {
 			daysUntil = days > 0 ? `(${days} days)` : '(DEADLINE PASSED)';
 		}
 
+		// Priority styling
+		let borderClass = 'border-gray-200 dark:border-gray-700';
+		let priorityClass =
+			'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
+		if (scholarship.priority.includes('HIGHEST')) {
+			borderClass = 'border-green-300 dark:border-green-700';
+			priorityClass =
+				'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300';
+		} else if (scholarship.priority.includes('High')) {
+			borderClass = 'border-blue-300 dark:border-blue-700';
+			priorityClass =
+				'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300';
+		}
+
 		return `
-            <div class="scholarship-card ${
-				scholarship.priority.includes('HIGHEST')
-					? 'highest-priority'
-					: scholarship.priority.includes('High')
-					? 'high-priority'
-					: 'medium-priority'
-			}">
-                <h4>${scholarship.scholarship}</h4>
-                <div class="scholarship-amount">
-                    <strong>💰 Amount:</strong> ${scholarship.amount}
-                </div>
-                <div class="scholarship-deadline">
-                    <strong>📅 Deadline:</strong> ${deadline} ${daysUntil}
-                </div>
-                <div class="scholarship-priority">
-                    <strong>Priority:</strong> <span class="priority-badge">${
-						scholarship.priority
-					}</span>
-                </div>
-                <div class="scholarship-documents">
-                    <strong>Documents:</strong>
-                    <ul>
-                        ${scholarship.documents
-							.map((doc) => `<li>${doc}</li>`)
-							.join('')}
-                    </ul>
-                </div>
-                ${
-					scholarship.note
-						? `<div class="scholarship-note"><em>${scholarship.note}</em></div>`
-						: ''
-				}
-                <div class="scholarship-status">
-                    <label>Status:</label>
-                    <select onchange="band8Dashboard.updateScholarshipStatus('${
+			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border-2 ${borderClass}">
+				<div class="flex items-start justify-between gap-3 mb-3">
+					<h4 class="font-semibold text-gray-900 dark:text-white">${
 						scholarship.scholarship
-					}', this.value)">
-                        <option value="not_started" ${
+					}</h4>
+					<span class="flex-shrink-0 px-2 py-1 rounded-full text-xs font-medium ${priorityClass}">
+						${scholarship.priority}
+					</span>
+				</div>
+
+				<div class="space-y-2 text-sm">
+					<div class="flex items-center gap-2">
+						<span class="text-gray-500 dark:text-gray-400">💰 Amount:</span>
+						<span class="font-medium text-green-600 dark:text-green-400">${
+							scholarship.amount
+						}</span>
+					</div>
+
+					<div class="flex items-center gap-2 flex-wrap">
+						<span class="text-gray-500 dark:text-gray-400">📅 Deadline:</span>
+						<span class="text-gray-900 dark:text-white">${deadline}</span>
+						${
+							daysUntil
+								? `<span class="text-amber-600 dark:text-amber-400">${daysUntil}</span>`
+								: ''
+						}
+					</div>
+
+					<div>
+						<span class="text-gray-500 dark:text-gray-400">Documents:</span>
+						<ul class="mt-1 ml-4 list-disc text-gray-700 dark:text-gray-300">
+							${scholarship.documents.map((doc) => `<li>${doc}</li>`).join('')}
+						</ul>
+					</div>
+
+					${
+						scholarship.note
+							? `
+						<p class="text-xs italic text-gray-500 dark:text-gray-400 mt-2">${scholarship.note}</p>
+					`
+							: ''
+					}
+				</div>
+
+				<div class="mt-4 flex items-center gap-2">
+					<label class="text-sm text-gray-600 dark:text-gray-400">Status:</label>
+					<select onchange="band8Dashboard.updateScholarshipStatus('${
+						scholarship.scholarship
+					}', this.value)"
+							class="flex-1 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+						<option value="not_started" ${
 							statusClass === 'not_started' ? 'selected' : ''
 						}>Not Started</option>
-                        <option value="researching" ${
+						<option value="researching" ${
 							statusClass === 'researching' ? 'selected' : ''
 						}>Researching</option>
-                        <option value="drafting" ${
+						<option value="drafting" ${
 							statusClass === 'drafting' ? 'selected' : ''
 						}>Drafting Documents</option>
-                        <option value="ready" ${
+						<option value="ready" ${
 							statusClass === 'ready' ? 'selected' : ''
 						}>Ready to Submit</option>
-                        <option value="submitted" ${
+						<option value="submitted" ${
 							statusClass === 'submitted' ? 'selected' : ''
 						}>Submitted</option>
-                        <option value="awarded" ${
+						<option value="awarded" ${
 							statusClass === 'awarded' ? 'selected' : ''
 						}>🎉 AWARDED!</option>
-                        <option value="rejected" ${
+						<option value="rejected" ${
 							statusClass === 'rejected' ? 'selected' : ''
 						}>Rejected</option>
-                    </select>
-                </div>
-            </div>
-        `;
+					</select>
+				</div>
+			</div>
+		`;
 	}
 
 	// LocalStorage methods
@@ -641,6 +953,8 @@ class Band8Dashboard {
 		}
 
 		this.saveProgress();
+		// Refresh to update UI
+		this.refreshDashboard();
 	}
 
 	getHoursLogged(day) {
@@ -674,14 +988,12 @@ class Band8Dashboard {
 	// Render complete dashboard
 	renderCompleteDashboard() {
 		return `
-            <div class="band8-dashboard">
-                ${this.renderIELTSTracker()}
-                <hr>
-                ${this.renderUniversityTimeline()}
-                <hr>
-                ${this.renderScholarshipTimeline()}
-            </div>
-        `;
+			<div class="space-y-6">
+				${this.renderIELTSTracker()}
+				${this.renderUniversityTimeline()}
+				${this.renderScholarshipTimeline()}
+			</div>
+		`;
 	}
 }
 

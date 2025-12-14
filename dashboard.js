@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const loadingScreen = document.getElementById('loading-screen');
 	const mainContent = document.querySelector('.main-content');
 	if (loadingScreen) {
-		loadingScreen.classList.add('hidden');
+		loadingScreen.classList.add('opacity-0');
 		setTimeout(() => loadingScreen.remove(), 300);
 	}
 	if (mainContent) {
@@ -63,25 +63,39 @@ function showPage(pageId) {
 	// Save current page to localStorage
 	localStorage.setItem('currentPage', pageId);
 
-	// Remove active class from all pages and links
+	// Hide all pages
 	document
 		.querySelectorAll('.page')
-		.forEach((page) => page.classList.remove('active'));
+		.forEach((page) => page.classList.add('hidden'));
+
+	// Remove active class from all nav links
 	document
-		.querySelectorAll('.menu a')
-		.forEach((link) => link.classList.remove('active'));
+		.querySelectorAll('.nav-link')
+		.forEach((link) =>
+			link.classList.remove(
+				'bg-teal-50',
+				'dark:bg-teal-900/30',
+				'text-teal-700',
+				'dark:text-teal-300',
+			),
+		);
 
 	// Show the selected page
 	const page = document.getElementById(pageId);
 	if (page) {
-		page.classList.add('active');
+		page.classList.remove('hidden');
 	}
 
-	// Add active class to the corresponding menu link
-	document.querySelectorAll('.menu a').forEach((link) => {
-		const href = link.getAttribute('href');
-		if (href === `#${pageId}`) {
-			link.classList.add('active');
+	// Add active class to the corresponding nav link
+	document.querySelectorAll('.nav-link').forEach((link) => {
+		const dataPage = link.getAttribute('data-page');
+		if (dataPage === pageId) {
+			link.classList.add(
+				'bg-teal-50',
+				'dark:bg-teal-900/30',
+				'text-teal-700',
+				'dark:text-teal-300',
+			);
 		}
 	});
 
@@ -91,6 +105,10 @@ function showPage(pageId) {
 	} else if (pageId === 'ielts-practice') {
 		if (typeof initIELTSPractice === 'function') {
 			initIELTSPractice();
+		}
+	} else if (pageId === 'ielts-tools') {
+		if (typeof openIELTSTool === 'function') {
+			openIELTSTool('vocab');
 		}
 	} else if (pageId === 'germany') {
 		displayGermanyUniversities();
@@ -112,26 +130,65 @@ function showPage(pageId) {
 		}
 	}
 
-	// Close sidebar
+	// Close sidebar on mobile
 	const sidebar = document.getElementById('sidebar');
+	const overlay = document.getElementById('sidebar-overlay');
 	if (sidebar) {
-		sidebar.classList.remove('open');
-		sidebar.classList.remove('active');
+		sidebar.classList.remove('translate-x-0');
+		sidebar.classList.add('-translate-x-full', 'lg:translate-x-0');
+	}
+	if (overlay) {
+		overlay.classList.add('hidden');
 	}
 }
 
 function toggleMenu() {
-	document.getElementById('sidebar').classList.toggle('active');
+	const sidebar = document.getElementById('sidebar');
+	const overlay = document.getElementById('sidebar-overlay');
+
+	if (sidebar.classList.contains('-translate-x-full')) {
+		sidebar.classList.remove('-translate-x-full');
+		sidebar.classList.add('translate-x-0');
+		if (overlay) overlay.classList.remove('hidden');
+	} else {
+		sidebar.classList.add('-translate-x-full');
+		sidebar.classList.remove('translate-x-0');
+		if (overlay) overlay.classList.add('hidden');
+	}
 }
+
+// Toggle dark mode
+function toggleDarkMode() {
+	document.documentElement.classList.toggle('dark');
+	const isDark = document.documentElement.classList.contains('dark');
+	localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+}
+
+// Initialize dark mode on load
+(function initDarkMode() {
+	const savedDarkMode = localStorage.getItem('darkMode');
+	if (
+		savedDarkMode === 'true' ||
+		(!savedDarkMode &&
+			window.matchMedia('(prefers-color-scheme: dark)').matches)
+	) {
+		document.documentElement.classList.add('dark');
+	}
+})();
 
 // Toggle expand/collapse for accordion cards
 function toggleExpand(element) {
 	const header = element;
 	const content = header.nextElementSibling;
-	const toggle = header.querySelector('.expandable-toggle');
-	if (content && toggle) {
-		content.classList.toggle('open');
-		toggle.classList.toggle('open');
+	const toggle = header.querySelector('.expand-toggle');
+
+	if (content) {
+		content.classList.toggle('hidden');
+		if (toggle) {
+			toggle.textContent = content.classList.contains('hidden')
+				? '▶'
+				: '▼';
+		}
 	}
 }
 
@@ -160,8 +217,25 @@ function getStatusLabel(status) {
 	return labels[status] || labels['not_started'];
 }
 
-// GERMANY FUNCTIONS
+function getStatusBadgeClass(status) {
+	const classes = {
+		not_started:
+			'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+		researching:
+			'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
+		preparing:
+			'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
+		submitted:
+			'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
+		admitted:
+			'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+		rejected:
+			'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
+	};
+	return classes[status] || classes['not_started'];
+}
 
+// GERMANY FUNCTIONS
 async function loadGermanyData() {
 	try {
 		const response = await fetch('germany-universities.json');
@@ -201,8 +275,12 @@ function displayScholarships() {
 	if (!container) return;
 
 	if (!scholarshipGuide) {
-		container.innerHTML =
-			'<div style="text-align:center; padding: 60px 20px; color: #666;"><p style="font-size: 18px;">⚠️ Scholarship guide not loaded</p><p style="font-size: 14px;">Please refresh the page to load Germany data.</p></div>';
+		container.innerHTML = `
+			<div class="text-center py-16 text-gray-500 dark:text-gray-400">
+				<p class="text-lg">⚠️ Scholarship guide not loaded</p>
+				<p class="text-sm mt-2">Please refresh the page to load Germany data.</p>
+			</div>
+		`;
 		return;
 	}
 
@@ -213,147 +291,201 @@ function displayScholarships() {
 		blocked_account_requirement = {},
 	} = scholarshipGuide;
 
-	const majorScholarshipsHtml = `
-		<div class="scholarship-section">
-			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">💰 Major Scholarships</h3>
-			<div class="scholarship-grid">
-				${major_scholarships
-					.map(
-						(s) => `
-						<div class="scholarship-card">
-							<h4 style="color: #667eea; margin: 0 0 12px 0;">${s.name}</h4>
-							<div class="scholarship-details">
-								<div class="detail-row"><span class="label">💵 Amount:</span> <span class="value">${
+	container.innerHTML = `
+		<div class="space-y-8">
+			<!-- Major Scholarships -->
+			<div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">💰 Major Scholarships</h3>
+				<div class="grid gap-4 md:grid-cols-2">
+					${major_scholarships
+						.map(
+							(s) => `
+						<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+							<h4 class="font-semibold text-teal-600 dark:text-teal-400 mb-3">${s.name}</h4>
+							<div class="space-y-2 text-sm">
+								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">💵 Amount:</span><span class="text-gray-900 dark:text-white">${
 									s.amount || 'N/A'
 								}</span></div>
-								<div class="detail-row"><span class="label">⏱️ Duration:</span> <span class="value">${
+								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">⏱️ Duration:</span><span class="text-gray-900 dark:text-white">${
 									s.duration || 'N/A'
 								}</span></div>
-								<div class="detail-row"><span class="label">📅 Deadline:</span> <span class="value">${
+								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">📅 Deadline:</span><span class="text-gray-900 dark:text-white">${
 									s.deadline || 'N/A'
 								}</span></div>
-								<div class="detail-row"><span class="label">✅ Eligibility:</span> <span class="value">${
+								<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">✅ Eligibility:</span><span class="text-gray-900 dark:text-white">${
 									s.eligibility || 'N/A'
 								}</span></div>
 								${
 									s.success_rate
-										? `<div class="detail-row"><span class="label">📊 Success Rate:</span> <span class="value" style="color: #4CAF50; font-weight: 600;">${s.success_rate}</span></div>`
+										? `<div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">📊 Success Rate:</span><span class="font-medium text-green-600 dark:text-green-400">${s.success_rate}</span></div>`
 										: ''
 								}
 							</div>
 							${
 								s.note
-									? `<div style="margin-top:12px; padding: 10px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px; font-size:0.9em;">💡 ${s.note}</div>`
+									? `<div class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded text-sm text-amber-700 dark:text-amber-300">💡 ${s.note}</div>`
 									: ''
 							}
 							${
 								s.website
-									? `<a href="${s.website}" target="_blank" class="btn btn-primary" style="margin-top: 12px; display: inline-block;">Visit Website →</a>`
+									? `<a href="${s.website}" target="_blank" class="inline-block mt-3 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website →</a>`
 									: ''
 							}
 						</div>
 					`,
-					)
-					.join('')}
+						)
+						.join('')}
+				</div>
 			</div>
-		</div>`;
 
-	const tipsHtml = `
-		<div class="scholarship-section">
-			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">📝 Application Tips</h3>
-			<div class="tips-list">
-				${application_tips
-					.map(
-						(tip, index) =>
-							`<div class="tip-item"><span class="tip-number">${
-								index + 1
-							}</span><span>${tip}</span></div>`,
-					)
-					.join('')}
+			<!-- Application Tips -->
+			<div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📝 Application Tips</h3>
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+					<ol class="space-y-3">
+						${application_tips
+							.map(
+								(tip, index) => `
+							<li class="flex gap-3">
+								<span class="flex-shrink-0 w-6 h-6 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full flex items-center justify-center text-sm font-medium">${
+									index + 1
+								}</span>
+								<span class="text-gray-700 dark:text-gray-300">${tip}</span>
+							</li>
+						`,
+							)
+							.join('')}
+					</ol>
+				</div>
 			</div>
-		</div>`;
 
-	const livingCostsHtml = `
-		<div class="scholarship-section">
-			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏠 Living Cost Reality</h3>
-			<div class="info-card">
-				${
-					living_costs_reality.monthly_minimum
-						? `<div class="highlight-box"><strong>Monthly Minimum:</strong> ${living_costs_reality.monthly_minimum}</div>`
-						: ''
-				}
-				${
-					living_costs_reality.breakdown
-						? `<h4 style="margin: 20px 0 10px 0;">Cost Breakdown:</h4><div class="breakdown-grid">${Object.entries(
-								living_costs_reality.breakdown,
-						  )
-								.map(
-									([k, v]) =>
-										`<div class="breakdown-item"><span>${k}:</span> <strong>${v}</strong></div>`,
-								)
-								.join('')}</div>`
-						: ''
-				}
-				${
-					living_costs_reality.student_job_rules
-						? `<div style="margin-top: 16px; padding: 12px; background: #e8f5e9; border-radius: 6px;"><strong>💼 Student Jobs:</strong> ${living_costs_reality.student_job_rules}</div>`
-						: ''
-				}
-				${
-					Array.isArray(living_costs_reality.cheapest_cities)
-						? `<div style="margin-top: 16px;"><strong>💵 Cheapest Cities:</strong><ul style="margin: 8px 0; padding-left: 24px;">${living_costs_reality.cheapest_cities
-								.map((city) => `<li>${city}</li>`)
-								.join('')}</ul></div>`
-						: ''
-				}
-				${
-					living_costs_reality.survival_tip
-						? `<div style="margin-top: 16px; padding: 12px; background: #fff3cd; border-left: 3px solid #ffc107; border-radius: 4px;">💡 <strong>Survival Tip:</strong> ${living_costs_reality.survival_tip}</div>`
-						: ''
-				}
+			<!-- Living Costs -->
+			<div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🏠 Living Cost Reality</h3>
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+					${
+						living_costs_reality.monthly_minimum
+							? `
+						<div class="p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+							<strong class="text-teal-700 dark:text-teal-300">Monthly Minimum:</strong>
+							<span class="text-teal-600 dark:text-teal-400 font-bold ml-2">${living_costs_reality.monthly_minimum}</span>
+						</div>
+					`
+							: ''
+					}
+					${
+						living_costs_reality.breakdown
+							? `
+						<div>
+							<h4 class="font-medium text-gray-900 dark:text-white mb-3">Cost Breakdown:</h4>
+							<div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+								${Object.entries(living_costs_reality.breakdown)
+									.map(
+										([k, v]) => `
+									<div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+										<div class="text-xs text-gray-500 dark:text-gray-400">${k}</div>
+										<div class="font-medium text-gray-900 dark:text-white">${v}</div>
+									</div>
+								`,
+									)
+									.join('')}
+							</div>
+						</div>
+					`
+							: ''
+					}
+					${
+						living_costs_reality.student_job_rules
+							? `
+						<div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+							<strong class="text-green-700 dark:text-green-300">💼 Student Jobs:</strong>
+							<p class="text-green-600 dark:text-green-400 mt-1">${living_costs_reality.student_job_rules}</p>
+						</div>
+					`
+							: ''
+					}
+					${
+						Array.isArray(living_costs_reality.cheapest_cities)
+							? `
+						<div>
+							<strong class="text-gray-900 dark:text-white">💵 Cheapest Cities:</strong>
+							<div class="flex flex-wrap gap-2 mt-2">
+								${living_costs_reality.cheapest_cities
+									.map(
+										(city) => `
+									<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm text-gray-700 dark:text-gray-300">${city}</span>
+								`,
+									)
+									.join('')}
+							</div>
+						</div>
+					`
+							: ''
+					}
+					${
+						living_costs_reality.survival_tip
+							? `
+						<div class="p-4 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded">
+							<strong class="text-amber-700 dark:text-amber-300">💡 Survival Tip:</strong>
+							<p class="text-amber-600 dark:text-amber-400 mt-1">${living_costs_reality.survival_tip}</p>
+						</div>
+					`
+							: ''
+					}
+				</div>
 			</div>
-		</div>`;
 
-	const blockedAccountHtml = `
-		<div class="scholarship-section">
-			<h3 style="color: #333; margin-bottom: 20px; font-size: 22px;">🏦 Blocked Account Requirement</h3>
-			<div class="info-card">
-				${
-					blocked_account_requirement.amount
-						? `<div class="highlight-box"><strong>Required Amount:</strong> ${blocked_account_requirement.amount}</div>`
-						: ''
-				}
-				${
-					blocked_account_requirement.purpose
-						? `<p style="margin: 12px 0;"><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>`
-						: ''
-				}
-				${
-					blocked_account_requirement.when_needed
-						? `<p style="margin: 12px 0;"><strong>When Needed:</strong> ${blocked_account_requirement.when_needed}</p>`
-						: ''
-				}
-				${
-					blocked_account_requirement.note
-						? `<div style="margin: 12px 0; padding: 10px; background: #fff3cd; border-radius: 6px;">${blocked_account_requirement.note}</div>`
-						: ''
-				}
-				${
-					Array.isArray(blocked_account_requirement.providers)
-						? `<p style="margin: 12px 0;"><strong>Providers:</strong> ${blocked_account_requirement.providers.join(
-								', ',
-						  )}</p>`
-						: ''
-				}
-				${
-					blocked_account_requirement.tip
-						? `<div style="margin-top: 12px; padding: 10px; background: #e3f2fd; border-left: 3px solid #2196F3; border-radius: 4px;">💡 ${blocked_account_requirement.tip}</div>`
-						: ''
-				}
+			<!-- Blocked Account -->
+			<div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🏦 Blocked Account Requirement</h3>
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+					${
+						blocked_account_requirement.amount
+							? `
+						<div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+							<strong class="text-blue-700 dark:text-blue-300">Required Amount:</strong>
+							<span class="text-blue-600 dark:text-blue-400 font-bold ml-2">${blocked_account_requirement.amount}</span>
+						</div>
+					`
+							: ''
+					}
+					${
+						blocked_account_requirement.purpose
+							? `<p class="text-gray-700 dark:text-gray-300"><strong>Purpose:</strong> ${blocked_account_requirement.purpose}</p>`
+							: ''
+					}
+					${
+						blocked_account_requirement.when_needed
+							? `<p class="text-gray-700 dark:text-gray-300"><strong>When Needed:</strong> ${blocked_account_requirement.when_needed}</p>`
+							: ''
+					}
+					${
+						blocked_account_requirement.note
+							? `
+						<div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg text-amber-700 dark:text-amber-300">${blocked_account_requirement.note}</div>
+					`
+							: ''
+					}
+					${
+						Array.isArray(blocked_account_requirement.providers)
+							? `
+						<p class="text-gray-700 dark:text-gray-300"><strong>Providers:</strong> ${blocked_account_requirement.providers.join(
+							', ',
+						)}</p>
+					`
+							: ''
+					}
+					${
+						blocked_account_requirement.tip
+							? `
+						<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 rounded text-blue-700 dark:text-blue-300">💡 ${blocked_account_requirement.tip}</div>
+					`
+							: ''
+					}
+				</div>
 			</div>
-		</div>`;
-
-	container.innerHTML = `${majorScholarshipsHtml}${tipsHtml}${livingCostsHtml}${blockedAccountHtml}`;
+		</div>
+	`;
 }
 
 function displayGermanyUniversities() {
@@ -363,78 +495,96 @@ function displayGermanyUniversities() {
 	container.innerHTML = germanyUniversities
 		.map(
 			(uni) => `
-        <div class="expandable-card">
-            <div class="expandable-header" onclick="toggleExpand(this)">
-                <h3>${uni.university} ${uni.ranking || ''}</h3>
-                <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.4;">${
-					uni.program
-				}</p>
-                <div class="expandable-header-bottom">
-                    <span class="deadline-badge">⏰ ${
+		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
+				<div class="flex items-start justify-between gap-4">
+					<div class="flex-1">
+						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${
+				uni.ranking || ''
+			}</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
+					</div>
+					<span class="expand-toggle text-gray-400 text-sm">▶</span>
+				</div>
+				<div class="flex items-center gap-3 mt-3">
+					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
 						uni.application_deadline
 					}</span>
-                    <span class="expandable-toggle">▶</span>
-                </div>
-            </div>
-            <div class="expandable-content">
-                <div class="uni-card">
-                    ${
-						uni.highlights
-							? `<p style="font-size: 0.9em; color: #666; margin-top: 5px;">💡 ${uni.highlights}</p>`
-							: ''
-					}
-
-                    ${
-						uni.application_opens
-							? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
-							: ''
-					}
-
-                    <div class="uni-details">
-                        <div class="detail-item">📍 <strong>${
-							uni.location
-						}</strong></div>
-                        <div class="detail-item">⏱️ ${uni.duration}</div>
-                        <div class="detail-item">💰 ${uni.tuition}</div>
-                        <div class="detail-item">🌐 ${uni.language}</div>
-                        <div class="detail-item">📝 ${uni.requirements}</div>
-                    </div>
-
-                    ${
-						uni.scholarships && uni.scholarships.length > 0
-							? `
-                    <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
-                        <strong>💰 Scholarships Available:</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                            ${uni.scholarships
-								.map((s) => `<li>${s}</li>`)
-								.join('')}
-                        </ul>
-                    </div>
-                    `
-							: ''
-					}
-
-                    ${
-						uni.notes
-							? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Important:</strong> ${uni.notes}</div>`
-							: ''
-					}
-
-                    <div class="uni-footer">
-                        <a href="${
-							uni.website
-						}" target="_blank" class="btn btn-primary">Visit Website</a>
-                        <button onclick="updateGermanyStatus('${
-							uni.university
-						}')" class="btn btn-secondary">
-                            ${getStatusLabel(uni.status)}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
+					<span class="px-3 py-1 ${getStatusBadgeClass(
+						uni.status,
+					)} rounded-full text-xs font-medium">${getStatusLabel(
+				uni.status,
+			)}</span>
+				</div>
+			</div>
+			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+				${
+					uni.highlights
+						? `<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">💡 ${uni.highlights}</p>`
+						: ''
+				}
+				${
+					uni.application_opens
+						? `
+					<div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg mb-4 text-sm text-green-700 dark:text-green-300">
+						⏰ Applications open: <strong>${uni.application_opens}</strong>
+					</div>
+				`
+						: ''
+				}
+				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+						uni.location
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+						uni.duration
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+						uni.tuition
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+						uni.language
+					}</div>
+				</div>
+				${
+					uni.requirements
+						? `<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">📝 ${uni.requirements}</p>`
+						: ''
+				}
+				${
+					uni.scholarships && uni.scholarships.length > 0
+						? `
+					<div class="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-lg mb-4">
+						<strong class="text-amber-700 dark:text-amber-300">💰 Scholarships Available:</strong>
+						<ul class="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400">
+							${uni.scholarships.map((s) => `<li>• ${s}</li>`).join('')}
+						</ul>
+					</div>
+				`
+						: ''
+				}
+				${
+					uni.notes
+						? `
+					<div class="p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded text-sm text-amber-700 dark:text-amber-300 mb-4">
+						⚠️ <strong>Important:</strong> ${uni.notes}
+					</div>
+				`
+						: ''
+				}
+				<div class="flex gap-3">
+					<a href="${
+						uni.website
+					}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
+					<button onclick="updateGermanyStatus('${
+						uni.university
+					}')" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
+						Change Status
+					</button>
+				</div>
+			</div>
+		</div>
+	`,
 		)
 		.join('');
 }
@@ -443,26 +593,25 @@ function displayGermanyProgress() {
 	const container = document.getElementById('germany-progress-list');
 	if (!container) return;
 
-	// Get tracked applications from localStorage
 	const tracked = localStorage.getItem('germany-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
-	// Always show universities from JSON data
 	if (germanyUniversities.length === 0) {
-		container.innerHTML =
-			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 Loading University Data...</p></div>';
+		container.innerHTML = `
+			<div class="text-center py-16 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
+				<p class="text-lg">📝 Loading University Data...</p>
+			</div>
+		`;
 		return;
 	}
 
 	container.innerHTML = germanyUniversities
 		.map((uni) => {
-			// Check if this university is being tracked
 			const trackedUni = trackedUniversities.find(
 				(t) => t.university === uni.university,
 			);
 
 			if (trackedUni) {
-				// Show progress for tracked university
 				const completedTasks = trackedUni.tasks.filter(
 					(t) => t.completed,
 				).length;
@@ -472,65 +621,71 @@ function displayGermanyProgress() {
 				);
 
 				return `
-                <div class="progress-item">
-                    <h4>${trackedUni.university}</h4>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
-                    </div>
-                    <div class="task-checklist">
-                        ${trackedUni.tasks
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+					<h4 class="font-semibold text-gray-900 dark:text-white mb-3">${
+						trackedUni.university
+					}</h4>
+					<div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
+						<div class="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+					</div>
+					<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${completedTasks}/${totalTasks} tasks completed (${progress}%)</p>
+					<div class="space-y-2">
+						${trackedUni.tasks
 							.map(
 								(task, index) => `
-                            <div class="task-item">
-                                <input type="checkbox"
-                                    ${task.completed ? 'checked' : ''}
-                                    onchange="toggleGermanyTask('${
-										trackedUni.university
-									}', ${index})">
-                                <span>${task.name}</span>
-                            </div>
-                        `,
+							<label class="flex items-center gap-3 p-3 rounded-lg ${
+								task.completed
+									? 'bg-green-50 dark:bg-green-900/20'
+									: 'bg-gray-50 dark:bg-gray-700/50'
+							} cursor-pointer transition-colors">
+								<input type="checkbox"
+									   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
+									   ${task.completed ? 'checked' : ''}
+									   onchange="toggleGermanyTask('${trackedUni.university}', ${index})">
+								<span class="text-sm ${
+									task.completed
+										? 'text-gray-500 dark:text-gray-400 line-through'
+										: 'text-gray-700 dark:text-gray-300'
+								}">${task.name}</span>
+							</label>
+						`,
 							)
 							.join('')}
-                    </div>
-                </div>
-            `;
+					</div>
+				</div>
+			`;
 			} else {
-				// Show expandable card for non-tracked university
 				return `
-                <div class="expandable-card">
-                    <div class="expandable-header" onclick="toggleExpand(this)">
-                        <h4>${uni.university}</h4>
-                        <span class="expandable-toggle open">▶</span>
-                    </div>
-                    <div class="expandable-content open">
-                        <div class="uni-details">
-                            <div class="detail-item"><strong>📚 Program:</strong> ${
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleExpand(this)">
+						<div class="flex items-center justify-between">
+							<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
+							<span class="expand-toggle text-gray-400 text-sm">▼</span>
+						</div>
+					</div>
+					<div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+						<div class="space-y-2 text-sm mb-4">
+							<p class="text-gray-600 dark:text-gray-400"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>⏰ Deadline:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>⏰ Deadline:</strong> ${
 								uni.application_deadline || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>💰 Tuition:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>💰 Tuition:</strong> ${
 								uni.tuition || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>📍 Location:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>📍 Location:</strong> ${
 								uni.location || 'N/A'
-							}</div>
-                            ${
-								uni.language
-									? `<div class="detail-item"><strong>🗣️ Language:</strong> ${uni.language}</div>`
-									: ''
-							}
-                        </div>
-                        <button onclick="trackGermanyUniversity('${
+							}</p>
+						</div>
+						<button onclick="trackGermanyUniversity('${
 							uni.university
-						}')" class="btn btn-primary" style="margin-top: 15px;">
-                            Start Tracking
-                        </button>
-                    </div>
-                </div>
-            `;
+						}')" class="w-full px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">
+							Start Tracking
+						</button>
+					</div>
+				</div>
+			`;
 			}
 		})
 		.join('');
@@ -580,7 +735,6 @@ function trackGermanyUniversity(universityName) {
 	const tracked = localStorage.getItem('germany-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
-	// Check if already tracked
 	const alreadyTracked = trackedUniversities.find(
 		(t) => t.university === uni.university,
 	);
@@ -589,7 +743,6 @@ function trackGermanyUniversity(universityName) {
 		return;
 	}
 
-	// Add to tracked list with default tasks
 	trackedUniversities.push({
 		university: uni.university,
 		status: 'not_started',
@@ -604,39 +757,6 @@ function trackGermanyUniversity(universityName) {
 	updateDashboardStats();
 }
 
-function trackSchengenUniversity(universityName) {
-	const uni = schengenUniversities.find(
-		(u) => u.university === universityName,
-	);
-	if (!uni) return;
-
-	const tracked = localStorage.getItem('schengen-applications');
-	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
-
-	// Check if already tracked
-	const alreadyTracked = trackedUniversities.find(
-		(t) => t.university === uni.university,
-	);
-	if (alreadyTracked) {
-		alert('This university is already being tracked!');
-		return;
-	}
-
-	// Add to tracked list with default tasks
-	trackedUniversities.push({
-		university: uni.university,
-		status: 'not_started',
-		tasks: getDefaultTasks(),
-	});
-
-	localStorage.setItem(
-		'schengen-applications',
-		JSON.stringify(trackedUniversities),
-	);
-	displaySchengenProgress();
-	updateDashboardStats();
-}
-
 function saveGermanyApplications() {
 	const dataToSave = germanyUniversities.map((uni) => ({
 		university: uni.university,
@@ -646,33 +766,6 @@ function saveGermanyApplications() {
 	localStorage.setItem('germany-applications', JSON.stringify(dataToSave));
 }
 
-function addGermanyUniversity() {
-	const name = document.getElementById('germany-uni-name').value.trim();
-	const status = document.getElementById('germany-uni-status').value;
-
-	if (!name) {
-		alert('Please enter a university name');
-		return;
-	}
-
-	const existing = germanyUniversities.find((u) => u.university === name);
-	if (existing) {
-		alert('This university is already added');
-		return;
-	}
-
-	germanyUniversities.push({
-		university: name,
-		status: status,
-		tasks: getDefaultTasks(),
-	});
-
-	saveGermanyApplications();
-	document.getElementById('germany-uni-name').value = '';
-	displayGermanyProgress();
-	updateDashboardStats();
-}
-
 // SCHENGEN FUNCTIONS
 async function loadSchengenData() {
 	try {
@@ -680,7 +773,6 @@ async function loadSchengenData() {
 		const data = await response.json();
 		const programs = data.cyber_security_programs || [];
 
-		// Load additional Schengen universities
 		let additionalPrograms = [];
 		try {
 			const additionalResponse = await fetch(
@@ -733,92 +825,113 @@ function displaySchengenUniversities() {
 	container.innerHTML = schengenUniversities
 		.map(
 			(uni) => `
-        <div class="expandable-card">
-            <div class="expandable-header" onclick="toggleExpand(this)">
-                <h3>${uni.university} ${uni.country}</h3>
-                <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.4;">${
-					uni.program
-				}</p>
-                ${
-					uni.ranking
-						? `<p style="margin: 0; font-size: 13px; color: #888;">${uni.ranking}</p>`
-						: ''
-				}
-                <div class="expandable-header-bottom">
-                    <span class="deadline-badge">⏰ ${
+		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
+				<div class="flex items-start justify-between gap-4">
+					<div class="flex-1">
+						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${
+				uni.country || ''
+			}</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
+						${
+							uni.ranking
+								? `<p class="text-xs text-gray-500 dark:text-gray-500 mt-1">${uni.ranking}</p>`
+								: ''
+						}
+					</div>
+					<span class="expand-toggle text-gray-400 text-sm">▶</span>
+				</div>
+				<div class="flex items-center gap-3 mt-3">
+					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
 						uni.application_deadline
 					}</span>
-                    <span class="expandable-toggle">▶</span>
-                </div>
-            </div>
-            <div class="expandable-content">
-                <div class="uni-card">
-                    ${
-						uni.application_opens
-							? `<div style="padding: 8px; background: #e8f5e9; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">⏰ Applications open: <strong>${uni.application_opens}</strong></div>`
-							: ''
-					}
-
-                    <div class="uni-details">
-                        <div class="detail-item">📍 <strong>${
-							uni.location
-						}</strong></div>
-                        <div class="detail-item">⏱️ ${uni.duration}</div>
-                        <div class="detail-item">💰 ${uni.tuition}</div>
-                        <div class="detail-item">🏠 Living: ${
-							uni.living_costs || 'N/A'
-						}</div>
-                        <div class="detail-item">🌐 ${uni.language}</div>
-                        <div class="detail-item">📝 ${uni.requirements}</div>
-                    </div>
-
-                    ${
-						uni.highlights
-							? `<div style="padding: 10px; background: #e3f2fd; border-radius: 5px; margin: 10px 0; font-size: 0.9em;">🌟 ${uni.highlights}</div>`
-							: ''
-					}
-
-                    ${
-						uni.why_best
-							? `<div style="padding: 10px; background: #f3e5f5; border-radius: 5px; margin: 10px 0; font-size: 0.9em;"><strong>🏆 Why Best:</strong> ${uni.why_best}</div>`
-							: ''
-					}
-
-                    ${
-						uni.scholarships && uni.scholarships.length > 0
-							? `
-                    <div style="margin: 15px 0; padding: 12px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 8px;">
-                        <strong>💰 Scholarships Available:</strong>
-                        <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
-                            ${uni.scholarships
-								.map((s) => `<li>${s}</li>`)
-								.join('')}
-                        </ul>
-                    </div>
-                    `
-							: ''
-					}
-
-                    ${
-						uni.notes
-							? `<div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">⚠️ <strong>Note:</strong> ${uni.notes}</div>`
-							: ''
-					}
-
-                    <div class="uni-footer">
-                        <a href="${
-							uni.website
-						}" target="_blank" class="btn btn-primary">Visit Website</a>
-                        <button onclick="updateSchengenStatus('${
-							uni.university
-						}')" class="btn btn-secondary">
-                            ${getStatusLabel(uni.status)}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
+					<span class="px-3 py-1 ${getStatusBadgeClass(
+						uni.status,
+					)} rounded-full text-xs font-medium">${getStatusLabel(
+				uni.status,
+			)}</span>
+				</div>
+			</div>
+			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+				${
+					uni.application_opens
+						? `
+					<div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg mb-4 text-sm text-green-700 dark:text-green-300">
+						⏰ Applications open: <strong>${uni.application_opens}</strong>
+					</div>
+				`
+						: ''
+				}
+				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+						uni.location
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+						uni.duration
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+						uni.tuition
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🏠</span> ${
+						uni.living_costs || 'N/A'
+					}</div>
+					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+						uni.language
+					}</div>
+				</div>
+				${
+					uni.requirements
+						? `<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">📝 ${uni.requirements}</p>`
+						: ''
+				}
+				${
+					uni.highlights
+						? `
+					<div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4 text-sm text-blue-700 dark:text-blue-300">🌟 ${uni.highlights}</div>
+				`
+						: ''
+				}
+				${
+					uni.why_best
+						? `
+					<div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg mb-4 text-sm text-purple-700 dark:text-purple-300"><strong>🏆 Why Best:</strong> ${uni.why_best}</div>
+				`
+						: ''
+				}
+				${
+					uni.scholarships && uni.scholarships.length > 0
+						? `
+					<div class="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-lg mb-4">
+						<strong class="text-amber-700 dark:text-amber-300">💰 Scholarships Available:</strong>
+						<ul class="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400">
+							${uni.scholarships.map((s) => `<li>• ${s}</li>`).join('')}
+						</ul>
+					</div>
+				`
+						: ''
+				}
+				${
+					uni.notes
+						? `
+					<div class="p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded text-sm text-amber-700 dark:text-amber-300 mb-4">
+						⚠️ <strong>Note:</strong> ${uni.notes}
+					</div>
+				`
+						: ''
+				}
+				<div class="flex gap-3">
+					<a href="${
+						uni.website
+					}" target="_blank" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">Visit Website</a>
+					<button onclick="updateSchengenStatus('${
+						uni.university
+					}')" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
+						Change Status
+					</button>
+				</div>
+			</div>
+		</div>
+	`,
 		)
 		.join('');
 }
@@ -827,26 +940,25 @@ function displaySchengenProgress() {
 	const container = document.getElementById('schengen-progress-list');
 	if (!container) return;
 
-	// Get tracked applications from localStorage
 	const tracked = localStorage.getItem('schengen-applications');
 	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
 
-	// Always show universities from JSON data
 	if (schengenUniversities.length === 0) {
-		container.innerHTML =
-			'<div style="text-align:center; padding: 60px 20px; color: #666; background: #f9f9f9; border-radius: 10px; border: 2px dashed #ddd;"><p style="font-size: 18px; margin: 20px 0;">📝 Loading University Data...</p></div>';
+		container.innerHTML = `
+			<div class="text-center py-16 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
+				<p class="text-lg">📝 Loading University Data...</p>
+			</div>
+		`;
 		return;
 	}
 
 	container.innerHTML = schengenUniversities
 		.map((uni) => {
-			// Check if this university is being tracked
 			const trackedUni = trackedUniversities.find(
 				(t) => t.university === uni.university,
 			);
 
 			if (trackedUni) {
-				// Show progress for tracked university
 				const completedTasks = trackedUni.tasks.filter(
 					(t) => t.completed,
 				).length;
@@ -856,65 +968,71 @@ function displaySchengenProgress() {
 				);
 
 				return `
-                <div class="progress-item">
-                    <h4>${trackedUni.university}</h4>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
-                    </div>
-                    <div class="task-checklist">
-                        ${trackedUni.tasks
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+					<h4 class="font-semibold text-gray-900 dark:text-white mb-3">${
+						trackedUni.university
+					}</h4>
+					<div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
+						<div class="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+					</div>
+					<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${completedTasks}/${totalTasks} tasks completed (${progress}%)</p>
+					<div class="space-y-2">
+						${trackedUni.tasks
 							.map(
 								(task, index) => `
-                            <div class="task-item">
-                                <input type="checkbox"
-                                    ${task.completed ? 'checked' : ''}
-                                    onchange="toggleSchengenTask('${
-										trackedUni.university
-									}', ${index})">
-                                <span>${task.name}</span>
-                            </div>
-                        `,
+							<label class="flex items-center gap-3 p-3 rounded-lg ${
+								task.completed
+									? 'bg-green-50 dark:bg-green-900/20'
+									: 'bg-gray-50 dark:bg-gray-700/50'
+							} cursor-pointer transition-colors">
+								<input type="checkbox"
+									   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
+									   ${task.completed ? 'checked' : ''}
+									   onchange="toggleSchengenTask('${trackedUni.university}', ${index})">
+								<span class="text-sm ${
+									task.completed
+										? 'text-gray-500 dark:text-gray-400 line-through'
+										: 'text-gray-700 dark:text-gray-300'
+								}">${task.name}</span>
+							</label>
+						`,
 							)
 							.join('')}
-                    </div>
-                </div>
-            `;
+					</div>
+				</div>
+			`;
 			} else {
-				// Show expandable card for non-tracked university
 				return `
-                <div class="expandable-card">
-                    <div class="expandable-header" onclick="toggleExpand(this)">
-                        <h4>${uni.university}</h4>
-                        <span class="expandable-toggle open">▶</span>
-                    </div>
-                    <div class="expandable-content open">
-                        <div class="uni-details">
-                            <div class="detail-item"><strong>📚 Program:</strong> ${
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleExpand(this)">
+						<div class="flex items-center justify-between">
+							<h4 class="font-semibold text-gray-900 dark:text-white">${uni.university}</h4>
+							<span class="expand-toggle text-gray-400 text-sm">▼</span>
+						</div>
+					</div>
+					<div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+						<div class="space-y-2 text-sm mb-4">
+							<p class="text-gray-600 dark:text-gray-400"><strong>📚 Program:</strong> ${
 								uni.program || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>⏰ Deadline:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>⏰ Deadline:</strong> ${
 								uni.application_deadline || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>💰 Tuition:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>💰 Tuition:</strong> ${
 								uni.tuition || 'N/A'
-							}</div>
-                            <div class="detail-item"><strong>📍 Location:</strong> ${
+							}</p>
+							<p class="text-gray-600 dark:text-gray-400"><strong>📍 Location:</strong> ${
 								uni.location || 'N/A'
-							}</div>
-                            ${
-								uni.language
-									? `<div class="detail-item"><strong>🗣️ Language:</strong> ${uni.language}</div>`
-									: ''
-							}
-                        </div>
-                        <button onclick="trackSchengenUniversity('${
+							}</p>
+						</div>
+						<button onclick="trackSchengenUniversity('${
 							uni.university
-						}')" class="btn btn-primary" style="margin-top: 15px;">
-                            Start Tracking
-                        </button>
-                    </div>
-                </div>
-            `;
+						}')" class="w-full px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">
+							Start Tracking
+						</button>
+					</div>
+				</div>
+			`;
 			}
 		})
 		.join('');
@@ -955,6 +1073,37 @@ function toggleSchengenTask(universityName, taskIndex) {
 	updateDashboardStats();
 }
 
+function trackSchengenUniversity(universityName) {
+	const uni = schengenUniversities.find(
+		(u) => u.university === universityName,
+	);
+	if (!uni) return;
+
+	const tracked = localStorage.getItem('schengen-applications');
+	const trackedUniversities = tracked ? JSON.parse(tracked) : [];
+
+	const alreadyTracked = trackedUniversities.find(
+		(t) => t.university === uni.university,
+	);
+	if (alreadyTracked) {
+		alert('This university is already being tracked!');
+		return;
+	}
+
+	trackedUniversities.push({
+		university: uni.university,
+		status: 'not_started',
+		tasks: getDefaultTasks(),
+	});
+
+	localStorage.setItem(
+		'schengen-applications',
+		JSON.stringify(trackedUniversities),
+	);
+	displaySchengenProgress();
+	updateDashboardStats();
+}
+
 function saveSchengenApplications() {
 	const dataToSave = schengenUniversities.map((uni) => ({
 		university: uni.university,
@@ -964,852 +1113,812 @@ function saveSchengenApplications() {
 	localStorage.setItem('schengen-applications', JSON.stringify(dataToSave));
 }
 
-function addSchengenUniversity() {
-	const name = document.getElementById('schengen-uni-name').value.trim();
-	const status = document.getElementById('schengen-uni-status').value;
-
-	if (!name) {
-		alert('Please enter a university name');
-		return;
-	}
-
-	const existing = schengenUniversities.find((u) => u.university === name);
-	if (existing) {
-		alert('This university is already added');
-		return;
-	}
-
-	schengenUniversities.push({
-		university: name,
-		status: status,
-		tasks: getDefaultTasks(),
-	});
-
-	saveSchengenApplications();
-	document.getElementById('schengen-uni-name').value = '';
-	displaySchengenProgress();
-	updateDashboardStats();
-}
-
 // IELTS FUNCTIONS
 function displayIELTSPlan() {
 	const container = document.getElementById('ielts-plan-content');
 	if (!container) return;
 
-	const renderTask = (id, time, task, duration) => {
-		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+
+	const renderTask = (id, time, task, duration, resource = '') => {
 		const isChecked = tasks[id] ? true : false;
-		const checked = isChecked ? 'checked' : '';
-		const completedClass = isChecked ? 'task-completed' : '';
+		const bgClass = isChecked ? 'bg-teal-50 dark:bg-teal-900/20' : '';
+		const textClass = isChecked
+			? 'line-through text-gray-400 dark:text-gray-500'
+			: 'text-gray-700 dark:text-gray-300';
 
 		if (time.startsWith('DAY')) {
-			return `<tr class="day-header bg-gradient-to-r from-primary/10 to-secondary/10"><td colspan="4"><b class="text-primary">${time}</b></td></tr>`;
+			return `
+				<tr>
+					<td colspan="4" class="py-2 px-2 sm:px-4 bg-teal-600 dark:bg-teal-700 font-bold text-white text-center text-xs sm:text-sm">
+						${time}
+					</td>
+				</tr>
+			`;
 		}
 
+		const resourceLink = resource
+			? `<a href="${resource}" target="_blank" class="text-teal-600 dark:text-teal-400 hover:underline text-[10px] sm:text-xs">📎 Resource</a>`
+			: '';
+
 		return `
-            <tr class="${completedClass} hover:bg-base-200 transition-colors" data-task-id="${id}">
-                <td><input type="checkbox" class="checkbox checkbox-primary checkbox-sm" ${checked} onchange="toggleIELTSTask('${id}', this)"></td>
-                <td class="text-sm text-gray-500">${time}</td>
-                <td class="task-text">${task}</td>
-                <td class="text-sm font-medium">${duration}</td>
-            </tr>
-        `;
+			<tr class="${bgClass} hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors border-b border-gray-100 dark:border-gray-700" data-task-id="${id}">
+				<td class="py-1.5 sm:py-2 px-1.5 sm:px-3 text-center align-top">
+					<input type="checkbox"
+						   class="w-4 h-4 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer"
+						   ${isChecked ? 'checked' : ''}
+						   onchange="toggleIELTSTask('${id}', this)">
+				</td>
+				<td class="py-1.5 sm:py-2 px-1 sm:px-2 align-top whitespace-nowrap">
+					<div class="text-[9px] sm:text-xs font-medium text-gray-500 dark:text-gray-400">${time}</div>
+					<div class="text-[9px] sm:text-xs text-teal-600 dark:text-teal-400">${duration}</div>
+				</td>
+				<td class="py-1.5 sm:py-2 px-1 sm:px-2 text-[10px] sm:text-sm ${textClass}">${task}</td>
+				<td class="py-1.5 sm:py-2 px-1 sm:px-2 align-top hidden sm:table-cell">${resourceLink}</td>
+			</tr>
+		`;
 	};
 
+	const renderDaySection = (title, emoji, tasks) => `
+		<div class="bg-white dark:bg-gray-800 rounded-none sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="bg-gradient-to-r from-teal-500 to-teal-600 dark:from-teal-600 dark:to-teal-700 px-3 py-2 sm:px-4 sm:py-3">
+				<h3 class="text-sm sm:text-base font-bold text-white">${emoji} ${title}</h3>
+			</div>
+			<div class="overflow-x-auto">
+				<table class="w-full text-left">
+					<thead class="bg-gray-50 dark:bg-gray-800/50">
+						<tr>
+							<th class="py-1.5 sm:py-2 px-1.5 sm:px-3 text-center text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 w-8">✓</th>
+							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 w-14 sm:w-20">Time</th>
+							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400">Task & Focus</th>
+							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 hidden sm:table-cell w-20">Resource</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+						${tasks}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	`;
+
 	container.innerHTML = `
-        <h3>DAYS 1–2: Foundations</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d1-1', 'DAY 1 (SUNDAY)', '', '')}
-            ${renderTask(
-				'd1-2',
-				'9:00–11:00 AM',
-				'🟦 IELTS Overview: Study all 4 sections format, Band 8.0-8.5 descriptors, scoring criteria',
-				'2h',
-			)}
-            ${renderTask(
-				'd1-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd1-4',
-				'12:30–2:00 PM',
-				'🟨 Writing Task 1: Review all 6 diagram types (line, bar, pie, table, process, map)',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd1-5',
-				'2:00–5:00 PM',
-				'🟨 Writing Task 2: Study 5 essay types (opinion, discussion, problem-solution, two-part, advantages-disadvantages)',
-				'3h',
-			)}
-            ${renderTask(
-				'd1-6',
-				'5:00–7:00 PM',
-				'🟨 Write 1 Task 2 essay + self-assess against Band 8 criteria',
-				'2h',
-			)}
-            ${renderTask(
-				'd1-7',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd1-8',
-				'8:30–10:30 PM',
-				'🟪 Speaking: Watch Band 8-9 sample answers for all 3 parts, note vocabulary & structures used',
-				'2h',
-			)}
-            ${renderTask(
-				'd1-9',
-				'10:30–11:30 PM',
-				'<b>🟥 Mini Mock Test: Listening Section 1 (10 questions) + detailed review of answers</b>',
-				'1h',
-			)}
-            ${renderTask('d2-1', 'DAY 2 (MONDAY)', '', '')}
-            ${renderTask(
-				'd2-2',
-				'9:00–11:00 AM',
-				'🟩 Reading: Master skimming & scanning techniques, practice with 3 passages, identify keywords',
-				'2h',
-			)}
-            ${renderTask(
-				'd2-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd2-4',
-				'12:30–5:00 PM',
-				'🟦 Listening: Note-taking strategies, practice all 4 sections, focus on spelling accuracy & numbers',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd2-5',
-				'5:00–7:00 PM',
-				'🟩 Reading: Complete 2 full passages under timed conditions (20 mins each) + error analysis',
-				'2h',
-			)}
-            ${renderTask(
-				'd2-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd2-7',
-				'8:30–10:30 PM',
-				'🟦 Listening: Practice maps, diagrams, form filling - target 38+/40 correct answers',
-				'2h',
-			)}
-            ${renderTask(
-				'd2-8',
-				'10:30–11:30 PM',
-				'🟧 Vocabulary: Learn 30 Band 8+ academic words with collocations + write example sentences',
-				'1h',
-			)}
-        </table>
+		<div class="space-y-3 sm:space-y-6">
+			<!-- Essential Resources Banner -->
+			<div class="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-900/20 dark:to-teal-900/20 rounded-none sm:rounded-xl p-3 sm:p-4 border-y sm:border border-blue-200 dark:border-blue-800">
+				<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📚 Essential Resources for Band 8.0+</h4>
+				<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] sm:text-xs">
+					<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+						<span>🎯</span> <span class="truncate">Official IELTS</span>
+					</a>
+					<a href="https://ieltsliz.com/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+						<span>👩‍🏫</span> <span class="truncate">IELTS Liz</span>
+					</a>
+					<a href="https://takeielts.britishcouncil.org/take-ielts/prepare" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+						<span>🇬🇧</span> <span class="truncate">British Council</span>
+					</a>
+					<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors">
+						<span>▶️</span> <span class="truncate">E2 IELTS</span>
+					</a>
+				</div>
+			</div>
 
-        <h3>DAYS 3–5: Listening & Reading Mastery</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d3-1', 'DAY 3 (TUESDAY)', '', '')}
-            ${renderTask(
-				'd3-2',
-				'9:00–11:00 AM',
-				'🟦 Listening Section 1: Form filling, MCQ, conversation completion - practice 5 sets',
-				'2h',
+			<!-- Days 1-2: Foundations -->
+			${renderDaySection(
+				'DAYS 1–2: Foundations & Test Format',
+				'🎯',
+				`
+				${renderTask('d1-1', 'DAY 1', '', '')}
+				${renderTask(
+					'd1-2',
+					'9:00–11:00',
+					'🟦 IELTS Format: Understand all 4 sections, timing, scoring',
+					'2h',
+					'https://www.ielts.org/for-test-takers/test-format',
+				)}
+				${renderTask(
+					'd1-3',
+					'11:00–1:00',
+					'🟨 Writing: Study Band 8-9 descriptors + sample essays',
+					'2h',
+					'https://ieltsliz.com/ielts-writing-task-2-band-scores-5-to-8/',
+				)}
+				${renderTask(
+					'd1-4',
+					'2:00–4:00',
+					'🟨 Task 1: Learn all 6 chart types (line, bar, pie, table, process, map)',
+					'2h',
+					'https://ieltsliz.com/ielts-writing-task-1-lessons-and-tips/',
+				)}
+				${renderTask(
+					'd1-5',
+					'4:00–6:00',
+					'🟨 Task 2: Study 5 essay types (opinion, discussion, problem/solution, advantages, two-part)',
+					'2h',
+					'https://ieltsliz.com/ielts-writing-task-2/',
+				)}
+				${renderTask(
+					'd1-6',
+					'7:00–9:00',
+					'🟪 Speaking: Watch Band 9 sample videos, note techniques',
+					'2h',
+					'https://www.youtube.com/watch?v=FYGq8vBnXEw',
+				)}
+				${renderTask(
+					'd1-7',
+					'9:00–10:00',
+					'🟧 Vocab: Learn 30 academic words from AWL',
+					'1h',
+					'https://www.victoria.ac.nz/lals/resources/academicwordlist',
+				)}
+				${renderTask('d2-1', 'DAY 2', '', '')}
+				${renderTask(
+					'd2-2',
+					'9:00–11:00',
+					'🟩 Reading: Master skimming (1 min/passage) & scanning techniques',
+					'2h',
+					'https://ieltsliz.com/ielts-reading-lessons-information-and-tips/',
+				)}
+				${renderTask(
+					'd2-3',
+					'11:00–1:00',
+					'🟦 Listening: Learn note-taking, keywords, anticipation skills',
+					'2h',
+					'https://ieltsliz.com/ielts-listening/',
+				)}
+				${renderTask(
+					'd2-4',
+					'2:00–4:00',
+					'🟩 Reading: Practice T/F/NG, Matching Headings question types',
+					'2h',
+					'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests',
+				)}
+				${renderTask(
+					'd2-5',
+					'4:00–6:00',
+					'🟦 Listening: Practice Sections 1&2 (form filling, MCQ, maps)',
+					'2h',
+					'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/listening-practice-test-1',
+				)}
+				${renderTask(
+					'd2-6',
+					'7:00–9:00',
+					'🟪 Speaking Part 1: Practice 15 common topics (work, study, hometown)',
+					'2h',
+					'https://ieltsliz.com/ielts-speaking-part-1-topics/',
+				)}
+				${renderTask(
+					'd2-7',
+					'9:00–10:00',
+					'🟧 Vocab: 30 topic-specific words + collocations',
+					'1h',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd3-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd3-4',
-				'12:30–5:00 PM',
-				'🟦 Listening Sections 2&3: Maps, diagrams, note completion - master spatial awareness',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd3-5',
-				'5:00–7:00 PM',
-				'🟧 Vocabulary: Learn 30 topic-specific words (education, environment, technology)',
-				'2h',
-			)}
-            ${renderTask(
-				'd3-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd3-7',
-				'8:30–10:30 PM',
-				'🟦 Listening practice: Complete 2 full tests (all 4 sections) - target 35+/40',
-				'2h',
-			)}
-            ${renderTask(
-				'd3-8',
-				'10:30–11:30 PM',
-				'📊 Review listening mistakes + note common error patterns',
-				'1h',
-			)}
-            ${renderTask('d4-1', 'DAY 4 (WEDNESDAY)', '', '')}
-            ${renderTask(
-				'd4-2',
-				'9:00–11:00 AM',
-				'🟩 Reading Passage 1: Matching headings, paragraph info - learn paragraph structure analysis',
-				'2h',
-			)}
-            ${renderTask(
-				'd4-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd4-4',
-				'12:30–5:00 PM',
-				'🟩 Reading Passages 2&3: T/F/NG, Y/N/NG questions - master inference skills',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd4-5',
-				'5:00–7:00 PM',
-				'🟦 Listening Section 4: Academic lectures, note completion - practice 4 lectures',
-				'2h',
-			)}
-            ${renderTask(
-				'd4-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd4-7',
-				'8:30–10:30 PM',
-				'🟩 Reading: Complete 3 full passages under exam conditions (60 mins) + review',
-				'2h',
-			)}
-            ${renderTask(
-				'd4-8',
-				'10:30–11:30 PM',
-				'🟧 Vocabulary: 30 advanced academic words + practice paraphrasing',
-				'1h',
-			)}
-            ${renderTask('d5-1', 'DAY 5 (THURSDAY)', '', '')}
-            ${renderTask(
-				'd5-2',
-				'9:00–11:00 AM',
-				'🟦 Listening: Complete Sections 1&2 practice - focus on accuracy and capturing key details',
-				'2h',
-			)}
-            ${renderTask(
-				'd5-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd5-4',
-				'12:30–3:00 PM',
-				'🟨 Writing Task 1: Practice all diagram types - write 3 responses (150+ words)',
-				'2.5h',
-			)}
-            ${renderTask(
-				'd5-5',
-				'3:00–5:00 PM',
-				'🟪 Speaking Part 2: Practice 8 cue cards - record yourself & evaluate',
-				'2h',
-			)}
-            ${renderTask(
-				'd5-6',
-				'5:00–7:00 PM',
-				'🟪 Grammar: Master complex structures (conditionals, passives, relative clauses)',
-				'2h',
-			)}
-            ${renderTask(
-				'd5-7',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd5-8',
-				'8:30–10:30 PM',
-				'🟩 Reading: Speed practice - 3 passages in 50 minutes (target 35+/40)',
-				'2h',
-			)}
-            ${renderTask(
-				'd5-9',
-				'10:30–11:30 PM',
-				'📊 Weekly review: Progress analysis + identify weak areas',
-				'1h',
-			)}
-        </table>
 
-        <h3>DAYS 6–8: Writing & Speaking</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d6-1', 'DAY 6 (FRIDAY - FULL DAY)', '', '')}
-            ${renderTask(
-				'd6-2',
-				'8:00–11:00 AM',
-				'🟨 Writing Task 1: Deep study of structure, vocabulary, and Band 8+ samples for all diagram types',
-				'3h',
+			<!-- Days 3-5: Listening & Reading Intensive -->
+			${renderDaySection(
+				'DAYS 3–5: Listening & Reading Mastery',
+				'🎧',
+				`
+				${renderTask('d3-1', 'DAY 3', '', '')}
+				${renderTask(
+					'd3-2',
+					'9:00–11:00',
+					'🟦 Listening: Cambridge 15 Test 1 - All 4 sections (40 min) + review',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd3-3',
+					'11:00–1:00',
+					'🟦 Analyze errors: transcripts, spelling, plurals, keywords missed',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd3-4',
+					'2:00–4:00',
+					'🟩 Reading: Cambridge 15 Test 1 Passage 1&2 (timed 40 min)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd3-5',
+					'4:00–6:00',
+					'🟩 Analyze: why wrong answers were tempting, find evidence in text',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd3-6',
+					'7:00–9:00',
+					'🟦 Listen to BBC 6 Minute English + TED Talk, take notes',
+					'2h',
+					'https://www.bbc.co.uk/learningenglish/english/features/6-minute-english',
+				)}
+				${renderTask(
+					'd3-7',
+					'9:00–10:00',
+					'🟧 Vocab: 25 academic + 10 topic words from practice',
+					'1h',
+					'',
+				)}
+				${renderTask('d4-1', 'DAY 4', '', '')}
+				${renderTask(
+					'd4-2',
+					'9:00–11:00',
+					'🟩 Reading: Cambridge 15 Test 1 Passage 3 + Full review',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd4-3',
+					'11:00–1:00',
+					'🟩 Practice weak question types (Matching Features, Sentence Completion)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd4-4',
+					'2:00–4:00',
+					'🟦 Listening: Cambridge 14 Test 1 Sections 3&4 (academic context)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd4-5',
+					'4:00–6:00',
+					'🟦 Focus: signpost words, speaker attitude, main ideas',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd4-6',
+					'7:00–9:00',
+					'🟨 Writing: Draft Task 1 (graph) in 20 min, self-assess',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd4-7',
+					'9:00–10:00',
+					'🟧 Vocab: Data description phrases (increase, surge, plummet)',
+					'1h',
+					'',
+				)}
+				${renderTask('d5-1', 'DAY 5', '', '')}
+				${renderTask(
+					'd5-2',
+					'9:00–12:00',
+					'🟥 MINI MOCK: Listening + Reading (Cambridge 14 Test 2)',
+					'3h',
+					'',
+				)}
+				${renderTask(
+					'd5-3',
+					'1:00–3:00',
+					'🟥 Full error analysis: categorize mistakes, create error log',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd5-4',
+					'3:00–5:00',
+					'🟪 Speaking Part 2: Practice 5 cue cards (2 min each), record',
+					'2h',
+					'https://ieltsliz.com/ielts-speaking-part-2-topics/',
+				)}
+				${renderTask(
+					'd5-5',
+					'5:00–7:00',
+					'🟪 Speaking Part 3: Practice follow-up questions, develop ideas',
+					'2h',
+					'https://ieltsliz.com/ielts-speaking-part-3-topics-2/',
+				)}
+				${renderTask(
+					'd5-6',
+					'8:00–10:00',
+					'🟧 Review all vocab learned + create flashcards',
+					'2h',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd6-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd6-4',
-				'12:30–5:00 PM',
-				'🟨 Task 1 Practice: Write 4 responses (graph, table, chart, process) - 150+ words each',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd6-5',
-				'5:00–7:00 PM',
-				'🟦 Listening: Full practice test (all 4 sections) - aim for 36+/40',
-				'2h',
-			)}
-            ${renderTask(
-				'd6-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd6-7',
-				'8:30–10:30 PM',
-				'🟩 Reading: Practice inference & opinion questions - 2 passages',
-				'2h',
-			)}
-            ${renderTask(
-				'd6-8',
-				'10:30–11:30 PM',
-				'🟪 Vocabulary: 30 writing-specific words (trends, comparisons, data)',
-				'1h',
-			)}
-            ${renderTask(
-				'd6-9',
-				'11:30 PM–12:30 AM',
-				'🟨 Extra practice: Write 1 more Task 1 response + self-review',
-				'1h',
-			)}
-            ${renderTask('d7-1', 'DAY 7 (SATURDAY)', '', '')}
-            ${renderTask(
-				'd7-2',
-				'9:00–11:00 AM',
-				'🟨 Writing Task 2: Study essay structures for all 5 question types + Band 8-9 samples',
-				'2h',
-			)}
-            ${renderTask(
-				'd7-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd7-4',
-				'12:30–3:00 PM',
-				'🟨 Essay 1: Education topic (250+ words, opinion essay)',
-				'2.5h',
-			)}
-            ${renderTask(
-				'd7-5',
-				'3:00–5:00 PM',
-				'🟨 Essay 2: Environment topic (250+ words, problem-solution)',
-				'2h',
-			)}
-            ${renderTask(
-				'd7-6',
-				'5:00–7:00 PM',
-				'🟨 Essay 3: Technology topic (250+ words, discussion essay)',
-				'2h',
-			)}
-            ${renderTask(
-				'd7-7',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd7-8',
-				'8:30–10:30 PM',
-				'🟪 Speaking Part 3: Practice extended responses on abstract topics + record yourself',
-				'2h',
-			)}
-            ${renderTask(
-				'd7-9',
-				'10:30–11:30 PM',
-				'🟪 Review all 3 essays + note improvements needed',
-				'1h',
-			)}
-            ${renderTask('d8-1', 'DAY 8 (SUNDAY)', '', '')}
-            ${renderTask(
-				'd8-2',
-				'9:00–11:00 AM',
-				'🟪 Speaking Part 2: Practice 6 cue cards from different topics - record responses',
-				'2h',
-			)}
-            ${renderTask(
-				'd8-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd8-4',
-				'12:30–5:00 PM',
-				'🟪 Speaking Parts 1&3: Practice common questions + advanced vocabulary usage',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd8-5',
-				'5:00–7:00 PM',
-				'🟦 Listening: Focus on Sections 3&4 (academic contexts) - 4 practice tests',
-				'2h',
-			)}
-            ${renderTask(
-				'd8-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd8-7',
-				'8:30–10:30 PM',
-				'🟪 Speaking: Full mock speaking test (all 3 parts) with timer',
-				'2h',
-			)}
-            ${renderTask(
-				'd8-8',
-				'10:30–11:30 PM',
-				'🟪 Vocabulary: 30 speaking idioms & collocations for Band 8+',
-				'1h',
-			)}
-        </table>
 
-        <h3>DAYS 9–10: Integration & Weakness Focus</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d9-1', 'DAY 9 (MONDAY)', '', '')}
-            ${renderTask(
-				'd9-2',
-				'9:00–11:00 AM',
-				'🟦 Listening: Sections 1&2 practice - master everyday & social contexts',
-				'2h',
+			<!-- Days 6-8: Writing & Speaking -->
+			${renderDaySection(
+				'DAYS 6–8: Writing & Speaking Focus',
+				'✍️',
+				`
+				${renderTask('d6-1', 'DAY 6', '', '')}
+				${renderTask(
+					'd6-2',
+					'9:00–11:00',
+					'🟨 Task 1: Study high-band samples, learn key structures',
+					'2h',
+					'https://ieltsliz.com/ielts-writing-task-1-lessons-and-tips/',
+				)}
+				${renderTask(
+					'd6-3',
+					'11:00–1:00',
+					'🟨 Task 1: Write 3 different chart types (20 min each)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd6-4',
+					'2:00–4:00',
+					'🟨 Compare with model answers, note vocabulary gaps',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd6-5',
+					'4:00–6:00',
+					'🟦 Listening: Cambridge 13 Test 1 full practice',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd6-6',
+					'7:00–9:00',
+					'🟪 Speaking: Record Part 2, listen back, improve fluency',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd6-7',
+					'9:00–10:00',
+					'🟧 Vocab: Trend vocabulary (fluctuate, peak, remain stable)',
+					'1h',
+					'',
+				)}
+				${renderTask('d7-1', 'DAY 7', '', '')}
+				${renderTask(
+					'd7-2',
+					'9:00–11:00',
+					'🟨 Task 2: Master essay structure (intro, 2 body, conclusion)',
+					'2h',
+					'https://ieltsliz.com/ielts-writing-task-2/',
+				)}
+				${renderTask(
+					'd7-3',
+					'11:00–1:00',
+					'🟨 Write Essay 1: Opinion essay (40 min timed)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd7-4',
+					'2:00–4:00',
+					'🟨 Write Essay 2: Discussion essay (40 min timed)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd7-5',
+					'4:00–6:00',
+					'🟨 Self-assess: Task Response, Coherence, Lexical, Grammar',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd7-6',
+					'7:00–9:00',
+					'🟩 Reading: Practice summary completion, table completion',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd7-7',
+					'9:00–10:00',
+					'🟧 Vocab: Essay linking words (moreover, nevertheless, consequently)',
+					'1h',
+					'',
+				)}
+				${renderTask('d8-1', 'DAY 8', '', '')}
+				${renderTask(
+					'd8-2',
+					'9:00–11:00',
+					'🟪 Speaking Part 1: Practice all common topics fluently',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd8-3',
+					'11:00–1:00',
+					'🟪 Speaking Part 2: 5 new cue cards, focus on extending ideas',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd8-4',
+					'2:00–4:00',
+					'🟪 Speaking Part 3: Complex questions, abstract ideas',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd8-5',
+					'4:00–6:00',
+					'🟪 Record full mock speaking test, self-evaluate',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd8-6',
+					'7:00–9:00',
+					'🟨 Writing: Practice timed Task 1 + Task 2 (1 hour total)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd8-7',
+					'9:00–10:00',
+					'🟧 Vocab: Idioms & advanced phrases for speaking',
+					'1h',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd9-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd9-4',
-				'12:30–3:00 PM',
-				'🟩 Reading: Complete 2 passages focusing on difficult question types',
-				'2.5h',
-			)}
-            ${renderTask(
-				'd9-5',
-				'3:00–5:00 PM',
-				'🟨 Writing: Task 1 + Task 2 under timed conditions (60 mins total)',
-				'2h',
-			)}
-            ${renderTask(
-				'd9-6',
-				'5:00–7:00 PM',
-				'🟪 Speaking: Practice 5 different cue cards + Part 3 follow-ups',
-				'2h',
-			)}
-            ${renderTask(
-				'd9-7',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd9-8',
-				'8:30–10:30 PM',
-				'📊 Review all 4 sections - identify remaining weak areas',
-				'2h',
-			)}
-            ${renderTask(
-				'd9-9',
-				'10:30–11:30 PM',
-				'🟪 Grammar: Final complex structures review',
-				'1h',
-			)}
-            ${renderTask('d10-1', 'DAY 10 (TUESDAY)', '', '')}
-            ${renderTask(
-				'd10-2',
-				'9:00–11:00 AM',
-				'⚠️ Focus on WEAKEST section - intensive targeted practice',
-				'2h',
-			)}
-            ${renderTask(
-				'd10-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd10-4',
-				'12:30–5:00 PM',
-				'⚠️ Continue weakest section - drill specific question types',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd10-5',
-				'5:00–7:00 PM',
-				'⚠️ 2nd weakest section - focused improvement',
-				'2h',
-			)}
-            ${renderTask(
-				'd10-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd10-7',
-				'8:30–10:30 PM',
-				'⚠️ 2nd weakest section continued - practice till confidence builds',
-				'2h',
-			)}
-            ${renderTask(
-				'd10-8',
-				'10:30–11:30 PM',
-				'📊 Prepare for Mock Test tomorrow - review strategies',
-				'1h',
-			)}
-        </table>
 
-        <h3>DAYS 11–12: Full Mock Tests</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask(
-				'd11-1',
-				'DAY 11 (WEDNESDAY - FULL MOCK TEST #1)',
-				'',
-				'',
+			<!-- Days 9-10: Integration -->
+			${renderDaySection(
+				'DAYS 9–10: Integration & Weak Areas',
+				'🔄',
+				`
+				${renderTask('d9-1', 'DAY 9', '', '')}
+				${renderTask(
+					'd9-2',
+					'9:00–12:00',
+					'🟥 FULL MOCK TEST: Cambridge 13 Test 2 (L+R)',
+					'3h',
+					'',
+				)}
+				${renderTask(
+					'd9-3',
+					'1:00–3:00',
+					'🟥 Writing: Task 1 + Task 2 under exam conditions',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd9-4',
+					'3:00–4:00',
+					'🟪 Speaking: Full mock test (Part 1, 2, 3)',
+					'1h',
+					'',
+				)}
+				${renderTask(
+					'd9-5',
+					'4:00–6:00',
+					'📊 Score all sections, identify top 3 weak areas',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd9-6',
+					'7:00–10:00',
+					'⚠️ Intensive practice on weakest skill',
+					'3h',
+					'',
+				)}
+				${renderTask('d10-1', 'DAY 10', '', '')}
+				${renderTask(
+					'd10-2',
+					'9:00–12:00',
+					'⚠️ Weakest skill: Targeted practice with resources',
+					'3h',
+					'',
+				)}
+				${renderTask(
+					'd10-3',
+					'1:00–3:00',
+					'⚠️ 2nd weakest skill: Problem question types',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd10-4',
+					'3:00–5:00',
+					'🟨 Writing: Review & rewrite previous essays with improvements',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd10-5',
+					'5:00–7:00',
+					'🟪 Speaking: Focus on fluency, reduce hesitation',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd10-6',
+					'8:00–10:00',
+					'🟧 Vocab: Review all words learned, test yourself',
+					'2h',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd11-2',
-				'9:00–10:00 AM',
-				'🟦 LISTENING: Complete test (all 4 sections, 40 questions)',
-				'1h',
-			)}
-            ${renderTask(
-				'd11-3',
-				'10:00–11:00 AM',
-				'🟩 READING: Complete test (3 passages, 40 questions)',
-				'1h',
-			)}
-            ${renderTask(
-				'd11-4',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd11-5',
-				'12:30–1:30 PM',
-				'🟨 WRITING: Task 1 (20 mins) + Task 2 (40 mins)',
-				'1h',
-			)}
-            ${renderTask(
-				'd11-6',
-				'1:30–2:00 PM',
-				'🟪 SPEAKING: Full mock interview (11-14 mins all 3 parts)',
-				'30m',
-			)}
-            ${renderTask(
-				'd11-7',
-				'2:00–5:00 PM',
-				'📊 Mark all answers + detailed performance analysis',
-				'3h',
-			)}
-            ${renderTask(
-				'd11-8',
-				'5:00–7:00 PM',
-				'📊 Review mistakes + create action plan for improvement',
-				'2h',
-			)}
-            ${renderTask(
-				'd11-9',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd11-10',
-				'8:30–11:30 PM',
-				'📝 Re-do all incorrect questions + understand why answers were wrong',
-				'3h',
-			)}
-            ${renderTask(
-				'd12-1',
-				'DAY 12 (THURSDAY - Review & Correction)',
-				'',
-				'',
-			)}
-            ${renderTask(
-				'd12-2',
-				'9:00–11:00 AM',
-				'🟦🟩 Listening & Reading: Re-practice all mistake types',
-				'2h',
-			)}
-            ${renderTask(
-				'd12-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd12-4',
-				'12:30–5:00 PM',
-				'🟦🟩 Continue drilling weak question types from mock test',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd12-5',
-				'5:00–7:00 PM',
-				'🟨🟪 Rewrite essays + practice speaking responses with improvements',
-				'2h',
-			)}
-            ${renderTask(
-				'd12-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd12-7',
-				'8:30–10:30 PM',
-				'🟨🟪 Writing & Speaking correction - apply feedback',
-				'2h',
-			)}
-            ${renderTask(
-				'd12-8',
-				'10:30–11:30 PM',
-				'🟪 Vocabulary: Review all words learned + add 20 new ones',
-				'1h',
-			)}
-        </table>
 
-        <h3>DAYS 13–14: Final Refinement & Mock #2</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask('d13-1', 'DAY 13 (FRIDAY - FULL DAY)', '', '')}
-            ${renderTask(
-				'd13-2',
-				'8:00–11:00 AM',
-				'⚠️ Practice weakest question types × 4 - intensive drilling (from mock test results)',
-				'3h',
+			<!-- Days 11-13: Mock Tests & Review -->
+			${renderDaySection(
+				'DAYS 11–13: Full Mock Tests',
+				'📝',
+				`
+				${renderTask('d11-1', 'DAY 11', '', '')}
+				${renderTask(
+					'd11-2',
+					'9:00–12:30',
+					'🟥 FULL MOCK #1: Cambridge 14 Test 3 (Listening + Reading)',
+					'3.5h',
+					'',
+				)}
+				${renderTask(
+					'd11-3',
+					'1:30–3:30',
+					'🟥 FULL MOCK #1: Writing Task 1 + Task 2',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd11-4',
+					'3:30–4:15',
+					'🟥 FULL MOCK #1: Speaking (record)',
+					'45m',
+					'',
+				)}
+				${renderTask(
+					'd11-5',
+					'5:00–7:00',
+					'📊 Score all sections, detailed error analysis',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd11-6',
+					'8:00–10:00',
+					'🔍 Review mistakes, understand correct answers',
+					'2h',
+					'',
+				)}
+				${renderTask('d12-1', 'DAY 12', '', '')}
+				${renderTask(
+					'd12-2',
+					'9:00–11:00',
+					'⚠️ Re-do incorrect questions from Mock #1',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd12-3',
+					'11:00–1:00',
+					'🟨 Writing: Improve essays based on feedback',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd12-4',
+					'2:00–4:00',
+					'🟪 Speaking: Work on pronunciation & intonation',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd12-5',
+					'4:00–6:00',
+					'🟩 Reading: Speed drills - 15 min per passage',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd12-6',
+					'7:00–9:00',
+					'🟦 Listening: Focus on Sections 3&4 (hardest)',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd12-7',
+					'9:00–10:00',
+					'🟧 Final vocab review + weak words',
+					'1h',
+					'',
+				)}
+				${renderTask('d13-1', 'DAY 13', '', '')}
+				${renderTask(
+					'd13-2',
+					'9:00–12:30',
+					'🟥 FULL MOCK #2: Cambridge 14 Test 4 (L+R)',
+					'3.5h',
+					'',
+				)}
+				${renderTask(
+					'd13-3',
+					'1:30–3:30',
+					'🟥 FULL MOCK #2: Writing under exam conditions',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd13-4',
+					'3:30–4:15',
+					'🟥 FULL MOCK #2: Speaking (record & assess)',
+					'45m',
+					'',
+				)}
+				${renderTask(
+					'd13-5',
+					'5:00–7:00',
+					'📊 Compare scores with Mock #1, track improvement',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd13-6',
+					'8:00–10:00',
+					'🔍 Final weak area identification',
+					'2h',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd13-3',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd13-4',
-				'12:30–5:00 PM',
-				'⚠️ Continue targeted practice on specific weak areas',
-				'4.5h',
-			)}
-            ${renderTask(
-				'd13-5',
-				'5:00–7:00 PM',
-				'🟧 Vocabulary & Grammar: Final comprehensive review of all learned material',
-				'2h',
-			)}
-            ${renderTask(
-				'd13-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd13-7',
-				'8:30–10:30 PM',
-				'🟧 Grammar: Review all complex structures for writing & speaking',
-				'2h',
-			)}
-            ${renderTask(
-				'd13-8',
-				'10:30–11:30 PM',
-				'📊 Prepare for final mock test tomorrow - organize materials',
-				'1h',
-			)}
-            ${renderTask(
-				'd13-9',
-				'11:30 PM–12:30 AM',
-				'🟪 Final vocabulary review: 50 essential Band 8+ words + collocations',
-				'1h',
-			)}
-            ${renderTask(
-				'd14-1',
-				'DAY 14 (SATURDAY - FULL MOCK TEST #2)',
-				'',
-				'',
-			)}
-            ${renderTask(
-				'd14-2',
-				'9:00–10:00 AM',
-				'🟦 LISTENING: Complete test (all 4 sections) - target 37+/40',
-				'1h',
-			)}
-            ${renderTask(
-				'd14-4',
-				'10:00–11:00 AM',
-				'🟩 READING: Complete test (3 passages) - target 37+/40',
-				'1h',
-			)}
-            ${renderTask(
-				'd14-4',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd14-5',
-				'12:30–1:30 PM',
-				'🟨 WRITING: Task 1 (20 mins) + Task 2 (40 mins) - aim for Band 8+',
-				'1h',
-			)}
-            ${renderTask(
-				'd14-6',
-				'1:30–2:00 PM',
-				'🟪 SPEAKING: Full mock (all 3 parts) - natural & confident',
-				'30m',
-			)}
-            ${renderTask(
-				'd14-7',
-				'2:00–5:00 PM',
-				'📊 Mark test + compare scores with Mock #1 - measure improvement',
-				'3h',
-			)}
-            ${renderTask(
-				'd14-8',
-				'5:00–7:00 PM',
-				'📊 Detailed analysis + final learning points',
-				'2h',
-			)}
-            ${renderTask(
-				'd14-9',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd14-10',
-				'8:30–11:30 PM',
-				'📝 Review only critical errors - don’t over-study before exam day',
-				'3h',
-			)}
-        </table>
 
-        <h3>DAY 15: Final Preparation (EXAM EVE - SUNDAY)</h3>
-        <table class="task-table">
-            <tr><th>✓</th><th>Time</th><th>Task</th><th>Dur</th></tr>
-            ${renderTask(
-				'd15-1',
-				'9:00–11:00 AM',
-				'🟦 Light Listening practice - 1 test only, no stress',
-				'2h',
+			<!-- Days 14-15: Final Prep -->
+			${renderDaySection(
+				'DAYS 14–15: Final Preparation',
+				'🏁',
+				`
+				${renderTask('d14-1', 'DAY 14', '', '')}
+				${renderTask(
+					'd14-2',
+					'9:00–11:00',
+					'⚠️ Final intensive on remaining weak areas',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd14-3',
+					'11:00–1:00',
+					'🟨 Writing: Perfect your Task 2 template/structure',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd14-4',
+					'2:00–4:00',
+					'🟪 Speaking: Confidence building, natural responses',
+					'2h',
+					'',
+				)}
+				${renderTask(
+					'd14-5',
+					'4:00–5:00',
+					'📋 Review test day procedures & timing strategy',
+					'1h',
+					'https://ieltsliz.com/ielts-exam-tips-on-the-day/',
+				)}
+				${renderTask(
+					'd14-6',
+					'5:00–6:00',
+					'🟧 Quick vocab review of high-frequency words',
+					'1h',
+					'',
+				)}
+				${renderTask(
+					'd14-7',
+					'7:00–8:00',
+					'🧘 Light review, relaxation, early sleep',
+					'1h',
+					'',
+				)}
+				${renderTask('d15-1', 'DAY 15 - TEST DAY', '', '')}
+				${renderTask(
+					'd15-2',
+					'Morning',
+					'☀️ Light breakfast, arrive 30 min early',
+					'—',
+					'',
+				)}
+				${renderTask(
+					'd15-3',
+					'Before',
+					'📋 Review timing: L(30+10), R(60), W(60), S(11-14)',
+					'—',
+					'',
+				)}
+				${renderTask(
+					'd15-4',
+					'During',
+					'💪 Stay calm, manage time, check answers',
+					'—',
+					'',
+				)}
+				${renderTask(
+					'd15-5',
+					'Strategy',
+					'✅ No blanks! Guess if unsure, check spelling',
+					'—',
+					'',
+				)}
+			`,
 			)}
-            ${renderTask(
-				'd15-2',
-				'11:00 AM–12:30 PM',
-				'🍽️ Break + Lunch',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd15-3',
-				'12:30–3:00 PM',
-				'🟩 Light Reading - 1 passage only, stay relaxed',
-				'2.5h',
-			)}
-            ${renderTask(
-				'd15-4',
-				'3:00–5:00 PM',
-				'🟧 Vocabulary: Quick review of key words & phrases (no new learning)',
-				'2h',
-			)}
-            ${renderTask(
-				'd15-5',
-				'5:00–7:00 PM',
-				'📋 Organize exam materials: ID, pencils, eraser, water bottle',
-				'2h',
-			)}
-            ${renderTask(
-				'd15-6',
-				'7:00–8:30 PM',
-				'🍽️ Dinner Break + Rest',
-				'1.5h',
-			)}
-            ${renderTask(
-				'd15-7',
-				'8:30–9:30 PM',
-				'✨ Mental preparation: Visualization, deep breathing, positive affirmations',
-				'1h',
-			)}
-            ${renderTask(
-				'd15-8',
-				'9:30–10:30 PM',
-				'💤 Early sleep preparation - NO studying, relax & rest well',
-				'1h',
-			)}
-            ${renderTask(
-				'd15-9',
-				'10:30 PM',
-				'🛌 Sleep early! Target: 8 hours quality sleep before EXAM DAY',
-				'--',
-			)}
-        </table>
 
-        <div class="ielts-progress-summary">
-            <h4>Overall Progress</h4>
-            <p>${getIELTSCompletedCount()} tasks completed</p>
-        </div>
-    `;
+			<!-- Recommended Books -->
+			<div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-none sm:rounded-xl p-3 sm:p-4 border-y sm:border border-amber-200 dark:border-amber-800">
+				<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📖 Must-Have Books (Cambridge Official)</h4>
+				<ul class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 space-y-1">
+					<li>• <strong>Cambridge IELTS 14-18</strong> - Real past papers (essential!)</li>
+					<li>• <strong>Official Cambridge Guide to IELTS</strong> - Strategies & practice</li>
+					<li>• <strong>Collins Vocabulary for IELTS</strong> - Band 7.5+ vocabulary</li>
+					<li>• <strong>IELTS Trainer</strong> - 6 practice tests + tips</li>
+				</ul>
+			</div>
+
+			<!-- Band 8 Tracker Link -->
+			<div class="p-3 sm:p-4 bg-teal-50 dark:bg-teal-900/20 rounded-none sm:rounded-xl border-y sm:border border-teal-200 dark:border-teal-800 text-center">
+				<p class="text-teal-700 dark:text-teal-300 text-xs sm:text-sm mb-2">
+					📱 For detailed daily materials & practice files, visit the IELTS Practice section
+				</p>
+				<div class="flex justify-center gap-2">
+					<a href="#ielts-practice" onclick="showPage('ielts-practice')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-medium hover:bg-teal-700 transition-colors">
+						📂 IELTS Practice
+					</a>
+					<a href="#band8-tracker" onclick="showPage('band8-tracker')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium border border-teal-300 dark:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors">
+						🎯 Band 8 Tracker
+					</a>
+				</div>
+			</div>
+		</div>
+	`;
 }
 
 function toggleIELTSTask(id, checkbox) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-	tasks[id] = !tasks[id];
+	const isChecked = checkbox ? checkbox.checked : !tasks[id];
+	tasks[id] = isChecked;
 	localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
 
-	// Update visual immediately without full re-render
 	if (checkbox) {
 		const row = checkbox.closest('tr');
 		if (row) {
-			if (tasks[id]) {
-				row.classList.add('task-completed');
+			if (isChecked) {
+				row.classList.add('bg-teal-50', 'dark:bg-teal-900/20');
 			} else {
-				row.classList.remove('task-completed');
+				row.classList.remove('bg-teal-50', 'dark:bg-teal-900/20');
+			}
+			const taskText = row.querySelector('td:nth-child(3)');
+			if (taskText) {
+				if (isChecked) {
+					taskText.classList.add(
+						'line-through',
+						'text-gray-400',
+						'dark:text-gray-500',
+					);
+					taskText.classList.remove(
+						'text-gray-700',
+						'dark:text-gray-300',
+					);
+				} else {
+					taskText.classList.remove(
+						'line-through',
+						'text-gray-400',
+						'dark:text-gray-500',
+					);
+					taskText.classList.add(
+						'text-gray-700',
+						'dark:text-gray-300',
+					);
+				}
 			}
 		}
 	}
 
 	updateDashboardStats();
 
-	// Sync to cloud if enabled
 	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
 		cloudSync.syncToCloud();
 	}
@@ -1817,7 +1926,10 @@ function toggleIELTSTask(id, checkbox) {
 
 function getIELTSCompletedCount() {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-	return Object.values(tasks).filter(Boolean).length;
+	const vocabLearned = JSON.parse(localStorage.getItem('ielts-vocab-learned') || '[]');
+	// Count tasks + bonus for vocab (1 point per 5 words learned, max 10 points)
+	const vocabBonus = Math.min(Math.floor(vocabLearned.length / 5), 10);
+	return Object.values(tasks).filter(Boolean).length + vocabBonus;
 }
 
 // DASHBOARD STATS
@@ -1827,10 +1939,11 @@ function updateDashboardStats() {
 	const ieltsTotal = 70;
 	const ieltsProgress = Math.round((ieltsCompleted / ieltsTotal) * 100);
 
-	document.getElementById('ielts-progress').textContent = `${ieltsProgress}%`;
-	document.getElementById(
-		'ielts-tasks',
-	).textContent = `${ieltsCompleted}/${ieltsTotal} tasks`;
+	const ieltsProgressEl = document.getElementById('ielts-progress');
+	const ieltsTasksEl = document.getElementById('ielts-tasks');
+	if (ieltsProgressEl) ieltsProgressEl.textContent = `${ieltsProgress}%`;
+	if (ieltsTasksEl)
+		ieltsTasksEl.textContent = `${ieltsCompleted}/${ieltsTotal} tasks`;
 
 	// Germany
 	const germanySubmitted = germanyUniversities.filter(
@@ -1842,12 +1955,12 @@ function updateDashboardStats() {
 			? Math.round((germanySubmitted / germanyTotal) * 100)
 			: 0;
 
-	document.getElementById(
-		'germany-progress-stat',
-	).textContent = `${germanyProgress}%`;
-	document.getElementById(
-		'germany-unis',
-	).textContent = `${germanySubmitted}/${germanyTotal} universities`;
+	const germanyProgressEl = document.getElementById('germany-progress-stat');
+	const germanyUnisEl = document.getElementById('germany-unis');
+	if (germanyProgressEl)
+		germanyProgressEl.textContent = `${germanyProgress}%`;
+	if (germanyUnisEl)
+		germanyUnisEl.textContent = `${germanySubmitted}/${germanyTotal} universities`;
 
 	// Schengen
 	const schengenSubmitted = schengenUniversities.filter(
@@ -1859,12 +1972,14 @@ function updateDashboardStats() {
 			? Math.round((schengenSubmitted / schengenTotal) * 100)
 			: 0;
 
-	document.getElementById(
+	const schengenProgressEl = document.getElementById(
 		'schengen-progress-stat',
-	).textContent = `${schengenProgress}%`;
-	document.getElementById(
-		'schengen-unis',
-	).textContent = `${schengenSubmitted}/${schengenTotal} universities`;
+	);
+	const schengenUnisEl = document.getElementById('schengen-unis');
+	if (schengenProgressEl)
+		schengenProgressEl.textContent = `${schengenProgress}%`;
+	if (schengenUnisEl)
+		schengenUnisEl.textContent = `${schengenSubmitted}/${schengenTotal} universities`;
 
 	// Next deadline
 	const today = new Date();
@@ -1877,11 +1992,11 @@ function updateDashboardStats() {
 		.filter((uni) => uni.deadlineDate >= today)
 		.sort((a, b) => a.deadlineDate - b.deadlineDate);
 
-	if (upcomingDeadlines.length > 0) {
+	const nextDeadlineEl = document.getElementById('next-deadline');
+	const deadlineUniEl = document.getElementById('deadline-uni');
+	if (upcomingDeadlines.length > 0 && nextDeadlineEl && deadlineUniEl) {
 		const next = upcomingDeadlines[0];
-		document.getElementById('next-deadline').textContent =
-			next.application_deadline;
-		document.getElementById('deadline-uni').textContent =
-			next.university.split(' ')[0];
+		nextDeadlineEl.textContent = next.application_deadline;
+		deadlineUniEl.textContent = next.university.split(' ')[0];
 	}
 }

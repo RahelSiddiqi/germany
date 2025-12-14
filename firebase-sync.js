@@ -288,7 +288,9 @@ class CloudSyncManager {
 				if (doc.exists && doc.metadata.hasPendingWrites === false) {
 					// Data changed from another device
 					const data = doc.data();
-					console.log('Real-time update received');
+					console.log(
+						'Real-time update received from another device',
+					);
 
 					// Update local storage
 					if (data.germany) {
@@ -316,9 +318,18 @@ class CloudSyncManager {
 						);
 					}
 
-					// Refresh UI
+					// Refresh UI - important for cross-device sync
+					if (typeof displayIELTSPlan === 'function') {
+						displayIELTSPlan();
+					}
 					if (typeof updateDashboardStats === 'function') {
 						updateDashboardStats();
+					}
+					if (typeof displayGermanyUniversities === 'function') {
+						displayGermanyUniversities();
+					}
+					if (typeof displaySchengenUniversities === 'function') {
+						displaySchengenUniversities();
 					}
 
 					this.updateSyncStatus('synced');

@@ -1,37 +1,27 @@
 // IELTS Practice Folder Browser & Markdown Viewer
-// Theme-aware and mobile-friendly
+// Tailwind CSS version - mobile-friendly
 
 // Text-to-Speech for vocabulary
 function speakWord(word) {
 	if ('speechSynthesis' in window) {
-		// Cancel any ongoing speech
 		window.speechSynthesis.cancel();
-
 		const utterance = new SpeechSynthesisUtterance(word);
-		utterance.lang = 'en-GB'; // British English
-		utterance.rate = 0.85; // Slightly slower for clarity
-
-		// Get available voices and prefer British English
+		utterance.lang = 'en-GB';
+		utterance.rate = 0.85;
 		const voices = window.speechSynthesis.getVoices();
 		const britishVoice = voices.find(
 			(v) => v.lang === 'en-GB' || v.lang.startsWith('en-GB'),
 		);
-		if (britishVoice) {
-			utterance.voice = britishVoice;
-		}
-
+		if (britishVoice) utterance.voice = britishVoice;
 		window.speechSynthesis.speak(utterance);
-	} else {
-		console.warn('Speech synthesis not supported');
 	}
 }
 
 // Preload voices
 if ('speechSynthesis' in window) {
 	window.speechSynthesis.getVoices();
-	window.speechSynthesis.onvoiceschanged = () => {
+	window.speechSynthesis.onvoiceschanged = () =>
 		window.speechSynthesis.getVoices();
-	};
 }
 
 // Define available folders and their contents (15-day plan)
@@ -73,51 +63,23 @@ const IELTS_FOLDERS = {
 		icon: '📅',
 		files: ['vocab.md', 'writing-task1-advanced.md'],
 	},
-	d7: {
-		name: 'Day 7',
-		icon: '📅',
-		files: ['vocab.md', 'writing-task2.md'],
-	},
+	d7: { name: 'Day 7', icon: '📅', files: ['vocab.md', 'writing-task2.md'] },
 	d8: {
 		name: 'Day 8',
 		icon: '📅',
 		files: ['vocab.md', 'speaking-complete.md'],
 	},
-	d9: {
-		name: 'Day 9',
-		icon: '📅',
-		files: ['vocab.md', 'mixed-practice.md'],
-	},
-	d10: {
-		name: 'Day 10',
-		icon: '📅',
-		files: ['weakness-focus.md'],
-	},
-	d11: {
-		name: 'Day 11',
-		icon: '📅',
-		files: ['mock-test-1.md'],
-	},
-	d12: {
-		name: 'Day 12',
-		icon: '📅',
-		files: ['review-analysis.md'],
-	},
+	d9: { name: 'Day 9', icon: '📅', files: ['vocab.md', 'mixed-practice.md'] },
+	d10: { name: 'Day 10', icon: '📅', files: ['weakness-focus.md'] },
+	d11: { name: 'Day 11', icon: '📅', files: ['mock-test-1.md'] },
+	d12: { name: 'Day 12', icon: '📅', files: ['review-analysis.md'] },
 	d13: {
 		name: 'Day 13',
 		icon: '📅',
 		files: ['vocab.md', 'targeted-practice.md'],
 	},
-	d14: {
-		name: 'Day 14',
-		icon: '📅',
-		files: ['mock-test-2.md'],
-	},
-	d15: {
-		name: 'Day 15',
-		icon: '📅',
-		files: ['final-prep.md'],
-	},
+	d14: { name: 'Day 14', icon: '📅', files: ['mock-test-2.md'] },
+	d15: { name: 'Day 15', icon: '📅', files: ['final-prep.md'] },
 };
 
 let currentFolder = null;
@@ -137,30 +99,36 @@ function showIELTSFolders() {
 
 	if (!container) return;
 
-	// Show folders, hide others
 	container.style.display = 'grid';
 	if (fileList) fileList.style.display = 'none';
 	if (viewer) viewer.style.display = 'none';
 	if (quiz) quiz.style.display = 'none';
 
-	// Render folder cards
 	container.innerHTML = Object.entries(IELTS_FOLDERS)
 		.map(
 			([key, folder]) => `
-		<div class="folder-card" onclick="openIELTSFolder('${key}')">
-			<div class="folder-icon">${folder.icon}</div>
-			<div class="folder-name">${folder.name}</div>
-			<div class="folder-count">${folder.files.length} file${
-				folder.files.length !== 1 ? 's' : ''
+		<div onclick="openIELTSFolder('${key}')"
+			 class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md hover:border-teal-300 dark:hover:border-teal-600 transition-all group">
+			<div class="text-2xl sm:text-3xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform">${
+				folder.icon
 			}</div>
+			<div class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm">${
+				folder.name
+			}</div>
+			<div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5">${
+				folder.files.length
+			} file${folder.files.length !== 1 ? 's' : ''}</div>
 		</div>
 	`,
 		)
 		.join('');
 
 	if (Object.keys(IELTS_FOLDERS).length === 0) {
-		container.innerHTML =
-			'<div class="empty-state"><p>No practice folders yet</p></div>';
+		container.innerHTML = `
+			<div class="col-span-full text-center py-16 text-gray-500 dark:text-gray-400">
+				<p>No practice folders yet</p>
+			</div>
+		`;
 	}
 }
 
@@ -185,9 +153,9 @@ async function openIELTSFolder(folderId) {
 	if (filesDiv) {
 		if (files.length === 0) {
 			filesDiv.innerHTML = `
-				<div class="empty-state">
-					<p>No files in this folder yet</p>
-					<p class="hint">Add .md files to ielts/${folderId}/</p>
+				<div class="text-center py-16 text-gray-500 dark:text-gray-400">
+					<p class="text-lg">No files in this folder yet</p>
+					<p class="text-sm mt-2">Add .md files to ielts/${folderId}/</p>
 				</div>
 			`;
 		} else {
@@ -196,23 +164,32 @@ async function openIELTSFolder(folderId) {
 					const isVocab = file.includes('vocab');
 					const isIPA = file.includes('ipa');
 					const icon = isVocab ? '🔤' : isIPA ? '🔈' : '📄';
-					const name = file.replace('.md', '').replace(/_/g, ' ');
+					const name = file
+						.replace('.md', '')
+						.replace(/_/g, ' ')
+						.replace(/-/g, ' ');
 
 					return `
-					<div class="file-card">
-						<div class="file-info" onclick="openIELTSFile('${folderId}', '${file}')">
-							<span class="file-icon">${icon}</span>
-							<span class="file-name">${name}</span>
+					<div class="flex items-center justify-between bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600 transition-colors">
+						<div class="flex items-center gap-3 cursor-pointer flex-1" onclick="openIELTSFile('${folderId}', '${file}')">
+							<span class="text-xl">${icon}</span>
+							<span class="font-medium text-gray-900 dark:text-white capitalize">${name}</span>
 						</div>
-						<div class="file-actions">
-							<button class="btn-icon" onclick="openIELTSFile('${folderId}', '${file}')" title="View">
+						<div class="flex items-center gap-2">
+							<button onclick="openIELTSFile('${folderId}', '${file}')"
+									class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors"
+									title="View">
 								👁️
 							</button>
 							${
 								isVocab
-									? `<button class="btn-icon" onclick="startQuizFromFile('${folderId}', '${file}')" title="Quiz">
-								🧪
-							</button>`
+									? `
+								<button onclick="startQuizFromFile('${folderId}', '${file}')"
+										class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors"
+										title="Quiz">
+									🧪
+								</button>
+							`
 									: ''
 							}
 						</div>
@@ -237,17 +214,168 @@ async function openIELTSFile(folderId, filename) {
 	if (viewer) viewer.style.display = 'block';
 
 	if (content) {
-		content.innerHTML = '<div class="loading">Loading...</div>';
+		const folder = IELTS_FOLDERS[folderId];
+		const folderName = folder ? folder.name : folderId;
+		const displayName = filename.replace('.md', '').replace(/[-_]/g, ' ');
+
+		// Build navigation
+		const folderKeys = Object.keys(IELTS_FOLDERS);
+		const currentIndex = folderKeys.indexOf(folderId);
+		const prevFolder =
+			currentIndex > 0 ? folderKeys[currentIndex - 1] : null;
+		const nextFolder =
+			currentIndex < folderKeys.length - 1
+				? folderKeys[currentIndex + 1]
+				: null;
+
+		const fileIndex = folder.files.indexOf(filename);
+		const prevFile = fileIndex > 0 ? folder.files[fileIndex - 1] : null;
+		const nextFile =
+			fileIndex < folder.files.length - 1
+				? folder.files[fileIndex + 1]
+				: null;
+
+		content.innerHTML = `
+			<div class="space-y-3 sm:space-y-4">
+				<!-- Day Navigation -->
+				<div class="flex items-center justify-between gap-2 sm:gap-4 p-2 sm:p-4 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl border border-gray-200 dark:border-gray-700 mx-1 sm:mx-0">
+					${
+						prevFolder
+							? `
+						<button onclick="openIELTSFolder('${prevFolder}')"
+								class="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+							<svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+							</svg>
+							<span class="hidden sm:inline">${IELTS_FOLDERS[prevFolder].name}</span>
+						</button>
+					`
+							: '<span></span>'
+					}
+					<div class="text-center flex-1 min-w-0">
+						<span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-[10px] sm:text-xs font-medium">${folderName}</span>
+						<h2 class="text-sm sm:text-lg font-bold text-gray-900 dark:text-white mt-1 sm:mt-2 capitalize truncate">${displayName}</h2>
+					</div>
+					${
+						nextFolder
+							? `
+						<button onclick="openIELTSFolder('${nextFolder}')"
+								class="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+							<span class="hidden sm:inline">${IELTS_FOLDERS[nextFolder].name}</span>
+							<svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+							</svg>
+						</button>
+					`
+							: '<span></span>'
+					}
+				</div>
+
+				<!-- File Navigation -->
+				${
+					prevFile || nextFile
+						? `
+					<div class="flex items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm">
+						${
+							prevFile
+								? `
+							<button onclick="openIELTSFile('${folderId}', '${prevFile}')"
+									class="text-teal-600 dark:text-teal-400 hover:underline truncate max-w-[120px] sm:max-w-none">
+								← ${prevFile.replace('.md', '').replace(/[-_]/g, ' ')}
+							</button>
+						`
+								: ''
+						}
+						${
+							prevFile && nextFile
+								? '<span class="text-gray-300 dark:text-gray-600">|</span>'
+								: ''
+						}
+						${
+							nextFile
+								? `
+							<button onclick="openIELTSFile('${folderId}', '${nextFile}')"
+									class="text-teal-600 dark:text-teal-400 hover:underline truncate max-w-[120px] sm:max-w-none">
+								${nextFile.replace('.md', '').replace(/[-_]/g, ' ')} →
+							</button>
+						`
+								: ''
+						}
+					</div>
+				`
+						: ''
+				}
+
+				<!-- Content -->
+				<div class="md-content bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0">
+					<div class="flex items-center justify-center py-8 text-gray-500 dark:text-gray-400">
+						<div class="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mr-3"></div>
+						Loading content...
+					</div>
+				</div>
+			</div>
+		`;
 
 		try {
 			const res = await fetch(path);
 			if (!res.ok) throw new Error(`Failed to load ${path}`);
 			const md = await res.text();
-			content.innerHTML = renderMarkdownThemed(md);
+			const body = content.querySelector('.md-content');
+			if (body) {
+				body.innerHTML = renderMarkdownTailwind(md);
+				addSpeakButtonsToTables(body);
+			}
 		} catch (err) {
-			content.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
+			const body = content.querySelector('.md-content');
+			if (body)
+				body.innerHTML = `<div class="text-center py-8 text-red-500">⚠️ ${err.message}</div>`;
 		}
 	}
+}
+
+// Add speak buttons to vocabulary tables
+function addSpeakButtonsToTables(container) {
+	const tables = container.querySelectorAll('table');
+	tables.forEach((table) => {
+		const headers = table.querySelectorAll('th');
+		let wordColIndex = -1;
+
+		headers.forEach((th, i) => {
+			const text = th.textContent.toLowerCase();
+			if (
+				text.includes('word') ||
+				text === 'vocabulary' ||
+				text === 'term'
+			) {
+				wordColIndex = i;
+			}
+		});
+
+		if (wordColIndex >= 0) {
+			const rows = table.querySelectorAll('tbody tr');
+			rows.forEach((row) => {
+				const cells = row.querySelectorAll('td');
+				if (cells[wordColIndex]) {
+					const word = cells[wordColIndex].textContent.trim();
+					if (
+						word &&
+						!cells[wordColIndex].querySelector('.speak-btn')
+					) {
+						const speakBtn = document.createElement('button');
+						speakBtn.className =
+							'speak-btn ml-2 text-teal-500 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors';
+						speakBtn.innerHTML = '🔊';
+						speakBtn.title = `Speak: ${word}`;
+						speakBtn.onclick = (e) => {
+							e.stopPropagation();
+							speakWord(word);
+						};
+						cells[wordColIndex].appendChild(speakBtn);
+					}
+				}
+			});
+		}
+	});
 }
 
 // Back to file list
@@ -273,7 +401,12 @@ async function startQuizFromFile(folderId, filename) {
 	if (quiz) quiz.style.display = 'block';
 
 	if (quizContent) {
-		quizContent.innerHTML = '<div class="loading">Generating quiz...</div>';
+		quizContent.innerHTML = `
+			<div class="flex items-center justify-center py-8 text-gray-500 dark:text-gray-400">
+				<div class="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mr-3"></div>
+				Generating quiz...
+			</div>
+		`;
 
 		try {
 			const res = await fetch(path);
@@ -282,14 +415,13 @@ async function startQuizFromFile(folderId, filename) {
 			const questions = parseVocabForQuiz(md);
 
 			if (questions.length === 0) {
-				quizContent.innerHTML =
-					'<div class="error-state">No vocabulary table found for quiz</div>';
+				quizContent.innerHTML = `<div class="text-center py-8 text-amber-600 dark:text-amber-400">No vocabulary table found for quiz</div>`;
 				return;
 			}
 
 			renderQuiz(questions.slice(0, 10), quizContent);
 		} catch (err) {
-			quizContent.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
+			quizContent.innerHTML = `<div class="text-center py-8 text-red-500">⚠️ ${err.message}</div>`;
 		}
 	}
 }
@@ -305,13 +437,10 @@ function parseVocabForQuiz(md) {
 		const rows = table.split('\n').filter((r) => r.trim().startsWith('|'));
 		if (rows.length < 2) return;
 
-		// Parse header to find column indices
 		const headerCells = rows[0]
 			.split('|')
 			.map((c) => c.trim().toLowerCase())
 			.filter(Boolean);
-
-		// Find column indices (flexible matching)
 		let wordIndex = headerCells.findIndex(
 			(h) => h === 'word' || h.includes('word'),
 		);
@@ -325,18 +454,16 @@ function parseVocabForQuiz(md) {
 			(h) => h === 'pronunciation' || h === 'ipa' || h.includes('pronun'),
 		);
 
-		// Fallback: if no headers found, assume simple 2-column format (word | meaning)
 		if (wordIndex === -1) wordIndex = 0;
 		if (meaningIndex === -1) meaningIndex = 1;
 
-		const dataRows = rows.slice(2); // Skip header and separator rows
+		const dataRows = rows.slice(2);
 
 		dataRows.forEach((row) => {
 			const cells = row
 				.split('|')
 				.map((c) => c.trim())
 				.filter(Boolean);
-
 			const word = cells[wordIndex]
 				? cells[wordIndex].replace(/\*\*/g, '').trim()
 				: '';
@@ -352,11 +479,7 @@ function parseVocabForQuiz(md) {
 				!word.match(/^[-]+$/) &&
 				!word.match(/^\d+$/)
 			) {
-				questions.push({
-					word: word,
-					meaning: meaning,
-					ipa: ipa,
-				});
+				questions.push({ word, meaning, ipa });
 			}
 		});
 	});
@@ -368,12 +491,16 @@ function parseVocabForQuiz(md) {
 function renderQuiz(questions, container) {
 	const shuffled = [...questions].sort(() => Math.random() - 0.5);
 
-	const html = `
-		<div class="quiz-wrapper">
-			<h3>🧪 Vocabulary Quiz</h3>
-			<p class="quiz-info">${shuffled.length} questions</p>
+	container.innerHTML = `
+		<div class="space-y-6">
+			<div class="text-center">
+				<h3 class="text-xl font-bold text-gray-900 dark:text-white">🧪 Vocabulary Quiz</h3>
+				<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">${
+					shuffled.length
+				} questions</p>
+			</div>
 
-			<form id="vocab-quiz-form" onsubmit="gradeQuiz(event)">
+			<form id="vocab-quiz-form" onsubmit="gradeQuiz(event)" class="space-y-6">
 				${shuffled
 					.map((q, i) => {
 						const wrongAnswers = questions
@@ -381,26 +508,31 @@ function renderQuiz(questions, container) {
 							.sort(() => Math.random() - 0.5)
 							.slice(0, 3)
 							.map((x) => x.meaning);
-
 						const options = [...wrongAnswers, q.meaning].sort(
 							() => Math.random() - 0.5,
 						);
 
 						return `
-						<div class="quiz-question">
-							<div class="question-text">
-								<strong>${i + 1}.</strong> What does "<span class="quiz-word">${
-							q.word
-						}</span>" mean?
-								${q.ipa ? `<span class="quiz-ipa">${q.ipa}</span>` : ''}
+						<div class="quiz-question bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+							<div class="mb-4">
+								<span class="font-medium text-gray-900 dark:text-white">${i + 1}.</span>
+								What does "<span class="text-teal-600 dark:text-teal-400 font-semibold">${
+									q.word
+								}</span>" mean?
+								${
+									q.ipa
+										? `<span class="text-sm text-gray-500 dark:text-gray-400 ml-2">${q.ipa}</span>`
+										: ''
+								}
 							</div>
-							<div class="quiz-options">
+							<div class="space-y-2">
 								${options
 									.map(
 										(opt) => `
-									<label class="quiz-option">
-										<input type="radio" name="q${i}" value="${opt}" data-correct="${q.meaning}">
-										<span class="option-text">${opt}</span>
+									<label class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+										<input type="radio" name="q${i}" value="${opt}" data-correct="${q.meaning}"
+											   class="w-4 h-4 text-teal-600 focus:ring-teal-500">
+										<span class="text-gray-700 dark:text-gray-300">${opt}</span>
 									</label>
 								`,
 									)
@@ -411,14 +543,14 @@ function renderQuiz(questions, container) {
 					})
 					.join('')}
 
-				<button type="submit" class="btn btn-primary quiz-submit">📊 Check Answers</button>
+				<button type="submit" class="w-full py-3 px-4 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors">
+					📊 Check Answers
+				</button>
 			</form>
 
-			<div id="quiz-results" style="display:none"></div>
+			<div id="quiz-results" class="hidden"></div>
 		</div>
 	`;
-
-	container.innerHTML = html;
 }
 
 // Grade quiz
@@ -437,18 +569,33 @@ function gradeQuiz(event) {
 		const correctAnswer = form.querySelector(`input[name="q${i}"]`).dataset
 			.correct;
 
+		q.classList.remove(
+			'border-green-500',
+			'border-red-500',
+			'bg-green-50',
+			'dark:bg-green-900/20',
+			'bg-red-50',
+			'dark:bg-red-900/20',
+		);
+
 		if (selected) {
 			const isCorrect = selected.value === correctAnswer;
 			if (isCorrect) {
 				correct++;
-				q.classList.add('correct');
-				q.classList.remove('incorrect');
+				q.classList.add(
+					'border-green-500',
+					'bg-green-50',
+					'dark:bg-green-900/20',
+				);
 			} else {
-				q.classList.add('incorrect');
-				q.classList.remove('correct');
+				q.classList.add(
+					'border-red-500',
+					'bg-red-50',
+					'dark:bg-red-900/20',
+				);
 			}
 		} else {
-			q.classList.add('unanswered');
+			q.classList.add('border-amber-500');
 		}
 	});
 
@@ -461,81 +608,23 @@ function gradeQuiz(event) {
 			: percentage >= 50
 			? '📚'
 			: '💪';
+	const bgClass =
+		percentage >= 70
+			? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700'
+			: 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
 
 	results.innerHTML = `
-		<div class="quiz-summary">
-			<div class="score-circle ${percentage >= 70 ? 'passing' : 'failing'}">
-				<span class="score-emoji">${emoji}</span>
-				<span class="score-value">${percentage}%</span>
-			</div>
-			<p class="score-text">${correct}/${total} correct</p>
-			<button class="btn btn-secondary" onclick="backToFiles()">Try Another</button>
+		<div class="text-center p-6 ${bgClass} rounded-xl border-2">
+			<div class="text-4xl mb-2">${emoji}</div>
+			<div class="text-3xl font-bold text-gray-900 dark:text-white">${percentage}%</div>
+			<p class="text-gray-600 dark:text-gray-400 mt-1">${correct}/${total} correct</p>
+			<button onclick="backToFiles()" class="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors">
+				Try Another
+			</button>
 		</div>
 	`;
-	results.style.display = 'block';
-	form.querySelector('.quiz-submit').style.display = 'none';
-}
-
-// Theme-aware markdown renderer
-function renderMarkdownThemed(md) {
-	// First, extract and convert tables before escaping HTML
-	// Match tables: lines starting with | that have at least 2 rows
-	const tableRegex = /(?:^|\n)((?:\|[^\n]+\|\n?)+)/gm;
-
-	let html = md;
-
-	// Process tables first (before HTML escaping)
-	html = html.replace(tableRegex, (match, tableBlock) => {
-		const rows = tableBlock
-			.trim()
-			.split('\n')
-			.filter((r) => r.trim().startsWith('|'));
-		if (rows.length < 2) return match;
-
-		// Parse each row into cells
-		const parsedRows = rows.map((r) => {
-			// Remove leading/trailing pipes and split by |
-			const cleaned = r.trim().replace(/^\||\|$/g, '');
-			return cleaned.split('|').map((c) => c.trim());
-		});
-
-		// Skip separator rows (like |---|---|)
-		const dataRows = parsedRows.filter(
-			(row) => !row.every((c) => /^:?-+:?$/.test(c)),
-		);
-
-		if (dataRows.length < 1) return match;
-
-		// First row is header
-		const headerRow = dataRows[0];
-		const bodyRows = dataRows.slice(1);
-
-		// Build HTML table
-		const thead = `<tr>${headerRow
-			.map((c) => `<th>${escapeHtml(c)}</th>`)
-			.join('')}</tr>`;
-		const tbody = bodyRows
-			.map(
-				(row) =>
-					`<tr>${row
-						.map(
-							(c) =>
-								`<td>${processInlineMarkdown(
-									escapeHtml(c),
-								)}</td>`,
-						)
-						.join('')}</tr>`,
-			)
-			.join('');
-
-		return `\n<div class="table-wrapper"><table class="themed-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>\n`;
-	});
-
-	// Now escape remaining HTML (but not in already-converted tables)
-	// We need a different approach - escape before table processing
-
-	// Actually, let's rebuild this more carefully
-	return renderMarkdownProper(md);
+	results.classList.remove('hidden');
+	form.querySelector('button[type="submit"]').style.display = 'none';
 }
 
 // Helper: escape HTML
@@ -553,21 +642,27 @@ function escapeHtml(str) {
 	);
 }
 
-// Helper: process inline markdown (bold, italic, links, code)
+// Helper: process inline markdown
 function processInlineMarkdown(str) {
 	return str
-		.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
-		.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-		.replace(/\*(.*?)\*/g, '<em>$1</em>')
-		.replace(/`([^`]+)`/g, '<code>$1</code>')
+		.replace(
+			/\*\*\*(.*?)\*\*\*/g,
+			'<strong class="font-bold"><em>$1</em></strong>',
+		)
+		.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+		.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+		.replace(
+			/`([^`]+)`/g,
+			'<code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-sm font-mono text-teal-600 dark:text-teal-400">$1</code>',
+		)
 		.replace(
 			/\[(.*?)\]\((.*?)\)/g,
-			'<a href="$2" target="_blank" rel="noopener">$1</a>',
+			'<a href="$2" target="_blank" rel="noopener" class="text-teal-600 dark:text-teal-400 hover:underline">$1</a>',
 		);
 }
 
-// Proper markdown renderer
-function renderMarkdownProper(md) {
+// Tailwind-styled markdown renderer
+function renderMarkdownTailwind(md) {
 	const lines = md.split('\n');
 	const output = [];
 	let inTable = false;
@@ -588,8 +683,7 @@ function renderMarkdownProper(md) {
 			tableRows.push(trimmed);
 			continue;
 		} else if (inTable) {
-			// End of table
-			output.push(renderTable(tableRows));
+			output.push(renderTableTailwind(tableRows));
 			inTable = false;
 			tableRows = [];
 		}
@@ -604,13 +698,13 @@ function renderMarkdownProper(md) {
 			continue;
 		} else if (inList) {
 			output.push(
-				'<ul>' +
+				'<ul class="space-y-1.5 sm:space-y-2 my-3 sm:my-4">' +
 					listItems
 						.map(
 							(li) =>
-								`<li>${processInlineMarkdown(
+								`<li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5 sm:mt-1 text-sm">•</span><span class="text-gray-700 dark:text-gray-300 text-sm sm:text-base">${processInlineMarkdown(
 									escapeHtml(li),
-								)}</li>`,
+								)}</span></li>`,
 						)
 						.join('') +
 					'</ul>',
@@ -623,8 +717,16 @@ function renderMarkdownProper(md) {
 		if (/^#{1,6}\s/.test(trimmed)) {
 			const level = trimmed.match(/^#+/)[0].length;
 			const text = trimmed.replace(/^#+\s+/, '');
+			const classes = {
+				1: 'text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-4 sm:mt-6 mb-3 sm:mb-4',
+				2: 'text-lg sm:text-xl font-bold text-gray-900 dark:text-white mt-4 sm:mt-6 mb-2 sm:mb-3',
+				3: 'text-base sm:text-lg font-semibold text-gray-900 dark:text-white mt-4 sm:mt-5 mb-2',
+				4: 'text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-100 mt-3 sm:mt-4 mb-2',
+				5: 'text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mt-2 sm:mt-3 mb-1',
+				6: 'text-xs font-medium text-gray-600 dark:text-gray-300 mt-2 mb-1',
+			};
 			output.push(
-				`<h${level}>${processInlineMarkdown(
+				`<h${level} class="${classes[level]}">${processInlineMarkdown(
 					escapeHtml(text),
 				)}</h${level}>`,
 			);
@@ -633,7 +735,9 @@ function renderMarkdownProper(md) {
 
 		// Horizontal rule
 		if (/^---+$/.test(trimmed)) {
-			output.push('<hr>');
+			output.push(
+				'<hr class="my-6 border-gray-200 dark:border-gray-700">',
+			);
 			continue;
 		}
 
@@ -641,7 +745,7 @@ function renderMarkdownProper(md) {
 		if (/^>\s*/.test(trimmed)) {
 			const text = trimmed.replace(/^>\s*/, '');
 			output.push(
-				`<blockquote>${processInlineMarkdown(
+				`<blockquote class="border-l-4 border-teal-500 pl-4 py-2 my-4 bg-teal-50 dark:bg-teal-900/20 text-gray-700 dark:text-gray-300 italic">${processInlineMarkdown(
 					escapeHtml(text),
 				)}</blockquote>`,
 			);
@@ -654,22 +758,26 @@ function renderMarkdownProper(md) {
 		}
 
 		// Regular paragraph
-		output.push(`<p>${processInlineMarkdown(escapeHtml(trimmed))}</p>`);
+		output.push(
+			`<p class="text-gray-700 dark:text-gray-300 my-2 sm:my-3 leading-relaxed text-sm sm:text-base">${processInlineMarkdown(
+				escapeHtml(trimmed),
+			)}</p>`,
+		);
 	}
 
-	// Handle remaining table
 	if (inTable && tableRows.length > 0) {
-		output.push(renderTable(tableRows));
+		output.push(renderTableTailwind(tableRows));
 	}
 
-	// Handle remaining list
 	if (inList && listItems.length > 0) {
 		output.push(
-			'<ul>' +
+			'<ul class="space-y-1.5 sm:space-y-2 my-3 sm:my-4">' +
 				listItems
 					.map(
 						(li) =>
-							`<li>${processInlineMarkdown(escapeHtml(li))}</li>`,
+							`<li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5 sm:mt-1 text-sm">•</span><span class="text-gray-700 dark:text-gray-300 text-sm sm:text-base">${processInlineMarkdown(
+								escapeHtml(li),
+							)}</span></li>`,
 					)
 					.join('') +
 				'</ul>',
@@ -679,11 +787,10 @@ function renderMarkdownProper(md) {
 	return output.join('\n');
 }
 
-// Render a markdown table to HTML
-function renderTable(rows) {
+// Render table with Tailwind - Mobile optimized
+function renderTableTailwind(rows) {
 	if (rows.length < 2) return rows.join('\n');
 
-	// Parse rows into cells, filter out undefined/null
 	const parsedRows = rows
 		.filter((r) => r != null && typeof r === 'string')
 		.map((r) => {
@@ -691,17 +798,14 @@ function renderTable(rows) {
 			return cleaned.split('|').map((c) => c.trim());
 		});
 
-	// Find and remove separator row
 	const dataRows = parsedRows.filter(
 		(row) => !row.every((c) => /^:?-+:?$/.test(c)),
 	);
-
 	if (dataRows.length < 1) return rows.join('\n');
 
 	const headerRow = dataRows[0];
 	const bodyRows = dataRows.slice(1);
 
-	// Check if this is a vocabulary table (has "Word" column)
 	const wordColIndex = headerRow.findIndex((h) =>
 		h.toLowerCase().includes('word'),
 	);
@@ -709,7 +813,6 @@ function renderTable(rows) {
 		h.toLowerCase().includes('audio'),
 	);
 
-	// Remove Audio column if present
 	let filteredHeaderRow = headerRow;
 	let filteredBodyRows = bodyRows;
 	if (hasAudioColumn) {
@@ -722,62 +825,51 @@ function renderTable(rows) {
 		);
 	}
 
-	// Add audio column header if it's a vocab table
 	const finalHeaderRow =
 		wordColIndex >= 0 ? [...filteredHeaderRow, '🔊'] : filteredHeaderRow;
 
 	const thead = `<tr>${finalHeaderRow
-		.map((c) => `<th>${processInlineMarkdown(escapeHtml(c))}</th>`)
+		.map(
+			(c) =>
+				`<th class="px-2 py-2 sm:px-3 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700 whitespace-nowrap">${processInlineMarkdown(
+					escapeHtml(c),
+				)}</th>`,
+		)
 		.join('')}</tr>`;
 
 	const tbody = filteredBodyRows
 		.map((row) => {
-			// Get the word for audio (clean markdown bold)
 			const word =
 				wordColIndex >= 0 && row[wordColIndex]
 					? row[wordColIndex].replace(/\*\*/g, '').trim()
 					: null;
-
 			const cells = row
 				.map(
 					(c) =>
-						`<td>${processInlineMarkdown(
+						`<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300">${processInlineMarkdown(
 							escapeHtml(c || ''),
 						)}</td>`,
 				)
 				.join('');
-
-			// Add audio button cell if it's a vocab table
 			const audioCell =
 				wordColIndex >= 0 && word
-					? `<td class="audio-cell"><button class="audio-btn" onclick="speakWord('${word.replace(
+					? `<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-center"><button onclick="speakWord('${word.replace(
 							/'/g,
 							"\\'",
-					  )}')">▶</button></td>`
+					  )}')" class="text-teal-500 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors text-lg">▶</button></td>`
 					: '';
-
-			return `<tr>${cells}${audioCell}</tr>`;
+			return `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">${cells}${audioCell}</tr>`;
 		})
 		.join('');
 
-	return `<div class="table-wrapper"><table class="themed-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
-}
-
-// Legacy function
-async function loadIELTSMarkdown(path) {
-	const container = document.getElementById('ielts-md-viewer');
-	if (!container) return;
-
-	container.innerHTML = '<div class="loading">Loading...</div>';
-
-	try {
-		const res = await fetch(path);
-		if (!res.ok) throw new Error('Failed to load ' + path);
-		const md = await res.text();
-		container.innerHTML = renderMarkdownThemed(md);
-	} catch (err) {
-		container.innerHTML = `<div class="error-state">⚠️ ${err.message}</div>`;
-	}
+	return `
+		<div class="overflow-x-auto my-3 sm:my-6 -mx-2 sm:mx-0 sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700">
+			<table class="w-full text-left">
+				<thead>${thead}</thead>
+				<tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">${tbody}</tbody>
+			</table>
+		</div>
+	`;
 }
 
 // Initialize on page load

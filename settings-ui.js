@@ -1,13 +1,15 @@
-// Settings UI and utility functions
+// Settings UI and utility functions - Tailwind version
 
 // Open settings modal
 function openSettingsModal() {
 	const modal = document.getElementById('settings-modal');
 	if (modal) {
-		modal.classList.add('active');
+		modal.classList.remove('hidden');
+		modal.classList.add('flex');
 		updateStorageDisplay();
 		updateNotificationButton();
 		updateThemeButton();
+		updateSyncUI();
 	}
 }
 
@@ -15,7 +17,8 @@ function openSettingsModal() {
 function closeSettingsModal() {
 	const modal = document.getElementById('settings-modal');
 	if (modal) {
-		modal.classList.remove('active');
+		modal.classList.add('hidden');
+		modal.classList.remove('flex');
 	}
 }
 
@@ -32,16 +35,10 @@ function exportData() {
 	try {
 		const success = dataManager.exportAllData();
 		if (success) {
-			notificationManager.showInAppNotification(
-				'✅ Data exported successfully!',
-				'success',
-			);
+			showNotification('✅ Data exported successfully!', 'success');
 		}
 	} catch (error) {
-		notificationManager.showInAppNotification(
-			'❌ Failed to export data: ' + error.message,
-			'error',
-		);
+		showNotification('❌ Failed to export data: ' + error.message, 'error');
 	}
 }
 
@@ -53,20 +50,14 @@ async function importData(input) {
 	try {
 		const result = await dataManager.importData(file);
 		if (result.success) {
-			notificationManager.showInAppNotification(
-				result.message,
-				'success',
-			);
+			showNotification(result.message, 'success');
 			// Reload page to show imported data
 			setTimeout(() => {
 				location.reload();
 			}, 1500);
 		}
 	} catch (error) {
-		notificationManager.showInAppNotification(
-			error.message || 'Failed to import data',
-			'error',
-		);
+		showNotification(error.message || 'Failed to import data', 'error');
 	}
 
 	// Reset file input
@@ -75,16 +66,56 @@ async function importData(input) {
 
 // Clear all data
 function clearAllData() {
+	if (
+		!confirm(
+			'Are you sure you want to clear all data? This cannot be undone.',
+		)
+	) {
+		return;
+	}
 	const cleared = dataManager.clearAllData();
 	if (cleared) {
-		notificationManager.showInAppNotification(
-			'All data cleared successfully',
-			'success',
-		);
+		showNotification('All data cleared successfully', 'success');
 		setTimeout(() => {
 			location.reload();
 		}, 1000);
 	}
+}
+
+// Show notification toast
+function showNotification(message, type = 'info') {
+	// Use notificationManager if available, otherwise create toast
+	if (
+		typeof notificationManager !== 'undefined' &&
+		notificationManager.showInAppNotification
+	) {
+		notificationManager.showInAppNotification(message, type);
+		return;
+	}
+
+	// Fallback toast
+	const colors = {
+		success: 'bg-green-500',
+		error: 'bg-red-500',
+		warning: 'bg-yellow-500',
+		info: 'bg-teal-500',
+	};
+
+	const toast = document.createElement('div');
+	toast.className = `fixed bottom-4 right-4 ${
+		colors[type] || colors.info
+	} text-white px-4 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-y-full`;
+	toast.textContent = message;
+	document.body.appendChild(toast);
+
+	requestAnimationFrame(() => {
+		toast.classList.remove('translate-y-full');
+	});
+
+	setTimeout(() => {
+		toast.classList.add('translate-y-full');
+		setTimeout(() => toast.remove(), 300);
+	}, 3000);
 }
 
 // Update storage usage display
@@ -123,16 +154,13 @@ function updateAnalyticsPage() {
 async function enableNotifications() {
 	const granted = await notificationManager.requestPermission();
 	if (granted) {
-		notificationManager.showInAppNotification(
+		showNotification(
 			"Notifications enabled! You'll receive deadline alerts.",
 			'success',
 		);
 		updateNotificationButton();
 	} else {
-		notificationManager.showInAppNotification(
-			'Notification permission denied',
-			'warning',
-		);
+		showNotification('Notification permission denied', 'warning');
 	}
 }
 
@@ -141,9 +169,20 @@ function updateNotificationButton() {
 	const btn = document.getElementById('enable-notifications');
 	if (btn && 'Notification' in window) {
 		if (Notification.permission === 'granted') {
-			btn.textContent = '✓ Enabled';
-			btn.classList.remove('btn-secondary');
-			btn.classList.add('btn-success');
+			btn.innerHTML = `
+				<svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+				</svg>
+				Notifications Enabled
+			`;
+			btn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+			btn.classList.add(
+				'bg-green-100',
+				'dark:bg-green-900/30',
+				'text-green-700',
+				'dark:text-green-300',
+				'cursor-default',
+			);
 			btn.disabled = true;
 		}
 	}
@@ -155,81 +194,84 @@ function checkDeadlinesManually() {
 	const summary = notificationManager.getNotificationSummary();
 
 	if (summary.total === 0) {
-		notificationManager.showInAppNotification(
-			'No upcoming deadlines in the next 14 days',
-			'info',
-		);
+		showNotification('No upcoming deadlines in the next 14 days', 'info');
 	} else {
-		notificationManager.showInAppNotification(
+		showNotification(
 			`Found ${summary.total} upcoming deadlines (${summary.critical} critical, ${summary.high} high priority)`,
 			summary.critical > 0 ? 'warning' : 'info',
 		);
 	}
 }
 
-// Dark mode
-function toggleDarkMode() {
-	document.body.classList.toggle('dark-mode');
-	const isDark = document.body.classList.contains('dark-mode');
-
-	// Update DaisyUI theme
-	document.documentElement.setAttribute(
-		'data-theme',
-		isDark ? 'dark' : 'light',
-	);
-
-	localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
-	updateThemeButton();
-}
-
 // Update theme button
 function updateThemeButton() {
 	const btn = document.getElementById('theme-toggle');
-	const isDark = document.body.classList.contains('dark-mode');
+	const isDark = document.documentElement.classList.contains('dark');
 	if (btn) {
-		btn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+		btn.innerHTML = isDark
+			? `
+			<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+			</svg>
+			Light Mode
+		`
+			: `
+			<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+			</svg>
+			Dark Mode
+		`;
 	}
 }
 
-// Load dark mode preference
-function loadDarkModePreference() {
-	const preference = localStorage.getItem('dark-mode');
-	if (preference === 'enabled') {
-		document.body.classList.add('dark-mode');
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.setAttribute('data-theme', 'light');
-	}
-}
-
-// Initialize dark mode on page load
-loadDarkModePreference();
-
-// Display analytics page
+// Display analytics page with Tailwind styling
 function displayAnalytics() {
 	// Insights
 	const insightsContainer = document.getElementById('insights-section');
-	if (insightsContainer) {
+	if (insightsContainer && typeof analyticsManager !== 'undefined') {
 		const insights = analyticsManager.getInsights();
 
 		if (insights.length > 0) {
-			let html =
-				'<div class="insights-container"><h3>💡 Insights & Recommendations</h3>';
+			const iconMap = {
+				success:
+					'<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>',
+				warning:
+					'<svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>',
+				critical:
+					'<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+				info: '<svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+			};
+
+			const colorMap = {
+				success:
+					'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700',
+				warning:
+					'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700',
+				critical:
+					'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700',
+				info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700',
+			};
+
+			let html = `
+				<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+					<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+						<span class="mr-2">💡</span> Insights & Recommendations
+					</h3>
+					<div class="space-y-3">
+			`;
+
 			insights.forEach((insight) => {
-				const iconMap = {
-					success: '✅',
-					warning: '⚠️',
-					critical: '🚨',
-					info: 'ℹ️',
-				};
 				html += `
-					<div class="insight-item ${insight.type}">
-						<div class="insight-icon">${iconMap[insight.type]}</div>
-						<div class="insight-message">${insight.message}</div>
+					<div class="${
+						colorMap[insight.type]
+					} border rounded-lg p-3 flex items-start gap-3">
+						<div class="flex-shrink-0 mt-0.5">${iconMap[insight.type]}</div>
+						<div class="text-sm text-gray-700 dark:text-gray-300">${insight.message}</div>
 					</div>
 				`;
 			});
-			html += '</div>';
+
+			html += '</div></div>';
 			insightsContainer.innerHTML = html;
 		} else {
 			insightsContainer.innerHTML = '';
@@ -238,13 +280,13 @@ function displayAnalytics() {
 
 	// Progress charts
 	const progressContainer = document.getElementById('progress-charts');
-	if (progressContainer) {
+	if (progressContainer && typeof analyticsManager !== 'undefined') {
 		progressContainer.innerHTML = analyticsManager.generateProgressChart();
 	}
 
 	// Status charts
 	const statusContainer = document.getElementById('status-charts');
-	if (statusContainer) {
+	if (statusContainer && typeof analyticsManager !== 'undefined') {
 		statusContainer.innerHTML =
 			analyticsManager.generateStatusChart('combined');
 	}
@@ -253,21 +295,21 @@ function displayAnalytics() {
 	const deadlineContainer = document.getElementById(
 		'deadline-timeline-section',
 	);
-	if (deadlineContainer) {
+	if (deadlineContainer && typeof analyticsManager !== 'undefined') {
 		deadlineContainer.innerHTML =
 			analyticsManager.generateDeadlineTimeline();
 	}
 
 	// IELTS analytics
 	const ieltsContainer = document.getElementById('ielts-analytics');
-	if (ieltsContainer) {
+	if (ieltsContainer && typeof analyticsManager !== 'undefined') {
 		ieltsContainer.innerHTML = analyticsManager.generateIELTSChart();
 	}
 }
 
 // Add analytics to page navigation
-const originalShowPage = showPage;
 if (typeof showPage !== 'undefined') {
+	const originalShowPage = showPage;
 	window.showPage = function (pageId) {
 		originalShowPage(pageId);
 		if (pageId === 'analytics') {
@@ -300,7 +342,7 @@ document.addEventListener('keydown', (e) => {
 // Auto-update storage display when settings modal is open
 setInterval(() => {
 	const modal = document.getElementById('settings-modal');
-	if (modal && modal.classList.contains('active')) {
+	if (modal && !modal.classList.contains('hidden')) {
 		updateStorageDisplay();
 	}
 }, 2000);
@@ -309,10 +351,9 @@ setInterval(() => {
 setTimeout(() => {
 	const firstVisit = localStorage.getItem('first-visit');
 	if (!firstVisit) {
-		notificationManager.showInAppNotification(
+		showNotification(
 			'👋 Welcome! Check out the Analytics page and Settings for new features.',
 			'info',
-			8000,
 		);
 		localStorage.setItem('first-visit', 'done');
 	}
@@ -322,13 +363,53 @@ setTimeout(() => {
 // Cloud Sync UI Functions
 // ==========================================
 
+// Update sync UI
+function updateSyncUI() {
+	const syncStatus = document.getElementById('sync-status');
+	const syncBtn = document.getElementById('sync-btn');
+	const googleBtn = document.getElementById('google-signin-btn');
+
+	if (typeof cloudSync === 'undefined') {
+		if (syncStatus) syncStatus.textContent = 'Not configured';
+		return;
+	}
+
+	if (cloudSync.user) {
+		if (syncStatus) {
+			const name =
+				cloudSync.user.displayName ||
+				cloudSync.user.email ||
+				'Anonymous';
+			syncStatus.innerHTML = `<span class="text-green-600 dark:text-green-400">● Connected as ${name}</span>`;
+		}
+		if (syncBtn) {
+			syncBtn.innerHTML = `
+				<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+				</svg>
+				Sync Now
+			`;
+		}
+		if (googleBtn) {
+			googleBtn.innerHTML = `
+				<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+				</svg>
+				Sign Out
+			`;
+			googleBtn.onclick = signOutCloud;
+		}
+	} else {
+		if (syncStatus)
+			syncStatus.innerHTML =
+				'<span class="text-gray-500">Not signed in</span>';
+	}
+}
+
 // Toggle cloud sync (anonymous sign in)
 async function toggleCloudSync() {
 	if (typeof cloudSync === 'undefined') {
-		notificationManager.showInAppNotification(
-			'☁️ Cloud sync is not configured yet',
-			'info',
-		);
+		showNotification('☁️ Cloud sync is not configured yet', 'info');
 		showCloudSyncSetupInstructions();
 		return;
 	}
@@ -336,19 +417,18 @@ async function toggleCloudSync() {
 	if (cloudSync.user) {
 		// Already signed in, sign out
 		await cloudSync.signOut();
-		notificationManager.showInAppNotification(
-			'Cloud sync disabled',
-			'info',
-		);
+		showNotification('Cloud sync disabled', 'info');
+		updateSyncUI();
 	} else {
 		// Sign in anonymously
 		const user = await cloudSync.signInAnonymously();
 		if (user) {
 			cloudSync.setupAutoSync();
-			notificationManager.showInAppNotification(
+			showNotification(
 				'☁️ Cloud sync enabled! Your progress will sync across devices.',
 				'success',
 			);
+			updateSyncUI();
 		}
 	}
 }
@@ -356,10 +436,7 @@ async function toggleCloudSync() {
 // Sign in with Google
 async function signInWithGoogle() {
 	if (typeof cloudSync === 'undefined') {
-		notificationManager.showInAppNotification(
-			'☁️ Cloud sync is not configured yet',
-			'info',
-		);
+		showNotification('☁️ Cloud sync is not configured yet', 'info');
 		showCloudSyncSetupInstructions();
 		return;
 	}
@@ -367,24 +444,31 @@ async function signInWithGoogle() {
 	const user = await cloudSync.signInWithGoogle();
 	if (user) {
 		cloudSync.setupAutoSync();
-		notificationManager.showInAppNotification(
+		showNotification(
 			`☁️ Signed in as ${user.displayName || user.email}`,
 			'success',
 		);
+		updateSyncUI();
+	}
+}
+
+// Sign out from cloud
+async function signOutCloud() {
+	if (typeof cloudSync !== 'undefined' && cloudSync.user) {
+		await cloudSync.signOut();
+		showNotification('Signed out successfully', 'info');
+		updateSyncUI();
 	}
 }
 
 // Manual sync
 async function manualSync() {
 	if (typeof cloudSync === 'undefined' || !cloudSync.user) {
-		notificationManager.showInAppNotification(
-			'Please enable cloud sync first',
-			'info',
-		);
+		showNotification('Please enable cloud sync first', 'info');
 		return;
 	}
 
-	notificationManager.showInAppNotification('🔄 Syncing...', 'info');
+	showNotification('🔄 Syncing...', 'info');
 
 	// Push local changes to cloud
 	const pushSuccess = await cloudSync.syncToCloud();
@@ -393,12 +477,9 @@ async function manualSync() {
 	const pullSuccess = await cloudSync.syncFromCloud();
 
 	if (pushSuccess && pullSuccess) {
-		notificationManager.showInAppNotification(
-			'✅ Sync completed successfully!',
-			'success',
-		);
+		showNotification('✅ Sync completed successfully!', 'success');
 	} else {
-		notificationManager.showInAppNotification(
+		showNotification(
 			'⚠️ Sync had some issues, please try again',
 			'warning',
 		);
@@ -428,5 +509,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (typeof cloudSync !== 'undefined') {
 			cloudSync.updateSyncUI();
 		}
+		updateSyncUI();
 	}, 1000);
 });
