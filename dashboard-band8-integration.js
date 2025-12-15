@@ -488,7 +488,7 @@ class Band8Dashboard {
 							<span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white">Hours:</strong> ${viewHoursLogged}/${
 			viewingDayData.hours
 		}h</span>
-							<a href="#ielts-practice" 
+							<a href="#ielts-practice"
 							   onclick="showPage('ielts-practice'); openIELTSFolder && openIELTSFolder('d${viewingDay}')"
 							   class="inline-flex items-center gap-1 px-2 py-1 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full text-[10px] sm:text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors">
 								<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -962,32 +962,32 @@ class Band8Dashboard {
 	getTasksCompleted(day) {
 		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 		const completedIndices = [];
-		
+
 		// Find tasks for this day using mp-d{day}-{index} format
-		Object.keys(tasks).forEach(key => {
+		Object.keys(tasks).forEach((key) => {
 			if (tasks[key] && key.startsWith('mp-d' + day + '-')) {
 				const idx = parseInt(key.split('-').pop());
 				if (!isNaN(idx)) completedIndices.push(idx);
 			}
 		});
-		
+
 		return completedIndices;
 	}
 
 	toggleTask(day, taskIndex) {
 		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 		const taskId = 'mp-d' + day + '-' + taskIndex;
-		
+
 		// Toggle the task
 		tasks[taskId] = !tasks[taskId];
-		
+
 		localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
-		
+
 		// Trigger Firebase sync if available
 		if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
 			cloudSync.syncToCloud();
 		}
-		
+
 		// Refresh to update UI
 		this.refreshDashboard();
 	}

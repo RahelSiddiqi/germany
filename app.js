@@ -84,7 +84,7 @@ function displayProgress() {
 function displayPlan() {
 	const plan = document.getElementById('plan-content');
 	if (!plan) return;
-	
+
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 
 	// Auto-import rescheduled tasks
@@ -117,21 +117,23 @@ function displayPlan() {
 
 	// Check if MASTER_PLAN is available
 	if (typeof MASTER_PLAN === 'undefined' || !MASTER_PLAN.ieltsSchedule) {
-		plan.innerHTML = '<div style="text-align:center; padding:40px; color:#666;"><p>⏳ Loading study plan...</p><p style="font-size:12px; margin-top:10px;">Make sure master-plan.js is loaded.</p></div>';
+		plan.innerHTML =
+			'<div style="text-align:center; padding:40px; color:#666;"><p>⏳ Loading study plan...</p><p style="font-size:12px; margin-top:10px;">Make sure master-plan.js is loaded.</p></div>';
 		return;
 	}
 
 	// Calculate overall progress
 	let totalTasks = 0;
 	let completedTasks = 0;
-	MASTER_PLAN.ieltsSchedule.forEach(day => {
+	MASTER_PLAN.ieltsSchedule.forEach((day) => {
 		totalTasks += day.tasks.length;
 		day.tasks.forEach((_, idx) => {
 			const taskId = 'mp-d' + day.day + '-' + idx;
 			if (tasks[taskId]) completedTasks++;
 		});
 	});
-	const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+	const progressPercent =
+		totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
 	// Define phases for grouping
 	const phases = [
@@ -144,7 +146,8 @@ function displayPlan() {
 		{ name: 'Phase 7: Final Prep', days: [15], icon: '🏆' },
 	];
 
-	let planHTML = '<div class="legend">' +
+	let planHTML =
+		'<div class="legend">' +
 		'<span class="legend-item listening">🎧 Listening</span>' +
 		'<span class="legend-item reading">📚 Reading</span>' +
 		'<span class="legend-item writing">✍️ Writing</span>' +
@@ -156,75 +159,166 @@ function displayPlan() {
 		'<button class="action-btn ielts-btn" onclick="skipBusyDay()">😮‍💨 I\'m busy today</button>' +
 		'<button class="action-btn ielts-btn" onclick="rescheduleIncomplete()">🔁 Reschedule incomplete</button>' +
 		'<div style="margin-left:auto; font-size:14px; color:#555;">' +
-		'🔥 Streak: <strong id="streak-count">' + (streakData.streak || 0) + '</strong> days' +
-		' | 📊 Progress: <strong>' + progressPercent + '%</strong> (' + completedTasks + '/' + totalTasks + ')' +
+		'🔥 Streak: <strong id="streak-count">' +
+		(streakData.streak || 0) +
+		'</strong> days' +
+		' | 📊 Progress: <strong>' +
+		progressPercent +
+		'%</strong> (' +
+		completedTasks +
+		'/' +
+		totalTasks +
+		')' +
 		'</div></div>';
 
 	// Render each phase
-	phases.forEach(function(phase) {
-		const phaseDays = MASTER_PLAN.ieltsSchedule.filter(function(d) { return phase.days.includes(d.day); });
+	phases.forEach(function (phase) {
+		const phaseDays = MASTER_PLAN.ieltsSchedule.filter(function (d) {
+			return phase.days.includes(d.day);
+		});
 		if (phaseDays.length === 0) return;
 
 		// Calculate phase progress
 		let phaseTotal = 0;
 		let phaseCompleted = 0;
-		phaseDays.forEach(function(day) {
+		phaseDays.forEach(function (day) {
 			phaseTotal += day.tasks.length;
-			day.tasks.forEach(function(_, idx) {
+			day.tasks.forEach(function (_, idx) {
 				if (tasks['mp-d' + day.day + '-' + idx]) phaseCompleted++;
 			});
 		});
-		const phasePercent = phaseTotal > 0 ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+		const phasePercent =
+			phaseTotal > 0
+				? Math.round((phaseCompleted / phaseTotal) * 100)
+				: 0;
 		const phaseComplete = phasePercent === 100;
 
-		planHTML += '<h3 style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; padding:10px; background:' + 
-			(phaseComplete ? '#10b981' : '#f3f4f6') + '; border-radius:8px; color:' + (phaseComplete ? '#fff' : '#1f2937') + ';">' +
-			'<span>' + phase.icon + ' ' + phase.name + '</span>' +
-			'<span style="font-size:12px; font-weight:normal;">' + phasePercent + '% (' + phaseCompleted + '/' + phaseTotal + ')</span></h3>';
+		planHTML +=
+			'<h3 style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; padding:10px; background:' +
+			(phaseComplete ? '#10b981' : '#f3f4f6') +
+			'; border-radius:8px; color:' +
+			(phaseComplete ? '#fff' : '#1f2937') +
+			';">' +
+			'<span>' +
+			phase.icon +
+			' ' +
+			phase.name +
+			'</span>' +
+			'<span style="font-size:12px; font-weight:normal;">' +
+			phasePercent +
+			'% (' +
+			phaseCompleted +
+			'/' +
+			phaseTotal +
+			')</span></h3>';
 
-		phaseDays.forEach(function(day) {
+		phaseDays.forEach(function (day) {
 			// Day progress
 			let dayCompleted = 0;
-			day.tasks.forEach(function(_, idx) {
+			day.tasks.forEach(function (_, idx) {
 				if (tasks['mp-d' + day.day + '-' + idx]) dayCompleted++;
 			});
-			const dayPercent = day.tasks.length > 0 ? Math.round((dayCompleted / day.tasks.length) * 100) : 0;
+			const dayPercent =
+				day.tasks.length > 0
+					? Math.round((dayCompleted / day.tasks.length) * 100)
+					: 0;
 			const dayComplete = dayPercent === 100;
 
-			planHTML += '<div class="day-section" style="margin:10px 0; border:1px solid ' + (dayComplete ? '#10b981' : '#e5e7eb') + 
-				'; border-radius:8px; overflow:hidden;' + (dayComplete ? 'background:#f0fdf4;' : '') + '">' +
-				'<div class="day-header" style="background:' + (dayComplete ? '#10b981' : '#f8f9fa') + 
+			planHTML +=
+				'<div class="day-section" style="margin:10px 0; border:1px solid ' +
+				(dayComplete ? '#10b981' : '#e5e7eb') +
+				'; border-radius:8px; overflow:hidden;' +
+				(dayComplete ? 'background:#f0fdf4;' : '') +
+				'">' +
+				'<div class="day-header" style="background:' +
+				(dayComplete ? '#10b981' : '#f8f9fa') +
 				'; padding:12px 15px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleDaySection(this)">' +
-				'<div><strong style="color:' + (dayComplete ? '#fff' : '#1f2937') + ';">Day ' + day.day + ': ' + day.focus + '</strong>' +
-				'<span style="font-size:12px; color:' + (dayComplete ? '#d1fae5' : '#6b7280') + '; margin-left:10px;">' + day.date + ' • ' + day.hours + 'h</span>' +
-				(day.targetScore ? '<span style="font-size:11px; color:' + (dayComplete ? '#d1fae5' : '#059669') + '; margin-left:8px;">🎯 ' + day.targetScore + '</span>' : '') +
+				'<div><strong style="color:' +
+				(dayComplete ? '#fff' : '#1f2937') +
+				';">Day ' +
+				day.day +
+				': ' +
+				day.focus +
+				'</strong>' +
+				'<span style="font-size:12px; color:' +
+				(dayComplete ? '#d1fae5' : '#6b7280') +
+				'; margin-left:10px;">' +
+				day.date +
+				' • ' +
+				day.hours +
+				'h</span>' +
+				(day.targetScore
+					? '<span style="font-size:11px; color:' +
+					  (dayComplete ? '#d1fae5' : '#059669') +
+					  '; margin-left:8px;">🎯 ' +
+					  day.targetScore +
+					  '</span>'
+					: '') +
 				'</div><div style="display:flex; align-items:center; gap:10px;">' +
-				'<span style="font-size:12px; color:' + (dayComplete ? '#d1fae5' : '#6b7280') + ';">' + dayCompleted + '/' + day.tasks.length + '</span>' +
-				'<span class="day-arrow" style="font-size:16px; color:' + (dayComplete ? '#fff' : '#6b7280') + '; transition:transform 0.2s;">▼</span>' +
+				'<span style="font-size:12px; color:' +
+				(dayComplete ? '#d1fae5' : '#6b7280') +
+				';">' +
+				dayCompleted +
+				'/' +
+				day.tasks.length +
+				'</span>' +
+				'<span class="day-arrow" style="font-size:16px; color:' +
+				(dayComplete ? '#fff' : '#6b7280') +
+				'; transition:transform 0.2s;">▼</span>' +
 				'</div></div><div class="day-tasks" style="display:none; padding:10px;">' +
 				'<table class="task-table" style="margin:0; border:none;"><tr><th style="width:30px;">✓</th><th style="width:110px;">Time</th><th>Task</th></tr>';
 
-			day.tasks.forEach(function(t, idx) {
+			day.tasks.forEach(function (t, idx) {
 				const taskId = 'mp-d' + day.day + '-' + idx;
 				const checked = tasks[taskId] ? 'checked' : '';
 				const taskIcon = getTaskIconFromText(t.task);
-				planHTML += '<tr class="' + (checked ? 'completed-task' : '') + '" style="' + (checked ? 'opacity:0.6; text-decoration:line-through;' : '') + '">' +
-					'<td><input type="checkbox" ' + checked + ' onchange="toggleTask(\'' + taskId + '\')"></td>' +
-					'<td style="font-size:12px; color:#6b7280; white-space:nowrap;">' + t.time + '</td>' +
-					'<td>' + taskIcon + ' ' + t.task + '</td></tr>';
+				planHTML +=
+					'<tr class="' +
+					(checked ? 'completed-task' : '') +
+					'" style="' +
+					(checked
+						? 'opacity:0.6; text-decoration:line-through;'
+						: '') +
+					'">' +
+					'<td><input type="checkbox" ' +
+					checked +
+					' onchange="toggleTask(\'' +
+					taskId +
+					'\')"></td>' +
+					'<td style="font-size:12px; color:#6b7280; white-space:nowrap;">' +
+					t.time +
+					'</td>' +
+					'<td>' +
+					taskIcon +
+					' ' +
+					t.task +
+					'</td></tr>';
 			});
 
 			planHTML += '</table></div></div>';
 		});
 	});
 
-	planHTML += '<div class="progress-summary" style="margin-top:20px; padding:15px; background:linear-gradient(135deg, #f0fdf4, #ecfdf5); border-radius:8px; text-align:center; border:1px solid #10b981;">' +
-		'<h4 style="margin:0 0 10px 0; color:#059669;">🎯 Target: Band ' + MASTER_PLAN.targetIELTS + ' by ' + MASTER_PLAN.examDate + '</h4>' +
+	planHTML +=
+		'<div class="progress-summary" style="margin-top:20px; padding:15px; background:linear-gradient(135deg, #f0fdf4, #ecfdf5); border-radius:8px; text-align:center; border:1px solid #10b981;">' +
+		'<h4 style="margin:0 0 10px 0; color:#059669;">🎯 Target: Band ' +
+		MASTER_PLAN.targetIELTS +
+		' by ' +
+		MASTER_PLAN.examDate +
+		'</h4>' +
 		'<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; font-size:14px;">' +
-		'<div>✅ <strong>' + completedTasks + '</strong> done</div>' +
-		'<div>📋 <strong>' + (totalTasks - completedTasks) + '</strong> remaining</div>' +
-		'<div>📅 <strong>' + MASTER_PLAN.daysRemaining + '</strong> days left</div>' +
-		'<div>🔥 <strong>' + (streakData.streak || 0) + '</strong> day streak</div>' +
+		'<div>✅ <strong>' +
+		completedTasks +
+		'</strong> done</div>' +
+		'<div>📋 <strong>' +
+		(totalTasks - completedTasks) +
+		'</strong> remaining</div>' +
+		'<div>📅 <strong>' +
+		MASTER_PLAN.daysRemaining +
+		'</strong> days left</div>' +
+		'<div>🔥 <strong>' +
+		(streakData.streak || 0) +
+		'</strong> day streak</div>' +
 		'</div></div>';
 
 	plan.innerHTML = planHTML;
@@ -238,16 +332,66 @@ function displayPlan() {
 // Get task icon based on task content
 function getTaskIconFromText(task) {
 	const t = (task || '').toLowerCase();
-	if (t.includes('listening') || t.includes('bbc') || t.includes('audio')) return '🎧';
-	if (t.includes('reading') || t.includes('passage') || t.includes('60 min strict')) return '📚';
-	if (t.includes('writing') || t.includes('essay') || t.includes('task 1') || t.includes('task 2')) return '✍️';
-	if (t.includes('speaking') || t.includes('cue card') || t.includes('part 1') || t.includes('part 2') || t.includes('part 3')) return '🎤';
-	if (t.includes('vocab') || t.includes('grammar') || t.includes('word') || t.includes('synonym')) return '📝';
-	if (t.includes('mock') || t.includes('test') || t.includes('score') || t.includes('cambridge')) return '🎯';
-	if (t.includes('break') || t.includes('lunch') || t.includes('dinner') || t.includes('rest') || t.includes('snack')) return '☕';
-	if (t.includes('daad') || t.includes('scholarship') || t.includes('motivation')) return '🎓';
-	if (t.includes('register') || t.includes('order') || t.includes('setup') || t.includes('schedule')) return '⚙️';
-	if (t.includes('analyze') || t.includes('review') || t.includes('mistake')) return '🔍';
+	if (t.includes('listening') || t.includes('bbc') || t.includes('audio'))
+		return '🎧';
+	if (
+		t.includes('reading') ||
+		t.includes('passage') ||
+		t.includes('60 min strict')
+	)
+		return '📚';
+	if (
+		t.includes('writing') ||
+		t.includes('essay') ||
+		t.includes('task 1') ||
+		t.includes('task 2')
+	)
+		return '✍️';
+	if (
+		t.includes('speaking') ||
+		t.includes('cue card') ||
+		t.includes('part 1') ||
+		t.includes('part 2') ||
+		t.includes('part 3')
+	)
+		return '🎤';
+	if (
+		t.includes('vocab') ||
+		t.includes('grammar') ||
+		t.includes('word') ||
+		t.includes('synonym')
+	)
+		return '📝';
+	if (
+		t.includes('mock') ||
+		t.includes('test') ||
+		t.includes('score') ||
+		t.includes('cambridge')
+	)
+		return '🎯';
+	if (
+		t.includes('break') ||
+		t.includes('lunch') ||
+		t.includes('dinner') ||
+		t.includes('rest') ||
+		t.includes('snack')
+	)
+		return '☕';
+	if (
+		t.includes('daad') ||
+		t.includes('scholarship') ||
+		t.includes('motivation')
+	)
+		return '🎓';
+	if (
+		t.includes('register') ||
+		t.includes('order') ||
+		t.includes('setup') ||
+		t.includes('schedule')
+	)
+		return '⚙️';
+	if (t.includes('analyze') || t.includes('review') || t.includes('mistake'))
+		return '🔍';
 	return '📌';
 }
 
@@ -297,12 +441,12 @@ function toggleTask(id) {
 	};
 	sd.lastActive = new Date().toISOString().slice(0, 10);
 	localStorage.setItem('ielts-streak', JSON.stringify(sd));
-	
+
 	// Trigger Firebase sync if available
 	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
 		cloudSync.syncToCloud();
 	}
-	
+
 	displayPlan(); // Real-time update
 }
 
