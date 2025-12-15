@@ -475,9 +475,27 @@ class CloudSyncManager {
 					}
 					if (typeof displayGermanyUniversities === 'function') {
 						displayGermanyUniversities();
+						// Restore expanded card states after re-render
+						const germanyList =
+							document.getElementById('germany-list');
+						if (
+							germanyList &&
+							typeof restoreExpandedState === 'function'
+						) {
+							restoreExpandedState(germanyList);
+						}
 					}
 					if (typeof displaySchengenUniversities === 'function') {
 						displaySchengenUniversities();
+						// Restore expanded card states after re-render
+						const schengenList =
+							document.getElementById('schengen-list');
+						if (
+							schengenList &&
+							typeof restoreExpandedState === 'function'
+						) {
+							restoreExpandedState(schengenList);
+						}
 					}
 
 					this.updateSyncStatus('synced');

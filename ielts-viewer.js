@@ -28,7 +28,7 @@ if ('speechSynthesis' in window) {
 const IELTS_FOLDERS = {
 	d1: {
 		name: 'Day 1',
-		icon: '📅',
+		icon: '�️', // Pronunciation & IPA
 		files: [
 			'vocab.md',
 			'ipa.md',
@@ -40,46 +40,51 @@ const IELTS_FOLDERS = {
 	},
 	d2: {
 		name: 'Day 2',
-		icon: '📅',
-		files: ['vocab.md', 'reading-strategies.md', 'listening-strategies.md'],
+		icon: '📖', // Grammar & Strategies
+		files: [
+			'vocab.md',
+			'grammar-8.5.md',
+			'reading-strategies.md',
+			'listening-strategies.md',
+		],
 	},
 	d3: {
 		name: 'Day 3',
-		icon: '📅',
+		icon: '🎧', // Listening Practice
 		files: ['vocab.md', 'listening-practice.md'],
 	},
 	d4: {
 		name: 'Day 4',
-		icon: '📅',
+		icon: '📚', // Reading Practice
 		files: ['vocab.md', 'reading-practice.md'],
 	},
 	d5: {
 		name: 'Day 5',
-		icon: '📅',
+		icon: '✍️', // Writing Task 1 + Speaking
 		files: ['vocab.md', 'writing-task1.md', 'speaking-part2.md'],
 	},
 	d6: {
 		name: 'Day 6',
-		icon: '📅',
+		icon: '📈', // Writing Task 1 Advanced (charts/graphs)
 		files: ['vocab.md', 'writing-task1-advanced.md'],
 	},
-	d7: { name: 'Day 7', icon: '📅', files: ['vocab.md', 'writing-task2.md'] },
+	d7: { name: 'Day 7', icon: '📝', files: ['vocab.md', 'writing-task2.md'] }, // Essay Writing
 	d8: {
 		name: 'Day 8',
-		icon: '📅',
+		icon: '🎤', // Speaking Complete
 		files: ['vocab.md', 'speaking-complete.md'],
 	},
-	d9: { name: 'Day 9', icon: '📅', files: ['vocab.md', 'mixed-practice.md'] },
-	d10: { name: 'Day 10', icon: '📅', files: ['weakness-focus.md'] },
-	d11: { name: 'Day 11', icon: '📅', files: ['mock-test-1.md'] },
-	d12: { name: 'Day 12', icon: '📅', files: ['review-analysis.md'] },
+	d9: { name: 'Day 9', icon: '🔄', files: ['vocab.md', 'mixed-practice.md'] }, // Mixed Practice
+	d10: { name: 'Day 10', icon: '🎯', files: ['weakness-focus.md'] }, // Target Weakness
+	d11: { name: 'Day 11', icon: '📋', files: ['mock-test-1.md'] }, // Mock Test 1
+	d12: { name: 'Day 12', icon: '📊', files: ['review-analysis.md'] }, // Review & Analysis
 	d13: {
 		name: 'Day 13',
-		icon: '📅',
+		icon: '🔍', // Targeted Practice
 		files: ['vocab.md', 'targeted-practice.md'],
 	},
-	d14: { name: 'Day 14', icon: '📅', files: ['mock-test-2.md'] },
-	d15: { name: 'Day 15', icon: '📅', files: ['final-prep.md'] },
+	d14: { name: 'Day 14', icon: '📝', files: ['mock-test-2.md'] }, // Mock Test 2
+	d15: { name: 'Day 15', icon: '🏆', files: ['final-prep.md'] }, // Final Prep - Victory!
 };
 
 // Get ordered folder keys
@@ -1052,7 +1057,7 @@ function renderIPATable(headerRow, bodyRows) {
 	`;
 }
 
-// Render Vocab table with compact layout - Word+IPA merged, Level+Type merged
+// Render Vocab table with compact layout - Word+IPA merged, Level+Type merged, Example in row below
 function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 	const headerLower = headerRow.map((h) => h.toLowerCase());
 
@@ -1075,15 +1080,8 @@ function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 		(h) => h.includes('example') || h.includes('sentence'),
 	);
 
-	// Build compact header: Word (with IPA below), Type/Level, English, বাংলা, Example, 🔊
-	const compactHeaders = [
-		'Word',
-		'Type',
-		'English Meaning',
-		'বাংলা',
-		'Example',
-		'🔊',
-	];
+	// Build compact header: Word (with IPA below), Type/Level, English, বাংলা, 🔊
+	const compactHeaders = ['Word', 'Type', 'English Meaning', 'বাংলা', '🔊'];
 
 	const thead = `<tr>${compactHeaders
 		.map(
@@ -1093,7 +1091,7 @@ function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 		.join('')}</tr>`;
 
 	const tbody = bodyRows
-		.map((row) => {
+		.map((row, idx) => {
 			const word = wordColIndex >= 0 ? row[wordColIndex] || '' : '';
 			const wordClean = word.replace(/\*\*/g, '').trim();
 			const type = typeIdx >= 0 ? row[typeIdx] || '' : '';
@@ -1151,7 +1149,8 @@ function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 		`
 				: '<td class="px-1 py-1.5"></td>';
 
-			return `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">
+			// Main data row
+			const mainRow = `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">
 			${wordCell}
 			${typeCell}
 			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300">${processInlineMarkdown(
@@ -1160,11 +1159,24 @@ function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">${processInlineMarkdown(
 				escapeHtml(bangla),
 			)}</td>
-			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 italic max-w-[150px] sm:max-w-[200px] truncate" title="${escapeHtml(
-				example,
-			)}">${processInlineMarkdown(escapeHtml(example))}</td>
 			${speakerCell}
 		</tr>`;
+
+			// Example row (spans all columns) - only if example exists
+			const exampleRow = example
+				? `<tr class="bg-blue-50/50 dark:bg-blue-900/10 border-b border-gray-200 dark:border-gray-600">
+			<td colspan="5" class="px-3 py-2 sm:px-4 sm:py-2.5">
+				<div class="flex items-start gap-2">
+					<span class="text-blue-500 dark:text-blue-400 text-xs flex-shrink-0">💬</span>
+					<span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 italic">${processInlineMarkdown(
+						escapeHtml(example),
+					)}</span>
+				</div>
+			</td>
+		</tr>`
+				: '';
+
+			return mainRow + exampleRow;
 		})
 		.join('');
 
@@ -1172,7 +1184,7 @@ function renderVocabTable(headerRow, bodyRows, wordColIndex) {
 		<div class="overflow-x-auto my-3 sm:my-6 -mx-2 sm:mx-0 sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700">
 			<table class="w-full text-left">
 				<thead>${thead}</thead>
-				<tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">${tbody}</tbody>
+				<tbody class="bg-white dark:bg-gray-800">${tbody}</tbody>
 			</table>
 		</div>
 	`;

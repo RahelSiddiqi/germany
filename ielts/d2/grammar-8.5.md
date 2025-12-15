@@ -300,9 +300,9 @@ Governments/Individuals should [recommendation].
 
 ### Exercise 1: Transform to Passive
 
-1. Scientists have discovered a new treatment. → ******\_\_\_******
-2. The government will implement new policies. → ******\_\_\_******
-3. People consider education essential. → ******\_\_\_******
+1. Scientists have discovered a new treatment. → **\*\***\_\_\_**\*\***
+2. The government will implement new policies. → **\*\***\_\_\_**\*\***
+3. People consider education essential. → **\*\***\_\_\_**\*\***
 
 <details>
 <summary>Answers</summary>
@@ -391,6 +391,149 @@ Before submitting, check your writing:
 8. **Notwithstanding / Nevertheless**
 9. **This could potentially / may well**
 10. **By no means / Under no circumstances** (with inversion)
+
+---
+
+## 🎤 Speaking Part 3: Topic-Specific Grammar Phrases
+
+### Education Topics
+
+| Structure                            | Example                                                             |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| **The extent to which...**           | The extent to which education shapes society cannot be overstated.  |
+| **It stands to reason that...**      | It stands to reason that well-funded schools perform better.        |
+| **There's a growing tendency to...** | There's a growing tendency to prioritize STEM subjects over arts.   |
+| **What strikes me most is...**       | What strikes me most is the disparity in educational opportunities. |
+
+### Technology Topics
+
+| Structure                               | Example                                                                 |
+| --------------------------------------- | ----------------------------------------------------------------------- |
+| **With the advent of...**               | With the advent of AI, many jobs are being automated.                   |
+| **It's becoming increasingly...**       | It's becoming increasingly difficult to disconnect from technology.     |
+| **The ramifications of... are...**      | The ramifications of social media on mental health are concerning.      |
+| **We're witnessing a shift towards...** | We're witnessing a shift towards remote work and digital communication. |
+
+### Environment Topics
+
+| Structure                              | Example                                                                    |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| **Unless drastic measures are...**     | Unless drastic measures are taken, climate change will worsen.             |
+| **The onus is on...**                  | The onus is on governments to enforce environmental regulations.           |
+| **It's imperative that...**            | It's imperative that we transition to renewable energy sources.            |
+| **The consequences of... could be...** | The consequences of inaction could be catastrophic for future generations. |
+
+### Health Topics
+
+| Structure                               | Example                                                               |
+| --------------------------------------- | --------------------------------------------------------------------- |
+| **There's compelling evidence that...** | There's compelling evidence that exercise improves mental health.     |
+| **It would be naive to assume...**      | It would be naive to assume technology alone can solve health issues. |
+| **What concerns me most is...**         | What concerns me most is the rise in lifestyle-related diseases.      |
+| **A holistic approach to...**           | A holistic approach to health includes both physical and mental care. |
+
+---
+
+## 🔤 Punctuation Rules for Band 8.5+
+
+### Comma Usage
+
+| Rule                           | Example                                                    |
+| ------------------------------ | ---------------------------------------------------------- |
+| **After introductory phrases** | **Consequently**, the project was delayed.                 |
+| **Non-defining clauses**       | My sister**,** who lives in Canada**,** is a doctor.       |
+| **Before coordinating conj.**  | I studied hard**,** but I still failed.                    |
+| **In lists**                   | Education**,** healthcare**,** and housing are priorities. |
+
+### Semicolon Usage
+
+| Rule                        | Example                                                 |
+| --------------------------- | ------------------------------------------------------- |
+| **Between related clauses** | Some people prefer cities**;** others enjoy rural life. |
+| **Before conjunctive adv.** | The plan was costly**;** however, it proved effective.  |
+
+### Colon Usage
+
+| Rule                          | Example                                                   |
+| ----------------------------- | --------------------------------------------------------- |
+| **Before a list/explanation** | There are three key factors**:** cost, time, and quality. |
+| **Before elaboration**        | The solution is simple**:** invest more in education.     |
+
+---
+
+## 📝 Error Correction Exercise
+
+Fix the grammar errors in these sentences:
+
+1. ❌ "The amount of people using smartphones have increased dramatically."
+2. ❌ "Despite of the challenges, the project succeeded."
+3. ❌ "If I would have known, I would helped you."
+4. ❌ "He suggested me to apply for the job."
+5. ❌ "The informations provided were very useful."
+6. ❌ "I am agree with this statement."
+7. ❌ "Nowadays, the pollution is a serious problem."
+8. ❌ "He went to abroad for his studies."
+
+<details>
+<summary>Click for Answers</summary>
+
+1. ✅ "The **number** of people using smartphones **has** increased dramatically."
+2. ✅ "**Despite** the challenges, the project succeeded." (No 'of')
+3. ✅ "If I **had** known, I **would have helped** you."
+4. ✅ "He suggested **that I apply** for the job." / "He advised me to apply..."
+5. ✅ "The **information** provided **was** very useful." (Uncountable)
+6. ✅ "I **agree** with this statement." (No 'am')
+7. ✅ "Nowadays, pollution is a serious problem." (No 'the')
+8. ✅ "He went **abroad** for his studies." (No 'to')
+ </details>
+
+---
+
+## 🎯 Daily Grammar Practice Routine
+
+### 5-Minute Daily Drill
+
+| Day       | Focus Area       | Practice Activity                             |
+| --------- | ---------------- | --------------------------------------------- |
+| Monday    | Conditionals     | Write 3 sentences using mixed conditionals    |
+| Tuesday   | Passive Voice    | Transform 5 active sentences to passive       |
+| Wednesday | Relative Clauses | Combine 5 pairs of sentences                  |
+| Thursday  | Inversion        | Rewrite 5 sentences with inverted structures  |
+| Friday    | Cleft Sentences  | Emphasize different parts of 3 sentences      |
+| Saturday  | Hedging Language | Make 5 statements more academic with hedging  |
+| Sunday    | Mixed Review     | Write a paragraph using at least 5 structures |
+
+---
+
+## 💡 Band 8.5+ Sentence Starters Bank
+
+### For Agreeing/Disagreeing
+
+-   _I am inclined to believe that..._
+-   _I would contend that..._
+-   _It is my firm conviction that..._
+-   _While I acknowledge that..., I maintain that..._
+
+### For Giving Examples
+
+-   _A prime example of this would be..._
+-   _To illustrate this point,..._
+-   _This is evidenced by..._
+-   _Take, for instance,..._
+
+### For Contrasting
+
+-   _Conversely,..._
+-   _In stark contrast to this,..._
+-   _On the other hand,..._
+-   _Notwithstanding,..._
+
+### For Concluding
+
+-   _Taking everything into consideration,..._
+-   _On balance,..._
+-   _Ultimately,..._
+-   _In the final analysis,..._
 
 ---
 
