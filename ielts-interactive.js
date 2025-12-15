@@ -3686,7 +3686,11 @@ function updateFlashcardDisplay() {
 			<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
 				<span>Card ${flashcardState.currentIndex + 1} of ${words.length}</span>
 				<span class="flex items-center gap-2">
-					${currentWord.type ? `<span class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs">${currentWord.type}</span>` : ''}
+					${
+						currentWord.type
+							? `<span class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs">${currentWord.type}</span>`
+							: ''
+					}
 					<span class="px-2 py-0.5 rounded ${levelColor} text-xs font-medium">${
 		currentWord.level || 'B2'
 	}</span>
@@ -3704,16 +3708,28 @@ function updateFlashcardDisplay() {
 						flashcardState.showingAnswer
 							? `
 						<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Definition:</p>
-						<p class="text-sm sm:text-base font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">${currentWord.definition}</p>
-						<p class="text-xs text-teal-600 dark:text-teal-400 italic mb-2">"${currentWord.example}"</p>
-						${currentWord.type ? `<p class="text-[10px] text-blue-500 dark:text-blue-400 mb-1">${currentWord.type}</p>` : ''}
+						<p class="text-sm sm:text-base font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">${
+							currentWord.definition
+						}</p>
+						<p class="text-xs text-teal-600 dark:text-teal-400 italic mb-2">"${
+							currentWord.example
+						}"</p>
+						${
+							currentWord.type
+								? `<p class="text-[10px] text-blue-500 dark:text-blue-400 mb-1">${currentWord.type}</p>`
+								: ''
+						}
 						<button onclick="event.stopPropagation(); flipFlashcard()" class="text-xs text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400">↩️ Flip back</button>
 					`
 							: `
 						<p class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1">${
 							currentWord.word
 						}</p>
-						${currentWord.type ? `<p class="text-[10px] text-blue-500 dark:text-blue-400 mb-1">(${currentWord.type})</p>` : ''}
+						${
+							currentWord.type
+								? `<p class="text-[10px] text-blue-500 dark:text-blue-400 mb-1">(${currentWord.type})</p>`
+								: ''
+						}
 						${
 							currentWord.phonetic
 								? `<p class="text-xs text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>`

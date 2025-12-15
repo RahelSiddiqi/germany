@@ -208,12 +208,14 @@ function toggleExpand(element) {
 // Helper to restore expanded state after re-render
 function restoreExpandedState(container) {
 	if (!container) return;
-	container.querySelectorAll('[data-card-id]').forEach(card => {
+	container.querySelectorAll('[data-card-id]').forEach((card) => {
 		const cardId = card.getAttribute('data-card-id');
 		if (expandedCards.has(cardId)) {
 			const header = card.querySelector('.cursor-pointer');
 			const content = header ? header.nextElementSibling : null;
-			const toggle = header ? header.querySelector('.expand-toggle') : null;
+			const toggle = header
+				? header.querySelector('.expand-toggle')
+				: null;
 			if (content) {
 				content.classList.remove('hidden');
 			}
@@ -625,7 +627,10 @@ function displayGermanyUniversities() {
 	container.innerHTML = sortedUniversities
 		.map(
 			(uni) => `
-		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="germany-${uni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="germany-${uni.university.replace(
+			/[^a-zA-Z0-9]/g,
+			'-',
+		)}">
 			<div class="p-3 sm:p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
 				<div class="flex items-start justify-between gap-3 sm:gap-4">
 					<div class="flex-1 min-w-0">
@@ -807,7 +812,10 @@ function displayGermanyProgress() {
 				);
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow" data-card-id="germany-progress-${trackedUni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow" data-card-id="germany-progress-${trackedUni.university.replace(
+					/[^a-zA-Z0-9]/g,
+					'-',
+				)}">
 					<!-- Collapsed Header with Progress -->
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between gap-3">
@@ -965,7 +973,10 @@ function displayGermanyProgress() {
 			`;
 			} else {
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="germany-untracked-${uni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="germany-untracked-${uni.university.replace(
+					/[^a-zA-Z0-9]/g,
+					'-',
+				)}">
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between">
 							<div class="flex items-center gap-3">
@@ -1040,12 +1051,14 @@ function toggleProgressExpand(element) {
 // Helper to restore expanded state for progress items
 function restoreProgressExpandedState(container) {
 	if (!container) return;
-	container.querySelectorAll('[data-card-id]').forEach(card => {
+	container.querySelectorAll('[data-card-id]').forEach((card) => {
 		const cardId = card.getAttribute('data-card-id');
 		if (expandedCards.has(cardId)) {
 			const header = card.querySelector('.cursor-pointer');
 			const details = card.querySelector('.hidden');
-			const toggle = header ? header.querySelector('.expand-toggle') : null;
+			const toggle = header
+				? header.querySelector('.expand-toggle')
+				: null;
 			if (details) {
 				details.classList.remove('hidden');
 				details.classList.add('block');
@@ -1271,7 +1284,10 @@ function displaySchengenUniversities() {
 	container.innerHTML = sortedUniversities
 		.map(
 			(uni) => `
-		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="schengen-${uni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="schengen-${uni.university.replace(
+			/[^a-zA-Z0-9]/g,
+			'-',
+		)}">
 			<div class="p-3 sm:p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
 				<div class="flex items-start justify-between gap-3 sm:gap-4">
 					<div class="flex-1 min-w-0">
@@ -1473,7 +1489,10 @@ function displaySchengenProgress() {
 				);
 
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow" data-card-id="schengen-progress-${trackedUni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow" data-card-id="schengen-progress-${trackedUni.university.replace(
+					/[^a-zA-Z0-9]/g,
+					'-',
+				)}">
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between gap-3">
 							<div class="flex items-center gap-3 flex-1 min-w-0">
@@ -1626,7 +1645,10 @@ function displaySchengenProgress() {
 			`;
 			} else {
 				return `
-				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="schengen-untracked-${uni.university.replace(/[^a-zA-Z0-9]/g, '-')}">
+				<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-card-id="schengen-untracked-${uni.university.replace(
+					/[^a-zA-Z0-9]/g,
+					'-',
+				)}">
 					<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between">
 							<div class="flex items-center gap-3">
@@ -1885,7 +1907,10 @@ function displayScholarshipTracker() {
 				statusColors[scholarship.status] || statusColors.not_started;
 
 			return `
-				<div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden" data-expanded="false" data-card-id="scholarship-${scholarship.name.replace(/[^a-zA-Z0-9]/g, '-')}">
+				<div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden" data-expanded="false" data-card-id="scholarship-${scholarship.name.replace(
+					/[^a-zA-Z0-9]/g,
+					'-',
+				)}">
 					<div class="p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="toggleProgressExpand(this)">
 						<div class="flex items-center justify-between">
 							<div class="flex items-center gap-3 flex-1 min-w-0">
@@ -3098,7 +3123,8 @@ function showStudyTimeModal() {
 	// Create modal overlay
 	const modal = document.createElement('div');
 	modal.id = 'study-time-modal';
-	modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+	modal.className =
+		'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4';
 	modal.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-sm w-full p-5 transform transition-all">
 			<div class="text-center mb-4">
@@ -3126,7 +3152,7 @@ function showStudyTimeModal() {
 		</div>
 	`;
 	document.body.appendChild(modal);
-	
+
 	// Focus input and select text
 	setTimeout(() => {
 		const input = document.getElementById('study-minutes-input');
@@ -3135,7 +3161,7 @@ function showStudyTimeModal() {
 			input.select();
 		}
 	}, 100);
-	
+
 	// Close on backdrop click
 	modal.addEventListener('click', (e) => {
 		if (e.target === modal) closeStudyTimeModal();
@@ -3150,14 +3176,18 @@ function closeStudyTimeModal() {
 function submitStudyTime() {
 	const input = document.getElementById('study-minutes-input');
 	const minutes = parseInt(input?.value);
-	
+
 	if (!minutes || isNaN(minutes) || minutes < 1) {
 		if (typeof notificationManager !== 'undefined') {
-			notificationManager.showInAppNotification('Please enter a valid number of minutes', 'error', 3000);
+			notificationManager.showInAppNotification(
+				'Please enter a valid number of minutes',
+				'error',
+				3000,
+			);
 		}
 		return;
 	}
-	
+
 	closeStudyTimeModal();
 	processStudyTime(minutes);
 }
@@ -3356,7 +3386,7 @@ function filterGermanyUniversities() {
 	container.innerHTML = filtered
 		.map((uni) => renderUniversityCard(uni, 'germany'))
 		.join('');
-	
+
 	// Restore expanded state after re-render
 	restoreExpandedState(container);
 }
@@ -3395,7 +3425,7 @@ function filterSchengenUniversities() {
 	container.innerHTML = filtered
 		.map((uni) => renderUniversityCard(uni, 'schengen'))
 		.join('');
-	
+
 	// Restore expanded state after re-render
 	restoreExpandedState(container);
 }
