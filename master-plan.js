@@ -872,7 +872,7 @@ const MASTER_PLAN = {
 		{
 			deadline: '2026-05-31',
 			university: 'TU Darmstadt',
-			priority: 'DREAM SCHOOL - #1 IT Security Germany!',
+			priority: '#1 IT Security Germany!',
 			documents: [
 				'Transcripts',
 				'CV',
