@@ -822,7 +822,7 @@ function renderMarkdownTailwind(md) {
 	return output.join('\n');
 }
 
-// Render table with Tailwind - Mobile optimized
+// Render table with Tailwind - Mobile optimized with IPA/Vocab special handling
 function renderTableTailwind(rows) {
 	if (rows.length < 2) return rows.join('\n');
 
@@ -841,8 +841,15 @@ function renderTableTailwind(rows) {
 	const headerRow = dataRows[0];
 	const bodyRows = dataRows.slice(1);
 
+	// Detect table type
+	const headerLower = headerRow.map(h => h.toLowerCase());
+	const isIPATable = headerLower.some(h => h.includes('symbol') || h.includes('ipa')) && 
+		headerLower.some(h => h.includes('sound') || h.includes('বাংলা') || h.includes('bangla'));
+	const isVocabTable = headerLower.some(h => h === 'word' || h.includes('word')) &&
+		(headerLower.includes('type') || headerLower.includes('level'));
+
 	const wordColIndex = headerRow.findIndex((h) =>
-		h.toLowerCase().includes('word'),
+		h.toLowerCase().includes('word') || h.toLowerCase() === 'word',
 	);
 	const hasAudioColumn = headerRow.some((h) =>
 		h.toLowerCase().includes('audio'),
@@ -850,6 +857,8 @@ function renderTableTailwind(rows) {
 
 	let filteredHeaderRow = headerRow;
 	let filteredBodyRows = bodyRows;
+	
+	// Remove Audio column if exists
 	if (hasAudioColumn) {
 		const audioColIndex = headerRow.findIndex((h) =>
 			h.toLowerCase().includes('audio'),
@@ -860,13 +869,23 @@ function renderTableTailwind(rows) {
 		);
 	}
 
+	// Special handling for IPA tables - merge Sound + বাংলা হিন্ট
+	if (isIPATable) {
+		return renderIPATable(filteredHeaderRow, filteredBodyRows);
+	}
+
+	// Special handling for Vocab tables - compact layout
+	if (isVocabTable) {
+		return renderVocabTable(filteredHeaderRow, filteredBodyRows, wordColIndex);
+	}
+
 	const finalHeaderRow =
 		wordColIndex >= 0 ? [...filteredHeaderRow, '🔊'] : filteredHeaderRow;
 
 	const thead = `<tr>${finalHeaderRow
 		.map(
 			(c) =>
-				`<th class="px-2 py-2 sm:px-3 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700 whitespace-nowrap">${processInlineMarkdown(
+				`<th class="px-2 py-2 sm:px-3 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700">${processInlineMarkdown(
 					escapeHtml(c),
 				)}</th>`,
 		)
@@ -896,6 +915,168 @@ function renderTableTailwind(rows) {
 			return `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">${cells}${audioCell}</tr>`;
 		})
 		.join('');
+
+	return `
+		<div class="overflow-x-auto my-3 sm:my-6 -mx-2 sm:mx-0 sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700">
+			<table class="w-full text-left">
+				<thead>${thead}</thead>
+				<tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">${tbody}</tbody>
+			</table>
+		</div>
+	`;
+}
+
+// Render IPA table with merged Sound + Bangla Hint column and speaker icon
+function renderIPATable(headerRow, bodyRows) {
+	const headerLower = headerRow.map(h => h.toLowerCase());
+	
+	// Find column indices
+	const symbolIdx = headerLower.findIndex(h => h.includes('symbol'));
+	const soundIdx = headerLower.findIndex(h => h === 'sound' || h.includes('sound'));
+	const banglaIdx = headerLower.findIndex(h => h.includes('বাংলা') || h.includes('bangla') || h.includes('হিন্ট'));
+	const exampleIdx = headerLower.findIndex(h => h.includes('example'));
+	const ipaIdx = headerLower.findIndex(h => h === 'ipa' && !h.includes('symbol'));
+	const spellingIdx = headerLower.findIndex(h => h.includes('spelling'));
+	const voicedIdx = headerLower.findIndex(h => h.includes('voiced'));
+
+	// Build compact header
+	const compactHeaders = ['Symbol', 'Sound / Hint', '🔊', 'Example', 'IPA'];
+	if (spellingIdx >= 0) compactHeaders.push('Spellings');
+	if (voicedIdx >= 0) compactHeaders.push('V?');
+
+	const thead = `<tr>${compactHeaders.map(h => 
+		`<th class="px-2 py-2 sm:px-3 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700">${h}</th>`
+	).join('')}</tr>`;
+
+	const tbody = bodyRows.map(row => {
+		const symbol = row[symbolIdx] || '';
+		const sound = row[soundIdx] || '';
+		const bangla = row[banglaIdx] || '';
+		const example = row[exampleIdx] || '';
+		const ipa = ipaIdx >= 0 ? (row[ipaIdx] || '') : '';
+		const spelling = spellingIdx >= 0 ? (row[spellingIdx] || '') : '';
+		const voiced = voicedIdx >= 0 ? (row[voicedIdx] || '') : '';
+		
+		const exampleWord = example.replace(/\*\*/g, '').trim();
+
+		// Merged Sound + Bangla cell
+		const soundBanglaCell = `
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5">
+				<div class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium">${processInlineMarkdown(escapeHtml(sound))}</div>
+				<div class="text-[10px] sm:text-xs text-purple-600 dark:text-purple-400">${processInlineMarkdown(escapeHtml(bangla))}</div>
+			</td>
+		`;
+
+		// Speaker button cell
+		const speakerCell = exampleWord ? `
+			<td class="px-1 py-1.5 text-center">
+				<button onclick="speakWord('${exampleWord.replace(/'/g, "\\'")}')" 
+					class="p-1.5 rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 hover:bg-teal-100 dark:hover:bg-teal-800/50 transition-colors">
+					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+				</button>
+			</td>
+		` : '<td class="px-1 py-1.5"></td>';
+
+		let cells = `
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 font-mono text-sm sm:text-base text-teal-600 dark:text-teal-400 font-bold">${processInlineMarkdown(escapeHtml(symbol))}</td>
+			${soundBanglaCell}
+			${speakerCell}
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300">${processInlineMarkdown(escapeHtml(example))}</td>
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 font-mono text-xs text-gray-500 dark:text-gray-400">${processInlineMarkdown(escapeHtml(ipa))}</td>
+		`;
+
+		if (spellingIdx >= 0) {
+			cells += `<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs text-gray-500 dark:text-gray-400">${processInlineMarkdown(escapeHtml(spelling))}</td>`;
+		}
+		if (voicedIdx >= 0) {
+			const voicedIcon = voiced.toLowerCase() === 'yes' ? '✓' : voiced.toLowerCase() === 'no' ? '✗' : voiced;
+			cells += `<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs text-center ${voiced.toLowerCase() === 'yes' ? 'text-green-500' : 'text-gray-400'}">${voicedIcon}</td>`;
+		}
+
+		return `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">${cells}</tr>`;
+	}).join('');
+
+	return `
+		<div class="overflow-x-auto my-3 sm:my-6 -mx-2 sm:mx-0 sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700">
+			<table class="w-full text-left">
+				<thead>${thead}</thead>
+				<tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">${tbody}</tbody>
+			</table>
+		</div>
+	`;
+}
+
+// Render Vocab table with compact layout - Word+IPA merged, Level+Type merged
+function renderVocabTable(headerRow, bodyRows, wordColIndex) {
+	const headerLower = headerRow.map(h => h.toLowerCase());
+	
+	// Find column indices
+	const numIdx = headerLower.findIndex(h => h === '#' || h === 'no' || h === 'no.');
+	const typeIdx = headerLower.findIndex(h => h === 'type');
+	const levelIdx = headerLower.findIndex(h => h === 'level');
+	const pronIdx = headerLower.findIndex(h => h.includes('pronun') || h === 'ipa');
+	const meaningIdx = headerLower.findIndex(h => h.includes('meaning') && h.includes('english'));
+	const banglaIdx = headerLower.findIndex(h => h.includes('বাংলা') || h.includes('bangla'));
+	const exampleIdx = headerLower.findIndex(h => h.includes('example') || h.includes('sentence'));
+
+	// Build compact header: Word (with IPA below), Type/Level, English, বাংলা, Example, 🔊
+	const compactHeaders = ['Word', 'Type', 'English Meaning', 'বাংলা', 'Example', '🔊'];
+
+	const thead = `<tr>${compactHeaders.map(h => 
+		`<th class="px-2 py-2 sm:px-3 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700">${h}</th>`
+	).join('')}</tr>`;
+
+	const tbody = bodyRows.map(row => {
+		const word = wordColIndex >= 0 ? (row[wordColIndex] || '') : '';
+		const wordClean = word.replace(/\*\*/g, '').trim();
+		const type = typeIdx >= 0 ? (row[typeIdx] || '') : '';
+		const level = levelIdx >= 0 ? (row[levelIdx] || '') : '';
+		const pron = pronIdx >= 0 ? (row[pronIdx] || '') : '';
+		const meaning = meaningIdx >= 0 ? (row[meaningIdx] || '') : '';
+		const bangla = banglaIdx >= 0 ? (row[banglaIdx] || '') : '';
+		const example = exampleIdx >= 0 ? (row[exampleIdx] || '') : '';
+
+		// Word + IPA cell (stacked)
+		const wordCell = `
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5">
+				<div class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">${processInlineMarkdown(escapeHtml(word))}</div>
+				${pron ? `<div class="text-[10px] sm:text-xs text-purple-600 dark:text-purple-400 font-mono">${processInlineMarkdown(escapeHtml(pron))}</div>` : ''}
+			</td>
+		`;
+
+		// Type + Level merged
+		const levelBadge = level ? `<span class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium ${
+			level === 'C1' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+			level === 'B2' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
+			'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+		}">${level}</span>` : '';
+		
+		const typeCell = `
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5">
+				<div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">${processInlineMarkdown(escapeHtml(type))}</div>
+				${levelBadge}
+			</td>
+		`;
+
+		// Speaker button
+		const speakerCell = wordClean ? `
+			<td class="px-1 py-1.5 text-center">
+				<button onclick="speakWord('${wordClean.replace(/'/g, "\\'")}')" 
+					class="p-1.5 rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 hover:bg-teal-100 dark:hover:bg-teal-800/50 transition-colors">
+					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+				</button>
+			</td>
+		` : '<td class="px-1 py-1.5"></td>';
+
+		return `<tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30">
+			${wordCell}
+			${typeCell}
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300">${processInlineMarkdown(escapeHtml(meaning))}</td>
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">${processInlineMarkdown(escapeHtml(bangla))}</td>
+			<td class="px-2 py-1.5 sm:px-3 sm:py-2.5 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 italic max-w-[150px] sm:max-w-[200px] truncate" title="${escapeHtml(example)}">${processInlineMarkdown(escapeHtml(example))}</td>
+			${speakerCell}
+		</tr>`;
+	}).join('');
 
 	return `
 		<div class="overflow-x-auto my-3 sm:my-6 -mx-2 sm:mx-0 sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700">
