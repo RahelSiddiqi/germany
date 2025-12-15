@@ -294,9 +294,9 @@ class Band8Dashboard {
 		// Fallback when master plan isn't loaded yet
 		if (!viewingDayData) {
 			return `
-				<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-					<div class="flex items-center justify-between mb-6">
-						<h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 -mx-2 sm:mx-0">
+					<div class="flex items-center justify-between mb-4 sm:mb-6">
+						<h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
 							🎯 IELTS Band 8.0-8.5 Prep
 						</h2>
 						<div class="text-center">
@@ -371,7 +371,7 @@ class Band8Dashboard {
 				</div>
 
 				<!-- Day Navigator -->
-				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0">
+				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0 mt-4">
 					<div class="flex items-center justify-between mb-4">
 						<button onclick="band8Dashboard.prevDay()"
 								class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
@@ -481,13 +481,21 @@ class Band8Dashboard {
 									: 'Preview of upcoming day'
 							}
 						</p>
-						<div class="flex flex-wrap gap-2 sm:gap-4 mt-2 sm:mt-3 text-xs sm:text-sm">
+						<div class="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 sm:mt-3 text-xs sm:text-sm">
 							<span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white">Focus:</strong> ${
 								viewingDayData.focus
 							}</span>
 							<span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white">Hours:</strong> ${viewHoursLogged}/${
 			viewingDayData.hours
 		}h</span>
+							<a href="#ielts-practice" 
+							   onclick="showPage('ielts-practice'); openIELTSFolder && openIELTSFolder('d${viewingDay}')"
+							   class="inline-flex items-center gap-1 px-2 py-1 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full text-[10px] sm:text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors">
+								<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+								</svg>
+								Resources
+							</a>
 						</div>
 					</div>
 

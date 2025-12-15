@@ -29,10 +29,16 @@ class CloudSyncManager {
 			ieltsScores: 'ielts-scores',
 			scholarships: 'scholarship-applications',
 			documents: 'document-checklist',
-			vocab: 'learned-vocabulary',
+			vocab: 'ielts-vocab-learned',
 			germanyNotes: 'germany-notes',
 			schengenNotes: 'schengen-notes',
 			studyReminders: 'study-reminders',
+			ieltsNext: 'ielts-next',
+			ieltsStreak: 'ielts-streak',
+			ieltsWeights: 'ielts-weights',
+			band8Progress: 'band8_progress',
+			ieltsEssays: 'ielts-essays',
+			ieltsCurrentEssay: 'ielts-current-essay',
 		};
 
 		// Check if Firebase config is set
@@ -218,6 +224,26 @@ class CloudSyncManager {
 					localStorage.getItem(this.STORAGE_KEYS.studyReminders) ||
 						'{}',
 				),
+				ieltsNext: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.ieltsNext) || '{}',
+				),
+				ieltsStreak: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.ieltsStreak) || '{}',
+				),
+				ieltsWeights: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.ieltsWeights) ||
+						'{}',
+				),
+				band8Progress: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.band8Progress) ||
+						'{}',
+				),
+				ieltsEssays: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.ieltsEssays) || '[]',
+				),
+				ieltsCurrentEssay:
+					localStorage.getItem(this.STORAGE_KEYS.ieltsCurrentEssay) ||
+					'',
 				lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
 				deviceInfo: navigator.userAgent,
 			};
@@ -322,6 +348,51 @@ class CloudSyncManager {
 						JSON.stringify(data.studyReminders),
 					);
 				}
+				if (data.ieltsNext && Object.keys(data.ieltsNext).length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.ieltsNext,
+						JSON.stringify(data.ieltsNext),
+					);
+				}
+				if (
+					data.ieltsStreak &&
+					Object.keys(data.ieltsStreak).length > 0
+				) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.ieltsStreak,
+						JSON.stringify(data.ieltsStreak),
+					);
+				}
+				if (
+					data.ieltsWeights &&
+					Object.keys(data.ieltsWeights).length > 0
+				) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.ieltsWeights,
+						JSON.stringify(data.ieltsWeights),
+					);
+				}
+				if (
+					data.band8Progress &&
+					Object.keys(data.band8Progress).length > 0
+				) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.band8Progress,
+						JSON.stringify(data.band8Progress),
+					);
+				}
+				if (data.ieltsEssays && data.ieltsEssays.length > 0) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.ieltsEssays,
+						JSON.stringify(data.ieltsEssays),
+					);
+				}
+				if (data.ieltsCurrentEssay) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.ieltsCurrentEssay,
+						data.ieltsCurrentEssay,
+					);
+				}
 
 				this.lastSyncTime = new Date();
 				console.log('Data synced from cloud');
@@ -332,6 +403,10 @@ class CloudSyncManager {
 				}
 				if (typeof displayIELTSPlan === 'function') {
 					displayIELTSPlan();
+				}
+				// Refresh vocabulary flashcard state
+				if (typeof refreshFlashcardState === 'function') {
+					refreshFlashcardState();
 				}
 			} else {
 				// No cloud data exists, upload local data

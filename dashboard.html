@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,13 @@
 			content="black-translucent" />
 		<title>Study Hub - IELTS & University Tracker</title>
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<style>
+			/* Prevent horizontal overflow on mobile */
+			html, body { 
+				overflow-x: hidden;
+				max-width: 100vw;
+			}
+		</style>
 		<link rel="manifest" href="manifest.json" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -51,7 +58,7 @@
 		</script>
 	</head>
 	<body
-		class="bg-gray-50 dark:bg-gray-900 font-sans antialiased leading-relaxed tracking-normal text-gray-800 dark:text-gray-200">
+		class="bg-gray-50 dark:bg-gray-900 font-sans antialiased leading-relaxed tracking-normal text-gray-800 dark:text-gray-200 overflow-x-hidden">
 		<!-- Loading Screen -->
 		<div
 			id="loading-screen"
@@ -128,18 +135,18 @@
 			</div>
 			<nav class="p-3 space-y-1 overflow-y-auto h-[calc(100%-3.5rem)]">
 				<a
-					href="#band8-tracker"
-					onclick="showPage('band8-tracker')"
-					class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
-					data-page="band8-tracker">
-					<span class="text-lg">🎯</span> IELTS 15-Day Plan
-				</a>
-				<a
 					href="#dashboard"
 					onclick="showPage('dashboard')"
 					class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
 					data-page="dashboard">
 					<span class="text-lg">📊</span> Dashboard
+				</a>
+				<a
+					href="#band8-tracker"
+					onclick="showPage('band8-tracker')"
+					class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
+					data-page="band8-tracker">
+					<span class="text-lg">🎯</span> IELTS 15-Day Plan
 				</a>
 				<a
 					href="#ielts-practice"
@@ -230,7 +237,7 @@
 
 		<!-- Main Content -->
 		<main class="lg:ml-64 pt-14 lg:pt-0 min-h-screen">
-			<div class="max-w-6xl mx-auto px-3 py-3 sm:p-4 lg:p-6">
+			<div class="max-w-6xl mx-auto px-3 py-2 sm:p-4 lg:p-6">
 				<!-- Band 8.0-8.5 IELTS Tracker Page -->
 				<div id="band8-tracker" class="page hidden">
 					<div id="band8-container">
@@ -640,18 +647,19 @@
 
 				<!-- IELTS Tools Page -->
 				<div id="ielts-tools" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							🛠️ IELTS Practice Tools
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Interactive tools to boost your band score
 						</p>
 					</div>
 
 					<!-- Tool Tabs -->
-					<div class="flex flex-wrap gap-2 mb-6">
+					<div class="flex flex-wrap gap-2 mb-3 sm:mb-6">
 						<button
 							onclick="openIELTSTool('vocab')"
 							id="tab-vocab"
@@ -687,7 +695,7 @@
 					<!-- Tool Containers -->
 					<div id="vocab-tool-container" class="ielts-tool-content">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 							<div
 								class="text-center text-gray-500 dark:text-gray-400">
 								Loading vocabulary tool...
@@ -699,7 +707,7 @@
 						id="speaking-tool-container"
 						class="ielts-tool-content hidden">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 							<div
 								class="text-center text-gray-500 dark:text-gray-400">
 								Loading speaking tool...
@@ -711,7 +719,7 @@
 						id="writing-tool-container"
 						class="ielts-tool-content hidden">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 							<div
 								class="text-center text-gray-500 dark:text-gray-400">
 								Loading writing tool...
@@ -723,7 +731,7 @@
 						id="mock-tool-container"
 						class="ielts-tool-content hidden">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 							<div
 								class="text-center text-gray-500 dark:text-gray-400">
 								Loading mock test tool...
@@ -735,7 +743,7 @@
 						id="resources-tool-container"
 						class="ielts-tool-content hidden">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 							<div
 								class="text-center text-gray-500 dark:text-gray-400">
 								Loading resources...
@@ -746,18 +754,19 @@
 
 				<!-- Germany Universities Page -->
 				<div id="germany" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							🇩🇪 Germany Universities
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Cyber Security Programs
 						</p>
 					</div>
 					<!-- Search and Filter -->
 					<div
-						class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 mb-4">
+						class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700 mb-3 sm:mb-4 -mx-2 sm:mx-0">
 						<div class="flex flex-col sm:flex-row gap-3">
 							<div class="flex-1">
 								<input
@@ -783,24 +792,25 @@
 					</div>
 					<div
 						id="germany-list"
-						class="grid gap-4 md:grid-cols-2"></div>
+						class="grid gap-3 sm:gap-4 md:grid-cols-2 -mx-2 sm:mx-0"></div>
 				</div>
 
 				<!-- Scholarships Guide Page -->
 				<div id="scholarships" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							💰 Scholarships
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Financial aid opportunities
 						</p>
 					</div>
 
 					<!-- Scholarship Tracker Section -->
 					<div
-						class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-6">
+						class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0 mb-3 sm:mb-6">
 						<div class="flex items-center justify-between mb-4">
 							<h3
 								class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -821,17 +831,18 @@
 
 				<!-- Germany Progress Page -->
 				<div id="germany-progress" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							📈 Germany Applications
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Track your progress
 						</p>
 					</div>
 					<div
-						class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-4">
+						class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0 mb-4">
 						<h3
 							class="font-semibold text-gray-900 dark:text-white mb-4">
 							Add University
@@ -888,18 +899,19 @@
 
 				<!-- Schengen Universities Page -->
 				<div id="schengen" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							🇪🇺 Schengen Universities
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Cyber Security Programs
 						</p>
 					</div>
 					<!-- Search and Filter -->
 					<div
-						class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 mb-4">
+						class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700 mb-3 sm:mb-4 -mx-2 sm:mx-0">
 						<div class="flex flex-col sm:flex-row gap-3">
 							<div class="flex-1">
 								<input
@@ -925,22 +937,23 @@
 					</div>
 					<div
 						id="schengen-list"
-						class="grid gap-4 md:grid-cols-2"></div>
+						class="grid gap-3 sm:gap-4 md:grid-cols-2 -mx-2 sm:mx-0"></div>
 				</div>
 
 				<!-- Schengen Progress Page -->
 				<div id="schengen-progress" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							📊 Schengen Applications
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Track your progress
 						</p>
 					</div>
 					<div
-						class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 mb-4">
+						class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700 -mx-2 sm:mx-0 mb-4">
 						<h3
 							class="font-semibold text-gray-900 dark:text-white mb-4">
 							Add University
@@ -997,47 +1010,90 @@
 
 				<!-- Analytics Page -->
 				<div id="analytics" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							📈 Analytics
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Your progress insights
 						</p>
 					</div>
-					<div class="grid gap-4 md:grid-cols-2">
+					
+					<!-- Stats Grid -->
+					<div class="grid grid-cols-2 gap-2 sm:gap-4 mb-4 -mx-2 sm:mx-0">
+						<div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl p-3 sm:p-4 text-white">
+							<div class="text-2xl sm:text-3xl font-bold" id="analytics-total-tasks">0</div>
+							<div class="text-teal-100 text-xs sm:text-sm mt-1">Tasks Done</div>
+						</div>
+						<div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-3 sm:p-4 text-white">
+							<div class="text-2xl sm:text-3xl font-bold" id="analytics-study-hours">0h</div>
+							<div class="text-purple-100 text-xs sm:text-sm mt-1">Study Hours</div>
+						</div>
+						<div class="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-3 sm:p-4 text-white">
+							<div class="text-2xl sm:text-3xl font-bold" id="analytics-streak">0</div>
+							<div class="text-amber-100 text-xs sm:text-sm mt-1">Day Streak</div>
+						</div>
+						<div class="bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl p-3 sm:p-4 text-white">
+							<div class="text-2xl sm:text-3xl font-bold" id="analytics-vocab">0</div>
+							<div class="text-blue-100 text-xs sm:text-sm mt-1">Words Learned</div>
+						</div>
+					</div>
+
+					<div
+						class="grid gap-3 sm:gap-4 md:grid-cols-2 -mx-2 sm:mx-0">
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
-								class="font-semibold text-gray-900 dark:text-white mb-3">
-								📊 Study Progress
+								class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+								<span class="text-lg">📊</span> Study Progress
 							</h3>
-							<p class="text-gray-600 dark:text-gray-300">
-								Tasks completed:
-								<strong id="insights-tasks">0</strong>
-							</p>
-							<p class="text-gray-600 dark:text-gray-300">
-								Weighted points:
-								<strong id="insights-weighted">0</strong>
-							</p>
+							<div class="space-y-3">
+								<div class="flex items-center justify-between">
+									<span class="text-sm text-gray-600 dark:text-gray-400">IELTS Tasks</span>
+									<strong class="text-gray-900 dark:text-white" id="insights-tasks">0</strong>
+								</div>
+								<div class="flex items-center justify-between">
+									<span class="text-sm text-gray-600 dark:text-gray-400">Weighted Points</span>
+									<strong class="text-gray-900 dark:text-white" id="insights-weighted">0</strong>
+								</div>
+								<div class="flex items-center justify-between">
+									<span class="text-sm text-gray-600 dark:text-gray-400">Universities Applied</span>
+									<strong class="text-gray-900 dark:text-white" id="insights-unis">0</strong>
+								</div>
+							</div>
 						</div>
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
-								class="font-semibold text-gray-900 dark:text-white mb-3">
-								🔔 Actions
+								class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+								<span class="text-lg">🔔</span> Quick Actions
 							</h3>
-							<div class="flex flex-wrap gap-2">
+							<div class="grid grid-cols-2 gap-2">
 								<button
 									onclick="checkDeadlinesManually()"
-									class="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
-									🔍 Check Deadlines
+									class="p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl text-xs sm:text-sm font-medium transition-colors text-center">
+									<div class="text-lg mb-1">🔍</div>
+									Deadlines
 								</button>
 								<button
 									onclick="enableNotifications()"
-									class="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
-									🔔 Enable Notifications
+									class="p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl text-xs sm:text-sm font-medium transition-colors text-center">
+									<div class="text-lg mb-1">🔔</div>
+									Notifications
+								</button>
+								<button
+									onclick="showPage('ielts-tools')"
+									class="p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl text-xs sm:text-sm font-medium transition-colors text-center">
+									<div class="text-lg mb-1">📚</div>
+									Vocabulary
+								</button>
+								<button
+									onclick="showPage('band8-tracker')"
+									class="p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl text-xs sm:text-sm font-medium transition-colors text-center">
+									<div class="text-lg mb-1">🎯</div>
+									IELTS Plan
 								</button>
 							</div>
 						</div>
@@ -1046,20 +1102,21 @@
 
 				<!-- Settings Page -->
 				<div id="settings" class="page hidden">
-					<div class="mb-6">
+					<div class="mb-3 sm:mb-6">
 						<h1
-							class="text-2xl font-bold text-gray-900 dark:text-white">
+							class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
 							⚙️ Settings
 						</h1>
-						<p class="text-gray-500 dark:text-gray-400 mt-1">
+						<p
+							class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
 							Manage your preferences
 						</p>
 					</div>
 
-					<div class="space-y-4">
+					<div class="space-y-3 sm:space-y-4 -mx-2 sm:mx-0">
 						<!-- Cloud Sync -->
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
 								class="font-semibold text-gray-900 dark:text-white mb-1">
 								☁️ Cloud Sync
@@ -1147,7 +1204,7 @@
 
 						<!-- Data Management -->
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
 								class="font-semibold text-gray-900 dark:text-white mb-4">
 								📦 Data Management
@@ -1211,7 +1268,7 @@
 
 						<!-- Appearance -->
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
 								class="font-semibold text-gray-900 dark:text-white mb-4">
 								🎨 Appearance
@@ -1238,7 +1295,7 @@
 
 						<!-- Danger Zone -->
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-red-200 dark:border-red-900">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-red-200 dark:border-red-900">
 							<h3
 								class="font-semibold text-red-600 dark:text-red-400 mb-4">
 								⚠️ Danger Zone
@@ -1264,7 +1321,7 @@
 
 						<!-- About -->
 						<div
-							class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+							class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 border border-gray-200 dark:border-gray-700">
 							<h3
 								class="font-semibold text-gray-900 dark:text-white mb-2">
 								ℹ️ About

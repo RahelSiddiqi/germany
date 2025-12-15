@@ -990,7 +990,7 @@ const MASTER_PLAN = {
 		},
 		{
 			deadline: 'After Admission',
-			scholarship: 'Deutschlandstipendium',
+			scholarship: 'Deutschland Stipendium',
 			amount: '€300/month',
 			priority: 'APPLY AT ALL ADMITTED UNIVERSITIES!',
 			documents: ['Short motivation letter', 'CV', 'Transcripts'],

@@ -402,11 +402,14 @@ class NotificationManager {
 
 		// Define colors based on type
 		const colors = {
-			info: 'bg-blue-600 border-blue-700',
-			success: 'bg-green-600 border-green-700',
-			warning: 'bg-amber-500 border-amber-600',
-			error: 'bg-red-600 border-red-700',
-			deadline: 'bg-red-600 border-red-700',
+			info: 'bg-gradient-to-r from-blue-600 to-blue-700 border-blue-500',
+			success:
+				'bg-gradient-to-r from-green-600 to-green-700 border-green-500',
+			warning:
+				'bg-gradient-to-r from-amber-500 to-amber-600 border-amber-400',
+			error: 'bg-gradient-to-r from-red-600 to-red-700 border-red-500',
+			deadline:
+				'bg-gradient-to-r from-red-600 to-orange-600 border-red-500',
 		};
 
 		const icons = {
@@ -417,16 +420,33 @@ class NotificationManager {
 			deadline: '⏰',
 		};
 
-		notification.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border-2 text-white font-medium text-sm animate-slide-in ${
+		const titles = {
+			info: 'Info',
+			success: 'Success',
+			warning: 'Warning',
+			error: 'Error',
+			deadline: 'Deadline Alert',
+		};
+
+		notification.className = `rounded-xl shadow-2xl border text-white animate-slide-in ${
 			colors[type] || colors.info
 		}`;
 		notification.style.cssText =
-			'animation: slideIn 0.3s ease-out; margin-bottom: 8px;';
+			'animation: slideIn 0.3s ease-out; margin-bottom: 10px;';
 
 		notification.innerHTML = `
-			<span class="text-xl flex-shrink-0">${icons[type] || icons.info}</span>
-			<span class="flex-1">${message}</span>
-			<button onclick="this.parentElement.remove()" class="ml-2 text-white/80 hover:text-white text-xl font-bold leading-none">&times;</button>
+			<div class="px-4 py-3">
+				<div class="flex items-start gap-3">
+					<span class="text-2xl flex-shrink-0 mt-0.5">${icons[type] || icons.info}</span>
+					<div class="flex-1 min-w-0">
+						<p class="font-bold text-sm text-white/95 mb-1">${
+							titles[type] || 'Notification'
+						}</p>
+						<p class="text-sm text-white/90 leading-relaxed break-words">${message}</p>
+					</div>
+					<button onclick="this.closest('.rounded-xl').remove()" class="flex-shrink-0 text-white/70 hover:text-white text-xl font-bold leading-none p-1 -mt-1 -mr-1">&times;</button>
+				</div>
+			</div>
 		`;
 
 		container.appendChild(notification);

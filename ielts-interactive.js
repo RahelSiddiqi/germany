@@ -56,36 +56,42 @@ const IELTS_VOCABULARY = {
 		},
 		{
 			word: 'concede',
+			phonetic: '/kənˈsiːd/',
 			definition: 'Admit; acknowledge',
 			example: 'I concede that your point has merit.',
 			level: 'B2',
 		},
 		{
 			word: 'assert',
+			phonetic: '/əˈsɜːt/',
 			definition: 'State confidently; declare',
 			example: 'The researcher asserts that this theory is correct.',
 			level: 'B2',
 		},
 		{
 			word: 'substantiate',
+			phonetic: '/səbˈstænʃieɪt/',
 			definition: 'Support with evidence; prove',
 			example: 'You must substantiate your claims with data.',
 			level: 'C1',
 		},
 		{
 			word: 'catalyst',
+			phonetic: '/ˈkætəlɪst/',
 			definition: 'Trigger; something that causes change',
 			example: 'Social media was a catalyst for revolution.',
 			level: 'B2',
 		},
 		{
 			word: 'exacerbate',
+			phonetic: '/ɪɡˈzæsəbeɪt/',
 			definition: 'Worsen; make worse',
 			example: 'Stress can exacerbate health problems.',
 			level: 'C1',
 		},
 		{
 			word: 'mitigate',
+			phonetic: '/ˈmɪtɪɡeɪt/',
 			definition: 'Reduce; lessen the severity',
 			example: 'We must mitigate the effects of pollution.',
 			level: 'B2',
@@ -99,96 +105,112 @@ const IELTS_VOCABULARY = {
 		},
 		{
 			word: 'repercussion',
+			phonetic: '/ˌriːpəˈkʌʃən/',
 			definition: 'Negative result; backlash',
 			example: 'The policy had serious repercussions.',
 			level: 'C1',
 		},
 		{
 			word: 'infrastructure',
+			phonetic: '/ˈɪnfrəstrʌktʃə/',
 			definition: 'Basic systems/facilities',
 			example: 'Investing in infrastructure is crucial for development.',
 			level: 'B2',
 		},
 		{
 			word: 'socioeconomic',
+			phonetic: '/ˌsəʊʃiəʊˌiːkəˈnɒmɪk/',
 			definition: 'Related to social and economic factors',
 			example: 'Socioeconomic status affects educational outcomes.',
 			level: 'C1',
 		},
 		{
 			word: 'disparity',
+			phonetic: '/dɪˈspærəti/',
 			definition: 'Inequality; significant difference',
 			example: 'There is a wide disparity between rich and poor.',
 			level: 'B2',
 		},
 		{
 			word: 'marginalized',
+			phonetic: '/ˈmɑːdʒɪnəlaɪzd/',
 			definition: 'Excluded; pushed to the edge',
 			example: 'Marginalized communities face systemic challenges.',
 			level: 'C1',
 		},
 		{
 			word: 'legislation',
+			phonetic: '/ˌledʒɪˈsleɪʃən/',
 			definition: 'Laws; legal rules',
 			example: 'New legislation was passed to protect workers.',
 			level: 'B2',
 		},
 		{
 			word: 'cognitive',
+			phonetic: '/ˈkɒɡnɪtɪv/',
 			definition: 'Related to mental processes',
 			example: 'Cognitive development is important in childhood.',
 			level: 'B2',
 		},
 		{
 			word: 'pedagogical',
+			phonetic: '/ˌpɛdəˈɡɒdʒɪkəl/',
 			definition: 'Related to teaching methods',
 			example: 'Pedagogical approaches vary across cultures.',
 			level: 'C1',
 		},
 		{
 			word: 'sustainable',
+			phonetic: '/səˈsteɪnəbl/',
 			definition: 'Environmentally responsible',
 			example: 'We must adopt sustainable farming practices.',
 			level: 'B2',
 		},
 		{
 			word: 'biodiversity',
+			phonetic: '/ˌbaɪəʊdaɪˈvɜːsɪti/',
 			definition: 'Variety of living organisms',
 			example: 'Rainforests have high biodiversity.',
 			level: 'B2',
 		},
 		{
 			word: 'phenomenon',
+			phonetic: '/fɪˈnɒmɪnən/',
 			definition: 'A fact or situation observed',
 			example: 'Global warming is a well-documented phenomenon.',
 			level: 'B2',
 		},
 		{
 			word: 'hypothesis',
+			phonetic: '/haɪˈpɒθəsɪs/',
 			definition: 'A proposed explanation',
 			example: 'The hypothesis was tested rigorously.',
 			level: 'B2',
 		},
 		{
 			word: 'empirical',
+			phonetic: '/ɪmˈpɪrɪkəl/',
 			definition: 'Based on observation',
 			example: 'The study used empirical data.',
 			level: 'C1',
 		},
 		{
 			word: 'paradigm',
+			phonetic: '/ˈpærədaɪm/',
 			definition: 'A typical example or pattern',
 			example: 'This represents a new paradigm in education.',
 			level: 'C1',
 		},
 		{
 			word: 'inherent',
+			phonetic: '/ɪnˈhɪərənt/',
 			definition: 'Existing as a natural part',
 			example: 'There are inherent risks in any investment.',
 			level: 'B2',
 		},
 		{
 			word: 'ambiguous',
+			phonetic: '/æmˈbɪɡjuəs/',
 			definition: 'Having multiple meanings',
 			example: 'The instructions were ambiguous.',
 			level: 'B2',
@@ -198,120 +220,140 @@ const IELTS_VOCABULARY = {
 	reading: [
 		{
 			word: 'skim',
+			phonetic: '/skɪm/',
 			definition: 'Read quickly for main ideas',
 			example: 'Skim the passage to find the topic sentence.',
 			level: 'B1',
 		},
 		{
 			word: 'scan',
+			phonetic: '/skæn/',
 			definition: 'Search for specific information',
 			example: 'Scan the text for names and dates.',
 			level: 'B1',
 		},
 		{
 			word: 'paraphrase',
+			phonetic: '/ˈpærəfreɪz/',
 			definition: 'Restate in different words',
 			example: 'You must paraphrase, not copy directly.',
 			level: 'B2',
 		},
 		{
 			word: 'infer',
+			phonetic: '/ɪnˈfɜː/',
 			definition: 'Conclude from evidence',
 			example: 'We can infer his mood from his actions.',
 			level: 'B2',
 		},
 		{
 			word: 'explicit',
+			phonetic: '/ɪkˈsplɪsɪt/',
 			definition: 'Clearly stated',
 			example: 'The instructions were explicit and clear.',
 			level: 'B2',
 		},
 		{
 			word: 'implicit',
+			phonetic: '/ɪmˈplɪsɪt/',
 			definition: 'Implied, not directly stated',
 			example: 'His criticism was implicit in his tone.',
 			level: 'B2',
 		},
 		{
 			word: 'context',
+			phonetic: '/ˈkɒntekst/',
 			definition: 'Surrounding circumstances',
 			example: 'Understand words in context.',
 			level: 'B1',
 		},
 		{
 			word: 'comprehend',
+			phonetic: '/ˌkɒmprɪˈhend/',
 			definition: 'Understand fully',
 			example: "It's difficult to comprehend complex texts.",
 			level: 'B2',
 		},
 		{
 			word: 'synopsis',
+			phonetic: '/sɪˈnɒpsɪs/',
 			definition: 'Brief summary',
 			example: 'Give me a synopsis of the article.',
 			level: 'C1',
 		},
 		{
 			word: 'extract',
+			phonetic: '/ˈekstrækt/',
 			definition: 'A passage; to remove',
 			example: 'Read the extract carefully.',
 			level: 'B2',
 		},
 		{
 			word: 'analyze',
+			phonetic: '/ˈænəlaɪz/',
 			definition: 'Examine in detail',
 			example: 'Analyze the data carefully.',
 			level: 'B2',
 		},
 		{
 			word: 'evaluate',
+			phonetic: '/ɪˈvæljueɪt/',
 			definition: 'Assess value or quality',
 			example: "Evaluate the author's argument.",
 			level: 'B2',
 		},
 		{
 			word: 'interpret',
+			phonetic: '/ɪnˈtɜːprɪt/',
 			definition: 'Explain meaning',
 			example: 'How do you interpret this graph?',
 			level: 'B2',
 		},
 		{
 			word: 'perspective',
+			phonetic: '/pəˈspektɪv/',
 			definition: 'Point of view',
 			example: 'Consider different perspectives.',
 			level: 'B2',
 		},
 		{
 			word: 'bias',
+			phonetic: '/ˈbaɪəs/',
 			definition: 'Unfair preference',
 			example: 'The article shows political bias.',
 			level: 'B2',
 		},
 		{
 			word: 'thesis',
+			phonetic: '/ˈθiːsɪs/',
 			definition: 'Main argument',
 			example: 'State your thesis clearly.',
 			level: 'B2',
 		},
 		{
 			word: 'elaborate',
+			phonetic: '/ɪˈlæbəreɪt/',
 			definition: 'Explain in more detail',
 			example: 'Could you elaborate on that?',
 			level: 'B2',
 		},
 		{
 			word: 'contradict',
+			phonetic: '/ˌkɒntrəˈdɪkt/',
 			definition: 'Say the opposite',
 			example: 'These facts contradict each other.',
 			level: 'B2',
 		},
 		{
 			word: 'criterion',
+			phonetic: '/kraɪˈtɪəriən/',
 			definition: 'Standard for judgment',
 			example: 'What criteria are used?',
 			level: 'B2',
 		},
 		{
 			word: 'coherent',
+			phonetic: '/kəʊˈhɪərənt/',
 			definition: 'Logical and consistent',
 			example: 'Present a coherent argument.',
 			level: 'B2',
@@ -1338,123 +1380,1221 @@ const IELTS_VOCABULARY = {
 	band85: [
 		{
 			word: 'unequivocally',
+			phonetic: '/ˌʌnɪˈkwɪvəkəli/',
 			definition: 'Without doubt; clearly',
 			example: 'The evidence unequivocally supports this.',
 			level: 'C1',
 		},
 		{
 			word: 'ubiquitous',
+			phonetic: '/juːˈbɪkwɪtəs/',
 			definition: 'Present everywhere',
 			example: 'Smartphones are now ubiquitous.',
 			level: 'C1',
 		},
 		{
 			word: 'unprecedented',
+			phonetic: '/ʌnˈpresɪdentɪd/',
 			definition: 'Never happened before',
 			example: 'This is an unprecedented situation.',
 			level: 'C1',
 		},
 		{
 			word: 'undermine',
+			phonetic: '/ˌʌndəˈmaɪn/',
 			definition: 'Weaken gradually',
 			example: 'This will undermine public trust.',
 			level: 'B2',
 		},
 		{
 			word: 'synonymous',
+			phonetic: '/sɪˈnɒnɪməs/',
 			definition: 'Having same meaning',
 			example: 'Quality is synonymous with this brand.',
 			level: 'C1',
 		},
 		{
 			word: 'scrutinize',
+			phonetic: '/ˈskruːtɪnaɪz/',
 			definition: 'Examine closely',
 			example: 'We must scrutinize the data.',
 			level: 'C1',
 		},
 		{
 			word: 'proliferate',
+			phonetic: '/prəˈlɪfəreɪt/',
 			definition: 'Increase rapidly',
 			example: 'Fake news continues to proliferate.',
 			level: 'C1',
 		},
 		{
 			word: 'precipitate',
+			phonetic: '/prɪˈsɪpɪteɪt/',
 			definition: 'Cause to happen suddenly',
 			example: 'This could precipitate a crisis.',
 			level: 'C1',
 		},
 		{
 			word: 'perpetuate',
+			phonetic: '/pəˈpetʃueɪt/',
 			definition: 'Make continue',
 			example: "Don't perpetuate harmful stereotypes.",
 			level: 'C1',
 		},
 		{
 			word: 'paradigm shift',
+			phonetic: '/ˈpærədaɪm ʃɪft/',
 			definition: 'Fundamental change',
 			example: 'AI represents a paradigm shift.',
 			level: 'C1',
 		},
 		{
 			word: 'nuanced',
+			phonetic: '/ˈnjuːɑːnst/',
 			definition: 'Having subtle differences',
 			example: 'A nuanced understanding is required.',
 			level: 'C1',
 		},
 		{
 			word: 'multifaceted',
+			phonetic: '/ˌmʌltifæsɪtɪd/',
 			definition: 'Having many aspects',
 			example: 'This is a multifaceted problem.',
 			level: 'C1',
 		},
 		{
 			word: 'juxtapose',
+			phonetic: '/ˌdʒʌkstəˈpəʊz/',
 			definition: 'Place side by side',
 			example: 'Juxtapose the two images to compare.',
 			level: 'C1',
 		},
 		{
 			word: 'intrinsic',
+			phonetic: '/ɪnˈtrɪnsɪk/',
 			definition: 'Belonging naturally',
 			example: 'There is intrinsic value in education.',
 			level: 'C1',
 		},
 		{
 			word: 'holistic',
+			phonetic: '/həʊˈlɪstɪk/',
 			definition: 'Considering the whole',
 			example: 'Take a holistic approach to health.',
 			level: 'C1',
 		},
 		{
 			word: 'extraneous',
+			phonetic: '/ɪkˈstreɪniəs/',
 			definition: 'Irrelevant; not essential',
 			example: 'Remove extraneous details.',
 			level: 'C1',
 		},
 		{
 			word: 'dichotomy',
+			phonetic: '/daɪˈkɒtəmi/',
 			definition: 'Division into two parts',
 			example: 'The dichotomy between work and life.',
 			level: 'C1',
 		},
 		{
 			word: 'concomitant',
+			phonetic: '/kənˈkɒmɪtənt/',
 			definition: 'Accompanying',
 			example: 'With success come concomitant challenges.',
 			level: 'C2',
 		},
 		{
 			word: 'commensurate',
+			phonetic: '/kəˈmenʃərət/',
 			definition: 'Proportional; corresponding',
 			example: 'Salary should be commensurate with experience.',
 			level: 'C1',
 		},
 		{
 			word: 'albeit',
+			phonetic: '/ɔːlˈbiːɪt/',
 			definition: 'Although',
 			example: 'He succeeded, albeit with difficulty.',
 			level: 'C1',
+		},
+		// Additional Band 8.5 words for higher score
+		{
+			word: 'ameliorate',
+			phonetic: '/əˈmiːliəreɪt/',
+			definition: 'Make something better; improve',
+			example:
+				'Policies were introduced to ameliorate living conditions.',
+			level: 'C1',
+		},
+		{
+			word: 'cognizant',
+			phonetic: '/ˈkɒɡnɪzənt/',
+			definition: 'Aware or conscious of something',
+			example: 'We must be cognizant of cultural differences.',
+			level: 'C1',
+		},
+		{
+			word: 'delineate',
+			phonetic: '/dɪˈlɪnieɪt/',
+			definition: 'Describe or portray precisely',
+			example: 'The report delineates the key challenges.',
+			level: 'C1',
+		},
+		{
+			word: 'envisage',
+			phonetic: '/ɪnˈvɪzɪdʒ/',
+			definition: 'Imagine as a future possibility',
+			example: 'It is difficult to envisage a world without technology.',
+			level: 'C1',
+		},
+		{
+			word: 'eschew',
+			phonetic: '/ɪˈsʃuː/',
+			definition: 'Deliberately avoid or keep away from',
+			example: 'Many young people eschew traditional careers.',
+			level: 'C2',
+		},
+		{
+			word: 'exigency',
+			phonetic: '/ˈeksɪdʒənsi/',
+			definition: 'An urgent need or demand',
+			example: 'The exigencies of modern life create stress.',
+			level: 'C2',
+		},
+		{
+			word: 'germane',
+			phonetic: '/dʒɜːˈmeɪn/',
+			definition: 'Relevant and appropriate',
+			example: 'His comments were not germane to the discussion.',
+			level: 'C1',
+		},
+		{
+			word: 'hegemony',
+			phonetic: '/hɪˈɡeməni/',
+			definition: 'Leadership or dominance',
+			example: 'Western cultural hegemony is being challenged.',
+			level: 'C2',
+		},
+		{
+			word: 'inchoate',
+			phonetic: '/ɪnˈkəʊeɪt/',
+			definition: 'Just begun; not fully formed',
+			example: 'The plan is still inchoate and needs development.',
+			level: 'C2',
+		},
+		{
+			word: 'inexorable',
+			phonetic: '/ɪnˈeksərəbl/',
+			definition: 'Impossible to stop or prevent',
+			example: 'The inexorable rise of technology continues.',
+			level: 'C1',
+		},
+		{
+			word: 'inimical',
+			phonetic: '/ɪˈnɪmɪkəl/',
+			definition: 'Harmful or hostile',
+			example: 'Such policies are inimical to economic growth.',
+			level: 'C2',
+		},
+		{
+			word: 'lacuna',
+			phonetic: '/ləˈkjuːnə/',
+			definition: 'A gap or missing part',
+			example: 'There is a significant lacuna in the research.',
+			level: 'C2',
+		},
+		{
+			word: 'obviate',
+			phonetic: '/ˈɒbvieɪt/',
+			definition: 'Remove a need or difficulty',
+			example: 'Technology can obviate the need for travel.',
+			level: 'C1',
+		},
+		{
+			word: 'ostensible',
+			phonetic: '/ɒˈstensɪbl/',
+			definition: 'Appearing to be true but not necessarily so',
+			example: 'The ostensible reason for his departure was illness.',
+			level: 'C1',
+		},
+		{
+			word: 'panacea',
+			phonetic: '/ˌpænəˈsiːə/',
+			definition: 'A solution for all problems',
+			example: 'Technology is not a panacea for social issues.',
+			level: 'C1',
+		},
+		{
+			word: 'paradoxically',
+			phonetic: '/ˌpærəˈdɒksɪkli/',
+			definition: 'In a seemingly contradictory way',
+			example: 'Paradoxically, increased choice can reduce satisfaction.',
+			level: 'C1',
+		},
+		{
+			word: 'pernicious',
+			phonetic: '/pəˈnɪʃəs/',
+			definition: 'Having a harmful effect',
+			example: 'Social media can have pernicious effects on youth.',
+			level: 'C1',
+		},
+		{
+			word: 'predicated',
+			phonetic: '/ˈpredɪkeɪtɪd/',
+			definition: 'Based on; founded upon',
+			example: 'Success is predicated on hard work.',
+			level: 'C1',
+		},
+		{
+			word: 'quintessential',
+			phonetic: '/ˌkwɪntɪˈsenʃəl/',
+			definition: 'Representing the perfect example',
+			example: 'She is the quintessential modern professional.',
+			level: 'C1',
+		},
+		{
+			word: 'salient',
+			phonetic: '/ˈseɪliənt/',
+			definition: 'Most noticeable or important',
+			example: 'The salient features of the proposal are outlined.',
+			level: 'C1',
+		},
+		{
+			word: 'spurious',
+			phonetic: '/ˈspjʊəriəs/',
+			definition: 'False or fake; not genuine',
+			example: 'The article contained spurious claims.',
+			level: 'C1',
+		},
+		{
+			word: 'tacit',
+			phonetic: '/ˈtæsɪt/',
+			definition: 'Understood without being stated',
+			example: 'There was tacit agreement among the group.',
+			level: 'C1',
+		},
+		{
+			word: 'tenable',
+			phonetic: '/ˈtenəbl/',
+			definition: 'Able to be defended; reasonable',
+			example: 'His position is no longer tenable.',
+			level: 'C1',
+		},
+		{
+			word: 'vicarious',
+			phonetic: '/vɪˈkeəriəs/',
+			definition: 'Experienced through another person',
+			example: 'She lived vicariously through her children.',
+			level: 'C1',
+		},
+		{
+			word: 'zeitgeist',
+			phonetic: '/ˈtsaɪtɡaɪst/',
+			definition: 'The spirit or mood of a particular time',
+			example: 'The film captures the zeitgeist of the era.',
+			level: 'C2',
+		},
+		{
+			word: 'acrimonious',
+			phonetic: '/ˈækrɪˈməʊniəs/',
+			definition: 'Angry and bitter',
+			example: 'The debate became increasingly acrimonious.',
+			level: 'C1',
+		},
+		{
+			word: 'antithesis',
+			phonetic: '/ænˈtɪθəsɪs/',
+			definition: 'The exact opposite',
+			example: 'His views are the antithesis of mine.',
+			level: 'C1',
+		},
+		{
+			word: 'burgeoning',
+			phonetic: '/ˈbɜːdʒənɪŋ/',
+			definition: 'Growing or developing quickly',
+			example: 'The burgeoning tech industry creates jobs.',
+			level: 'C1',
+		},
+		{
+			word: 'circumvent',
+			phonetic: '/ˌsɜːkəmˈvent/',
+			definition: 'Find a way around an obstacle',
+			example: 'Companies try to circumvent regulations.',
+			level: 'C1',
+		},
+		{
+			word: 'corroborate',
+			phonetic: '/kəˈrɒbəreɪt/',
+			definition: 'Confirm or give support to',
+			example: 'The evidence corroborates his testimony.',
+			level: 'C1',
+		},
+		{
+			word: 'deleterious',
+			phonetic: '/ˌdelɪˈtɪəriəs/',
+			definition: 'Causing harm or damage',
+			example: 'Smoking has deleterious effects on health.',
+			level: 'C1',
+		},
+		{
+			word: 'disparate',
+			phonetic: '/ˈdɪspərət/',
+			definition: 'Essentially different; distinct',
+			example: 'The disparate groups found common ground.',
+			level: 'C1',
+		},
+		{
+			word: 'efficacious',
+			phonetic: '/ˌefɪˈkeɪʃəs/',
+			definition: 'Effective in producing results',
+			example: 'The treatment proved efficacious.',
+			level: 'C1',
+		},
+		{
+			word: 'egregious',
+			phonetic: '/ɪˈɡriːdʒəs/',
+			definition: 'Outstandingly bad; shocking',
+			example: 'This was an egregious violation of rights.',
+			level: 'C1',
+		},
+		{
+			word: 'ephemeral',
+			phonetic: '/ɪˈfemərəl/',
+			definition: 'Lasting for a very short time',
+			example: 'Social media fame is often ephemeral.',
+			level: 'C1',
+		},
+		{
+			word: 'equivocal',
+			phonetic: '/ɪˈkwɪvəkəl/',
+			definition: 'Ambiguous; open to interpretation',
+			example: 'The results were equivocal at best.',
+			level: 'C1',
+		},
+		{
+			word: 'fallacious',
+			phonetic: '/fəˈleɪʃəs/',
+			definition: 'Based on a mistaken belief',
+			example: 'The argument is fundamentally fallacious.',
+			level: 'C1',
+		},
+		{
+			word: 'idiosyncratic',
+			phonetic: '/ˈɪdiəsɪnˈkrætɪk/',
+			definition: 'Peculiar to an individual',
+			example: 'Her idiosyncratic style is recognizable.',
+			level: 'C1',
+		},
+		{
+			word: 'immutable',
+			phonetic: '/ɪˈmjuːtəbl/',
+			definition: 'Unchanging over time',
+			example: 'Some principles are immutable.',
+			level: 'C1',
+		},
+		{
+			word: 'impetus',
+			phonetic: '/ˈɪmpɪtəs/',
+			definition: 'The force that makes something happen',
+			example: 'The crisis provided the impetus for reform.',
+			level: 'C1',
+		},
+		{
+			word: 'incipient',
+			phonetic: '/ɪnˈsɪpiənt/',
+			definition: 'Beginning to develop',
+			example: 'Signs of incipient change are visible.',
+			level: 'C1',
+		},
+		{
+			word: 'innocuous',
+			phonetic: '/ɪˈnɒkjuəs/',
+			definition: 'Not harmful or offensive',
+			example: 'The comment seemed innocuous but caused offense.',
+			level: 'C1',
+		},
+		{
+			word: 'insidious',
+			phonetic: '/ɪnˈsɪdiəs/',
+			definition: 'Proceeding in a subtle way but harmful',
+			example: 'The insidious effects of pollution are clear.',
+			level: 'C1',
+		},
+		{
+			word: 'intransigent',
+			phonetic: '/ɪnˈtrænsɪdʒənt/',
+			definition: 'Unwilling to change views',
+			example: 'Both sides remained intransigent.',
+			level: 'C2',
+		},
+		{
+			word: 'laudable',
+			phonetic: '/ˈlɔːdəbl/',
+			definition: 'Deserving praise',
+			example: 'Their efforts are highly laudable.',
+			level: 'C1',
+		},
+		{
+			word: 'myriad',
+			phonetic: '/ˈmɪriəd/',
+			definition: 'Countless; very many',
+			example: 'There are myriad reasons for this trend.',
+			level: 'C1',
+		},
+		{
+			word: 'nascent',
+			phonetic: '/ˈnæsənt/',
+			definition: 'Just beginning to develop',
+			example: 'The nascent industry shows promise.',
+			level: 'C1',
+		},
+		{
+			word: 'obfuscate',
+			phonetic: '/ˈɒbfəskeɪt/',
+			definition: 'Make unclear or confusing',
+			example: 'Politicians often obfuscate the truth.',
+			level: 'C2',
+		},
+		{
+			word: 'perfunctory',
+			phonetic: '/pəˈfʌŋktəri/',
+			definition: 'Done without care or interest',
+			example: 'His response was merely perfunctory.',
+			level: 'C1',
+		},
+		{
+			word: 'pervasive',
+			phonetic: '/pəˈveɪsɪv/',
+			definition: 'Spreading widely throughout',
+			example: 'Technology is pervasive in modern life.',
+			level: 'C1',
+		},
+		{
+			word: 'proclivity',
+			phonetic: '/prəˈklɪvɪti/',
+			definition: 'Natural tendency',
+			example: 'Humans have a proclivity for conflict.',
+			level: 'C1',
+		},
+		{
+			word: 'recalcitrant',
+			phonetic: '/rɪˈkælsɪtrənt/',
+			definition: 'Stubbornly uncooperative',
+			example: 'The recalcitrant child refused to listen.',
+			level: 'C2',
+		},
+		{
+			word: 'superfluous',
+			phonetic: '/suːˈpɜːfluəs/',
+			definition: 'Unnecessary; more than needed',
+			example: 'Remove all superfluous information.',
+			level: 'C1',
+		},
+		{
+			word: 'tantamount',
+			phonetic: '/ˈtæntəmaʊnt/',
+			definition: 'Equivalent in effect',
+			example: 'Silence is tantamount to agreement.',
+			level: 'C1',
+		},
+		{
+			word: 'unmitigated',
+			phonetic: '/ʌnˈmɪtɪɡeɪtɪd/',
+			definition: 'Absolute; total',
+			example: 'The project was an unmitigated success.',
+			level: 'C1',
+		},
+		{
+			word: 'untenable',
+			phonetic: '/ʌnˈtenəbl/',
+			definition: 'Cannot be defended or maintained',
+			example: 'His position became untenable.',
+			level: 'C1',
+		},
+		{
+			word: 'verisimilitude',
+			phonetic: '/ˌverɪsɪˈmɪlɪtjuːd/',
+			definition: 'The appearance of being true',
+			example: 'The story had verisimilitude.',
+			level: 'C2',
+		},
+		// Additional Band 8.5+ Advanced Words
+		{
+			word: 'abstruse',
+			phonetic: '/æbˈstruːs/',
+			definition: 'Difficult to understand; obscure',
+			example:
+				'The professor lectured on abstruse philosophical concepts.',
+			level: 'C2',
+		},
+		{
+			word: 'alacrity',
+			phonetic: '/əˈlækrɪti/',
+			definition: 'Brisk and cheerful readiness',
+			example: 'She accepted the invitation with alacrity.',
+			level: 'C1',
+		},
+		{
+			word: 'anachronistic',
+			phonetic: '/əˌnækrəˈnɪstɪk/',
+			definition: 'Belonging to a different time period',
+			example: 'His views on women are anachronistic.',
+			level: 'C1',
+		},
+		{
+			word: 'anathema',
+			phonetic: '/əˈnæθɪmə/',
+			definition: 'Something that one detests',
+			example: 'Racism is anathema to a civilized society.',
+			level: 'C2',
+		},
+		{
+			word: 'apotheosis',
+			phonetic: '/əˌpɒθiˈəʊsɪs/',
+			definition: 'The highest point of development; glorification',
+			example:
+				'The building represents the apotheosis of modern architecture.',
+			level: 'C2',
+		},
+		{
+			word: 'arbitrary',
+			phonetic: '/ˈɑːbɪtrəri/',
+			definition: 'Based on random choice rather than reason',
+			example: 'The decision seemed entirely arbitrary.',
+			level: 'B2',
+		},
+		{
+			word: 'assiduously',
+			phonetic: '/əˈsɪdjuəsli/',
+			definition: 'With great care and perseverance',
+			example: 'He assiduously avoided any controversy.',
+			level: 'C1',
+		},
+		{
+			word: 'auspicious',
+			phonetic: '/ɔːˈspɪʃəs/',
+			definition: 'Indicating a good chance of success',
+			example: 'It was an auspicious start to the new year.',
+			level: 'C1',
+		},
+		{
+			word: 'axiomatic',
+			phonetic: '/ˌæksiəˈmætɪk/',
+			definition: 'Self-evident; unquestionable',
+			example: 'It is axiomatic that practice improves performance.',
+			level: 'C1',
+		},
+		{
+			word: 'bellicose',
+			phonetic: '/ˈbelɪkəʊs/',
+			definition: 'Demonstrating aggression and willingness to fight',
+			example:
+				'His bellicose rhetoric alarmed the international community.',
+			level: 'C2',
+		},
+		{
+			word: 'capricious',
+			phonetic: '/kəˈprɪʃəs/',
+			definition: 'Given to sudden changes of mood or behaviour',
+			example: 'The weather in spring can be capricious.',
+			level: 'C1',
+		},
+		{
+			word: 'cogent',
+			phonetic: '/ˈkəʊdʒənt/',
+			definition: 'Clear, logical, and convincing',
+			example: 'She presented a cogent argument for reform.',
+			level: 'C1',
+		},
+		{
+			word: 'complacent',
+			phonetic: '/kəmˈpleɪsənt/',
+			definition: 'Showing smug satisfaction with oneself',
+			example: 'We cannot afford to be complacent about climate change.',
+			level: 'B2',
+		},
+		{
+			word: 'conflagration',
+			phonetic: '/ˌkɒnfləˈɡreɪʃən/',
+			definition: 'An extensive fire; a conflict',
+			example: 'The conflagration destroyed the entire forest.',
+			level: 'C2',
+		},
+		{
+			word: 'conundrum',
+			phonetic: '/kəˈnʌndrəm/',
+			definition: 'A confusing and difficult problem',
+			example: 'Immigration remains a political conundrum.',
+			level: 'C1',
+		},
+		{
+			word: 'copious',
+			phonetic: '/ˈkəʊpiəs/',
+			definition: 'Abundant in supply or quantity',
+			example: 'She took copious notes during the lecture.',
+			level: 'C1',
+		},
+		{
+			word: 'credulous',
+			phonetic: '/ˈkredjʊləs/',
+			definition: 'Having a tendency to believe too readily',
+			example: 'Scammers target credulous elderly people.',
+			level: 'C1',
+		},
+		{
+			word: 'cursory',
+			phonetic: '/ˈkɜːsəri/',
+			definition: 'Hasty and therefore not thorough',
+			example: 'A cursory glance at the report revealed errors.',
+			level: 'C1',
+		},
+		{
+			word: 'dearth',
+			phonetic: '/dɜːθ/',
+			definition: 'A scarcity or lack of something',
+			example: 'There is a dearth of qualified teachers.',
+			level: 'C1',
+		},
+		{
+			word: 'debilitate',
+			phonetic: '/dɪˈbɪlɪteɪt/',
+			definition: 'Make someone weak or infirm',
+			example: 'The illness debilitated him for months.',
+			level: 'C1',
+		},
+		{
+			word: 'defunct',
+			phonetic: '/dɪˈfʌŋkt/',
+			definition: 'No longer existing or functioning',
+			example: 'The now-defunct company was once a market leader.',
+			level: 'C1',
+		},
+		{
+			word: 'disingenuous',
+			phonetic: '/ˌdɪsɪnˈdʒenjuəs/',
+			definition: 'Not candid or sincere; pretending ignorance',
+			example:
+				'It would be disingenuous to claim we had no prior knowledge.',
+			level: 'C1',
+		},
+		{
+			word: 'disseminate',
+			phonetic: '/dɪˈsemɪneɪt/',
+			definition: 'Spread widely',
+			example: 'The internet helps disseminate information rapidly.',
+			level: 'C1',
+		},
+		{
+			word: 'draconian',
+			phonetic: '/drəˈkəʊniən/',
+			definition: 'Excessively harsh and severe',
+			example: 'The draconian measures were widely criticized.',
+			level: 'C1',
+		},
+		{
+			word: 'ebullient',
+			phonetic: '/ɪˈbʌliənt/',
+			definition: 'Cheerful and full of energy',
+			example: 'Her ebullient personality made her popular.',
+			level: 'C1',
+		},
+		{
+			word: 'eclectic',
+			phonetic: '/ɪˈklektɪk/',
+			definition: 'Deriving ideas from diverse sources',
+			example: 'The museum has an eclectic collection.',
+			level: 'C1',
+		},
+		{
+			word: 'elucidate',
+			phonetic: '/ɪˈluːsɪdeɪt/',
+			definition: 'Make clear; explain',
+			example: 'Could you elucidate your main argument?',
+			level: 'C1',
+		},
+		{
+			word: 'endemic',
+			phonetic: '/enˈdemɪk/',
+			definition: 'Native to a particular region; widespread',
+			example: 'Corruption is endemic in many institutions.',
+			level: 'C1',
+		},
+		{
+			word: 'enigmatic',
+			phonetic: '/ˌenɪɡˈmætɪk/',
+			definition: 'Mysterious and difficult to understand',
+			example: 'She remains an enigmatic figure in history.',
+			level: 'C1',
+		},
+		{
+			word: 'excoriate',
+			phonetic: '/ɪkˈskɔːrieɪt/',
+			definition: 'Criticize severely',
+			example: "The report excoriated the government's response.",
+			level: 'C2',
+		},
+		{
+			word: 'exorbitant',
+			phonetic: '/ɪɡˈzɔːbɪtənt/',
+			definition: 'Unreasonably high (price)',
+			example: 'Housing prices in the city are exorbitant.',
+			level: 'B2',
+		},
+		{
+			word: 'facetious',
+			phonetic: '/fəˈsiːʃəs/',
+			definition: 'Treating serious issues with inappropriate humour',
+			example: 'His facetious remarks were not appreciated.',
+			level: 'C1',
+		},
+		{
+			word: 'fastidious',
+			phonetic: '/fæsˈtɪdiəs/',
+			definition: 'Very attentive to detail; hard to please',
+			example: 'She is fastidious about cleanliness.',
+			level: 'C1',
+		},
+		{
+			word: 'feckless',
+			phonetic: '/ˈfekləs/',
+			definition: 'Lacking initiative or strength of character',
+			example: 'The feckless response to the crisis was disappointing.',
+			level: 'C2',
+		},
+		{
+			word: 'furtive',
+			phonetic: '/ˈfɜːtɪv/',
+			definition: 'Attempting to avoid notice; secretive',
+			example: 'He cast a furtive glance over his shoulder.',
+			level: 'C1',
+		},
+		{
+			word: 'grandiloquent',
+			phonetic: '/ɡrænˈdɪləkwənt/',
+			definition: 'Using pompous or extravagant language',
+			example: 'His grandiloquent speech impressed few.',
+			level: 'C2',
+		},
+		{
+			word: 'hackneyed',
+			phonetic: '/ˈhæknid/',
+			definition: 'Lacking significance through overuse',
+			example: 'Avoid hackneyed phrases in your essay.',
+			level: 'C1',
+		},
+		{
+			word: 'hubris',
+			phonetic: '/ˈhjuːbrɪs/',
+			definition: 'Excessive pride or self-confidence',
+			example: 'His hubris led to his downfall.',
+			level: 'C1',
+		},
+		{
+			word: 'ignominious',
+			phonetic: '/ˌɪɡnəˈmɪniəs/',
+			definition: 'Deserving or causing public disgrace',
+			example: 'The team suffered an ignominious defeat.',
+			level: 'C2',
+		},
+		{
+			word: 'implacable',
+			phonetic: '/ɪmˈplækəbl/',
+			definition: 'Unable to be appeased; relentless',
+			example: 'She was his implacable enemy.',
+			level: 'C1',
+		},
+		{
+			word: 'indolent',
+			phonetic: '/ˈɪndələnt/',
+			definition: 'Wanting to avoid activity or exertion; lazy',
+			example: 'His indolent attitude cost him the promotion.',
+			level: 'C1',
+		},
+		{
+			word: 'ineluctable',
+			phonetic: '/ˌɪnɪˈlʌktəbl/',
+			definition: 'Unable to be resisted or avoided; inevitable',
+			example: 'The ineluctable truth finally emerged.',
+			level: 'C2',
+		},
+		{
+			word: 'ingenuous',
+			phonetic: '/ɪnˈdʒenjuəs/',
+			definition: 'Innocent and unsuspecting',
+			example: 'Her ingenuous questions charmed everyone.',
+			level: 'C1',
+		},
+		{
+			word: 'inveterate',
+			phonetic: '/ɪnˈvetərət/',
+			definition: 'Having a particular habit that cannot be changed',
+			example: 'He was an inveterate liar.',
+			level: 'C1',
+		},
+		{
+			word: 'judicious',
+			phonetic: '/dʒuːˈdɪʃəs/',
+			definition: 'Having or showing good judgement',
+			example: 'A judicious use of resources is essential.',
+			level: 'C1',
+		},
+		{
+			word: 'litigious',
+			phonetic: '/lɪˈtɪdʒəs/',
+			definition: 'Tending to engage in lawsuits',
+			example: 'American society is notoriously litigious.',
+			level: 'C2',
+		},
+		{
+			word: 'lugubrious',
+			phonetic: '/ləˈɡuːbriəs/',
+			definition: 'Looking or sounding sad and dismal',
+			example: 'His lugubrious expression matched his mood.',
+			level: 'C2',
+		},
+		{
+			word: 'magnanimous',
+			phonetic: '/mæɡˈnænɪməs/',
+			definition: 'Generous or forgiving',
+			example: 'She was magnanimous in victory.',
+			level: 'C1',
+		},
+		{
+			word: 'mendacious',
+			phonetic: '/menˈdeɪʃəs/',
+			definition: 'Not telling the truth; lying',
+			example: 'The mendacious politician lost public trust.',
+			level: 'C2',
+		},
+		{
+			word: 'mercurial',
+			phonetic: '/mɜːˈkjʊəriəl/',
+			definition: 'Subject to sudden changes of mood',
+			example: 'His mercurial temperament made him unpredictable.',
+			level: 'C1',
+		},
+		{
+			word: 'meticulous',
+			phonetic: '/məˈtɪkjʊləs/',
+			definition: 'Showing great attention to detail',
+			example: 'She is meticulous in her research.',
+			level: 'B2',
+		},
+		{
+			word: 'nefarious',
+			phonetic: '/nɪˈfeəriəs/',
+			definition: 'Wicked or criminal',
+			example: 'The nefarious scheme was eventually exposed.',
+			level: 'C1',
+		},
+		{
+			word: 'nonchalant',
+			phonetic: '/ˈnɒnʃəlɑːnt/',
+			definition: 'Appearing casually calm and relaxed',
+			example: 'She tried to appear nonchalant despite her nerves.',
+			level: 'B2',
+		},
+		{
+			word: 'obsequious',
+			phonetic: '/əbˈsiːkwiəs/',
+			definition: 'Obedient to an excessive degree',
+			example: 'His obsequious manner irritated his colleagues.',
+			level: 'C2',
+		},
+		{
+			word: 'onerous',
+			phonetic: '/ˈəʊnərəs/',
+			definition: 'Involving heavy obligation; burdensome',
+			example: 'The onerous regulations burden small businesses.',
+			level: 'C1',
+		},
+		{
+			word: 'ostentatious',
+			phonetic: '/ˌɒstenˈteɪʃəs/',
+			definition: 'Characterized by vulgar display of wealth',
+			example: 'His ostentatious lifestyle attracted criticism.',
+			level: 'C1',
+		},
+		{
+			word: 'parsimonious',
+			phonetic: '/ˌpɑːsɪˈməʊniəs/',
+			definition: 'Very unwilling to spend money',
+			example: 'The parsimonious approach led to underfunding.',
+			level: 'C2',
+		},
+		{
+			word: 'pedantic',
+			phonetic: '/pɪˈdæntɪk/',
+			definition: 'Excessively concerned with minor details',
+			example: 'His pedantic insistence on rules annoyed everyone.',
+			level: 'C1',
+		},
+		{
+			word: 'penchant',
+			phonetic: '/ˈpɒnʃɒn/',
+			definition: 'A strong liking for something',
+			example: 'She has a penchant for vintage clothing.',
+			level: 'C1',
+		},
+		{
+			word: 'peremptory',
+			phonetic: '/pəˈremptəri/',
+			definition: 'Insisting on immediate attention; dictatorial',
+			example: 'His peremptory tone offended the staff.',
+			level: 'C2',
+		},
+		{
+			word: 'perspicacious',
+			phonetic: '/ˌpɜːspɪˈkeɪʃəs/',
+			definition: 'Having keen mental perception and understanding',
+			example: 'The perspicacious analyst predicted the crisis.',
+			level: 'C2',
+		},
+		{
+			word: 'placate',
+			phonetic: '/pləˈkeɪt/',
+			definition: 'Make less angry or hostile',
+			example: 'They offered concessions to placate the unions.',
+			level: 'C1',
+		},
+		{
+			word: 'plethora',
+			phonetic: '/ˈpleθərə/',
+			definition: 'A large or excessive amount',
+			example: 'There is a plethora of options available.',
+			level: 'C1',
+		},
+		{
+			word: 'precipitous',
+			phonetic: '/prɪˈsɪpɪtəs/',
+			definition: 'Dangerously steep; done too hastily',
+			example: 'The precipitous decline in sales was alarming.',
+			level: 'C1',
+		},
+		{
+			word: 'precocious',
+			phonetic: '/prɪˈkəʊʃəs/',
+			definition: 'Having developed certain abilities earlier than usual',
+			example: 'The precocious child could read at age three.',
+			level: 'C1',
+		},
+		{
+			word: 'prescient',
+			phonetic: '/ˈpresiənt/',
+			definition: 'Having knowledge of events before they happen',
+			example: 'Her prescient warning went unheeded.',
+			level: 'C1',
+		},
+		{
+			word: 'prodigious',
+			phonetic: '/prəˈdɪdʒəs/',
+			definition: 'Remarkably great in extent or amount',
+			example: 'He has a prodigious talent for music.',
+			level: 'C1',
+		},
+		{
+			word: 'profligate',
+			phonetic: '/ˈprɒflɪɡət/',
+			definition: 'Recklessly extravagant or wasteful',
+			example: 'The profligate spending led to bankruptcy.',
+			level: 'C2',
+		},
+		{
+			word: 'propitious',
+			phonetic: '/prəˈpɪʃəs/',
+			definition: 'Indicating a good chance of success; favourable',
+			example: 'The conditions were propitious for investment.',
+			level: 'C1',
+		},
+		{
+			word: 'prosaic',
+			phonetic: '/prəˈzeɪɪk/',
+			definition: 'Lacking poetic beauty; ordinary',
+			example: 'His prosaic writing style lacked imagination.',
+			level: 'C1',
+		},
+		{
+			word: 'pugnacious',
+			phonetic: '/pʌɡˈneɪʃəs/',
+			definition: 'Eager or quick to argue or fight',
+			example: 'His pugnacious demeanor intimidated others.',
+			level: 'C1',
+		},
+		{
+			word: 'querulous',
+			phonetic: '/ˈkwerʊləs/',
+			definition: 'Complaining in a petulant manner',
+			example: 'The querulous customer demanded a refund.',
+			level: 'C2',
+		},
+		{
+			word: 'quixotic',
+			phonetic: '/kwɪkˈsɒtɪk/',
+			definition: 'Extremely idealistic; unrealistic',
+			example: 'His quixotic plan to reform society failed.',
+			level: 'C1',
+		},
+		{
+			word: 'rapacious',
+			phonetic: '/rəˈpeɪʃəs/',
+			definition: 'Aggressively greedy or grasping',
+			example: 'The rapacious corporations exploited workers.',
+			level: 'C2',
+		},
+		{
+			word: 'recondite',
+			phonetic: '/ˈrekəndaɪt/',
+			definition: 'Little known; obscure',
+			example: 'His expertise in recondite subjects impressed few.',
+			level: 'C2',
+		},
+		{
+			word: 'redolent',
+			phonetic: '/ˈredələnt/',
+			definition: 'Strongly reminiscent of; fragrant',
+			example: 'The garden was redolent of jasmine.',
+			level: 'C1',
+		},
+		{
+			word: 'refractory',
+			phonetic: '/rɪˈfræktəri/',
+			definition: 'Stubborn or unmanageable',
+			example: 'The refractory child refused all discipline.',
+			level: 'C2',
+		},
+		{
+			word: 'replete',
+			phonetic: '/rɪˈpliːt/',
+			definition: 'Filled or well-supplied with',
+			example: 'The report is replete with errors.',
+			level: 'C1',
+		},
+		{
+			word: 'sagacious',
+			phonetic: '/səˈɡeɪʃəs/',
+			definition: 'Having keen mental discernment; wise',
+			example: 'The sagacious leader avoided conflict.',
+			level: 'C1',
+		},
+		{
+			word: 'sanguine',
+			phonetic: '/ˈsæŋɡwɪn/',
+			definition: 'Optimistic in difficult situations',
+			example: 'She remained sanguine about her prospects.',
+			level: 'C1',
+		},
+		{
+			word: 'sedulous',
+			phonetic: '/ˈsedjʊləs/',
+			definition: 'Showing dedication and diligence',
+			example: 'His sedulous efforts finally paid off.',
+			level: 'C2',
+		},
+		{
+			word: 'sycophant',
+			phonetic: '/ˈsɪkəfənt/',
+			definition: 'A person who acts obsequiously for advantage',
+			example: 'He surrounded himself with sycophants.',
+			level: 'C1',
+		},
+		{
+			word: 'tenacious',
+			phonetic: '/tɪˈneɪʃəs/',
+			definition: 'Holding firmly to something; persistent',
+			example: 'Her tenacious pursuit of justice inspired others.',
+			level: 'B2',
+		},
+		{
+			word: 'transient',
+			phonetic: '/ˈtrænziənt/',
+			definition: 'Lasting only for a short time',
+			example: 'Fame can be transient.',
+			level: 'C1',
+		},
+		{
+			word: 'trenchant',
+			phonetic: '/ˈtrentʃənt/',
+			definition: 'Vigorous or incisive in expression',
+			example: 'Her trenchant critique exposed the flaws.',
+			level: 'C1',
+		},
+		{
+			word: 'truculent',
+			phonetic: '/ˈtrʌkjʊlənt/',
+			definition: 'Eager to argue or fight; aggressive',
+			example: 'His truculent attitude alienated potential allies.',
+			level: 'C2',
+		},
+		{
+			word: 'turgid',
+			phonetic: '/ˈtɜːdʒɪd/',
+			definition: 'Swollen; or tediously pompous in style',
+			example: 'His turgid prose was difficult to read.',
+			level: 'C2',
+		},
+		{
+			word: 'ubiquity',
+			phonetic: '/juːˈbɪkwɪti/',
+			definition: 'The state of being everywhere',
+			example: 'The ubiquity of social media affects everyone.',
+			level: 'C1',
+		},
+		{
+			word: 'umbrage',
+			phonetic: '/ˈʌmbrɪdʒ/',
+			definition: 'Offense or annoyance',
+			example: 'She took umbrage at his remarks.',
+			level: 'C1',
+		},
+		{
+			word: 'vacillate',
+			phonetic: '/ˈvæsɪleɪt/',
+			definition: 'Alternate between different opinions',
+			example: 'He vacillated between the two options.',
+			level: 'C1',
+		},
+		{
+			word: 'venerate',
+			phonetic: '/ˈvenəreɪt/',
+			definition: 'Regard with great respect',
+			example: 'The community venerates its elders.',
+			level: 'C1',
+		},
+		{
+			word: 'verbose',
+			phonetic: '/vɜːˈbəʊs/',
+			definition: 'Using more words than needed',
+			example: 'His verbose explanations confused the audience.',
+			level: 'C1',
+		},
+		{
+			word: 'vitriolic',
+			phonetic: '/ˌvɪtriˈɒlɪk/',
+			definition: 'Filled with bitter criticism or malice',
+			example: 'The vitriolic attack damaged his reputation.',
+			level: 'C1',
+		},
+		{
+			word: 'vociferous',
+			phonetic: '/vəˈsɪfərəs/',
+			definition: 'Expressing opinions loudly and forcefully',
+			example: 'The vociferous protests forced a policy change.',
+			level: 'C1',
+		},
+		{
+			word: 'wanton',
+			phonetic: '/ˈwɒntən/',
+			definition: 'Deliberate and unprovoked',
+			example: 'The wanton destruction shocked the community.',
+			level: 'C1',
+		},
+		{
+			word: 'zealous',
+			phonetic: '/ˈzeləs/',
+			definition: 'Having great energy in pursuit of a cause',
+			example: 'She was a zealous advocate for human rights.',
+			level: 'B2',
 		},
 	],
 	// Day 8: Speaking Idioms
@@ -1811,7 +2951,46 @@ let flashcardState = {
 	showingAnswer: false,
 	learned: JSON.parse(localStorage.getItem('ielts-vocab-learned') || '[]'),
 	shuffle: false,
+	mode: 'learn', // 'learn' or 'test'
+	quizState: {
+		questions: [],
+		currentQuestion: 0,
+		score: 0,
+		answers: [],
+		completed: false,
+	},
 };
+
+// Refresh flashcard state from localStorage (used after cloud sync)
+function refreshFlashcardState() {
+	flashcardState.learned = JSON.parse(
+		localStorage.getItem('ielts-vocab-learned') || '[]',
+	);
+	updateFlashcardDisplay();
+}
+
+// In-app alert for vocabulary (fallback if notificationManager not available)
+function showVocabAlert(message) {
+	// Remove existing alert if any
+	const existing = document.getElementById('vocab-alert');
+	if (existing) existing.remove();
+
+	const alert = document.createElement('div');
+	alert.id = 'vocab-alert';
+	alert.className =
+		'fixed top-4 left-1/2 transform -translate-x-1/2 z-50 max-w-sm w-full mx-4';
+	alert.innerHTML = `
+		<div class="bg-amber-500 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3">
+			<span class="text-xl">⚠️</span>
+			<p class="flex-1 text-sm font-medium">${message}</p>
+			<button onclick="this.closest('#vocab-alert').remove()" class="text-white/80 hover:text-white text-lg font-bold">&times;</button>
+		</div>
+	`;
+	document.body.appendChild(alert);
+
+	// Auto-remove after 5 seconds
+	setTimeout(() => alert.remove(), 5000);
+}
 
 function initFlashcards() {
 	updateFlashcardDisplay();
@@ -1821,9 +3000,18 @@ function updateFlashcardDisplay() {
 	const container = document.getElementById('flashcard-container');
 	if (!container) return;
 
+	// If in test mode, show quiz interface
+	if (flashcardState.mode === 'test') {
+		renderQuizMode(container);
+		return;
+	}
+
 	const words = IELTS_VOCABULARY[flashcardState.currentCategory];
 	const currentWord = words[flashcardState.currentIndex];
 	const isLearned = flashcardState.learned.includes(currentWord.word);
+	const learnedInCategory = words.filter((w) =>
+		flashcardState.learned.includes(w.word),
+	).length;
 	const levelColors = {
 		B1: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
 		B2: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
@@ -1833,12 +3021,32 @@ function updateFlashcardDisplay() {
 	const levelColor = levelColors[currentWord.level] || levelColors['B2'];
 
 	container.innerHTML = `
-		<div class="space-y-4">
+		<div class="space-y-3">
+			<!-- Mode Toggle -->
+			<div class="flex items-center justify-center gap-1 p-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+				<button onclick="switchVocabMode('learn')"
+					class="flex-1 px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+						flashcardState.mode === 'learn'
+							? 'bg-white dark:bg-gray-600 text-teal-600 dark:text-teal-400 shadow-sm'
+							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+					}">
+					📚 Learn
+				</button>
+				<button onclick="switchVocabMode('test')"
+					class="flex-1 px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+						flashcardState.mode === 'test'
+							? 'bg-white dark:bg-gray-600 text-teal-600 dark:text-teal-400 shadow-sm'
+							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+					}">
+					✏️ Test (${learnedInCategory} words)
+				</button>
+			</div>
+
 			<!-- Category Dropdown -->
 			<div class="flex items-center justify-between gap-3">
 				<div class="relative flex-1">
 					<select onchange="changeVocabCategory(this.value)"
-						class="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent cursor-pointer">
+						class="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 pr-8 text-sm font-medium text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent cursor-pointer">
 						${Object.keys(IELTS_VOCABULARY)
 							.map(
 								(cat) => `
@@ -1847,9 +3055,7 @@ function updateFlashcardDisplay() {
 										? 'selected'
 										: ''
 								}>
-								${cat.charAt(0).toUpperCase() + cat.slice(1)} (${
-									IELTS_VOCABULARY[cat].length
-								} words)
+								${cat.charAt(0).toUpperCase() + cat.slice(1)} (${IELTS_VOCABULARY[cat].length})
 							</option>
 						`,
 							)
@@ -1862,7 +3068,7 @@ function updateFlashcardDisplay() {
 					</div>
 				</div>
 				<span class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-					${flashcardState.learned.length} learned
+					${flashcardState.learned.length} total
 				</span>
 			</div>
 
@@ -1877,37 +3083,37 @@ function updateFlashcardDisplay() {
 			</div>
 
 			<!-- Flashcard -->
-			<div class="cursor-pointer">
+			<div class="cursor-pointer" onclick="flipFlashcard()">
 				<div class="bg-white dark:bg-gray-800 rounded-xl border-2 ${
 					isLearned
 						? 'border-green-400'
 						: 'border-gray-200 dark:border-gray-700'
-				} p-4 sm:p-6 min-h-[200px] sm:min-h-[220px] flex flex-col items-center justify-center text-center transition-all hover:shadow-lg">
+				} p-3 sm:p-5 min-h-[180px] sm:min-h-[200px] flex flex-col items-center justify-center text-center transition-all hover:shadow-lg">
 					${
 						flashcardState.showingAnswer
 							? `
-						<p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2">Definition:</p>
-						<p class="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-3 sm:mb-4">${currentWord.definition}</p>
-						<p class="text-xs sm:text-sm text-teal-600 dark:text-teal-400 italic mb-3">"${currentWord.example}"</p>
+						<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Definition:</p>
+						<p class="text-sm sm:text-base font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">${currentWord.definition}</p>
+						<p class="text-xs text-teal-600 dark:text-teal-400 italic mb-2">"${currentWord.example}"</p>
 						<button onclick="event.stopPropagation(); flipFlashcard()" class="text-xs text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400">↩️ Flip back</button>
 					`
 							: `
-						<p class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">${
+						<p class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">${
 							currentWord.word
 						}</p>
 						${
 							currentWord.phonetic
-								? `<p class="text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>`
+								? `<p class="text-xs text-purple-600 dark:text-purple-400 font-mono mb-2">${currentWord.phonetic}</p>`
 								: ''
 						}
 						<button onclick="event.stopPropagation(); pronounceWord('${currentWord.word.replace(
 							/'/g,
 							"\\'",
 						)}')"
-							class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors flex items-center gap-1 mb-3">
+							class="px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium hover:bg-teal-200 dark:hover:bg-teal-800/50 transition-colors flex items-center gap-1 mb-2">
 							<span>🔊</span> Listen
 						</button>
-						<button onclick="flipFlashcard()" class="text-xs text-gray-400 hover:text-teal-600 dark:hover:text-teal-400">👆 Tap to see definition</button>
+						<span class="text-xs text-gray-400">👆 Tap to see definition</span>
 					`
 					}
 				</div>
@@ -1923,7 +3129,7 @@ function updateFlashcardDisplay() {
 
 				<div class="flex gap-2">
 					<button onclick="toggleLearnedWord('${currentWord.word}')"
-						class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors
+						class="px-3 py-2 rounded-lg text-xs font-medium transition-colors
 						${
 							isLearned
 								? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
@@ -1986,6 +3192,11 @@ function toggleLearnedWord(word) {
 		JSON.stringify(flashcardState.learned),
 	);
 	updateFlashcardDisplay();
+
+	// Trigger cloud sync if available
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
 }
 
 function shuffleFlashcards() {
@@ -2030,6 +3241,237 @@ if ('speechSynthesis' in window) {
 		window.speechSynthesis.getVoices();
 	};
 }
+
+// ==================== VOCABULARY QUIZ/TEST MODE ====================
+function switchVocabMode(mode) {
+	flashcardState.mode = mode;
+	if (mode === 'test') {
+		startVocabQuiz();
+	} else {
+		updateFlashcardDisplay();
+	}
+}
+
+function startVocabQuiz() {
+	const words = IELTS_VOCABULARY[flashcardState.currentCategory];
+	const learnedWords = words.filter((w) =>
+		flashcardState.learned.includes(w.word),
+	);
+
+	if (learnedWords.length < 4) {
+		flashcardState.mode = 'learn';
+		updateFlashcardDisplay();
+		// Use in-app notification instead of browser alert
+		if (typeof notificationManager !== 'undefined') {
+			notificationManager.showInAppNotification(
+				'Learn at least 4 words first before taking the test!',
+				'warning',
+				5000,
+			);
+		} else {
+			// Fallback: create simple in-app notification
+			showVocabAlert(
+				'Learn at least 4 words first before taking the test!',
+			);
+		}
+		return;
+	}
+
+	// Create quiz with max 10 questions from learned words
+	const quizWords = shuffleArray([...learnedWords]).slice(0, 10);
+	const questions = quizWords.map((word) => {
+		// Get 3 wrong options from all words (not the correct one)
+		const allOtherWords = words.filter((w) => w.word !== word.word);
+		const wrongOptions = shuffleArray(allOtherWords)
+			.slice(0, 3)
+			.map((w) => w.definition);
+		const options = shuffleArray([word.definition, ...wrongOptions]);
+
+		return {
+			word: word.word,
+			correctAnswer: word.definition,
+			options: options,
+		};
+	});
+
+	flashcardState.quizState = {
+		questions: questions,
+		currentQuestion: 0,
+		score: 0,
+		answers: [],
+		completed: false,
+	};
+
+	updateFlashcardDisplay();
+}
+
+function shuffleArray(array) {
+	const arr = [...array];
+	for (let i = arr.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[arr[i], arr[j]] = [arr[j], arr[i]];
+	}
+	return arr;
+}
+
+function renderQuizMode(container) {
+	const quiz = flashcardState.quizState;
+
+	if (quiz.completed) {
+		// Show results
+		const percentage = Math.round(
+			(quiz.score / quiz.questions.length) * 100,
+		);
+		const grade =
+			percentage >= 90
+				? '🏆 Excellent!'
+				: percentage >= 70
+				? '✅ Good job!'
+				: percentage >= 50
+				? '📚 Keep practicing!'
+				: '❌ Review words again';
+
+		container.innerHTML = `
+			<div class="space-y-4 text-center">
+				<div class="text-4xl mb-2">${percentage >= 70 ? '🎉' : '📖'}</div>
+				<h3 class="text-xl font-bold text-gray-900 dark:text-white">Quiz Complete!</h3>
+				<div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+					<p class="text-3xl font-bold ${
+						percentage >= 70 ? 'text-green-600' : 'text-amber-600'
+					} mb-2">
+						${quiz.score}/${quiz.questions.length}
+					</p>
+					<p class="text-sm text-gray-600 dark:text-gray-400">${percentage}% correct</p>
+					<p class="text-lg font-medium mt-2">${grade}</p>
+				</div>
+
+				<!-- Review wrong answers -->
+				${
+					quiz.answers.filter((a) => !a.correct).length > 0
+						? `
+					<div class="bg-red-50 dark:bg-red-900/20 rounded-xl p-3 text-left">
+						<p class="font-semibold text-red-700 dark:text-red-400 mb-2 text-sm">Review these words:</p>
+						<div class="space-y-2">
+							${quiz.answers
+								.filter((a) => !a.correct)
+								.map(
+									(a) => `
+								<div class="text-xs">
+									<span class="font-medium text-gray-900 dark:text-white">${a.word}</span>
+									<span class="text-gray-500 dark:text-gray-400"> → ${a.correctAnswer}</span>
+								</div>
+							`,
+								)
+								.join('')}
+						</div>
+					</div>
+				`
+						: ''
+				}
+
+				<div class="flex gap-2 justify-center mt-4">
+					<button onclick="startVocabQuiz()"
+						class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">
+						🔄 Try Again
+					</button>
+					<button onclick="switchVocabMode('learn')"
+						class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors">
+						📚 Back to Learn
+					</button>
+				</div>
+			</div>
+		`;
+		return;
+	}
+
+	const q = quiz.questions[quiz.currentQuestion];
+
+	container.innerHTML = `
+		<div class="space-y-3">
+			<!-- Mode Toggle -->
+			<div class="flex items-center justify-center gap-1 p-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+				<button onclick="switchVocabMode('learn')"
+					class="flex-1 px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+					📚 Learn
+				</button>
+				<button onclick="switchVocabMode('test')"
+					class="flex-1 px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors bg-white dark:bg-gray-600 text-teal-600 dark:text-teal-400 shadow-sm">
+					✏️ Test
+				</button>
+			</div>
+
+			<!-- Progress -->
+			<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+				<span>Question ${quiz.currentQuestion + 1} of ${quiz.questions.length}</span>
+				<span class="text-green-600 dark:text-green-400 font-medium">Score: ${
+					quiz.score
+				}</span>
+			</div>
+
+			<!-- Progress bar -->
+			<div class="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+				<div class="h-full bg-teal-500 transition-all duration-300"
+					style="width: ${(quiz.currentQuestion / quiz.questions.length) * 100}%"></div>
+			</div>
+
+			<!-- Question -->
+			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+				<p class="text-xs text-gray-500 dark:text-gray-400 mb-2">What is the meaning of:</p>
+				<p class="text-xl font-bold text-gray-900 dark:text-white mb-1">${q.word}</p>
+				<button onclick="pronounceWord('${q.word.replace(/'/g, "\\'")}')"
+					class="text-xs text-teal-600 dark:text-teal-400 hover:underline">🔊 Listen</button>
+			</div>
+
+			<!-- Options -->
+			<div class="space-y-2">
+				${q.options
+					.map(
+						(opt, i) => `
+					<button onclick="answerQuizQuestion(${i})"
+						class="w-full text-left px-3 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/20 text-sm text-gray-700 dark:text-gray-300 transition-colors">
+						<span class="font-medium text-gray-500 dark:text-gray-500 mr-2">${String.fromCharCode(
+							65 + i,
+						)}.</span>
+						${opt}
+					</button>
+				`,
+					)
+					.join('')}
+			</div>
+		</div>
+	`;
+}
+
+function answerQuizQuestion(optionIndex) {
+	const quiz = flashcardState.quizState;
+	const q = quiz.questions[quiz.currentQuestion];
+	const selectedAnswer = q.options[optionIndex];
+	const isCorrect = selectedAnswer === q.correctAnswer;
+
+	quiz.answers.push({
+		word: q.word,
+		selectedAnswer: selectedAnswer,
+		correctAnswer: q.correctAnswer,
+		correct: isCorrect,
+	});
+
+	if (isCorrect) {
+		quiz.score++;
+	}
+
+	quiz.currentQuestion++;
+
+	if (quiz.currentQuestion >= quiz.questions.length) {
+		quiz.completed = true;
+	}
+
+	updateFlashcardDisplay();
+}
+
+// Expose quiz functions globally
+window.switchVocabMode = switchVocabMode;
+window.startVocabQuiz = startVocabQuiz;
+window.answerQuizQuestion = answerQuizQuestion;
 
 // ==================== WRITING PRACTICE TIMER ====================
 let writingTimer = {

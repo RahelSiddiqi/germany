@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadAllData();
 	dataLoaded = true;
 
-	// Restore last page or check URL hash or default to band8-tracker
+	// Restore last page or check URL hash or default to dashboard
 	const hash = window.location.hash.replace('#', '');
 	const savedPage =
-		hash || localStorage.getItem('currentPage') || 'band8-tracker';
+		hash || localStorage.getItem('currentPage') || 'dashboard';
 	showPage(savedPage);
 
 	updateDashboardStats();
@@ -245,6 +245,45 @@ function getStatusBadgeClass(status) {
 	return classes[status] || classes['not_started'];
 }
 
+// Status priority for sorting (lower = more important/earlier)
+function getStatusPriority(status) {
+	const priority = {
+		in_progress: 1,
+		preparing: 2,
+		documents_ready: 3,
+		researching: 4,
+		not_started: 5,
+		submitted: 6,
+		admitted: 7,
+		awarded: 8,
+		rejected: 9,
+	};
+	return priority[status] || 5;
+}
+
+// Parse deadline string to date
+function parseDeadline(deadline) {
+	if (!deadline) return new Date('2099-12-31');
+	// Handle formats like "May 31, 2026", "January 3, 2026"
+	const date = new Date(deadline);
+	return isNaN(date.getTime()) ? new Date('2099-12-31') : date;
+}
+
+// Sort universities by status (active first) then by deadline (earliest first)
+function sortUniversitiesByDeadline(universities) {
+	return [...universities].sort((a, b) => {
+		// First sort by status priority
+		const statusA = getStatusPriority(a.status);
+		const statusB = getStatusPriority(b.status);
+		if (statusA !== statusB) return statusA - statusB;
+
+		// Then sort by deadline
+		const deadlineA = parseDeadline(a.application_deadline);
+		const deadlineB = parseDeadline(b.application_deadline);
+		return deadlineA - deadlineB;
+	});
+}
+
 // GERMANY FUNCTIONS
 async function loadGermanyData() {
 	try {
@@ -310,7 +349,7 @@ function displayScholarships() {
 					${major_scholarships
 						.map(
 							(s) => `
-						<div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
+						<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-5 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
 							<h4 class="font-bold text-lg text-teal-600 dark:text-teal-400 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">${
 								s.name
 							}</h4>
@@ -551,22 +590,25 @@ function displayGermanyUniversities() {
 	const container = document.getElementById('germany-list');
 	if (!container) return;
 
-	container.innerHTML = germanyUniversities
+	const sortedUniversities = sortUniversitiesByDeadline(germanyUniversities);
+	container.innerHTML = sortedUniversities
 		.map(
 			(uni) => `
-		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
-				<div class="flex items-start justify-between gap-4">
-					<div class="flex-1">
-						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${
-				uni.ranking || ''
-			}</h3>
-						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
+		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="p-3 sm:p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
+				<div class="flex items-start justify-between gap-3 sm:gap-4">
+					<div class="flex-1 min-w-0">
+						<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">${
+							uni.university
+						} ${uni.ranking || ''}</h3>
+						<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate">${
+							uni.program
+						}</p>
 					</div>
 					<span class="expand-toggle text-gray-400 text-sm">▶</span>
 				</div>
-				<div class="flex items-center gap-3 mt-3">
-					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
+				<div class="flex flex-wrap items-center gap-2 mt-2 sm:mt-3">
+					<span class="px-2 sm:px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
 						uni.application_deadline
 					}</span>
 					<span class="px-3 py-1 ${getStatusBadgeClass(
@@ -591,17 +633,17 @@ function displayGermanyUniversities() {
 				`
 						: ''
 				}
-				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-sm mb-4">
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
 						uni.location || 'N/A'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
 						uni.duration || '2 years'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
 						uni.tuition || 'Check website'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
 						uni.language || 'English'
 					}</div>
 				</div>
@@ -1161,17 +1203,20 @@ function displaySchengenUniversities() {
 	const container = document.getElementById('schengen-list');
 	if (!container) return;
 
-	container.innerHTML = schengenUniversities
+	const sortedUniversities = sortUniversitiesByDeadline(schengenUniversities);
+	container.innerHTML = sortedUniversities
 		.map(
 			(uni) => `
-		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-			<div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
-				<div class="flex items-start justify-between gap-4">
-					<div class="flex-1">
-						<h3 class="font-semibold text-gray-900 dark:text-white">${uni.university} ${
-				uni.country || ''
-			}</h3>
-						<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${uni.program}</p>
+		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="p-3 sm:p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleExpand(this)">
+				<div class="flex items-start justify-between gap-3 sm:gap-4">
+					<div class="flex-1 min-w-0">
+						<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">${
+							uni.university
+						} ${uni.country || ''}</h3>
+						<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate">${
+							uni.program
+						}</p>
 						${
 							uni.ranking
 								? `<p class="text-xs text-gray-500 dark:text-gray-500 mt-1">${uni.ranking}</p>`
@@ -1180,18 +1225,18 @@ function displaySchengenUniversities() {
 					</div>
 					<span class="expand-toggle text-gray-400 text-sm">▶</span>
 				</div>
-				<div class="flex items-center gap-3 mt-3">
-					<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
+				<div class="flex flex-wrap items-center gap-2 mt-2 sm:mt-3">
+					<span class="px-2 sm:px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">⏰ ${
 						uni.application_deadline
 					}</span>
-					<span class="px-3 py-1 ${getStatusBadgeClass(
+					<span class="px-2 sm:px-3 py-1 ${getStatusBadgeClass(
 						uni.status,
 					)} rounded-full text-xs font-medium">${getStatusLabel(
 				uni.status,
 			)}</span>
 				</div>
 			</div>
-			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+			<div class="hidden border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800/50">
 				${
 					uni.application_opens
 						? `
@@ -1201,8 +1246,8 @@ function displaySchengenUniversities() {
 				`
 						: ''
 				}
-				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
-					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-sm mb-4">
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
 						uni.location || 'N/A'
 					}</div>
 					<div class="p-2 bg-white dark:bg-gray-700/50 rounded"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
@@ -2975,10 +3020,76 @@ function updateStudyStreak() {
 	}
 }
 
-function logStudyTime() {
-	const minutes = prompt('How many minutes did you study?', '30');
-	if (!minutes || isNaN(parseInt(minutes))) return;
+// In-app modal for study time input
+function showStudyTimeModal() {
+	// Create modal overlay
+	const modal = document.createElement('div');
+	modal.id = 'study-time-modal';
+	modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+	modal.innerHTML = `
+		<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-sm w-full p-5 transform transition-all">
+			<div class="text-center mb-4">
+				<div class="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+					<span class="text-2xl">⏱️</span>
+				</div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white">Log Study Time</h3>
+				<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">How many minutes did you study?</p>
+			</div>
+			<div class="mb-4">
+				<input type="number" id="study-minutes-input" value="30" min="1" max="480"
+					class="w-full px-4 py-3 text-center text-2xl font-bold bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+					placeholder="30">
+				<div class="flex justify-center gap-2 mt-3">
+					<button onclick="document.getElementById('study-minutes-input').value = 15" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">15m</button>
+					<button onclick="document.getElementById('study-minutes-input').value = 30" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">30m</button>
+					<button onclick="document.getElementById('study-minutes-input').value = 60" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">1h</button>
+					<button onclick="document.getElementById('study-minutes-input').value = 120" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">2h</button>
+				</div>
+			</div>
+			<div class="flex gap-3">
+				<button onclick="closeStudyTimeModal()" class="flex-1 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Cancel</button>
+				<button onclick="submitStudyTime()" class="flex-1 px-4 py-2.5 bg-teal-600 text-white rounded-xl font-medium hover:bg-teal-700 transition-colors">Log Time</button>
+			</div>
+		</div>
+	`;
+	document.body.appendChild(modal);
+	
+	// Focus input and select text
+	setTimeout(() => {
+		const input = document.getElementById('study-minutes-input');
+		if (input) {
+			input.focus();
+			input.select();
+		}
+	}, 100);
+	
+	// Close on backdrop click
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal) closeStudyTimeModal();
+	});
+}
 
+function closeStudyTimeModal() {
+	const modal = document.getElementById('study-time-modal');
+	if (modal) modal.remove();
+}
+
+function submitStudyTime() {
+	const input = document.getElementById('study-minutes-input');
+	const minutes = parseInt(input?.value);
+	
+	if (!minutes || isNaN(minutes) || minutes < 1) {
+		if (typeof notificationManager !== 'undefined') {
+			notificationManager.showInAppNotification('Please enter a valid number of minutes', 'error', 3000);
+		}
+		return;
+	}
+	
+	closeStudyTimeModal();
+	processStudyTime(minutes);
+}
+
+function processStudyTime(minutes) {
 	const streakData = JSON.parse(
 		localStorage.getItem('study-streak') ||
 			'{"streak": 0, "lastDate": null, "todayMinutes": 0}',
@@ -2997,7 +3108,7 @@ function logStudyTime() {
 		streakData.todayMinutes = 0;
 	}
 
-	streakData.todayMinutes += parseInt(minutes);
+	streakData.todayMinutes += minutes;
 	streakData.lastDate = today;
 	localStorage.setItem('study-streak', JSON.stringify(streakData));
 
@@ -3016,6 +3127,10 @@ function logStudyTime() {
 			3000,
 		);
 	}
+}
+
+function logStudyTime() {
+	showStudyTimeModal();
 }
 
 function toggleDeadlineReminders() {
@@ -3079,22 +3194,22 @@ function renderUniversityCard(uni, type) {
 						? `<p class="text-sm text-amber-600 dark:text-amber-400 mb-4 font-medium">💡 ${uni.highlights}</p>`
 						: ''
 				}
-				<div class="grid grid-cols-2 gap-3 text-sm mb-4">
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-sm mb-4">
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">📍</span> ${
 						uni.location || 'N/A'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">⏱️</span> ${
 						uni.duration || '2 years'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">💰</span> ${
 						uni.tuition || 'Check website'
 					}</div>
-					<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
+					<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200"><span class="text-gray-500 dark:text-gray-400">🌐</span> ${
 						uni.language || 'English'
 					}</div>
 					${
 						countryDisplay
-							? `<div class="p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">${countryDisplay}</div>`
+							? `<div class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded text-gray-800 dark:text-gray-200">${countryDisplay}</div>`
 							: ''
 					}
 				</div>
