@@ -266,12 +266,26 @@ function displayPlan() {
 				(dayComplete ? '#fff' : '#6b7280') +
 				'; transition:transform 0.2s;">▼</span>' +
 				'</div></div><div class="day-tasks" style="display:none; padding:10px;">' +
-				'<table class="task-table" style="margin:0; border:none;"><tr><th style="width:30px;">✓</th><th style="width:110px;">Time</th><th>Task</th></tr>';
+				'<table class="task-table" style="margin:0; border:none;"><tr><th style="width:30px;">✓</th><th style="width:100px;">Time</th><th>Task</th><th style="width:30px;">📖</th></tr>';
 
 			day.tasks.forEach(function (t, idx) {
 				const taskId = 'mp-d' + day.day + '-' + idx;
 				const checked = tasks[taskId] ? 'checked' : '';
 				const taskIcon = getTaskIconFromText(t.task);
+
+				// Calculate duration from time range
+				let duration = '';
+				if (t.time && t.time.includes('-')) {
+					const parts = t.time.split('-');
+					if (parts.length === 2) {
+						const [sh, sm] = parts[0].split(':').map(Number);
+						const [eh, em] = parts[1].split(':').map(Number);
+						const mins = eh * 60 + em - (sh * 60 + sm);
+						if (mins >= 60) duration = mins / 60 + 'h';
+						else if (mins > 0) duration = mins + 'm';
+					}
+				}
+
 				planHTML +=
 					'<tr class="' +
 					(checked ? 'completed-task' : '') +
@@ -285,14 +299,25 @@ function displayPlan() {
 					' onchange="toggleTask(\'' +
 					taskId +
 					'\')"></td>' +
-					'<td style="font-size:12px; color:#6b7280; white-space:nowrap;">' +
+					'<td style="font-size:11px; color:#0d9488; white-space:nowrap; text-align:center;"><div style="font-weight:600;">' +
 					t.time +
+					'</div>' +
+					(duration
+						? '<div style="font-size:10px; color:#14b8a6;">' +
+						  duration +
+						  '</div>'
+						: '') +
 					'</td>' +
 					'<td>' +
 					taskIcon +
 					' ' +
 					t.task +
-					'</td></tr>';
+					'</td>' +
+					'<td style="text-align:center;"><a href="#ielts-practice" onclick="showPage(\'ielts-practice\'); openIELTSFolder && openIELTSFolder(\'d' +
+					day.day +
+					'\')" style="font-size:16px; text-decoration:none;" title="Day ' +
+					day.day +
+					' Resources">📖</a></td></tr>';
 			});
 
 			planHTML += '</table></div></div>';

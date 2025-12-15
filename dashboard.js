@@ -2109,769 +2109,330 @@ function changeScholarshipStatus(scholarshipName, newStatus) {
 	}
 }
 
-// IELTS FUNCTIONS
+// IELTS FUNCTIONS - Now unified with MASTER_PLAN.ieltsSchedule
 function displayIELTSPlan() {
 	const container = document.getElementById('ielts-plan-content');
 	if (!container) return;
 
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 
-	const renderTask = (id, time, task, duration, resource = '') => {
-		const isChecked = tasks[id] ? true : false;
-		const bgClass = isChecked ? 'bg-teal-50 dark:bg-teal-900/20' : '';
-		const textClass = isChecked
-			? 'line-through text-gray-400 dark:text-gray-500'
-			: 'text-gray-700 dark:text-gray-300';
+	// Check if MASTER_PLAN is available
+	if (typeof MASTER_PLAN === 'undefined' || !MASTER_PLAN.ieltsSchedule) {
+		container.innerHTML =
+			'<div class="text-center py-8 text-gray-500">Loading study plan...</div>';
+		return;
+	}
 
-		if (time.startsWith('DAY')) {
-			return `
-				<tr>
-					<td colspan="4" class="py-2 px-2 sm:px-4 bg-teal-600 dark:bg-teal-700 font-bold text-white text-center text-xs sm:text-sm">
-						${time}
-					</td>
-				</tr>
-			`;
-		}
-
-		const resourceLink = resource
-			? `<a href="${resource}" target="_blank" class="text-teal-600 dark:text-teal-400 hover:underline text-[10px] sm:text-xs">📎 Resource</a>`
-			: '';
-
-		return `
-			<tr class="${bgClass} hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors border-b border-gray-100 dark:border-gray-700" data-task-id="${id}">
-				<td class="py-1.5 sm:py-2 px-1.5 sm:px-3 text-center align-top">
-					<input type="checkbox"
-						   class="w-4 h-4 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer"
-						   ${isChecked ? 'checked' : ''}
-						   onchange="toggleIELTSTask('${id}', this)">
-				</td>
-				<td class="py-1.5 sm:py-2 px-1 sm:px-2 align-top whitespace-nowrap">
-					<div class="text-[9px] sm:text-xs font-medium text-gray-500 dark:text-gray-400">${time}</div>
-					<div class="text-[9px] sm:text-xs text-teal-600 dark:text-teal-400">${duration}</div>
-				</td>
-				<td class="py-1.5 sm:py-2 px-1 sm:px-2 text-[10px] sm:text-sm ${textClass}">${task}</td>
-				<td class="py-1.5 sm:py-2 px-1 sm:px-2 align-top hidden sm:table-cell">${resourceLink}</td>
-			</tr>
-		`;
+	// Helper: Get task icon based on content
+	const getTaskIcon = (task) => {
+		const t = (task || '').toLowerCase();
+		if (t.includes('listening') || t.includes('bbc') || t.includes('audio'))
+			return '🎧';
+		if (t.includes('reading') || t.includes('passage')) return '📚';
+		if (
+			t.includes('writing') ||
+			t.includes('essay') ||
+			t.includes('task 1') ||
+			t.includes('task 2')
+		)
+			return '✍️';
+		if (t.includes('speaking') || t.includes('cue card')) return '🎤';
+		if (t.includes('vocab') || t.includes('grammar') || t.includes('word'))
+			return '📝';
+		if (t.includes('mock') || t.includes('test') || t.includes('cambridge'))
+			return '🎯';
+		if (
+			t.includes('break') ||
+			t.includes('lunch') ||
+			t.includes('dinner') ||
+			t.includes('snack')
+		)
+			return '☕';
+		if (t.includes('daad') || t.includes('scholarship')) return '🎓';
+		if (
+			t.includes('analyze') ||
+			t.includes('review') ||
+			t.includes('mistake')
+		)
+			return '🔍';
+		return '📌';
 	};
 
-	const renderDaySection = (title, emoji, tasks) => `
-		<div class="bg-white dark:bg-gray-800 rounded-none sm:rounded-xl border-y sm:border border-gray-200 dark:border-gray-700 overflow-hidden">
-			<div class="bg-gradient-to-r from-teal-500 to-teal-600 dark:from-teal-600 dark:to-teal-700 px-3 py-2 sm:px-4 sm:py-3">
-				<h3 class="text-sm sm:text-base font-bold text-white">${emoji} ${title}</h3>
-			</div>
-			<div class="overflow-x-auto">
-				<table class="w-full text-left">
-					<thead class="bg-gray-50 dark:bg-gray-800/50">
-						<tr>
-							<th class="py-1.5 sm:py-2 px-1.5 sm:px-3 text-center text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 w-8">✓</th>
-							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 w-14 sm:w-20">Time</th>
-							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400">Task & Focus</th>
-							<th class="py-1.5 sm:py-2 px-1 sm:px-2 text-[9px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 hidden sm:table-cell w-20">Resource</th>
-						</tr>
-					</thead>
-					<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-						${tasks}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	`;
+	// Helper: Get task color class
+	const getTaskColor = (task) => {
+		const t = (task || '').toLowerCase();
+		if (t.includes('listening')) return '🟦';
+		if (t.includes('reading')) return '🟩';
+		if (
+			t.includes('writing') ||
+			t.includes('essay') ||
+			t.includes('task 1') ||
+			t.includes('task 2')
+		)
+			return '🟨';
+		if (t.includes('speaking')) return '🟪';
+		if (t.includes('vocab') || t.includes('grammar')) return '🟧';
+		if (t.includes('mock') || t.includes('test')) return '🟥';
+		return '';
+	};
 
-	container.innerHTML = `
-		<div class="space-y-3 sm:space-y-6">
-			<!-- Essential Resources Banner -->
-			<div class="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-900/20 dark:to-teal-900/20 rounded-none sm:rounded-xl p-3 sm:p-4 border-y sm:border border-blue-200 dark:border-blue-800">
-				<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📚 Essential Resources for Band 8.0+</h4>
-				<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] sm:text-xs">
-					<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
-						<span>🎯</span> <span class="truncate">Official IELTS</span>
-					</a>
-					<a href="https://ieltsliz.com/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
-						<span>👩‍🏫</span> <span class="truncate">IELTS Liz</span>
-					</a>
-					<a href="https://takeielts.britishcouncil.org/take-ielts/prepare" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
-						<span>🇬🇧</span> <span class="truncate">British Council</span>
-					</a>
-					<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium">
-						<span>▶️</span> <span class="truncate">E2 IELTS</span>
-					</a>
-				</div>
-			</div>
+	// Calculate progress
+	let totalTasks = 0;
+	let completedTasks = 0;
+	MASTER_PLAN.ieltsSchedule.forEach((day) => {
+		totalTasks += day.tasks.length;
+		day.tasks.forEach((_, idx) => {
+			const taskId = 'mp-d' + day.day + '-' + idx;
+			if (tasks[taskId]) completedTasks++;
+		});
+	});
+	const progressPercent =
+		totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-			<!-- Days 1-2: Foundations -->
-			${renderDaySection(
-				'DAYS 1–2: Foundations & Test Format',
-				'🎯',
-				`
-				${renderTask('d1-1', 'DAY 1', '', '')}
-				${renderTask(
-					'd1-2',
-					'9:00–11:00',
-					'🟦 IELTS Format: Understand all 4 sections, timing, scoring',
-					'2h',
-					'https://www.ielts.org/for-test-takers/test-format',
-				)}
-				${renderTask(
-					'd1-3',
-					'11:00–1:00',
-					'🟨 Writing: Study Band 8-9 descriptors + sample essays',
-					'2h',
-					'https://ieltsliz.com/ielts-writing-task-2-band-scores-5-to-8/',
-				)}
-				${renderTask(
-					'd1-4',
-					'2:00–4:00',
-					'🟨 Task 1: Learn all 6 chart types (line, bar, pie, table, process, map)',
-					'2h',
-					'https://ieltsliz.com/ielts-writing-task-1-lessons-and-tips/',
-				)}
-				${renderTask(
-					'd1-5',
-					'4:00–6:00',
-					'🟨 Task 2: Study 5 essay types (opinion, discussion, problem/solution, advantages, two-part)',
-					'2h',
-					'https://ieltsliz.com/ielts-writing-task-2/',
-				)}
-				${renderTask(
-					'd1-6',
-					'7:00–9:00',
-					'🟪 Speaking: Watch Band 9 sample videos, note techniques',
-					'2h',
-					'https://www.youtube.com/watch?v=FYGq8vBnXEw',
-				)}
-				${renderTask(
-					'd1-7',
-					'9:00–10:00',
-					'🟧 Vocab: Learn 30 academic words from AWL',
-					'1h',
-					'https://www.victoria.ac.nz/lals/resources/academicwordlist',
-				)}
-				${renderTask('d2-1', 'DAY 2', '', '')}
-				${renderTask(
-					'd2-2',
-					'9:00–11:00',
-					'🟩 Reading: Master skimming (1 min/passage) & scanning techniques',
-					'2h',
-					'https://ieltsliz.com/ielts-reading-lessons-information-and-tips/',
-				)}
-				${renderTask(
-					'd2-3',
-					'11:00–1:00',
-					'🟦 Listening: Learn note-taking, keywords, anticipation skills',
-					'2h',
-					'https://ieltsliz.com/ielts-listening/',
-				)}
-				${renderTask(
-					'd2-4',
-					'2:00–4:00',
-					'🟩 Reading: Practice T/F/NG, Matching Headings question types',
-					'2h',
-					'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests',
-				)}
-				${renderTask(
-					'd2-5',
-					'4:00–6:00',
-					'🟦 Listening: Practice Sections 1&2 (form filling, MCQ, maps)',
-					'2h',
-					'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/listening-practice-test-1',
-				)}
-				${renderTask(
-					'd2-6',
-					'7:00–9:00',
-					'🟪 Speaking Part 1: Practice 15 common topics (work, study, hometown)',
-					'2h',
-					'https://ieltsliz.com/ielts-speaking-part-1-topics/',
-				)}
-				${renderTask(
-					'd2-7',
-					'9:00–10:00',
-					'🟧 Vocab: 30 topic-specific words + collocations',
-					'1h',
-					'',
-				)}
-			`,
-			)}
+	// Define phases
+	const phases = [
+		{
+			name: 'DAYS 1–2: Foundations & Test Format',
+			days: [1, 2],
+			emoji: '🎯',
+		},
+		{
+			name: 'DAYS 3–4: Listening & Reading Mastery',
+			days: [3, 4],
+			emoji: '🎧',
+		},
+		{ name: 'DAYS 5–6: Writing Focus', days: [5, 6], emoji: '✍️' },
+		{ name: 'DAYS 7–8: Speaking & Writing', days: [7, 8], emoji: '🎤' },
+		{
+			name: 'DAYS 9–10: Integration & Weak Areas',
+			days: [9, 10],
+			emoji: '🔄',
+		},
+		{
+			name: 'DAYS 11–12: Mock Test #1 & Review',
+			days: [11, 12],
+			emoji: '📋',
+		},
+		{
+			name: 'DAYS 13–14: Refinement & Mock #2',
+			days: [13, 14],
+			emoji: '📊',
+		},
+		{ name: 'DAY 15: Final Prep & Test Day', days: [15], emoji: '🏆' },
+	];
 
-			<!-- Days 3-5: Listening & Reading Intensive -->
-			${renderDaySection(
-				'DAYS 3–5: Listening & Reading Mastery',
-				'🎧',
-				`
-				${renderTask('d3-1', 'DAY 3', '', '')}
-				${renderTask(
-					'd3-2',
-					'9:00–11:00',
-					'🟦 Listening: Cambridge 15 Test 1 - All 4 sections (40 min) + review',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd3-3',
-					'11:00–1:00',
-					'🟦 Analyze errors: transcripts, spelling, plurals, keywords missed',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd3-4',
-					'2:00–4:00',
-					'🟩 Reading: Cambridge 15 Test 1 Passage 1&2 (timed 40 min)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd3-5',
-					'4:00–6:00',
-					'🟩 Analyze: why wrong answers were tempting, find evidence in text',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd3-6',
-					'7:00–9:00',
-					'🟦 Listen to BBC 6 Minute English + TED Talk, take notes',
-					'2h',
-					'https://www.bbc.co.uk/learningenglish/english/features/6-minute-english',
-				)}
-				${renderTask(
-					'd3-7',
-					'9:00–10:00',
-					'🟧 Vocab: 25 academic + 10 topic words from practice',
-					'1h',
-					'',
-				)}
-				${renderTask('d4-1', 'DAY 4', '', '')}
-				${renderTask(
-					'd4-2',
-					'9:00–11:00',
-					'🟩 Reading: Cambridge 15 Test 1 Passage 3 + Full review',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd4-3',
-					'11:00–1:00',
-					'🟩 Practice weak question types (Matching Features, Sentence Completion)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd4-4',
-					'2:00–4:00',
-					'🟦 Listening: Cambridge 14 Test 1 Sections 3&4 (academic context)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd4-5',
-					'4:00–6:00',
-					'🟦 Focus: signpost words, speaker attitude, main ideas',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd4-6',
-					'7:00–9:00',
-					'🟨 Writing: Draft Task 1 (graph) in 20 min, self-assess',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd4-7',
-					'9:00–10:00',
-					'🟧 Vocab: Data description phrases (increase, surge, plummet)',
-					'1h',
-					'',
-				)}
-				${renderTask('d5-1', 'DAY 5', '', '')}
-				${renderTask(
-					'd5-2',
-					'9:00–12:00',
-					'🟥 MINI MOCK: Listening + Reading (Cambridge 14 Test 2)',
-					'3h',
-					'',
-				)}
-				${renderTask(
-					'd5-3',
-					'1:00–3:00',
-					'🟥 Full error analysis: categorize mistakes, create error log',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd5-4',
-					'3:00–5:00',
-					'🟪 Speaking Part 2: Practice 5 cue cards (2 min each), record',
-					'2h',
-					'https://ieltsliz.com/ielts-speaking-part-2-topics/',
-				)}
-				${renderTask(
-					'd5-5',
-					'5:00–7:00',
-					'🟪 Speaking Part 3: Practice follow-up questions, develop ideas',
-					'2h',
-					'https://ieltsliz.com/ielts-speaking-part-3-topics-2/',
-				)}
-				${renderTask(
-					'd5-6',
-					'8:00–10:00',
-					'🟧 Review all vocab learned + create flashcards',
-					'2h',
-					'',
-				)}
-			`,
-			)}
+	let html = '<div class="space-y-3 sm:space-y-4">';
 
-			<!-- Days 6-8: Writing & Speaking -->
-			${renderDaySection(
-				'DAYS 6–8: Writing & Speaking Focus',
-				'✍️',
-				`
-				${renderTask('d6-1', 'DAY 6', '', '')}
-				${renderTask(
-					'd6-2',
-					'9:00–11:00',
-					'🟨 Task 1: Study high-band samples, learn key structures',
-					'2h',
-					'https://ieltsliz.com/ielts-writing-task-1-lessons-and-tips/',
-				)}
-				${renderTask(
-					'd6-3',
-					'11:00–1:00',
-					'🟨 Task 1: Write 3 different chart types (20 min each)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd6-4',
-					'2:00–4:00',
-					'🟨 Compare with model answers, note vocabulary gaps',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd6-5',
-					'4:00–6:00',
-					'🟦 Listening: Cambridge 13 Test 1 full practice',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd6-6',
-					'7:00–9:00',
-					'🟪 Speaking: Record Part 2, listen back, improve fluency',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd6-7',
-					'9:00–10:00',
-					'🟧 Vocab: Trend vocabulary (fluctuate, peak, remain stable)',
-					'1h',
-					'',
-				)}
-				${renderTask('d7-1', 'DAY 7', '', '')}
-				${renderTask(
-					'd7-2',
-					'9:00–11:00',
-					'🟨 Task 2: Master essay structure (intro, 2 body, conclusion)',
-					'2h',
-					'https://ieltsliz.com/ielts-writing-task-2/',
-				)}
-				${renderTask(
-					'd7-3',
-					'11:00–1:00',
-					'🟨 Write Essay 1: Opinion essay (40 min timed)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd7-4',
-					'2:00–4:00',
-					'🟨 Write Essay 2: Discussion essay (40 min timed)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd7-5',
-					'4:00–6:00',
-					'🟨 Self-assess: Task Response, Coherence, Lexical, Grammar',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd7-6',
-					'7:00–9:00',
-					'🟩 Reading: Practice summary completion, table completion',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd7-7',
-					'9:00–10:00',
-					'🟧 Vocab: Essay linking words (moreover, nevertheless, consequently)',
-					'1h',
-					'',
-				)}
-				${renderTask('d8-1', 'DAY 8', '', '')}
-				${renderTask(
-					'd8-2',
-					'9:00–11:00',
-					'🟪 Speaking Part 1: Practice all common topics fluently',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd8-3',
-					'11:00–1:00',
-					'🟪 Speaking Part 2: 5 new cue cards, focus on extending ideas',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd8-4',
-					'2:00–4:00',
-					'🟪 Speaking Part 3: Complex questions, abstract ideas',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd8-5',
-					'4:00–6:00',
-					'🟪 Record full mock speaking test, self-evaluate',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd8-6',
-					'7:00–9:00',
-					'🟨 Writing: Practice timed Task 1 + Task 2 (1 hour total)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd8-7',
-					'9:00–10:00',
-					'🟧 Vocab: Idioms & advanced phrases for speaking',
-					'1h',
-					'',
-				)}
-			`,
-			)}
+	// Legend
+	html +=
+		'<div class="flex flex-wrap gap-2 p-2 sm:p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg text-[10px] sm:text-xs">' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-blue-500 rounded"></span>Listening</span>' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-green-500 rounded"></span>Reading</span>' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-yellow-500 rounded"></span>Writing</span>' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-purple-500 rounded"></span>Speaking</span>' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-orange-500 rounded"></span>Vocab</span>' +
+		'<span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded"></span>Mock</span>' +
+		'</div>';
 
-			<!-- Days 9-10: Integration -->
-			${renderDaySection(
-				'DAYS 9–10: Integration & Weak Areas',
-				'🔄',
-				`
-				${renderTask('d9-1', 'DAY 9', '', '')}
-				${renderTask(
-					'd9-2',
-					'9:00–12:00',
-					'🟥 FULL MOCK TEST: Cambridge 13 Test 2 (L+R)',
-					'3h',
-					'',
-				)}
-				${renderTask(
-					'd9-3',
-					'1:00–3:00',
-					'🟥 Writing: Task 1 + Task 2 under exam conditions',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd9-4',
-					'3:00–4:00',
-					'🟪 Speaking: Full mock test (Part 1, 2, 3)',
-					'1h',
-					'',
-				)}
-				${renderTask(
-					'd9-5',
-					'4:00–6:00',
-					'📊 Score all sections, identify top 3 weak areas',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd9-6',
-					'7:00–10:00',
-					'⚠️ Intensive practice on weakest skill',
-					'3h',
-					'',
-				)}
-				${renderTask('d10-1', 'DAY 10', '', '')}
-				${renderTask(
-					'd10-2',
-					'9:00–12:00',
-					'⚠️ Weakest skill: Targeted practice with resources',
-					'3h',
-					'',
-				)}
-				${renderTask(
-					'd10-3',
-					'1:00–3:00',
-					'⚠️ 2nd weakest skill: Problem question types',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd10-4',
-					'3:00–5:00',
-					'🟨 Writing: Review & rewrite previous essays with improvements',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd10-5',
-					'5:00–7:00',
-					'🟪 Speaking: Focus on fluency, reduce hesitation',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd10-6',
-					'8:00–10:00',
-					'🟧 Vocab: Review all words learned, test yourself',
-					'2h',
-					'',
-				)}
-			`,
-			)}
+	// Progress bar
+	html +=
+		'<div class="p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200 dark:border-teal-800">' +
+		'<div class="flex justify-between items-center mb-2">' +
+		'<span class="text-sm font-medium text-teal-700 dark:text-teal-300">Overall Progress</span>' +
+		'<span class="text-sm font-bold text-teal-600 dark:text-teal-400">' +
+		progressPercent +
+		'% (' +
+		completedTasks +
+		'/' +
+		totalTasks +
+		')</span>' +
+		'</div>' +
+		'<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">' +
+		'<div class="bg-teal-500 h-2 rounded-full transition-all" style="width:' +
+		progressPercent +
+		'%"></div>' +
+		'</div></div>';
 
-			<!-- Days 11-13: Mock Tests & Review -->
-			${renderDaySection(
-				'DAYS 11–13: Full Mock Tests',
-				'📝',
-				`
-				${renderTask('d11-1', 'DAY 11', '', '')}
-				${renderTask(
-					'd11-2',
-					'9:00–12:30',
-					'🟥 FULL MOCK #1: Cambridge 14 Test 3 (Listening + Reading)',
-					'3.5h',
-					'',
-				)}
-				${renderTask(
-					'd11-3',
-					'1:30–3:30',
-					'🟥 FULL MOCK #1: Writing Task 1 + Task 2',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd11-4',
-					'3:30–4:15',
-					'🟥 FULL MOCK #1: Speaking (record)',
-					'45m',
-					'',
-				)}
-				${renderTask(
-					'd11-5',
-					'5:00–7:00',
-					'📊 Score all sections, detailed error analysis',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd11-6',
-					'8:00–10:00',
-					'🔍 Review mistakes, understand correct answers',
-					'2h',
-					'',
-				)}
-				${renderTask('d12-1', 'DAY 12', '', '')}
-				${renderTask(
-					'd12-2',
-					'9:00–11:00',
-					'⚠️ Re-do incorrect questions from Mock #1',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd12-3',
-					'11:00–1:00',
-					'🟨 Writing: Improve essays based on feedback',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd12-4',
-					'2:00–4:00',
-					'🟪 Speaking: Work on pronunciation & intonation',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd12-5',
-					'4:00–6:00',
-					'🟩 Reading: Speed drills - 15 min per passage',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd12-6',
-					'7:00–9:00',
-					'🟦 Listening: Focus on Sections 3&4 (hardest)',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd12-7',
-					'9:00–10:00',
-					'🟧 Final vocab review + weak words',
-					'1h',
-					'',
-				)}
-				${renderTask('d13-1', 'DAY 13', '', '')}
-				${renderTask(
-					'd13-2',
-					'9:00–12:30',
-					'🟥 FULL MOCK #2: Cambridge 14 Test 4 (L+R)',
-					'3.5h',
-					'',
-				)}
-				${renderTask(
-					'd13-3',
-					'1:30–3:30',
-					'🟥 FULL MOCK #2: Writing under exam conditions',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd13-4',
-					'3:30–4:15',
-					'🟥 FULL MOCK #2: Speaking (record & assess)',
-					'45m',
-					'',
-				)}
-				${renderTask(
-					'd13-5',
-					'5:00–7:00',
-					'📊 Compare scores with Mock #1, track improvement',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd13-6',
-					'8:00–10:00',
-					'🔍 Final weak area identification',
-					'2h',
-					'',
-				)}
-			`,
-			)}
+	// Essential Resources
+	html +=
+		'<div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">' +
+		'<h4 class="text-sm font-bold text-gray-900 dark:text-white mb-2">✨ Essential Resources for Band 8.0+</h4>' +
+		'<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">' +
+		'<a href="https://www.ielts.org/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium text-xs">🔴 Official IELTS</a>' +
+		'<a href="https://ieltsliz.com/" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium text-xs">👩‍🏫 IELTS Liz</a>' +
+		'<a href="https://takeielts.britishcouncil.org/take-ielts/prepare" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium text-xs">🇬🇧 British Council</a>' +
+		'<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-1 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-colors text-gray-800 dark:text-gray-100 font-medium text-xs">▶️ E2 IELTS</a>' +
+		'</div></div>';
 
-			<!-- Days 14-15: Final Prep -->
-			${renderDaySection(
-				'DAYS 14–15: Final Preparation',
-				'🏁',
-				`
-				${renderTask('d14-1', 'DAY 14', '', '')}
-				${renderTask(
-					'd14-2',
-					'9:00–11:00',
-					'⚠️ Final intensive on remaining weak areas',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd14-3',
-					'11:00–1:00',
-					'🟨 Writing: Perfect your Task 2 template/structure',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd14-4',
-					'2:00–4:00',
-					'🟪 Speaking: Confidence building, natural responses',
-					'2h',
-					'',
-				)}
-				${renderTask(
-					'd14-5',
-					'4:00–5:00',
-					'📋 Review test day procedures & timing strategy',
-					'1h',
-					'https://ieltsliz.com/ielts-exam-tips-on-the-day/',
-				)}
-				${renderTask(
-					'd14-6',
-					'5:00–6:00',
-					'🟧 Quick vocab review of high-frequency words',
-					'1h',
-					'',
-				)}
-				${renderTask(
-					'd14-7',
-					'7:00–8:00',
-					'🧘 Light review, relaxation, early sleep',
-					'1h',
-					'',
-				)}
-				${renderTask('d15-1', 'DAY 15 - TEST DAY', '', '')}
-				${renderTask(
-					'd15-2',
-					'Morning',
-					'☀️ Light breakfast, arrive 30 min early',
-					'—',
-					'',
-				)}
-				${renderTask(
-					'd15-3',
-					'Before',
-					'📋 Review timing: L(30+10), R(60), W(60), S(11-14)',
-					'—',
-					'',
-				)}
-				${renderTask(
-					'd15-4',
-					'During',
-					'💪 Stay calm, manage time, check answers',
-					'—',
-					'',
-				)}
-				${renderTask(
-					'd15-5',
-					'Strategy',
-					'✅ No blanks! Guess if unsure, check spelling',
-					'—',
-					'',
-				)}
-			`,
-			)}
+	// Render each phase
+	phases.forEach(function (phase) {
+		const phaseDays = MASTER_PLAN.ieltsSchedule.filter(function (d) {
+			return phase.days.includes(d.day);
+		});
+		if (phaseDays.length === 0) return;
 
-			<!-- Recommended Books -->
-			<div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-none sm:rounded-xl p-3 sm:p-4 border-y sm:border border-amber-200 dark:border-amber-800">
-				<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📖 Must-Have Books (Cambridge Official)</h4>
-				<ul class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 space-y-1">
-					<li>• <strong>Cambridge IELTS 14-18</strong> - Real past papers (essential!)</li>
-					<li>• <strong>Official Cambridge Guide to IELTS</strong> - Strategies & practice</li>
-					<li>• <strong>Collins Vocabulary for IELTS</strong> - Band 7.5+ vocabulary</li>
-					<li>• <strong>IELTS Trainer</strong> - 6 practice tests + tips</li>
-				</ul>
-			</div>
+		// Calculate phase progress
+		let phaseTotal = 0;
+		let phaseCompleted = 0;
+		phaseDays.forEach(function (day) {
+			phaseTotal += day.tasks.length;
+			day.tasks.forEach(function (_, idx) {
+				if (tasks['mp-d' + day.day + '-' + idx]) phaseCompleted++;
+			});
+		});
+		const phasePercent =
+			phaseTotal > 0
+				? Math.round((phaseCompleted / phaseTotal) * 100)
+				: 0;
 
-			<!-- Band 8 Tracker Link -->
-			<div class="p-3 sm:p-4 bg-teal-50 dark:bg-teal-900/20 rounded-none sm:rounded-xl border-y sm:border border-teal-200 dark:border-teal-800 text-center">
-				<p class="text-teal-700 dark:text-teal-300 text-xs sm:text-sm mb-2">
-					📱 For detailed daily materials & practice files, visit the IELTS Practice section
-				</p>
-				<div class="flex justify-center gap-2">
-					<a href="#ielts-practice" onclick="showPage('ielts-practice')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-medium hover:bg-teal-700 transition-colors">
-						📂 IELTS Practice
-					</a>
-					<a href="#band8-tracker" onclick="showPage('band8-tracker')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium border border-teal-300 dark:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors">
-						🎯 Band 8 Tracker
-					</a>
-				</div>
-			</div>
-		</div>
-	`;
+		html +=
+			'<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">' +
+			'<div class="bg-gradient-to-r from-teal-500 to-teal-600 dark:from-teal-600 dark:to-teal-700 px-3 py-2 sm:px-4 sm:py-3 flex justify-between items-center">' +
+			'<h3 class="text-sm sm:text-base font-bold text-white">' +
+			phase.emoji +
+			' ' +
+			phase.name +
+			'</h3>' +
+			'<span class="text-xs text-white/80">' +
+			phasePercent +
+			'% (' +
+			phaseCompleted +
+			'/' +
+			phaseTotal +
+			')</span>' +
+			'</div>';
+
+		phaseDays.forEach(function (day) {
+			// Day header
+			html +=
+				'<div class="border-b border-gray-200 dark:border-gray-700">' +
+				'<div class="bg-teal-600 dark:bg-teal-700 px-3 py-1.5 text-center">' +
+				'<span class="text-xs font-bold text-white">DAY ' +
+				day.day +
+				' - ' +
+				day.date +
+				'</span>' +
+				'<span class="text-[10px] text-white/70 ml-2">' +
+				day.focus +
+				' • ' +
+				day.hours +
+				'h</span>' +
+				(day.targetScore
+					? '<span class="text-[10px] text-yellow-200 ml-2">🎯 ' +
+					  day.targetScore +
+					  '</span>'
+					: '') +
+				'</div>';
+
+			html +=
+				'<table class="w-full text-left">' +
+				'<thead class="bg-gray-50 dark:bg-gray-800/50">' +
+				'<tr><th class="py-1.5 px-2 text-center text-[9px] font-semibold text-gray-500 dark:text-gray-400 w-8">✓</th>' +
+				'<th class="py-1.5 px-2 text-[9px] font-semibold text-gray-500 dark:text-gray-400 w-24">Time</th>' +
+				'<th class="py-1.5 px-2 text-[9px] font-semibold text-gray-500 dark:text-gray-400">Task & Focus</th>' +
+				'<th class="py-1.5 px-2 text-center text-[9px] font-semibold text-gray-500 dark:text-gray-400 w-8">📖</th></tr></thead><tbody>';
+
+			day.tasks.forEach(function (t, idx) {
+				const taskId = 'mp-d' + day.day + '-' + idx;
+				const isChecked = tasks[taskId] ? true : false;
+				const bgClass = isChecked
+					? 'bg-teal-50 dark:bg-teal-900/20'
+					: '';
+				const textClass = isChecked
+					? 'line-through text-gray-400 dark:text-gray-500'
+					: 'text-gray-700 dark:text-gray-300';
+				const colorIcon = getTaskColor(t.task);
+				const icon = getTaskIcon(t.task);
+
+				// Calculate duration from time range
+				let duration = '';
+				if (t.time && t.time.includes('-')) {
+					const parts = t.time.split('-');
+					if (parts.length === 2) {
+						const startParts = parts[0].split(':');
+						const endParts = parts[1].split(':');
+						if (startParts.length >= 2 && endParts.length >= 2) {
+							const sh = parseInt(startParts[0]);
+							const sm = parseInt(startParts[1]);
+							const eh = parseInt(endParts[0]);
+							const em = parseInt(endParts[1]);
+							const mins = eh * 60 + em - (sh * 60 + sm);
+							if (mins >= 60) {
+								duration = mins / 60 + 'h';
+							} else if (mins > 0) {
+								duration = mins + 'm';
+							}
+						}
+					}
+				}
+
+				html +=
+					'<tr class="' +
+					bgClass +
+					' hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors border-b border-gray-100 dark:border-gray-700" data-task-id="' +
+					taskId +
+					'">' +
+					'<td class="py-1.5 px-2 text-center align-middle">' +
+					'<input type="checkbox" class="w-4 h-4 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer" ' +
+					(isChecked ? 'checked' : '') +
+					' onchange="toggleIELTSTask(\'' +
+					taskId +
+					'\', this)"></td>' +
+					'<td class="py-1.5 px-2 align-middle text-center">' +
+					'<div class="text-[9px] sm:text-xs font-mono font-medium text-teal-700 dark:text-teal-300">' +
+					t.time +
+					'</div>' +
+					(duration
+						? '<div class="text-[8px] sm:text-[10px] text-teal-600 dark:text-teal-400">' +
+						  duration +
+						  '</div>'
+						: '') +
+					'</td>' +
+					'<td class="py-1.5 px-2 text-[10px] sm:text-sm ' +
+					textClass +
+					'">' +
+					colorIcon +
+					' ' +
+					icon +
+					' ' +
+					t.task +
+					'</td>' +
+					'<td class="py-1.5 px-2 text-center align-middle"><a href="#ielts-practice" onclick="showPage(\'ielts-practice\'); openIELTSFolder && openIELTSFolder(\'d' +
+					day.day +
+					'\')" class="text-base sm:text-lg hover:scale-110 inline-block transition-transform" title="Day ' +
+					day.day +
+					' Resources">📖</a></td></tr>';
+			});
+
+			html += '</tbody></table></div>';
+		});
+
+		html += '</div>';
+	});
+
+	// Recommended Books
+	html +=
+		'<div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl p-3 sm:p-4 border border-amber-200 dark:border-amber-800">' +
+		'<h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base mb-2">📖 Must-Have Books (Cambridge Official)</h4>' +
+		'<ul class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 space-y-1">' +
+		'<li>• <strong>Cambridge IELTS 14-18</strong> - Real past papers (essential!)</li>' +
+		'<li>• <strong>Official Cambridge Guide to IELTS</strong> - Strategies & practice</li>' +
+		'<li>• <strong>Collins Vocabulary for IELTS</strong> - Band 7.5+ vocabulary</li>' +
+		'<li>• <strong>IELTS Trainer</strong> - 6 practice tests + tips</li></ul></div>';
+
+	// Band 8 Tracker Link
+	html +=
+		'<div class="p-3 sm:p-4 bg-teal-50 dark:bg-teal-900/20 rounded-xl border border-teal-200 dark:border-teal-800 text-center">' +
+		'<p class="text-teal-700 dark:text-teal-300 text-xs sm:text-sm mb-2">📱 For detailed daily materials & practice files, visit the IELTS Practice section</p>' +
+		'<div class="flex justify-center gap-2">' +
+		'<a href="#ielts-practice" onclick="showPage(\'ielts-practice\')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-medium hover:bg-teal-700 transition-colors">📂 IELTS Practice</a>' +
+		'<a href="#band8-tracker" onclick="showPage(\'band8-tracker\')" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium border border-teal-300 dark:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors">🎯 Band 8 Tracker</a>' +
+		'</div></div>';
+
+	html += '</div>';
+
+	container.innerHTML = html;
 }
-
 function toggleIELTSTask(id, checkbox) {
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	const isChecked = checkbox ? checkbox.checked : !tasks[id];

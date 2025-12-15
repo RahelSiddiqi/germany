@@ -501,7 +501,7 @@ class Band8Dashboard {
 
 					<div class="p-3 sm:p-4">
 						<h4 class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">✅ Tasks (${viewCompleted}/${viewTotal})</h4>
-						<ul class="space-y-1.5 sm:space-y-2">
+						<div class="space-y-1.5 sm:space-y-2">
 							${viewingDayData.tasks
 								.map((taskItem, index) => {
 									// Handle both old format (string) and new format (object with time/task)
@@ -515,37 +515,71 @@ class Band8Dashboard {
 										? taskItem.task
 										: taskItem;
 
+									// Calculate duration from time range (e.g., "06:00-06:30" = 0.5h)
+									let duration = '';
+									if (taskTime && taskTime.includes('-')) {
+										const [start, end] =
+											taskTime.split('-');
+										const [sh, sm] = start
+											.split(':')
+											.map(Number);
+										const [eh, em] = end
+											.split(':')
+											.map(Number);
+										const mins =
+											eh * 60 + em - (sh * 60 + sm);
+										if (mins >= 60) {
+											duration = mins / 60 + 'h';
+										} else {
+											duration = mins + 'm';
+										}
+									}
+
+									const isCompleted =
+										viewingDayData.completed.includes(
+											index,
+										);
+
 									return `
-								<li class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg ${
-									viewingDayData.completed.includes(index)
+								<div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg ${
+									isCompleted
 										? 'bg-green-50 dark:bg-green-900/20'
 										: 'bg-gray-50 dark:bg-gray-700/50'
 								} transition-colors">
 									<input type="checkbox"
 										   id="task-${index}"
-										   class="mt-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer flex-shrink-0"
-										   ${viewingDayData.completed.includes(index) ? 'checked' : ''}
+										   class="mt-1 w-4 h-4 sm:w-5 sm:h-5 rounded border-2 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500 cursor-pointer flex-shrink-0"
+										   ${isCompleted ? 'checked' : ''}
 										   onchange="band8Dashboard.toggleTask(${viewingDayData.day}, ${index})">
+									${
+										taskTime
+											? `
+									<div class="flex-shrink-0 w-20 sm:w-24 text-center">
+										<div class="text-[10px] sm:text-xs font-mono text-teal-700 dark:text-teal-300 font-medium">${taskTime}</div>
+										<div class="text-[9px] sm:text-[10px] text-teal-600 dark:text-teal-400">${duration}</div>
+									</div>
+									`
+											: ''
+									}
 									<label for="task-${index}"
-										   class="flex-1 cursor-pointer leading-relaxed ${
-												viewingDayData.completed.includes(
-													index,
-												)
+										   class="flex-1 cursor-pointer leading-relaxed text-xs sm:text-sm ${
+												isCompleted
 													? 'text-gray-500 dark:text-gray-400 line-through'
 													: 'text-gray-700 dark:text-gray-300'
 											}">
-										${
-											taskTime
-												? `<span class="inline-block px-2 py-0.5 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 text-[10px] sm:text-xs font-mono rounded mr-2 font-medium">${taskTime}</span>`
-												: ''
-										}
-										<span class="text-xs sm:text-sm">${taskText}</span>
+										${taskText}
 									</label>
-								</li>
+									<a href="#ielts-practice"
+									   onclick="showPage('ielts-practice'); openIELTSFolder && openIELTSFolder('d${
+											viewingDayData.day
+										}')"
+									   class="flex-shrink-0 text-base sm:text-lg hover:scale-110 transition-transform"
+									   title="Day ${viewingDayData.day} Resources">📖</a>
+								</div>
 							`;
 								})
 								.join('')}
-						</ul>
+						</div>
 					</div>
 
 					<div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">

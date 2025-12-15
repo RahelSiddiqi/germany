@@ -44,6 +44,7 @@ const IELTS_FOLDERS = {
 		files: [
 			'vocab.md',
 			'grammar-8.5.md',
+			'grammar-rules-exceptions.md',
 			'reading-strategies.md',
 			'listening-strategies.md',
 		],
