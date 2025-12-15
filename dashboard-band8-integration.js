@@ -958,25 +958,36 @@ class Band8Dashboard {
 		localStorage.setItem('band8_progress', JSON.stringify(this.progress));
 	}
 
+	// Unified task storage using ielts-tasks localStorage (same as app.js)
 	getTasksCompleted(day) {
-		return this.progress.tasksCompleted[day] || [];
+		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+		const completedIndices = [];
+		
+		// Find tasks for this day using mp-d{day}-{index} format
+		Object.keys(tasks).forEach(key => {
+			if (tasks[key] && key.startsWith('mp-d' + day + '-')) {
+				const idx = parseInt(key.split('-').pop());
+				if (!isNaN(idx)) completedIndices.push(idx);
+			}
+		});
+		
+		return completedIndices;
 	}
 
 	toggleTask(day, taskIndex) {
-		if (!this.progress.tasksCompleted[day]) {
-			this.progress.tasksCompleted[day] = [];
+		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
+		const taskId = 'mp-d' + day + '-' + taskIndex;
+		
+		// Toggle the task
+		tasks[taskId] = !tasks[taskId];
+		
+		localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
+		
+		// Trigger Firebase sync if available
+		if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+			cloudSync.syncToCloud();
 		}
-
-		const tasks = this.progress.tasksCompleted[day];
-		const index = tasks.indexOf(taskIndex);
-
-		if (index > -1) {
-			tasks.splice(index, 1);
-		} else {
-			tasks.push(taskIndex);
-		}
-
-		this.saveProgress();
+		
 		// Refresh to update UI
 		this.refreshDashboard();
 	}

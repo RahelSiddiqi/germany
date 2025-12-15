@@ -80,8 +80,11 @@ function displayProgress() {
     `;
 }
 
+// displayPlan() - Now uses MASTER_PLAN.ieltsSchedule as single source of truth
 function displayPlan() {
 	const plan = document.getElementById('plan-content');
+	if (!plan) return;
+	
 	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 
 	// Auto-import rescheduled tasks
@@ -99,7 +102,6 @@ function displayPlan() {
 		streak: 0,
 	};
 	if (streakData.lastActive !== todayStr) {
-		// If yesterday was last active, continue streak; else reset when user visits
 		const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
 			.toISOString()
 			.slice(0, 10);
@@ -113,438 +115,153 @@ function displayPlan() {
 		localStorage.setItem('ielts-streak', JSON.stringify(streakData));
 	}
 
-	plan.innerHTML = `
-		<div class="legend">
-			<span class="legend-item listening">🟦 Listening</span>
-			<span class="legend-item reading">🟩 Reading</span>
-			<span class="legend-item writing">🟨 Writing</span>
-			<span class="legend-item speaking">🟪 Speaking</span>
-			<span class="legend-item vocab">🟧 Vocab/Grammar</span>
-			<span class="legend-item mock">🟥 Mock Test</span>
-		</div>
+	// Check if MASTER_PLAN is available
+	if (typeof MASTER_PLAN === 'undefined' || !MASTER_PLAN.ieltsSchedule) {
+		plan.innerHTML = '<div style="text-align:center; padding:40px; color:#666;"><p>⏳ Loading study plan...</p><p style="font-size:12px; margin-top:10px;">Make sure master-plan.js is loaded.</p></div>';
+		return;
+	}
 
-		<div class="plan-toolbar" style="display:flex; gap:8px; align-items:center; margin:8px 0 14px 0;">
-			<button class="action-btn ielts-btn" onclick="skipBusyDay()">😮‍💨 I’m busy today (light plan)</button>
-			<button class="action-btn ielts-btn" onclick="rescheduleIncomplete()">🔁 Reschedule incomplete to next day</button>
-			<div style="margin-left:auto; font-size:14px; color:#555;">🔥 Streak: <strong id="streak-count">${
-				streakData.streak || 0
-			}</strong> days</div>
-		</div>
+	// Calculate overall progress
+	let totalTasks = 0;
+	let completedTasks = 0;
+	MASTER_PLAN.ieltsSchedule.forEach(day => {
+		totalTasks += day.tasks.length;
+		day.tasks.forEach((_, idx) => {
+			const taskId = 'mp-d' + day.day + '-' + idx;
+			if (tasks[taskId]) completedTasks++;
+		});
+	});
+	const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-		<h3>DAYS 1–2: Foundations & Setup</h3>
-		<p>Goal: Master structure, band descriptors, timing. Set baseline.</p>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d1-1', 'DAY 1', '', '')}
-			${renderTask(
-				'd1-2',
-				'9:00–11:00 AM',
-				'🟦 IELTS Overview + Band Descriptors',
-				'2h',
-			)}
-			${renderTask(
-				'd1-3',
-				'9:00–11:00 AM',
-				'🟨 Writing Task 1&2 structure review',
-				'2h',
-			)}
-			${renderTask(
-				'd1-4',
-				'1:00–7:00 PM',
-				'🟪 Speaking sample answers (Part 1,2,3)',
-				'6h',
-			)}
-			${renderTask(
-				'd1-5',
-				'1:00–7:00 PM',
-				'🟧 Vocabulary: 20 words (Academic Word List)',
-				'—',
-			)}
-			${renderTask(
-				'd1-6',
-				'9:00–11:00 PM',
-				'🟦 Listening TED audio (10 min) + transcription',
-				'2h',
-			)}
-			${renderTask(
-				'd1-7',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mini Mock: Listening Section 1</b>',
-				'20 min',
-			)}
-			${renderTask('d2-1', 'DAY 2', '', '')}
-			${renderTask(
-				'd2-2',
-				'9:00–11:00 AM',
-				'🟩 Reading: Skimming/Scanning strategies',
-				'2h',
-			)}
-			${renderTask(
-				'd2-3',
-				'9:00–11:00 AM',
-				'🟦 Listening: Note-taking + keywords',
-				'2h',
-			)}
-			${renderTask(
-				'd2-4',
-				'1:00–7:00 PM',
-				'🟩 Reading Passage 1 (timed, 20 min)',
-				'6h',
-			)}
-			${renderTask(
-				'd2-5',
-				'1:00–7:00 PM',
-				'🟦 Listening Section 2 MCQ (15 min)',
-				'—',
-			)}
-			${renderTask(
-				'd2-6',
-				'1:00–7:00 PM',
-				'🟧 Vocabulary: 20 words + flashcards',
-				'—',
-			)}
-			${renderTask(
-				'd2-7',
-				'9:00–11:00 PM',
-				'🟩 Reading review + error analysis',
-				'2h',
-			)}
-			${renderTask(
-				'd2-8',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mini Mock: Reading Passage 1</b>',
-				'20 min',
-			)}
-		</table>
+	// Define phases for grouping
+	const phases = [
+		{ name: 'Phase 1: Diagnosis & Foundation', days: [1, 2], icon: '🎯' },
+		{ name: 'Phase 2: Section Mastery', days: [3, 4, 5, 6], icon: '📚' },
+		{ name: 'Phase 3: Writing & Speaking', days: [7, 8], icon: '✍️' },
+		{ name: 'Phase 4: Integration', days: [9, 10], icon: '🔄' },
+		{ name: 'Phase 5: Mock Test #1', days: [11, 12], icon: '🎯' },
+		{ name: 'Phase 6: Refinement & Mock #2', days: [13, 14], icon: '📊' },
+		{ name: 'Phase 7: Final Prep', days: [15], icon: '🏆' },
+	];
 
-		<h3>DAYS 3–5: Listening & Reading Intensive</h3>
-		<p>Goal: Practice all question types. Target: 8.0+ in both sections.</p>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d3-1', 'DAY 3: Listening Focus', '', '')}
-			${renderTask(
-				'd3-2',
-				'9:00–11:00 AM',
-				'🟦 Section 1: Form Completion + MCQ (Cambridge 15)',
-				'2h',
-			)}
-			${renderTask('d3-3', '1:00–2:30 PM', '🟦 Section 2: Map Labeling', '1.5h')}
-			${renderTask('d3-4', '2:30–4:00 PM', '🟦 Section 3: Note Completion', '1.5h')}
-			${renderTask(
-				'd3-5',
-				'4:00–5:00 PM',
-				'🟧 Error analysis: transcripts + common mistakes',
-				'1h',
-			)}
-			${renderTask(
-				'd3-6',
-				'5:00–7:00 PM',
-				'🟧 Vocabulary: 25 technical terms + phrases',
-				'2h',
-			)}
-			${renderTask(
-				'd3-7',
-				'9:00–11:00 PM',
-				'🟦 BBC 6 Minute English (10 min) + summarize',
-				'2h',
-			)}
-			${renderTask(
-				'd3-8',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mini Mock: Section 1 (Re-do)</b>',
-				'20 min',
-			)}
-			${renderTask('d4-1', 'DAY 4: Reading Focus', '', '')}
-			${renderTask(
-				'd4-2',
-				'9:00–11:00 AM',
-				'🟩 Passage 1: Matching Headings (Cambridge 15)',
-				'2h',
-			)}
-			${renderTask('d4-3', '1:00–2:30 PM', '🟩 Passage 2: T/F/Not Given', '1.5h')}
-			${renderTask(
-				'd4-4',
-				'2:30–4:00 PM',
-				'🟩 Passage 3: Sentence Completion',
-				'1.5h',
-			)}
-			${renderTask('d4-5', '4:00–5:00 PM', '🟧 Error analysis: weak Q types', '1h')}
-			${renderTask(
-				'd4-6',
-				'5:00–7:00 PM',
-				'🟦 Listening Section 4 (Cambridge 14)',
-				'2h',
-			)}
-			${renderTask(
-				'd4-7',
-				'9:00–11:00 PM',
-				'🟧 Vocabulary: idioms & academic phrases',
-				'2h',
-			)}
-			${renderTask(
-				'd4-8',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mini Mock: Reading Passage 2</b>',
-				'20 min',
-			)}
-			${renderTask('d5-1', 'DAY 5: Mixed Integration', '', '')}
-			${renderTask(
-				'd5-2',
-				'9:00–10:30 AM',
-				'🟦 Listening Sections 1&2 (Cambridge 14)',
-				'1.5h',
-			)}
-			${renderTask('d5-3', '10:30–11:00 AM', '🟩 Reading Passage 3', '0.5h')}
-			${renderTask(
-				'd5-4',
-				'1:00–3:00 PM',
-				'🟨 Writing: Task 1 mini-practice (20 min × 2)',
-				'2h',
-			)}
-			${renderTask(
-				'd5-5',
-				'3:00–5:00 PM',
-				'🟪 Speaking: Part 2 cue cards (2 min × 3)',
-				'2h',
-			)}
-			${renderTask('d5-6', '5:00–6:00 PM', '🟧 Vocabulary + grammar review', '1h')}
-			${renderTask(
-				'd5-7',
-				'6:00–7:00 PM',
-				'🟦 Listening: diagram labeling practice',
-				'1h',
-			)}
-			${renderTask('d5-8', '9:00–11:00 PM', '🟩 Reading weak Qs re-do', '2h')}
-		</table>
+	let planHTML = '<div class="legend">' +
+		'<span class="legend-item listening">🎧 Listening</span>' +
+		'<span class="legend-item reading">📚 Reading</span>' +
+		'<span class="legend-item writing">✍️ Writing</span>' +
+		'<span class="legend-item speaking">🎤 Speaking</span>' +
+		'<span class="legend-item vocab">📝 Vocab/Grammar</span>' +
+		'<span class="legend-item mock">🎯 Mock/Test</span>' +
+		'</div>' +
+		'<div class="plan-toolbar" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0 14px 0;">' +
+		'<button class="action-btn ielts-btn" onclick="skipBusyDay()">😮‍💨 I\'m busy today</button>' +
+		'<button class="action-btn ielts-btn" onclick="rescheduleIncomplete()">🔁 Reschedule incomplete</button>' +
+		'<div style="margin-left:auto; font-size:14px; color:#555;">' +
+		'🔥 Streak: <strong id="streak-count">' + (streakData.streak || 0) + '</strong> days' +
+		' | 📊 Progress: <strong>' + progressPercent + '%</strong> (' + completedTasks + '/' + totalTasks + ')' +
+		'</div></div>';
 
-		<h3>DAYS 6–8: Writing & Speaking</h3>
-		<p>Goal: Master structure, grammar, coherence. Target: 8.0+ in both.</p>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d6-1', 'DAY 6: Writing Task 1', '', '')}
-			${renderTask(
-				'd6-2',
-				'9:00–10:00 AM',
-				'🟨 Task 1 structure: pie, line, bar, table',
-				'1h',
-			)}
-			${renderTask('d6-3', '10:00–11:00 AM', '🟨 Task 1: Plan + Draft', '1h')}
-			${renderTask('d6-4', '1:00–2:00 PM', '🟨 Task 1: Graph 1 (Cambridge 15)', '1h')}
-			${renderTask('d6-5', '2:00–3:00 PM', '🟨 Task 1: Table 1 (Cambridge 15)', '1h')}
-			${renderTask('d6-6', '3:00–4:00 PM', '🟨 Task 1: Chart 1 (Cambridge 14)', '1h')}
-			${renderTask('d6-7', '4:00–5:00 PM', '🟧 Vocabulary: data description', '1h')}
-			${renderTask('d6-8', '5:00–7:00 PM', '🟦 Listening Section 1&2', '2h')}
-			${renderTask('d6-9', '9:00–11:00 PM', '🟨 Review Task 1 answers', '2h')}
-			${renderTask(
-				'd6-10',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Task 1 (20 min)</b>',
-				'20 min',
-			)}
-			${renderTask('d7-1', 'DAY 7: Writing Task 2', '', '')}
-			${renderTask('d7-2', '9:00–10:00 AM', '🟨 Task 2 essay structure', '1h')}
-			${renderTask('d7-3', '10:00–11:00 AM', '🟨 Essay types: agree/disagree', '1h')}
-			${renderTask('d7-4', '1:00–2:00 PM', '🟨 Essay 1: Education technology', '1h')}
-			${renderTask('d7-5', '2:00–3:00 PM', '🟨 Essay 2: Environmental policy', '1h')}
-			${renderTask('d7-6', '3:00–4:00 PM', '🟧 Grammar: complex sentences', '1h')}
-			${renderTask('d7-7', '4:00–5:00 PM', '🟧 Vocabulary: academic phrases', '1h')}
-			${renderTask('d7-8', '5:00–7:00 PM', '🟪 Speaking Part 1&3', '2h')}
-			${renderTask('d7-9', '9:00–11:00 PM', '🟨 Essay review', '2h')}
-			${renderTask(
-				'd7-10',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Task 2 (40 min)</b>',
-				'40 min',
-			)}
-			${renderTask('d8-1', 'DAY 8: Speaking', '', '')}
-			${renderTask(
-				'd8-2',
-				'9:00–9:30 AM',
-				'🟪 Speaking Part 2: Cue card strategy',
-				'0.5h',
-			)}
-			${renderTask(
-				'd8-3',
-				'9:30–11:00 AM',
-				'🟪 Part 2: Practice 3 cue cards',
-				'1.5h',
-			)}
-			${renderTask('d8-4', '1:00–2:30 PM', '🟪 Part 1: 20 common questions', '1.5h')}
-			${renderTask('d8-5', '2:30–4:00 PM', '🟪 Part 3: Follow-up discussion', '1.5h')}
-			${renderTask('d8-6', '4:00–5:00 PM', '🟧 Idioms & complex phrases', '1h')}
-			${renderTask('d8-7', '5:00–7:00 PM', '🟦 Listening Section 3&4', '2h')}
-			${renderTask('d8-8', '9:00–11:00 PM', '🟪 Self-assess recordings', '2h')}
-			${renderTask(
-				'd8-9',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Speaking Part 2</b>',
-				'20 min',
-			)}
-		</table>
+	// Render each phase
+	phases.forEach(function(phase) {
+		const phaseDays = MASTER_PLAN.ieltsSchedule.filter(function(d) { return phase.days.includes(d.day); });
+		if (phaseDays.length === 0) return;
 
-		<h3>DAYS 9–10: Integration & Weak Areas</h3>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d9-1', 'DAY 9: Mixed Practice', '', '')}
-			${renderTask('d9-2', '9:00–10:30 AM', '🟦 Listening Sections 1&2', '1.5h')}
-			${renderTask('d9-3', '10:30–11:30 AM', '🟩 Reading Passage 1&2', '1h')}
-			${renderTask('d9-4', '1:00–2:00 PM', '🟨 Writing Task 1: Bar chart', '1h')}
-			${renderTask('d9-5', '2:00–3:00 PM', '🟨 Writing Task 2: Global warming', '1h')}
-			${renderTask('d9-6', '3:00–4:00 PM', '🟪 Speaking: 3 new cue cards', '1h')}
-			${renderTask('d9-7', '4:00–5:00 PM', '🟧 Error analysis Days 6–8', '1h')}
-			${renderTask('d9-8', '5:00–7:00 PM', '🟧 Vocabulary: 30 new words', '2h')}
-			${renderTask('d9-9', '9:00–11:00 PM', '🟨 Review Task 1&2 + speaking', '2h')}
-			${renderTask(
-				'd9-10',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Reading Passage 3</b>',
-				'20 min',
-			)}
-			${renderTask('d10-1', 'DAY 10: Weakness Focus', '', '')}
-			${renderTask('d10-2', '9:00–11:00 AM', '⚠ Focus on weakest section', '2h')}
-			${renderTask('d10-3', '1:00–3:00 PM', '⚠ 2nd weakest section', '2h')}
-			${renderTask('d10-4', '3:00–4:00 PM', '🟧 Vocabulary: 25 words + idioms', '1h')}
-			${renderTask('d10-5', '4:00–5:00 PM', '🟧 Grammar: problem areas', '1h')}
-			${renderTask('d10-6', '5:00–7:00 PM', '🟨 Writing: Task 1 + Task 2', '2h')}
-			${renderTask('d10-7', '9:00–11:00 PM', '🟪 Speaking: Part 2&3', '2h')}
-			${renderTask(
-				'd10-8',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Listening Sec 4</b>',
-				'20 min',
-			)}
-		</table>
+		// Calculate phase progress
+		let phaseTotal = 0;
+		let phaseCompleted = 0;
+		phaseDays.forEach(function(day) {
+			phaseTotal += day.tasks.length;
+			day.tasks.forEach(function(_, idx) {
+				if (tasks['mp-d' + day.day + '-' + idx]) phaseCompleted++;
+			});
+		});
+		const phasePercent = phaseTotal > 0 ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+		const phaseComplete = phasePercent === 100;
 
-		<h3>DAYS 11–12: Full Mock Tests</h3>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d11-1', 'DAY 11: FULL MOCK #1', '', '')}
-			${renderTask(
-				'd11-2',
-				'9:00–10:40 AM',
-				'🟦 LISTENING: All 4 Sections',
-				'1h 40m',
-			)}
-			${renderTask(
-				'd11-3',
-				'10:50 AM–12:30 PM',
-				'🟩 READING: All 3 Passages',
-				'1h 40m',
-			)}
-			${renderTask('d11-4', '12:30–1:00 PM', '🏁 Score & note mistakes', '0.5h')}
-			${renderTask('d11-5', '1:00–2:30 PM', '🟨 WRITING Task 1 + 2', '1.5h')}
-			${renderTask('d11-6', '2:30–3:30 PM', '🟧 Writing review', '1h')}
-			${renderTask('d11-7', '3:30–5:00 PM', '🟪 SPEAKING: Full mock', '1.5h')}
-			${renderTask('d11-8', '5:00–7:00 PM', '📊 Analyze performance', '2h')}
-			${renderTask('d11-9', '9:00–11:30 PM', '🟧 Vocabulary & error review', '2.5h')}
-			${renderTask('d11-10', '11:30 PM–12:00 AM', '📝 Log scores', '0.5h')}
-			${renderTask('d12-1', 'DAY 12: Review & Fix', '', '')}
-			${renderTask(
-				'd12-2',
-				'9:00–10:30 AM',
-				'🟦 Re-do 20 listening mistakes',
-				'1.5h',
-			)}
-			${renderTask('d12-3', '10:30–11:30 AM', '🟩 Re-do 10 reading mistakes', '1h')}
-			${renderTask('d12-4', '1:00–2:30 PM', '🟨 Correct & re-write 2 tasks', '1.5h')}
-			${renderTask('d12-5', '2:30–3:30 PM', '🟧 Grammar & vocabulary', '1h')}
-			${renderTask('d12-6', '3:30–5:00 PM', '🟪 Review recordings', '1.5h')}
-			${renderTask('d12-7', '5:00–7:00 PM', '📊 Identify top 3 weaknesses', '2h')}
-			${renderTask('d12-8', '9:00–11:30 PM', '🟧 Practice weak areas', '2.5h')}
-			${renderTask(
-				'd12-9',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Weakest Q type</b>',
-				'20 min',
-			)}
-		</table>
+		planHTML += '<h3 style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; padding:10px; background:' + 
+			(phaseComplete ? '#10b981' : '#f3f4f6') + '; border-radius:8px; color:' + (phaseComplete ? '#fff' : '#1f2937') + ';">' +
+			'<span>' + phase.icon + ' ' + phase.name + '</span>' +
+			'<span style="font-size:12px; font-weight:normal;">' + phasePercent + '% (' + phaseCompleted + '/' + phaseTotal + ')</span></h3>';
 
-		<h3>DAYS 13–14: Refinement & Mock #2</h3>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d13-1', 'DAY 13: Targeted Practice', '', '')}
-			${renderTask(
-				'd13-2',
-				'9:00–11:00 AM',
-				'⚠ Listening: Top weak Q type × 3',
-				'2h',
-			)}
-			${renderTask('d13-3', '1:00–3:00 PM', '⚠ Reading: Top weak Q type × 3', '2h')}
-			${renderTask('d13-4', '3:00–4:00 PM', '⚠ Writing: Rewrite weak essay', '1h')}
-			${renderTask('d13-5', '4:00–5:00 PM', '⚠ Speaking: Cue cards weak area', '1h')}
-			${renderTask('d13-6', '5:00–7:00 PM', '🟧 Vocabulary: 100 words review', '2h')}
-			${renderTask(
-				'd13-7',
-				'9:00–11:30 PM',
-				'🟧 Grammar: conditional, passive',
-				'2.5h',
-			)}
-			${renderTask(
-				'd13-8',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Mock: Listening Sec 2</b>',
-				'20 min',
-			)}
-			${renderTask('d14-1', 'DAY 14: FULL MOCK #2', '', '')}
-			${renderTask(
-				'd14-2',
-				'9:00–10:40 AM',
-				'🟦 LISTENING: All 4 Sections',
-				'1h 40m',
-			)}
-			${renderTask(
-				'd14-3',
-				'10:50 AM–12:30 PM',
-				'🟩 READING: All 3 Passages',
-				'1h 40m',
-			)}
-			${renderTask('d14-4', '12:30–1:00 PM', '🏁 Quick score check', '0.5h')}
-			${renderTask('d14-5', '1:00–2:30 PM', '🟨 WRITING Task 1 + 2', '1.5h')}
-			${renderTask('d14-6', '2:30–3:30 PM', '🟪 SPEAKING: Full mock', '1h')}
-			${renderTask('d14-7', '3:30–5:00 PM', '📊 Compare to Mock #1', '1.5h')}
-			${renderTask('d14-8', '5:00–7:00 PM', '🟧 Error analysis', '2h')}
-			${renderTask('d14-9', '9:00–11:30 PM', '🟧 Final vocab & grammar', '2.5h')}
-			${renderTask(
-				'd14-10',
-				'11:30 PM–12:00 AM',
-				'📝 Log scores & plan Day 15',
-				'0.5h',
-			)}
-		</table>
+		phaseDays.forEach(function(day) {
+			// Day progress
+			let dayCompleted = 0;
+			day.tasks.forEach(function(_, idx) {
+				if (tasks['mp-d' + day.day + '-' + idx]) dayCompleted++;
+			});
+			const dayPercent = day.tasks.length > 0 ? Math.round((dayCompleted / day.tasks.length) * 100) : 0;
+			const dayComplete = dayPercent === 100;
 
-		<h3>DAY 15: Final Prep</h3>
-		<table class="task-table">
-			<tr><th>✓</th><th>Time</th><th>Task</th><th>Duration</th></tr>
-			${renderTask('d15-1', '9:00–10:00 AM', '🟦 Light Listening: 1 Section', '1h')}
-			${renderTask('d15-2', '10:00–11:00 AM', '🟩 Light Reading: 1 Passage', '1h')}
-			${renderTask('d15-3', '1:00–2:00 PM', '🟨 Writing: 1 Task 1 (no timer)', '1h')}
-			${renderTask('d15-4', '2:00–3:00 PM', '🟪 Speaking: 2 cue cards', '1h')}
-			${renderTask('d15-5', '3:00–5:00 PM', '🟧 Vocabulary: Final review', '2h')}
-			${renderTask('d15-6', '5:00–7:00 PM', '📋 Exam day checklist', '2h')}
-			${renderTask('d15-7', '7:00–9:00 PM', '✨ Rest, meal, hydrate', '2h')}
-			${renderTask(
-				'd15-8',
-				'9:00–11:30 PM',
-				'🧘 Visualization & mental prep',
-				'2.5h',
-			)}
-			${renderTask(
-				'd15-9',
-				'11:30 PM–12:00 AM',
-				'<b>🟥 Final Mock: Reading Sec 1</b>',
-				'20 min',
-			)}
-		</table>
+			planHTML += '<div class="day-section" style="margin:10px 0; border:1px solid ' + (dayComplete ? '#10b981' : '#e5e7eb') + 
+				'; border-radius:8px; overflow:hidden;' + (dayComplete ? 'background:#f0fdf4;' : '') + '">' +
+				'<div class="day-header" style="background:' + (dayComplete ? '#10b981' : '#f8f9fa') + 
+				'; padding:12px 15px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleDaySection(this)">' +
+				'<div><strong style="color:' + (dayComplete ? '#fff' : '#1f2937') + ';">Day ' + day.day + ': ' + day.focus + '</strong>' +
+				'<span style="font-size:12px; color:' + (dayComplete ? '#d1fae5' : '#6b7280') + '; margin-left:10px;">' + day.date + ' • ' + day.hours + 'h</span>' +
+				(day.targetScore ? '<span style="font-size:11px; color:' + (dayComplete ? '#d1fae5' : '#059669') + '; margin-left:8px;">🎯 ' + day.targetScore + '</span>' : '') +
+				'</div><div style="display:flex; align-items:center; gap:10px;">' +
+				'<span style="font-size:12px; color:' + (dayComplete ? '#d1fae5' : '#6b7280') + ';">' + dayCompleted + '/' + day.tasks.length + '</span>' +
+				'<span class="day-arrow" style="font-size:16px; color:' + (dayComplete ? '#fff' : '#6b7280') + '; transition:transform 0.2s;">▼</span>' +
+				'</div></div><div class="day-tasks" style="display:none; padding:10px;">' +
+				'<table class="task-table" style="margin:0; border:none;"><tr><th style="width:30px;">✓</th><th style="width:110px;">Time</th><th>Task</th></tr>';
 
-		<div class="progress-summary">
-		<div class="progress-summary">
-			<h4>Overall Progress</h4>
-			<p>${getCompletedCount()} tasks completed</p>
-			<p>Weighted: ${getWeightedCompletion().completed} / ${
-		getWeightedCompletion().total
-	} points</p>
-		</div>
-	`;
+			day.tasks.forEach(function(t, idx) {
+				const taskId = 'mp-d' + day.day + '-' + idx;
+				const checked = tasks[taskId] ? 'checked' : '';
+				const taskIcon = getTaskIconFromText(t.task);
+				planHTML += '<tr class="' + (checked ? 'completed-task' : '') + '" style="' + (checked ? 'opacity:0.6; text-decoration:line-through;' : '') + '">' +
+					'<td><input type="checkbox" ' + checked + ' onchange="toggleTask(\'' + taskId + '\')"></td>' +
+					'<td style="font-size:12px; color:#6b7280; white-space:nowrap;">' + t.time + '</td>' +
+					'<td>' + taskIcon + ' ' + t.task + '</td></tr>';
+			});
+
+			planHTML += '</table></div></div>';
+		});
+	});
+
+	planHTML += '<div class="progress-summary" style="margin-top:20px; padding:15px; background:linear-gradient(135deg, #f0fdf4, #ecfdf5); border-radius:8px; text-align:center; border:1px solid #10b981;">' +
+		'<h4 style="margin:0 0 10px 0; color:#059669;">🎯 Target: Band ' + MASTER_PLAN.targetIELTS + ' by ' + MASTER_PLAN.examDate + '</h4>' +
+		'<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; font-size:14px;">' +
+		'<div>✅ <strong>' + completedTasks + '</strong> done</div>' +
+		'<div>📋 <strong>' + (totalTasks - completedTasks) + '</strong> remaining</div>' +
+		'<div>📅 <strong>' + MASTER_PLAN.daysRemaining + '</strong> days left</div>' +
+		'<div>🔥 <strong>' + (streakData.streak || 0) + '</strong> day streak</div>' +
+		'</div></div>';
+
+	plan.innerHTML = planHTML;
+
+	// Trigger Firebase sync if available
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
+}
+
+// Get task icon based on task content
+function getTaskIconFromText(task) {
+	const t = (task || '').toLowerCase();
+	if (t.includes('listening') || t.includes('bbc') || t.includes('audio')) return '🎧';
+	if (t.includes('reading') || t.includes('passage') || t.includes('60 min strict')) return '📚';
+	if (t.includes('writing') || t.includes('essay') || t.includes('task 1') || t.includes('task 2')) return '✍️';
+	if (t.includes('speaking') || t.includes('cue card') || t.includes('part 1') || t.includes('part 2') || t.includes('part 3')) return '🎤';
+	if (t.includes('vocab') || t.includes('grammar') || t.includes('word') || t.includes('synonym')) return '📝';
+	if (t.includes('mock') || t.includes('test') || t.includes('score') || t.includes('cambridge')) return '🎯';
+	if (t.includes('break') || t.includes('lunch') || t.includes('dinner') || t.includes('rest') || t.includes('snack')) return '☕';
+	if (t.includes('daad') || t.includes('scholarship') || t.includes('motivation')) return '🎓';
+	if (t.includes('register') || t.includes('order') || t.includes('setup') || t.includes('schedule')) return '⚙️';
+	if (t.includes('analyze') || t.includes('review') || t.includes('mistake')) return '🔍';
+	return '📌';
+}
+
+// Toggle day section visibility
+function toggleDaySection(header) {
+	const tasksDiv = header.nextElementSibling;
+	const arrow = header.querySelector('.day-arrow');
+	if (tasksDiv.style.display === 'none') {
+		tasksDiv.style.display = 'block';
+		if (arrow) arrow.style.transform = 'rotate(180deg)';
+	} else {
+		tasksDiv.style.display = 'none';
+		if (arrow) arrow.style.transform = 'rotate(0deg)';
+	}
 }
 
 function renderTask(id, time, task, duration) {
@@ -580,6 +297,12 @@ function toggleTask(id) {
 	};
 	sd.lastActive = new Date().toISOString().slice(0, 10);
 	localStorage.setItem('ielts-streak', JSON.stringify(sd));
+	
+	// Trigger Firebase sync if available
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
+	
 	displayPlan(); // Real-time update
 }
 
