@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 		updateAnalyticsPage();
 	}
 
+	// Update reminder button state
+	if (typeof updateReminderButtonState === 'function') {
+		updateReminderButtonState();
+	}
+
 	// Hide loading screen and show content
 	const loadingScreen = document.getElementById('loading-screen');
 	const mainContent = document.querySelector('.main-content');
@@ -2721,11 +2726,11 @@ function updateUrgentDeadlinesWidget() {
 function updateStudyStreak() {
 	const streakEl = document.getElementById('study-streak-days');
 	const todayTimeEl = document.getElementById('today-study-time');
-	if (!streakEl) return;
-
+	const totalHoursEl = document.getElementById('total-study-hours');
+	
 	const streakData = JSON.parse(
 		localStorage.getItem('study-streak') ||
-			'{"streak": 0, "lastDate": null, "todayMinutes": 0}',
+			'{"streak": 0, "lastDate": null, "todayMinutes": 0, "totalMinutes": 0}',
 	);
 	const today = new Date().toDateString();
 
@@ -2745,14 +2750,18 @@ function updateStudyStreak() {
 		streakData.todayMinutes = 0;
 	}
 
-	streakEl.textContent = streakData.streak;
+	if (streakEl) streakEl.textContent = streakData.streak;
 	if (todayTimeEl) {
 		todayTimeEl.textContent =
 			streakData.todayMinutes >= 60
 				? `${Math.floor(streakData.todayMinutes / 60)}h ${
 						streakData.todayMinutes % 60
 				  }m`
-				: `${streakData.todayMinutes} min`;
+				: `${streakData.todayMinutes || 0} min`;
+	}
+	if (totalHoursEl) {
+		const totalHours = ((streakData.totalMinutes || 0) / 60).toFixed(1);
+		totalHoursEl.textContent = `${totalHours}h`;
 	}
 }
 
@@ -2833,7 +2842,7 @@ function submitStudyTime() {
 function processStudyTime(minutes) {
 	const streakData = JSON.parse(
 		localStorage.getItem('study-streak') ||
-			'{"streak": 0, "lastDate": null, "todayMinutes": 0}',
+			'{"streak": 0, "lastDate": null, "todayMinutes": 0, "totalMinutes": 0}',
 	);
 	const today = new Date().toDateString();
 
@@ -2850,8 +2859,14 @@ function processStudyTime(minutes) {
 	}
 
 	streakData.todayMinutes += minutes;
+	streakData.totalMinutes = (streakData.totalMinutes || 0) + minutes;
 	streakData.lastDate = today;
 	localStorage.setItem('study-streak', JSON.stringify(streakData));
+
+	// Trigger cloud sync if available
+	if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+		cloudSync.syncToCloud();
+	}
 
 	// Mark IELTS study if notification manager exists
 	if (typeof notificationManager !== 'undefined') {
@@ -2859,6 +2874,14 @@ function processStudyTime(minutes) {
 	}
 
 	updateStudyStreak();
+	
+	// Update dashboard stats and analytics
+	if (typeof updateDashboardStats === 'function') {
+		updateDashboardStats();
+	}
+	if (typeof updateAnalyticsPage === 'function') {
+		updateAnalyticsPage();
+	}
 
 	// Show confirmation
 	if (typeof notificationManager !== 'undefined') {
@@ -2875,13 +2898,16 @@ function logStudyTime() {
 }
 
 function toggleDeadlineReminders() {
-	// Show reminder settings modal
+	// Toggle reminder settings
 	const currentSettings = JSON.parse(
 		localStorage.getItem('study-reminders') || '{}',
 	);
 	const enabled = !currentSettings.deadlineReminder;
 	currentSettings.deadlineReminder = enabled;
 	localStorage.setItem('study-reminders', JSON.stringify(currentSettings));
+
+	// Update button state
+	updateReminderButtonState();
 
 	if (typeof notificationManager !== 'undefined') {
 		notificationManager.showInAppNotification(
@@ -2891,6 +2917,28 @@ function toggleDeadlineReminders() {
 			'info',
 			3000,
 		);
+	}
+}
+
+function updateReminderButtonState() {
+	const currentSettings = JSON.parse(
+		localStorage.getItem('study-reminders') || '{}',
+	);
+	const enabled = currentSettings.deadlineReminder;
+	const iconEl = document.getElementById('reminder-status-icon');
+	const textEl = document.getElementById('reminder-status-text');
+	const btnEl = document.getElementById('reminder-toggle-btn');
+	
+	if (iconEl) iconEl.textContent = enabled ? '✅' : '⚙️';
+	if (textEl) textEl.textContent = enabled ? 'On' : 'Reminders';
+	if (btnEl) {
+		if (enabled) {
+			btnEl.classList.add('bg-green-100', 'dark:bg-green-900/30', 'px-2', 'py-1', 'rounded-full');
+			btnEl.classList.remove('hover:underline');
+		} else {
+			btnEl.classList.remove('bg-green-100', 'dark:bg-green-900/30', 'px-2', 'py-1', 'rounded-full');
+			btnEl.classList.add('hover:underline');
+		}
 	}
 }
 

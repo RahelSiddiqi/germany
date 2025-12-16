@@ -1012,10 +1012,40 @@ class Band8Dashboard {
 		const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 		const taskId = 'mp-d' + day + '-' + taskIndex;
 
+		// Check if task is being marked as complete (not already complete)
+		const isCompletingTask = !tasks[taskId];
+
 		// Toggle the task
 		tasks[taskId] = !tasks[taskId];
 
 		localStorage.setItem('ielts-tasks', JSON.stringify(tasks));
+
+		// Update study streak when completing a task
+		if (isCompletingTask) {
+			const streakData = JSON.parse(
+				localStorage.getItem('study-streak') ||
+					'{"streak": 0, "lastDate": null, "todayMinutes": 0, "totalMinutes": 0}',
+			);
+			const today = new Date().toDateString();
+			
+			// Update streak
+			if (streakData.lastDate !== today) {
+				const yesterday = new Date();
+				yesterday.setDate(yesterday.getDate() - 1);
+				if (streakData.lastDate === yesterday.toDateString()) {
+					streakData.streak = (streakData.streak || 0) + 1;
+				} else if (streakData.lastDate !== today) {
+					streakData.streak = 1;
+				}
+			}
+			streakData.lastDate = today;
+			localStorage.setItem('study-streak', JSON.stringify(streakData));
+			
+			// Update streak UI
+			if (typeof updateStudyStreak === 'function') {
+				updateStudyStreak();
+			}
+		}
 
 		// Trigger Firebase sync if available
 		if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
@@ -1024,6 +1054,11 @@ class Band8Dashboard {
 
 		// Refresh to update UI
 		this.refreshDashboard();
+		
+		// Update dashboard stats
+		if (typeof updateDashboardStats === 'function') {
+			updateDashboardStats();
+		}
 	}
 
 	getHoursLogged(day) {
@@ -1031,8 +1066,36 @@ class Band8Dashboard {
 	}
 
 	logHours(day, hours) {
-		this.progress.hoursLogged[day] = parseFloat(hours);
+		const previousHours = this.progress.hoursLogged[day] || 0;
+		const newHours = parseFloat(hours);
+		const diffHours = newHours - previousHours;
+		
+		this.progress.hoursLogged[day] = newHours;
 		this.saveProgress();
+		
+		// Also update study-streak totalMinutes if hours increased
+		if (diffHours > 0) {
+			const diffMinutes = Math.round(diffHours * 60);
+			const streakData = JSON.parse(
+				localStorage.getItem('study-streak') ||
+					'{"streak": 0, "lastDate": null, "todayMinutes": 0, "totalMinutes": 0}',
+			);
+			streakData.totalMinutes = (streakData.totalMinutes || 0) + diffMinutes;
+			streakData.todayMinutes = (streakData.todayMinutes || 0) + diffMinutes;
+			streakData.lastDate = new Date().toDateString();
+			if (!streakData.streak) streakData.streak = 1;
+			localStorage.setItem('study-streak', JSON.stringify(streakData));
+			
+			// Trigger cloud sync
+			if (typeof cloudSync !== 'undefined' && cloudSync.syncEnabled) {
+				cloudSync.syncToCloud();
+			}
+			
+			// Update UI
+			if (typeof updateStudyStreak === 'function') {
+				updateStudyStreak();
+			}
+		}
 	}
 
 	getMockScore(testNumber) {

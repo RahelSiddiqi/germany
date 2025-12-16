@@ -198,12 +198,22 @@ function updateAnalyticsPage() {
 
 	if (totalTasksEl) totalTasksEl.textContent = completedTasks;
 
-	// Calculate study hours from study-streak data (totalMinutes) + band8 studyMinutes
+	// Calculate study hours from study-streak data (totalMinutes) + band8 hoursLogged
 	if (studyHoursEl) {
-		const streakData =
-			JSON.parse(localStorage.getItem('study-streak')) || {};
+		const streakData = JSON.parse(localStorage.getItem('study-streak')) || {};
 		const streakMinutes = streakData.totalMinutes || 0;
-		const totalMinutes = streakMinutes + totalStudyMinutes;
+		
+		// Also get hours from band8_progress.hoursLogged
+		const band8Progress = JSON.parse(localStorage.getItem('band8_progress')) || {};
+		let band8Minutes = 0;
+		if (band8Progress.hoursLogged) {
+			Object.values(band8Progress.hoursLogged).forEach((hours) => {
+				band8Minutes += (parseFloat(hours) || 0) * 60;
+			});
+		}
+		
+		// Use whichever is higher (avoid double counting)
+		const totalMinutes = Math.max(streakMinutes, band8Minutes);
 		const hours = (totalMinutes / 60).toFixed(1);
 		studyHoursEl.textContent = `${hours}h`;
 	}
@@ -726,26 +736,41 @@ async function checkNotificationStatus() {
 			'px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
 	}
 
-	// Send test notification
+	// Send test notification using Service Worker (required for mobile)
 	try {
-		const notification = new Notification(
-			'✅ Study Hub Notification Test',
-			{
+		if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+			const registration = await navigator.serviceWorker.ready;
+			await registration.showNotification('✅ Study Hub Notification Test', {
 				body: 'Notifications are working correctly!',
 				icon: '/germany/icon-192.png',
+				badge: '/germany/icon-192.png',
 				tag: 'test-notification',
-			},
-		);
-
-		notification.onclick = () => {
-			window.focus();
-			notification.close();
-		};
-
-		showNotification(
-			'✅ Test notification sent! Check your notification panel.',
-			'success',
-		);
+				vibrate: [200, 100, 200],
+				requireInteraction: false
+			});
+			showNotification(
+				'✅ Test notification sent! Check your notification panel.',
+				'success',
+			);
+		} else {
+			// Fallback to regular Notification for desktop
+			const notification = new Notification(
+				'✅ Study Hub Notification Test',
+				{
+					body: 'Notifications are working correctly!',
+					icon: '/germany/icon-192.png',
+					tag: 'test-notification',
+				},
+			);
+			notification.onclick = () => {
+				window.focus();
+				notification.close();
+			};
+			showNotification(
+				'✅ Test notification sent! Check your notification panel.',
+				'success',
+			);
+		}
 	} catch (error) {
 		console.error('Notification error:', error);
 		showNotification(

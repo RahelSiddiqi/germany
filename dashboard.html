@@ -414,9 +414,10 @@
 								Deadlines
 							</h3>
 							<button
+								id="reminder-toggle-btn"
 								onclick="toggleDeadlineReminders()"
-								class="text-xs text-teal-600 dark:text-teal-400 hover:underline">
-								⚙️ Reminders
+								class="text-xs text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1">
+								<span id="reminder-status-icon">⚙️</span> <span id="reminder-status-text">Reminders</span>
 							</button>
 						</div>
 						<div id="urgent-deadlines-list" class="space-y-2">
