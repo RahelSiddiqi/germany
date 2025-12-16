@@ -149,46 +149,56 @@ function updateAnalyticsPage() {
 		// Simple weighted calculation
 		weightedEl.textContent = `${completed * 2} points`;
 	}
-	
+
 	// Calculate universities applied
 	if (unisEl) {
-		const germanyProgress = JSON.parse(localStorage.getItem('germany-progress')) || {};
-		const schengenProgress = JSON.parse(localStorage.getItem('schengen-progress')) || {};
-		const appliedGermany = Object.values(germanyProgress).filter(s => s === 'applied' || s === 'accepted').length;
-		const appliedSchengen = Object.values(schengenProgress).filter(s => s === 'applied' || s === 'accepted').length;
+		const germanyProgress =
+			JSON.parse(localStorage.getItem('germany-progress')) || {};
+		const schengenProgress =
+			JSON.parse(localStorage.getItem('schengen-progress')) || {};
+		const appliedGermany = Object.values(germanyProgress).filter(
+			(s) => s === 'applied' || s === 'accepted',
+		).length;
+		const appliedSchengen = Object.values(schengenProgress).filter(
+			(s) => s === 'applied' || s === 'accepted',
+		).length;
 		unisEl.textContent = `${appliedGermany + appliedSchengen}`;
 	}
-	
+
 	// Update stat cards
 	const totalTasksEl = document.getElementById('analytics-total-tasks');
 	const studyHoursEl = document.getElementById('analytics-study-hours');
 	const streakEl = document.getElementById('analytics-streak');
 	const vocabEl = document.getElementById('analytics-vocab');
-	
+
 	if (totalTasksEl) totalTasksEl.textContent = completed;
-	
+
 	// Calculate study hours from band8 data
 	if (studyHoursEl) {
-		const band8Progress = JSON.parse(localStorage.getItem('band8_progress')) || {};
+		const band8Progress =
+			JSON.parse(localStorage.getItem('band8_progress')) || {};
 		let totalHours = 0;
-		Object.values(band8Progress).forEach(day => {
+		Object.values(band8Progress).forEach((day) => {
 			if (day && day.hoursLogged) {
 				totalHours += parseFloat(day.hoursLogged) || 0;
 			}
 		});
 		studyHoursEl.textContent = `${totalHours.toFixed(1)}h`;
 	}
-	
+
 	// Get streak
 	if (streakEl) {
-		const streakData = JSON.parse(localStorage.getItem('study-streak')) || {};
+		const streakData =
+			JSON.parse(localStorage.getItem('study-streak')) || {};
 		streakEl.textContent = streakData.streak || 0;
 	}
-	
+
 	// Get vocab learned count
 	if (vocabEl) {
 		const vocabData = JSON.parse(localStorage.getItem('ielts-vocab')) || {};
-		const learnedCount = Object.values(vocabData).filter(v => v && v.learned).length;
+		const learnedCount = Object.values(vocabData).filter(
+			(v) => v && v.learned,
+		).length;
 		vocabEl.textContent = learnedCount;
 	}
 }
