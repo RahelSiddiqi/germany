@@ -254,8 +254,7 @@ class CloudSyncManager {
 					localStorage.getItem(this.STORAGE_KEYS.ieltsCurrentEssay) ||
 					'',
 				studyStreak: JSON.parse(
-					localStorage.getItem(this.STORAGE_KEYS.studyStreak) ||
-						'{}',
+					localStorage.getItem(this.STORAGE_KEYS.studyStreak) || '{}',
 				),
 				lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
 				deviceInfo: navigator.userAgent,
@@ -500,6 +499,18 @@ class CloudSyncManager {
 							JSON.stringify(data.ieltsScores),
 						);
 					}
+					if (data.studyStreak) {
+						localStorage.setItem(
+							this.STORAGE_KEYS.studyStreak,
+							JSON.stringify(data.studyStreak),
+						);
+					}
+					if (data.band8Progress) {
+						localStorage.setItem(
+							this.STORAGE_KEYS.band8Progress,
+							JSON.stringify(data.band8Progress),
+						);
+					}
 
 					// Refresh UI - important for cross-device sync
 					if (typeof displayIELTSPlan === 'function') {
@@ -507,6 +518,12 @@ class CloudSyncManager {
 					}
 					if (typeof updateDashboardStats === 'function') {
 						updateDashboardStats();
+					}
+					if (typeof updateStudyStreak === 'function') {
+						updateStudyStreak();
+					}
+					if (typeof updateAnalyticsPage === 'function') {
+						updateAnalyticsPage();
 					}
 					if (typeof displayGermanyUniversities === 'function') {
 						displayGermanyUniversities();
