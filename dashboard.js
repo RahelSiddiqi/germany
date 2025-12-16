@@ -2515,14 +2515,15 @@ function toggleIELTSTask(id, checkbox) {
 }
 
 function getIELTSCompletedCount() {
-	// Use band8 progress data which tracks actual task completion per day
-	const band8Progress =
-		JSON.parse(localStorage.getItem('band8_progress')) || {};
+	// Use ielts-tasks localStorage - same format as Band 8 tracker
+	// Tasks are stored as mp-d{day}-{index}: true/false
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	let completedTasks = 0;
 
-	Object.values(band8Progress).forEach((day) => {
-		if (day && day.completed && Array.isArray(day.completed)) {
-			completedTasks += day.completed.length;
+	Object.keys(tasks).forEach((key) => {
+		// Count tasks that are completed (true) and match mp-d pattern
+		if (tasks[key] && key.startsWith('mp-d')) {
+			completedTasks++;
 		}
 	});
 

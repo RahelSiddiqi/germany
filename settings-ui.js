@@ -136,20 +136,21 @@ function updateStorageDisplay() {
 
 // Update analytics page with task stats
 function updateAnalyticsPage() {
-	// Get IELTS tasks from band8_progress (actual task completion data)
-	const band8Progress =
-		JSON.parse(localStorage.getItem('band8_progress')) || {};
+	// Get IELTS tasks from ielts-tasks - same format as Band 8 tracker
+	// Tasks are stored as mp-d{day}-{index}: true/false
+	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
 	let completedTasks = 0;
-	let totalStudyMinutes = 0;
 
-	Object.values(band8Progress).forEach((day) => {
-		if (day && day.completed && Array.isArray(day.completed)) {
-			completedTasks += day.completed.length;
-		}
-		if (day && day.studyMinutes) {
-			totalStudyMinutes += parseInt(day.studyMinutes) || 0;
+	Object.keys(tasks).forEach((key) => {
+		// Count tasks that are completed (true) and match mp-d pattern
+		if (tasks[key] && key.startsWith('mp-d')) {
+			completedTasks++;
 		}
 	});
+
+	// Get study time from study-streak
+	const streakData = JSON.parse(localStorage.getItem('study-streak')) || {};
+	const totalStudyMinutes = streakData.totalMinutes || 0;
 
 	// Get total tasks from MASTER_PLAN if available
 	let totalTasks = 180; // fallback
@@ -167,7 +168,7 @@ function updateAnalyticsPage() {
 	if (tasksEl) tasksEl.textContent = `${completedTasks} / ${totalTasks}`;
 	if (weightedEl) {
 		// Points based on task completion percentage
-		const points = Math.round((completedTasks / totalTasks) * 1000);
+		const points = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 1000) : 0;
 		weightedEl.textContent = `${points} points`;
 	}
 
