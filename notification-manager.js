@@ -245,7 +245,6 @@ class NotificationManager {
 		});
 
 		localStorage.setItem(scheduledKey, 'true');
-		console.log('📅 Task reminders scheduled for Day', currentDay);
 	}
 
 	// Send task reminder (both in-app and push)
@@ -492,7 +491,6 @@ class NotificationManager {
 	async schedulePushNotification(title, body, scheduledTime, tag) {
 		// Check if service worker and push are supported
 		if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-			console.log('Push notifications not supported');
 			return false;
 		}
 

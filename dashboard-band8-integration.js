@@ -2,26 +2,6 @@
 // Displays 15-day IELTS ULTRA-INTENSIVE progress tracker
 // Using Tailwind CSS classes only
 
-// Convert 24h time to 12h format (e.g., "06:30" -> "6:30AM", "14:00" -> "2PM")
-function formatTime12h(time24) {
-	if (!time24) return '';
-	const [h, m] = time24.split(':').map(Number);
-	const period = h >= 12 ? 'PM' : 'AM';
-	const hour12 = h % 12 || 12;
-	// Only show minutes if not :00
-	if (m === 0) {
-		return `${hour12}${period}`;
-	}
-	return `${hour12}:${m.toString().padStart(2, '0')}${period}`;
-}
-
-// Convert time range to 12h format (e.g., "06:00-06:30" -> "6AM-6:30AM")
-function formatTimeRange12h(timeRange) {
-	if (!timeRange || !timeRange.includes('-')) return timeRange;
-	const [start, end] = timeRange.split('-');
-	return `${formatTime12h(start)}-${formatTime12h(end)}`;
-}
-
 class Band8Dashboard {
 	constructor() {
 		this.today = new Date();
@@ -560,9 +540,6 @@ class Band8Dashboard {
 											index,
 										);
 
-									// Format time to 12h and calculate duration
-									const formattedTime = formatTimeRange12h(taskTime);
-
 									return `
 								<div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg ${
 									isCompleted
@@ -578,7 +555,7 @@ class Band8Dashboard {
 										taskTime
 											? `
 									<div class="flex-shrink-0 text-center">
-										<div class="text-[10px] sm:text-xs font-mono text-teal-700 dark:text-teal-300 font-medium whitespace-nowrap">${formattedTime}</div>
+										<div class="text-[10px] sm:text-xs font-mono text-teal-700 dark:text-teal-300 font-medium whitespace-nowrap">${taskTime}</div>
 										<div class="text-[9px] sm:text-[10px] text-teal-600 dark:text-teal-400">${duration}</div>
 									</div>
 									`

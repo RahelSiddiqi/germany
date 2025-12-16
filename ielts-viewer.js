@@ -4,16 +4,19 @@
 // Clean text for speech - remove IPA, emojis, and other non-spoken content
 function cleanTextForSpeech(text) {
 	if (!text) return '';
-	
+
 	// Remove IPA phonetic notation (anything between / / or [ ])
 	let cleaned = text.replace(/\/[^\/]+\//g, '').replace(/\[[^\]]+\]/g, '');
-	
+
 	// Remove common emojis and symbols used as prefixes
-	cleaned = cleaned.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}💬📝✨🔹▸•\-\*]+\s*/gu, '');
-	
+	cleaned = cleaned.replace(
+		/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}💬📝✨🔹▸•\-\*]+\s*/gu,
+		'',
+	);
+
 	// Remove leading/trailing whitespace and extra spaces
 	cleaned = cleaned.replace(/\s+/g, ' ').trim();
-	
+
 	return cleaned;
 }
 
@@ -23,7 +26,7 @@ function speakWord(word) {
 		window.speechSynthesis.cancel();
 		const cleanedWord = cleanTextForSpeech(word);
 		if (!cleanedWord) return;
-		
+
 		const utterance = new SpeechSynthesisUtterance(cleanedWord);
 		utterance.lang = 'en-GB';
 		utterance.rate = 0.85;

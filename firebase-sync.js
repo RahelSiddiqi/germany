@@ -1,6 +1,14 @@
 // Firebase Cloud Sync for Study Abroad Dashboard
 // Enables cross-device synchronization of all progress data
 
+// Debug mode - set to true to enable console logging
+const FIREBASE_DEBUG = false;
+
+// Silent logger - only logs when debug mode is enabled
+const syncLog = (...args) => {
+	if (FIREBASE_DEBUG) syncLog('[Sync]', ...args);
+};
+
 // Firebase configuration
 const firebaseConfig = {
 	apiKey: 'AIzaSyAVUTTnPGO7jxUWqwUOZP4Zd98wog0ZMgE',
@@ -48,7 +56,7 @@ class CloudSyncManager {
 	// Initialize Firebase
 	async init() {
 		if (!this.isConfigured) {
-			console.log('Firebase not configured. Cloud sync disabled.');
+			syncLog('Firebase not configured. Cloud sync disabled.');
 			return false;
 		}
 
@@ -66,9 +74,9 @@ class CloudSyncManager {
 				await this.db.enablePersistence({ synchronizeTabs: true });
 			} catch (err) {
 				if (err.code === 'failed-precondition') {
-					console.log('Persistence failed: multiple tabs open');
+					syncLog('Persistence failed: multiple tabs open');
 				} else if (err.code === 'unimplemented') {
-					console.log('Persistence not available in this browser');
+					syncLog('Persistence not available in this browser');
 				}
 			}
 
@@ -155,7 +163,7 @@ class CloudSyncManager {
 	// Called when user signs in
 	async onUserSignedIn(user) {
 		this.syncEnabled = true;
-		console.log('User signed in:', user.uid);
+		syncLog('User signed in:', user.uid);
 
 		// Start real-time sync listener
 		this.startRealtimeSync();
@@ -168,7 +176,7 @@ class CloudSyncManager {
 	onUserSignedOut() {
 		this.syncEnabled = false;
 		this.user = null;
-		console.log('User signed out');
+		syncLog('User signed out');
 	}
 
 	// Get user's document reference
@@ -251,7 +259,7 @@ class CloudSyncManager {
 			await docRef.set(data, { merge: true });
 			this.lastSyncTime = new Date();
 			this.updateSyncStatus('synced');
-			console.log('Data synced to cloud');
+			syncLog('Data synced to cloud');
 			return true;
 		} catch (error) {
 			console.error('Sync to cloud failed:', error);
@@ -395,7 +403,7 @@ class CloudSyncManager {
 				}
 
 				this.lastSyncTime = new Date();
-				console.log('Data synced from cloud');
+				syncLog('Data synced from cloud');
 
 				// Refresh UI
 				if (typeof updateDashboardStats === 'function') {
@@ -410,7 +418,7 @@ class CloudSyncManager {
 				}
 			} else {
 				// No cloud data exists, upload local data
-				console.log('No cloud data found, uploading local data');
+				syncLog('No cloud data found, uploading local data');
 				await this.syncToCloud();
 			}
 
@@ -436,7 +444,7 @@ class CloudSyncManager {
 				if (doc.exists && doc.metadata.hasPendingWrites === false) {
 					// Data changed from another device
 					const data = doc.data();
-					console.log(
+					syncLog(
 						'Real-time update received from another device',
 					);
 
