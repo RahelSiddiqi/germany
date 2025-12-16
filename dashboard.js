@@ -2482,21 +2482,39 @@ function toggleIELTSTask(id, checkbox) {
 }
 
 function getIELTSCompletedCount() {
-	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-	const vocabLearned = JSON.parse(
-		localStorage.getItem('ielts-vocab-learned') || '[]',
-	);
-	// Count tasks + bonus for vocab (1 point per 5 words learned, max 10 points)
-	const vocabBonus = Math.min(Math.floor(vocabLearned.length / 5), 10);
-	return Object.values(tasks).filter(Boolean).length + vocabBonus;
+	// Use band8 progress data which tracks actual task completion per day
+	const band8Progress =
+		JSON.parse(localStorage.getItem('band8_progress')) || {};
+	let completedTasks = 0;
+
+	Object.values(band8Progress).forEach((day) => {
+		if (day && day.completed && Array.isArray(day.completed)) {
+			completedTasks += day.completed.length;
+		}
+	});
+
+	return completedTasks;
+}
+
+function getIELTSTotalTasks() {
+	// Get total tasks from MASTER_PLAN if available
+	if (typeof MASTER_PLAN !== 'undefined' && MASTER_PLAN.ieltsSchedule) {
+		let total = 0;
+		MASTER_PLAN.ieltsSchedule.forEach((day) => {
+			total += day.tasks.length;
+		});
+		return total;
+	}
+	return 180; // Fallback approximate total
 }
 
 // DASHBOARD STATS
 function updateDashboardStats() {
 	// IELTS
 	const ieltsCompleted = getIELTSCompletedCount();
-	const ieltsTotal = 70;
-	const ieltsProgress = Math.round((ieltsCompleted / ieltsTotal) * 100);
+	const ieltsTotal = getIELTSTotalTasks();
+	const ieltsProgress =
+		ieltsTotal > 0 ? Math.round((ieltsCompleted / ieltsTotal) * 100) : 0;
 
 	const ieltsProgressEl = document.getElementById('ielts-progress');
 	const ieltsTasksEl = document.getElementById('ielts-tasks');
@@ -2573,7 +2591,17 @@ function updateUrgentDeadlinesWidget() {
 	if (!widget || !list) return;
 
 	const today = new Date();
-	const allUniversities = [...germanyUniversities, ...schengenUniversities];
+	// Tag universities with their source
+	const germanyTagged = germanyUniversities.map((uni) => ({
+		...uni,
+		source: 'germany',
+	}));
+	const schengenTagged = schengenUniversities.map((uni) => ({
+		...uni,
+		source: 'schengen',
+	}));
+	const allUniversities = [...germanyTagged, ...schengenTagged];
+
 	const urgentDeadlines = allUniversities
 		.filter((uni) => {
 			const deadline = new Date(uni.application_deadline);
@@ -2624,10 +2652,16 @@ function updateUrgentDeadlinesWidget() {
 					? '⚠️'
 					: '📅';
 
+			// Source badge
+			const sourceBadge =
+				uni.source === 'germany'
+					? '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇩🇪</span>'
+					: '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇪🇺</span>';
+
 			return `
 			<div class="flex items-center justify-between p-2 sm:p-3 ${urgencyClass} rounded-lg border">
 				<div class="flex-1 min-w-0">
-					<p class="font-medium text-gray-900 dark:text-white text-xs sm:text-sm truncate">${uni.university}</p>
+					<p class="font-medium text-gray-900 dark:text-white text-xs sm:text-sm truncate">${uni.university} ${sourceBadge}</p>
 					<p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 truncate">${uni.program}</p>
 				</div>
 				<div class="text-right flex-shrink-0 ml-2">

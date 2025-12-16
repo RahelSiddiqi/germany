@@ -444,9 +444,7 @@ class CloudSyncManager {
 				if (doc.exists && doc.metadata.hasPendingWrites === false) {
 					// Data changed from another device
 					const data = doc.data();
-					syncLog(
-						'Real-time update received from another device',
-					);
+					syncLog('Real-time update received from another device');
 
 					// Update local storage
 					if (data.germany) {
