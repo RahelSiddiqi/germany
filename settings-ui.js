@@ -136,31 +136,52 @@ function updateStorageDisplay() {
 
 // Update analytics page with task stats
 function updateAnalyticsPage() {
-	const tasks = JSON.parse(localStorage.getItem('ielts-tasks')) || {};
-	const completed = Object.values(tasks).filter(Boolean).length;
-	const total = Object.keys(tasks).length;
+	// Get IELTS tasks from band8_progress (actual task completion data)
+	const band8Progress =
+		JSON.parse(localStorage.getItem('band8_progress')) || {};
+	let completedTasks = 0;
+	let totalStudyMinutes = 0;
+
+	Object.values(band8Progress).forEach((day) => {
+		if (day && day.completed && Array.isArray(day.completed)) {
+			completedTasks += day.completed.length;
+		}
+		if (day && day.studyMinutes) {
+			totalStudyMinutes += parseInt(day.studyMinutes) || 0;
+		}
+	});
+
+	// Get total tasks from MASTER_PLAN if available
+	let totalTasks = 180; // fallback
+	if (typeof MASTER_PLAN !== 'undefined' && MASTER_PLAN.ieltsSchedule) {
+		totalTasks = 0;
+		MASTER_PLAN.ieltsSchedule.forEach((day) => {
+			totalTasks += day.tasks.length;
+		});
+	}
 
 	const tasksEl = document.getElementById('insights-tasks');
 	const weightedEl = document.getElementById('insights-weighted');
 	const unisEl = document.getElementById('insights-unis');
 
-	if (tasksEl) tasksEl.textContent = `${completed} / ${total}`;
+	if (tasksEl) tasksEl.textContent = `${completedTasks} / ${totalTasks}`;
 	if (weightedEl) {
-		// Simple weighted calculation
-		weightedEl.textContent = `${completed * 2} points`;
+		// Points based on task completion percentage
+		const points = Math.round((completedTasks / totalTasks) * 1000);
+		weightedEl.textContent = `${points} points`;
 	}
 
-	// Calculate universities applied
+	// Calculate universities applied from germany-applications and schengen-applications
 	if (unisEl) {
-		const germanyProgress =
-			JSON.parse(localStorage.getItem('germany-progress')) || {};
-		const schengenProgress =
-			JSON.parse(localStorage.getItem('schengen-progress')) || {};
-		const appliedGermany = Object.values(germanyProgress).filter(
-			(s) => s === 'applied' || s === 'accepted',
+		const germanyApps =
+			JSON.parse(localStorage.getItem('germany-applications')) || [];
+		const schengenApps =
+			JSON.parse(localStorage.getItem('schengen-applications')) || [];
+		const appliedGermany = germanyApps.filter(
+			(u) => u.status === 'submitted' || u.status === 'admitted',
 		).length;
-		const appliedSchengen = Object.values(schengenProgress).filter(
-			(s) => s === 'applied' || s === 'accepted',
+		const appliedSchengen = schengenApps.filter(
+			(u) => u.status === 'submitted' || u.status === 'admitted',
 		).length;
 		unisEl.textContent = `${appliedGermany + appliedSchengen}`;
 	}
@@ -171,19 +192,16 @@ function updateAnalyticsPage() {
 	const streakEl = document.getElementById('analytics-streak');
 	const vocabEl = document.getElementById('analytics-vocab');
 
-	if (totalTasksEl) totalTasksEl.textContent = completed;
+	if (totalTasksEl) totalTasksEl.textContent = completedTasks;
 
-	// Calculate study hours from band8 data
+	// Calculate study hours from study-streak data (totalMinutes) + band8 studyMinutes
 	if (studyHoursEl) {
-		const band8Progress =
-			JSON.parse(localStorage.getItem('band8_progress')) || {};
-		let totalHours = 0;
-		Object.values(band8Progress).forEach((day) => {
-			if (day && day.hoursLogged) {
-				totalHours += parseFloat(day.hoursLogged) || 0;
-			}
-		});
-		studyHoursEl.textContent = `${totalHours.toFixed(1)}h`;
+		const streakData =
+			JSON.parse(localStorage.getItem('study-streak')) || {};
+		const streakMinutes = streakData.totalMinutes || 0;
+		const totalMinutes = streakMinutes + totalStudyMinutes;
+		const hours = (totalMinutes / 60).toFixed(1);
+		studyHoursEl.textContent = `${hours}h`;
 	}
 
 	// Get streak
@@ -193,13 +211,62 @@ function updateAnalyticsPage() {
 		streakEl.textContent = streakData.streak || 0;
 	}
 
-	// Get vocab learned count
+	// Get vocab learned count from ielts-vocab-learned (the actual data key)
 	if (vocabEl) {
-		const vocabData = JSON.parse(localStorage.getItem('ielts-vocab')) || {};
-		const learnedCount = Object.values(vocabData).filter(
-			(v) => v && v.learned,
-		).length;
-		vocabEl.textContent = learnedCount;
+		const vocabData =
+			JSON.parse(localStorage.getItem('ielts-vocab-learned')) || [];
+		vocabEl.textContent = vocabData.length || 0;
+	}
+
+	// Update progress bars
+	const ieltsPercent =
+		totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+	const ieltsPercentEl = document.getElementById('analytics-ielts-percent');
+	const ieltsBarEl = document.getElementById('analytics-ielts-bar');
+	if (ieltsPercentEl) ieltsPercentEl.textContent = `${ieltsPercent}%`;
+	if (ieltsBarEl) ieltsBarEl.style.width = `${ieltsPercent}%`;
+
+	// Germany progress
+	const germanyApps =
+		JSON.parse(localStorage.getItem('germany-applications')) || [];
+	const germanySubmitted = germanyApps.filter(
+		(u) => u.status === 'submitted' || u.status === 'admitted',
+	).length;
+	const germanyTotal = germanyApps.length || 1;
+	const germanyPercent = Math.round((germanySubmitted / germanyTotal) * 100);
+	const germanyPercentEl = document.getElementById(
+		'analytics-germany-percent',
+	);
+	const germanyBarEl = document.getElementById('analytics-germany-bar');
+	if (germanyPercentEl)
+		germanyPercentEl.textContent = `${germanySubmitted}/${germanyTotal} (${germanyPercent}%)`;
+	if (germanyBarEl) germanyBarEl.style.width = `${germanyPercent}%`;
+
+	// Schengen progress
+	const schengenApps =
+		JSON.parse(localStorage.getItem('schengen-applications')) || [];
+	const schengenSubmitted = schengenApps.filter(
+		(u) => u.status === 'submitted' || u.status === 'admitted',
+	).length;
+	const schengenTotal = schengenApps.length || 1;
+	const schengenPercent = Math.round(
+		(schengenSubmitted / schengenTotal) * 100,
+	);
+	const schengenPercentEl = document.getElementById(
+		'analytics-schengen-percent',
+	);
+	const schengenBarEl = document.getElementById('analytics-schengen-bar');
+	if (schengenPercentEl)
+		schengenPercentEl.textContent = `${schengenSubmitted}/${schengenTotal} (${schengenPercent}%)`;
+	if (schengenBarEl) schengenBarEl.style.width = `${schengenPercent}%`;
+
+	// Today's study time
+	const todayEl = document.getElementById('insights-today');
+	if (todayEl) {
+		const streakData =
+			JSON.parse(localStorage.getItem('study-streak')) || {};
+		const todayMinutes = streakData.todayMinutes || 0;
+		todayEl.textContent = `${todayMinutes} min`;
 	}
 }
 
@@ -539,6 +606,192 @@ async function manualSync() {
 	}
 }
 
+// Check sync status with visual feedback
+async function checkSyncStatus() {
+	if (typeof cloudSync === 'undefined') {
+		showNotification('❌ Cloud sync not initialized', 'error');
+		return;
+	}
+
+	if (!cloudSync.syncEnabled || !cloudSync.user) {
+		showNotification(
+			'⚠️ Cloud sync not enabled. Please enable it first.',
+			'warning',
+		);
+		return;
+	}
+
+	showNotification('🔍 Checking sync status...', 'info');
+
+	try {
+		// Try to get data from cloud
+		const docRef = cloudSync.getUserDocRef();
+		if (!docRef) {
+			showNotification('❌ Cannot get user reference', 'error');
+			return;
+		}
+
+		const doc = await docRef.get();
+		if (doc.exists) {
+			const data = doc.data();
+			const lastUpdated = data.lastUpdated?.toDate?.() || 'Unknown';
+			const germanyCount = data.germany?.length || 0;
+			const schengenCount = data.schengen?.length || 0;
+			const band8Keys = data.band8Progress
+				? Object.keys(data.band8Progress).length
+				: 0;
+
+			showNotification(
+				`✅ Sync working! Last: ${
+					lastUpdated instanceof Date
+						? lastUpdated.toLocaleString()
+						: lastUpdated
+				}\n📊 Germany: ${germanyCount}, Schengen: ${schengenCount}, IELTS days: ${band8Keys}`,
+				'success',
+			);
+		} else {
+			showNotification(
+				'⚠️ No cloud data found. Try syncing first.',
+				'warning',
+			);
+		}
+	} catch (error) {
+		console.error('Check sync error:', error);
+		showNotification('❌ Error checking sync: ' + error.message, 'error');
+	}
+}
+
+// Check notification status with test
+async function checkNotificationStatus() {
+	const statusText = document.getElementById('notification-status-text');
+	const statusBadge = document.getElementById('notification-status-badge');
+
+	// Check if notifications are supported
+	if (!('Notification' in window)) {
+		if (statusText)
+			statusText.textContent = 'Not supported in this browser';
+		if (statusBadge) {
+			statusBadge.textContent = 'Unsupported';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300';
+		}
+		showNotification(
+			'❌ Notifications not supported in this browser',
+			'error',
+		);
+		return;
+	}
+
+	// Check permission status
+	const permission = Notification.permission;
+
+	if (permission === 'denied') {
+		if (statusText) statusText.textContent = 'Blocked by browser';
+		if (statusBadge) {
+			statusBadge.textContent = 'Blocked';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400';
+		}
+		showNotification(
+			'❌ Notifications are blocked. Please enable in browser settings.',
+			'error',
+		);
+		return;
+	}
+
+	if (permission === 'default') {
+		// Request permission
+		const result = await Notification.requestPermission();
+		if (result !== 'granted') {
+			if (statusText) statusText.textContent = 'Permission denied';
+			if (statusBadge) {
+				statusBadge.textContent = 'Denied';
+				statusBadge.className =
+					'px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400';
+			}
+			showNotification('⚠️ Notification permission denied', 'warning');
+			return;
+		}
+	}
+
+	// Permission granted - send test notification
+	if (statusText) statusText.textContent = 'Enabled and working';
+	if (statusBadge) {
+		statusBadge.textContent = 'Enabled';
+		statusBadge.className =
+			'px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+	}
+
+	// Send test notification
+	try {
+		const notification = new Notification(
+			'✅ Study Hub Notification Test',
+			{
+				body: 'Notifications are working correctly!',
+				icon: '/germany/icon-192.png',
+				tag: 'test-notification',
+			},
+		);
+
+		notification.onclick = () => {
+			window.focus();
+			notification.close();
+		};
+
+		showNotification(
+			'✅ Test notification sent! Check your notification panel.',
+			'success',
+		);
+	} catch (error) {
+		console.error('Notification error:', error);
+		showNotification(
+			'⚠️ Error sending notification: ' + error.message,
+			'warning',
+		);
+	}
+}
+
+// Initialize notification status on page load
+function initNotificationStatus() {
+	const statusText = document.getElementById('notification-status-text');
+	const statusBadge = document.getElementById('notification-status-badge');
+
+	if (!('Notification' in window)) {
+		if (statusText) statusText.textContent = 'Not supported';
+		if (statusBadge) {
+			statusBadge.textContent = 'N/A';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300';
+		}
+		return;
+	}
+
+	const permission = Notification.permission;
+
+	if (permission === 'granted') {
+		if (statusText) statusText.textContent = 'Enabled';
+		if (statusBadge) {
+			statusBadge.textContent = 'On';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+		}
+	} else if (permission === 'denied') {
+		if (statusText) statusText.textContent = 'Blocked by browser';
+		if (statusBadge) {
+			statusBadge.textContent = 'Off';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400';
+		}
+	} else {
+		if (statusText) statusText.textContent = 'Not yet enabled';
+		if (statusBadge) {
+			statusBadge.textContent = 'Ask';
+			statusBadge.className =
+				'px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400';
+		}
+	}
+}
+
 // Show setup instructions
 function showCloudSyncSetupInstructions() {
 	const instructions = `
@@ -563,5 +816,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			cloudSync.updateSyncUI();
 		}
 		updateSyncUI();
+		initNotificationStatus();
 	}, 1000);
 });

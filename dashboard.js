@@ -1224,6 +1224,39 @@ function saveGermanyApplications() {
 	localStorage.setItem('germany-applications', JSON.stringify(dataToSave));
 }
 
+// Reload university data from localStorage (called after cloud sync)
+async function reloadUniversityData() {
+	// Reload Germany universities from localStorage
+	const germanySaved = localStorage.getItem('germany-applications');
+	if (germanySaved) {
+		const savedApps = JSON.parse(germanySaved);
+		germanyUniversities.forEach((uni) => {
+			const savedUni = savedApps.find(
+				(s) => s.university === uni.university,
+			);
+			if (savedUni) {
+				uni.status = savedUni.status || 'not_started';
+				uni.tasks = savedUni.tasks || getDefaultTasks();
+			}
+		});
+	}
+
+	// Reload Schengen universities from localStorage
+	const schengenSaved = localStorage.getItem('schengen-applications');
+	if (schengenSaved) {
+		const savedApps = JSON.parse(schengenSaved);
+		schengenUniversities.forEach((uni) => {
+			const savedUni = savedApps.find(
+				(s) => s.university === uni.university,
+			);
+			if (savedUni) {
+				uni.status = savedUni.status || 'not_started';
+				uni.tasks = savedUni.tasks || getDefaultTasks();
+			}
+		});
+	}
+}
+
 // SCHENGEN FUNCTIONS
 async function loadSchengenData() {
 	try {
@@ -2658,11 +2691,20 @@ function updateUrgentDeadlinesWidget() {
 					? '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇩🇪</span>'
 					: '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇪🇺</span>';
 
+			// Pulsing red dot for urgent deadlines
+			const pulsingDot =
+				uni.daysRemaining <= 7
+					? '<span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>'
+					: '';
+
 			return `
 			<div class="flex items-center justify-between p-2 sm:p-3 ${urgencyClass} rounded-lg border">
-				<div class="flex-1 min-w-0">
-					<p class="font-medium text-gray-900 dark:text-white text-xs sm:text-sm truncate">${uni.university} ${sourceBadge}</p>
-					<p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 truncate">${uni.program}</p>
+				<div class="flex items-center flex-1 min-w-0">
+					${pulsingDot}
+					<div class="min-w-0">
+						<p class="font-medium text-gray-900 dark:text-white text-xs sm:text-sm truncate">${uni.university} ${sourceBadge}</p>
+						<p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 truncate">${uni.program}</p>
+					</div>
 				</div>
 				<div class="text-right flex-shrink-0 ml-2">
 					<p class="font-bold ${textClass} text-sm sm:text-base">${icon} ${uni.daysRemaining}d</p>

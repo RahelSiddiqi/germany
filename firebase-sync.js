@@ -405,12 +405,27 @@ class CloudSyncManager {
 				this.lastSyncTime = new Date();
 				syncLog('Data synced from cloud');
 
+				// Reload university data from localStorage to in-memory arrays
+				if (typeof reloadUniversityData === 'function') {
+					await reloadUniversityData();
+				}
+
 				// Refresh UI
 				if (typeof updateDashboardStats === 'function') {
 					updateDashboardStats();
 				}
 				if (typeof displayIELTSPlan === 'function') {
 					displayIELTSPlan();
+				}
+				if (typeof displayGermanyUniversities === 'function') {
+					displayGermanyUniversities();
+				}
+				if (typeof displaySchengenUniversities === 'function') {
+					displaySchengenUniversities();
+				}
+				// Refresh analytics page
+				if (typeof updateAnalyticsPage === 'function') {
+					updateAnalyticsPage();
 				}
 				// Refresh vocabulary flashcard state
 				if (typeof refreshFlashcardState === 'function') {
