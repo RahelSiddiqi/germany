@@ -168,7 +168,10 @@ function updateAnalyticsPage() {
 	if (tasksEl) tasksEl.textContent = `${completedTasks} / ${totalTasks}`;
 	if (weightedEl) {
 		// Points based on task completion percentage
-		const points = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 1000) : 0;
+		const points =
+			totalTasks > 0
+				? Math.round((completedTasks / totalTasks) * 1000)
+				: 0;
 		weightedEl.textContent = `${points} points`;
 	}
 

@@ -2668,21 +2668,21 @@ function updateUrgentDeadlinesWidget() {
 	list.innerHTML = urgentDeadlines
 		.map((uni) => {
 			const urgencyClass =
-				uni.daysRemaining <= 7
+				uni.daysRemaining <= 15
 					? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700'
-					: uni.daysRemaining <= 14
+					: uni.daysRemaining <= 21
 					? 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700'
 					: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800';
 			const textClass =
-				uni.daysRemaining <= 7
+				uni.daysRemaining <= 15
 					? 'text-red-700 dark:text-red-300'
-					: uni.daysRemaining <= 14
+					: uni.daysRemaining <= 21
 					? 'text-amber-700 dark:text-amber-300'
 					: 'text-blue-700 dark:text-blue-300';
 			const icon =
-				uni.daysRemaining <= 7
+				uni.daysRemaining <= 15
 					? '🚨'
-					: uni.daysRemaining <= 14
+					: uni.daysRemaining <= 21
 					? '⚠️'
 					: '📅';
 
@@ -2692,9 +2692,9 @@ function updateUrgentDeadlinesWidget() {
 					? '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇩🇪</span>'
 					: '<span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded bg-black/10 dark:bg-white/10 text-gray-600 dark:text-gray-300 ml-1">🇪🇺</span>';
 
-			// Pulsing red dot for urgent deadlines
+			// Pulsing red dot for urgent deadlines (≤15 days)
 			const pulsingDot =
-				uni.daysRemaining <= 7
+				uni.daysRemaining <= 15
 					? '<span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>'
 					: '';
 

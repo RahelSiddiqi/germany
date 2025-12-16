@@ -47,6 +47,7 @@ class CloudSyncManager {
 			band8Progress: 'band8_progress',
 			ieltsEssays: 'ielts-essays',
 			ieltsCurrentEssay: 'ielts-current-essay',
+			studyStreak: 'study-streak',
 		};
 
 		// Check if Firebase config is set
@@ -252,6 +253,10 @@ class CloudSyncManager {
 				ieltsCurrentEssay:
 					localStorage.getItem(this.STORAGE_KEYS.ieltsCurrentEssay) ||
 					'',
+				studyStreak: JSON.parse(
+					localStorage.getItem(this.STORAGE_KEYS.studyStreak) ||
+						'{}',
+				),
 				lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
 				deviceInfo: navigator.userAgent,
 			};
@@ -399,6 +404,15 @@ class CloudSyncManager {
 					localStorage.setItem(
 						this.STORAGE_KEYS.ieltsCurrentEssay,
 						data.ieltsCurrentEssay,
+					);
+				}
+				if (
+					data.studyStreak &&
+					Object.keys(data.studyStreak).length > 0
+				) {
+					localStorage.setItem(
+						this.STORAGE_KEYS.studyStreak,
+						JSON.stringify(data.studyStreak),
 					);
 				}
 
