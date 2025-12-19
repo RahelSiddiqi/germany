@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'study-abroad-v5.3';
+const CACHE_VERSION = 'study-abroad-v5.6';
 const CACHE_ASSETS = [
 	'/germany/',
 	'/germany/dashboard.html',
@@ -15,6 +15,7 @@ const CACHE_ASSETS = [
 	'/germany/dashboard-band8-integration.js',
 	'/germany/ielts-viewer.js',
 	'/germany/ielts-interactive.js',
+	'/germany/ielts-master-data.json',
 	'/germany/app.js',
 ];
 

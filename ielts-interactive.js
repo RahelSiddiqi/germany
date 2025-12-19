@@ -5208,12 +5208,175 @@ function initVocabTool() {
 
 	container.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📚 Band 8+ Vocabulary Builder</h3>
+			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+				📚 Band 8+ Vocabulary Builder
+				<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">1200+ Words</span>
+			</h3>
+
+			<!-- Listening Vocabulary Section -->
+			<div id="listening-vocab-section" class="mb-6">
+				<div class="flex items-center justify-between mb-3">
+					<h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+						🎧 IELTS Listening Vocabulary
+						<span class="text-xs text-gray-500">(from 1200 Most Common Words)</span>
+					</h4>
+					<button onclick="toggleListeningVocab()" id="toggle-listening-vocab" class="text-xs text-teal-600 dark:text-teal-400 hover:underline">Show ▼</button>
+				</div>
+				<div id="listening-vocab-content" class="hidden"></div>
+			</div>
+
 			<div id="flashcard-container"></div>
 		</div>
 	`;
 	initFlashcards();
+	initListeningVocab();
 }
+
+async function initListeningVocab() {
+	const data = await loadListeningTestsData();
+	const content = document.getElementById('listening-vocab-content');
+	if (!content || !data?.vocabularyCategories) return;
+
+	const learnedWords = JSON.parse(
+		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
+	);
+
+	content.innerHTML = `
+		<div class="space-y-4">
+			<!-- Category Tabs -->
+			<div class="flex flex-wrap gap-2">
+				${data.vocabularyCategories
+					.map(
+						(cat, idx) => `
+					<button onclick="showVocabCategory(${idx})" class="vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors ${
+							idx === 0
+								? 'bg-teal-500 text-white border-teal-500'
+								: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-teal-500'
+						}">
+						${cat.name} (${cat.words.length})
+					</button>
+				`,
+					)
+					.join('')}
+			</div>
+
+			<!-- Word Grid -->
+			<div id="vocab-category-words" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
+
+			<!-- Stats -->
+			<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
+				<span id="vocab-learned-count">Learned: ${
+					Object.keys(learnedWords).length
+				} words</span>
+				<button onclick="resetLearnedListeningVocab()" class="text-red-500 hover:underline">Reset Progress</button>
+			</div>
+		</div>
+	`;
+
+	// Show first category
+	showVocabCategory(0);
+}
+
+async function showVocabCategory(catIdx) {
+	const data = await loadListeningTestsData();
+	if (!data?.vocabularyCategories) return;
+
+	const cat = data.vocabularyCategories[catIdx];
+	if (!cat) return;
+
+	// Update button styles
+	document.querySelectorAll('.vocab-cat-btn').forEach((btn, idx) => {
+		if (idx === catIdx) {
+			btn.className =
+				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors bg-teal-500 text-white border-teal-500';
+		} else {
+			btn.className =
+				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-teal-500';
+		}
+	});
+
+	const learnedWords = JSON.parse(
+		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
+	);
+	const wordsContainer = document.getElementById('vocab-category-words');
+
+	if (wordsContainer) {
+		wordsContainer.innerHTML = cat.words
+			.map((word) => {
+				const isLearned = learnedWords[word];
+				return `
+				<button onclick="toggleListeningWord('${word.replace(/'/g, "\\'")}')"
+					class="listening-word-btn p-2 text-xs rounded-lg border transition-all text-left ${
+						isLearned
+							? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-800 dark:text-green-300'
+							: 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-teal-500'
+					}">
+					${isLearned ? '✓ ' : ''}${word}
+				</button>
+			`;
+			})
+			.join('');
+	}
+}
+
+function toggleListeningWord(word) {
+	const learnedWords = JSON.parse(
+		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
+	);
+	if (learnedWords[word]) {
+		delete learnedWords[word];
+	} else {
+		learnedWords[word] = true;
+	}
+	localStorage.setItem(
+		'ielts-learned-listening-vocab',
+		JSON.stringify(learnedWords),
+	);
+
+	// Update count
+	const countEl = document.getElementById('vocab-learned-count');
+	if (countEl) {
+		countEl.textContent = `Learned: ${
+			Object.keys(learnedWords).length
+		} words`;
+	}
+
+	// Re-render current category
+	const activeBtn = document.querySelector('.vocab-cat-btn.bg-teal-500');
+	if (activeBtn) {
+		const idx = Array.from(
+			document.querySelectorAll('.vocab-cat-btn'),
+		).indexOf(activeBtn);
+		showVocabCategory(idx);
+	}
+}
+
+function toggleListeningVocab() {
+	const content = document.getElementById('listening-vocab-content');
+	const btn = document.getElementById('toggle-listening-vocab');
+	if (content && btn) {
+		if (content.classList.contains('hidden')) {
+			content.classList.remove('hidden');
+			btn.textContent = 'Hide ▲';
+		} else {
+			content.classList.add('hidden');
+			btn.textContent = 'Show ▼';
+		}
+	}
+}
+
+function resetLearnedListeningVocab() {
+	if (confirm('Reset all learned listening vocabulary?')) {
+		localStorage.removeItem('ielts-learned-listening-vocab');
+		initListeningVocab();
+	}
+}
+
+// Export listening vocab functions
+window.toggleListeningVocab = toggleListeningVocab;
+window.showVocabCategory = showVocabCategory;
+window.toggleListeningWord = toggleListeningWord;
+window.resetLearnedListeningVocab = resetLearnedListeningVocab;
 
 function initSpeakingTool() {
 	const container = document.getElementById('speaking-tool-container');
@@ -5249,6 +5412,17 @@ function initMockTestTool() {
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 space-y-6">
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📝 Mock Test Center</h3>
 
+			<!-- Cambridge Listening Practice -->
+			<div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					🎧 Cambridge Listening Practice
+					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Local Audio</span>
+				</h4>
+				<div id="cambridge-listening-container">
+					<div class="text-center text-gray-500 py-4">Loading Cambridge tests...</div>
+				</div>
+			</div>
+
 			<!-- Listening Timer -->
 			<div class="border-b border-gray-200 dark:border-gray-700 pb-6">
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">🎧 Listening Test (30 min)</h4>
@@ -5268,10 +5442,276 @@ function initMockTestTool() {
 			</div>
 		</div>
 	`;
+	initCambridgeListening();
 	initListeningPractice();
 	initReadingPractice();
 	initScoreTracker();
 }
+
+// Cambridge Listening Practice with local audio files
+let listeningTestsData = null;
+
+async function loadListeningTestsData() {
+	if (listeningTestsData) return listeningTestsData;
+	try {
+		const response = await fetch('ielts-listening-tests.json');
+		listeningTestsData = await response.json();
+		return listeningTestsData;
+	} catch (e) {
+		console.error('Failed to load listening tests:', e);
+		return null;
+	}
+}
+
+async function initCambridgeListening() {
+	const container = document.getElementById('cambridge-listening-container');
+	if (!container) return;
+
+	const data = await loadListeningTestsData();
+	if (!data || !data.tests) {
+		container.innerHTML = `<div class="text-sm text-gray-500">Cambridge tests not available. Add ielts-listening-tests.json</div>`;
+		return;
+	}
+
+	container.innerHTML = `
+		<div class="space-y-4">
+			<!-- Test Selector -->
+			<div class="flex flex-wrap gap-2">
+				${data.tests
+					.map(
+						(book, idx) => `
+					<button onclick="selectCambridgeBook(${idx})"
+						class="cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors ${
+							idx === 0
+								? 'bg-teal-500 text-white border-teal-500'
+								: 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-500'
+						}">
+						📕 Book ${book.book}
+					</button>
+				`,
+					)
+					.join('')}
+			</div>
+
+			<!-- Test Content -->
+			<div id="cambridge-test-content"></div>
+
+			<!-- Audio Player -->
+			<div id="cambridge-audio-player" class="hidden bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+				<div class="flex items-center gap-3 mb-3">
+					<span class="text-2xl">🎧</span>
+					<div class="flex-1">
+						<p id="cambridge-now-playing" class="text-sm font-medium text-gray-900 dark:text-white">Select a test to begin</p>
+						<p id="cambridge-audio-info" class="text-xs text-gray-500">-</p>
+					</div>
+				</div>
+				<audio id="cambridge-audio" controls class="w-full" controlsList="nodownload"></audio>
+
+				<!-- Part Navigation -->
+				<div class="flex justify-center gap-2 mt-3" id="part-navigation"></div>
+			</div>
+
+			<!-- Timer for Practice -->
+			<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+				<div class="flex items-center justify-between">
+					<span class="text-sm text-gray-600 dark:text-gray-400">⏱️ Test Timer:</span>
+					<div class="flex items-center gap-2">
+						<span id="listening-test-timer" class="font-mono text-lg font-bold text-teal-600 dark:text-teal-400">30:00</span>
+						<button onclick="toggleListeningTestTimer()" id="listening-timer-btn" class="px-3 py-1 text-xs rounded bg-teal-500 text-white hover:bg-teal-600">▶ Start</button>
+						<button onclick="resetListeningTestTimer()" class="px-3 py-1 text-xs rounded bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300">↺</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Open PDF Button -->
+			<div id="cambridge-pdf-link" class="hidden">
+				<a id="cambridge-pdf-btn" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+					📄 Open Test Questions (PDF)
+				</a>
+			</div>
+		</div>
+	`;
+
+	// Load first book by default
+	selectCambridgeBook(0);
+}
+
+function selectCambridgeBook(bookIdx) {
+	if (!listeningTestsData) return;
+	const book = listeningTestsData.tests[bookIdx];
+	if (!book) return;
+
+	// Update button styles
+	document.querySelectorAll('.cambridge-book-btn').forEach((btn, idx) => {
+		if (idx === bookIdx) {
+			btn.className =
+				'cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors bg-teal-500 text-white border-teal-500';
+		} else {
+			btn.className =
+				'cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-500';
+		}
+	});
+
+	// Render tests for this book
+	const content = document.getElementById('cambridge-test-content');
+	if (content) {
+		content.innerHTML = `
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+				${book.tests
+					.map(
+						(test, idx) => `
+					<button onclick="selectCambridgeTest(${bookIdx}, ${idx})"
+						class="cambridge-test-btn flex flex-col items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+						<span class="text-lg mb-1">🎯</span>
+						<span class="text-sm font-medium text-gray-800 dark:text-gray-200">Test ${test.test}</span>
+						<span class="text-xs text-gray-500">${test.parts.length} parts</span>
+					</button>
+				`,
+					)
+					.join('')}
+			</div>
+		`;
+	}
+
+	// Update PDF link
+	const pdfLink = document.getElementById('cambridge-pdf-link');
+	const pdfBtn = document.getElementById('cambridge-pdf-btn');
+	if (pdfLink && pdfBtn && book.pdf) {
+		pdfLink.classList.remove('hidden');
+		pdfBtn.href = book.pdf;
+	}
+
+	// Show audio player
+	document
+		.getElementById('cambridge-audio-player')
+		?.classList.remove('hidden');
+}
+
+function selectCambridgeTest(bookIdx, testIdx) {
+	if (!listeningTestsData) return;
+	const book = listeningTestsData.tests[bookIdx];
+	const test = book?.tests[testIdx];
+	if (!test) return;
+
+	// Render part navigation
+	const nav = document.getElementById('part-navigation');
+	if (nav) {
+		nav.innerHTML = test.parts
+			.map(
+				(part, idx) => `
+			<button onclick="playCambridgePart(${bookIdx}, ${testIdx}, ${idx})"
+				class="cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+					idx === 0
+						? 'bg-purple-500 text-white border-purple-500'
+						: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-purple-500'
+				}">
+				Part ${part.part}
+			</button>
+		`,
+			)
+			.join('');
+	}
+
+	// Auto-play first part
+	playCambridgePart(bookIdx, testIdx, 0);
+}
+
+function playCambridgePart(bookIdx, testIdx, partIdx) {
+	if (!listeningTestsData) return;
+	const book = listeningTestsData.tests[bookIdx];
+	const test = book?.tests[testIdx];
+	const part = test?.parts[partIdx];
+	if (!part) return;
+
+	// Update part button styles
+	document.querySelectorAll('.cambridge-part-btn').forEach((btn, idx) => {
+		if (idx === partIdx) {
+			btn.className =
+				'cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors bg-purple-500 text-white border-purple-500';
+		} else {
+			btn.className =
+				'cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-purple-500';
+		}
+	});
+
+	// Update audio
+	const audio = document.getElementById('cambridge-audio');
+	const nowPlaying = document.getElementById('cambridge-now-playing');
+	const audioInfo = document.getElementById('cambridge-audio-info');
+
+	if (audio) {
+		audio.src = part.audio;
+		audio
+			.play()
+			.catch((e) => console.log('Audio play requires user interaction'));
+	}
+	if (nowPlaying) {
+		nowPlaying.textContent = `Cambridge ${book.book} - Test ${test.test} - Part ${part.part}`;
+	}
+	if (audioInfo) {
+		audioInfo.textContent = `Questions ${partIdx * 10 + 1}-${
+			(partIdx + 1) * 10
+		}`;
+	}
+}
+
+// Listening Test Timer
+let listeningTimerInterval = null;
+let listeningTimeRemaining = 30 * 60; // 30 minutes
+
+function toggleListeningTestTimer() {
+	const btn = document.getElementById('listening-timer-btn');
+	if (listeningTimerInterval) {
+		clearInterval(listeningTimerInterval);
+		listeningTimerInterval = null;
+		if (btn) btn.textContent = '▶ Start';
+	} else {
+		listeningTimerInterval = setInterval(() => {
+			listeningTimeRemaining--;
+			if (listeningTimeRemaining <= 0) {
+				clearInterval(listeningTimerInterval);
+				listeningTimerInterval = null;
+				alert('⏰ Time is up! Transfer your answers now.');
+				if (btn) btn.textContent = '▶ Start';
+			}
+			updateListeningTimerDisplay();
+		}, 1000);
+		if (btn) btn.textContent = '⏸ Pause';
+	}
+}
+
+function resetListeningTestTimer() {
+	if (listeningTimerInterval) {
+		clearInterval(listeningTimerInterval);
+		listeningTimerInterval = null;
+	}
+	listeningTimeRemaining = 30 * 60;
+	updateListeningTimerDisplay();
+	const btn = document.getElementById('listening-timer-btn');
+	if (btn) btn.textContent = '▶ Start';
+}
+
+function updateListeningTimerDisplay() {
+	const display = document.getElementById('listening-test-timer');
+	if (display) {
+		const mins = Math.floor(listeningTimeRemaining / 60);
+		const secs = listeningTimeRemaining % 60;
+		display.textContent = `${mins.toString().padStart(2, '0')}:${secs
+			.toString()
+			.padStart(2, '0')}`;
+		if (listeningTimeRemaining <= 300) {
+			display.classList.add('text-red-600', 'dark:text-red-400');
+			display.classList.remove('text-teal-600', 'dark:text-teal-400');
+		}
+	}
+}
+
+// Export Cambridge listening functions
+window.selectCambridgeBook = selectCambridgeBook;
+window.selectCambridgeTest = selectCambridgeTest;
+window.playCambridgePart = playCambridgePart;
+window.toggleListeningTestTimer = toggleListeningTestTimer;
+window.resetListeningTestTimer = resetListeningTestTimer;
 
 // Export for global use
 window.initIELTSTools = initIELTSTools;
@@ -5330,243 +5770,546 @@ function initResourcesTool() {
 	const container = document.getElementById('resources-tool-container');
 	if (!container) return;
 
+	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+
 	container.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📖 IELTS Study Resources</h3>
+			<div class="flex items-center justify-between mb-4">
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+					📖 IELTS 8.5+ Resource Library
+					<span class="text-xs bg-gradient-to-r from-teal-500 to-blue-500 text-white px-2 py-0.5 rounded-full">Complete</span>
+				</h3>
+				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors flex items-center gap-1">
+					<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+					Open Drive
+				</a>
+			</div>
 
-			<div class="space-y-6">
-				<!-- Cambridge IELTS Books (1-20) -->
-				<div>
-					<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-						<span>📚</span> Cambridge IELTS Books 1-20 (Free Practice Tests)
-					</h4>
-					<p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Click any book for free online practice tests with answers</p>
-					<div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2">
-						${[
-							{
-								num: 20,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-20/',
-								new: true,
-							},
-							{
-								num: 19,
-								url: 'https://practicepteonline.com/official-ielts-book-19/',
-								new: true,
-							},
-							{
-								num: 18,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-18/',
-							},
-							{
-								num: 17,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-17/',
-							},
-							{
-								num: 16,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-16/',
-							},
-							{
-								num: 15,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-15/',
-							},
-							{
-								num: 14,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-14/',
-							},
-							{
-								num: 13,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-13/',
-							},
-							{
-								num: 12,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-12/',
-							},
-							{
-								num: 11,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-11/',
-							},
-							{
-								num: 10,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-10/',
-							},
-							{
-								num: 9,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-9/',
-							},
-							{
-								num: 8,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-8/',
-							},
-							{
-								num: 7,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-7/',
-							},
-							{
-								num: 6,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-6/',
-							},
-							{
-								num: 5,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-5/',
-							},
-							{
-								num: 4,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-4/',
-							},
-							{
-								num: 3,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-3/',
-							},
-							{
-								num: 2,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-2/',
-							},
-							{
-								num: 1,
-								url: 'https://practicepteonline.com/official-ielts-tests-book-1/',
-							},
-						]
-							.map(
-								(book) => `
-							<a href="${book.url}" target="_blank"
-								class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600 relative">
-								${
-									book.new
-										? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>'
-										: ''
-								}
-								<div class="text-lg mb-0.5">📕</div>
-								<div class="text-[10px] sm:text-xs font-medium text-gray-700 dark:text-gray-300">Book ${
-									book.num
-								}</div>
-							</a>
-						`,
-							)
-							.join('')}
+			<!-- Resource Stats -->
+			<div class="grid grid-cols-4 gap-2 mb-6">
+				<div class="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+					<div class="text-lg font-bold text-red-600 dark:text-red-400">20+</div>
+					<div class="text-[10px] text-red-700 dark:text-red-300">PDFs</div>
+				</div>
+				<div class="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+					<div class="text-lg font-bold text-purple-600 dark:text-purple-400">260+</div>
+					<div class="text-[10px] text-purple-700 dark:text-purple-300">Audio</div>
+				</div>
+				<div class="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+					<div class="text-lg font-bold text-green-600 dark:text-green-400">50+</div>
+					<div class="text-[10px] text-green-700 dark:text-green-300">Topics</div>
+				</div>
+				<div class="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+					<div class="text-lg font-bold text-blue-600 dark:text-blue-400">1200+</div>
+					<div class="text-[10px] text-blue-700 dark:text-blue-300">Words</div>
+				</div>
+			</div>
+
+			<!-- Resource Tabs -->
+			<div class="flex flex-wrap gap-1 mb-4 border-b border-gray-200 dark:border-gray-700 pb-3 overflow-x-auto">
+				<button onclick="showResourceSection('books')" id="res-sec-books" class="res-section-btn px-3 py-1.5 text-xs rounded-lg bg-teal-500 text-white whitespace-nowrap">📚 Books</button>
+				<button onclick="showResourceSection('strategies')" id="res-sec-strategies" class="res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap">💡 Strategies</button>
+				<button onclick="showResourceSection('speaking')" id="res-sec-speaking" class="res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap">🎤 Speaking</button>
+				<button onclick="showResourceSection('writing')" id="res-sec-writing" class="res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap">✍️ Writing</button>
+				<button onclick="showResourceSection('online')" id="res-sec-online" class="res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap">🌐 Online</button>
+			</div>
+
+			<!-- Books Section -->
+			<div id="res-content-books" class="res-section-content">
+				${renderBooksSection()}
+			</div>
+
+			<!-- Strategies Section -->
+			<div id="res-content-strategies" class="res-section-content hidden">
+				${renderStrategiesSection()}
+			</div>
+
+			<!-- Speaking Section -->
+			<div id="res-content-speaking" class="res-section-content hidden">
+				${renderSpeakingSection()}
+			</div>
+
+			<!-- Writing Section -->
+			<div id="res-content-writing" class="res-section-content hidden">
+				${renderWritingSection()}
+			</div>
+
+			<!-- Online Section -->
+			<div id="res-content-online" class="res-section-content hidden">
+				${renderOnlineSection()}
+			</div>
+		</div>
+	`;
+
+	// Load master data for enhanced features
+	loadMasterData();
+}
+
+let masterData = null;
+
+async function loadMasterData() {
+	try {
+		const response = await fetch('ielts-master-data.json');
+		masterData = await response.json();
+	} catch (e) {
+		console.log('Master data not loaded:', e);
+	}
+}
+
+function showResourceSection(section) {
+	// Hide all sections
+	document.querySelectorAll('.res-section-content').forEach(el => el.classList.add('hidden'));
+	// Show selected
+	document.getElementById(`res-content-${section}`)?.classList.remove('hidden');
+	// Update button styles
+	document.querySelectorAll('.res-section-btn').forEach(btn => {
+		btn.className = 'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap';
+	});
+	document.getElementById(`res-sec-${section}`).className = 'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-teal-500 text-white whitespace-nowrap';
+}
+
+function renderBooksSection() {
+	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	
+	return `
+		<div class="space-y-6">
+			<!-- Cambridge Books -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📕 Cambridge IELTS Books (14-19)
+					<span class="text-xs text-gray-500">+ Audio</span>
+				</h4>
+				<div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
+					${[19, 18, 17, 16, 15, 14].map(num => `
+						<div class="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-lg p-3 text-center border border-red-200 dark:border-red-800 relative">
+							${num >= 18 ? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>' : ''}
+							<div class="text-2xl mb-1">📕</div>
+							<div class="text-xs font-bold text-gray-800 dark:text-gray-200">Book ${num}</div>
+							<div class="text-[10px] text-gray-500 mt-1">PDF + Audio</div>
+						</div>
+					`).join('')}
+				</div>
+				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs text-teal-600 dark:text-teal-400 hover:underline">📂 Open Cambridge folder in Drive →</a>
+			</div>
+
+			<!-- Collins Series -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📚 Collins for IELTS Complete Series
+					<span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">260+ Audio</span>
+				</h4>
+				<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+					${[
+						{ name: 'Grammar', icon: '📗', audio: 35, color: 'green' },
+						{ name: 'Listening', icon: '🎧', audio: 78, color: 'purple' },
+						{ name: 'Speaking', icon: '🎤', audio: 109, color: 'blue' },
+						{ name: 'Reading', icon: '📖', audio: 0, color: 'orange' },
+						{ name: 'Writing', icon: '✍️', audio: 0, color: 'pink' },
+						{ name: 'Vocabulary', icon: '📚', audio: 38, color: 'teal' }
+					].map(book => `
+						<div class="bg-${book.color}-50 dark:bg-${book.color}-900/20 rounded-lg p-3 border border-${book.color}-200 dark:border-${book.color}-800">
+							<div class="flex items-center gap-2 mb-1">
+								<span class="text-lg">${book.icon}</span>
+								<span class="text-sm font-medium text-gray-800 dark:text-gray-200">${book.name}</span>
+							</div>
+							<div class="text-xs text-gray-500">
+								PDF ${book.audio > 0 ? `+ ${book.audio} Audio` : 'Book'}
+							</div>
+						</div>
+					`).join('')}
+				</div>
+				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs text-teal-600 dark:text-teal-400 hover:underline mt-2 inline-block">📂 Open Collins folder in Drive →</a>
+			</div>
+
+			<!-- Makkar Materials -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📖 Makkar IELTS (Most Predicted)
+					<span class="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">Hot 🔥</span>
+				</h4>
+				<div class="grid gap-2 sm:grid-cols-3">
+					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">300 Essays</div>
+						<div class="text-xs text-gray-500">Writing Task 2</div>
+					</div>
+					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Academic Reading</div>
+						<div class="text-xs text-gray-500">358 pages</div>
+					</div>
+					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Speaking Cue Cards</div>
+						<div class="text-xs text-gray-500">Sep-Dec 2024</div>
 					</div>
 				</div>
+			</div>
 
-				<!-- Free Online Resources -->
-				<div>
-					<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-						<span>🌐</span> Free Online Practice
-					</h4>
-					<div class="grid gap-3 sm:grid-cols-2">
-						<a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests" target="_blank"
-							class="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors border-2 border-blue-300 dark:border-blue-700">
-							<span class="text-2xl">🎯</span>
-							<div>
-								<div class="text-sm font-bold text-blue-700 dark:text-blue-300">BC Practice Tests</div>
-								<div class="text-xs text-blue-600 dark:text-blue-400">Official FREE mock tests ⭐</div>
-							</div>
-						</a>
-						<a href="https://ieltsliz.com/" target="_blank"
-							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-							<span class="text-2xl">👩‍🏫</span>
-							<div>
-								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS Liz</div>
-								<div class="text-xs text-gray-600 dark:text-gray-400">Free lessons & tips</div>
-							</div>
-						</a>
-						<a href="https://www.ielts.org/for-test-takers/sample-test-questions" target="_blank"
-							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-							<span class="text-2xl">📝</span>
-							<div>
-								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS.org</div>
-								<div class="text-xs text-gray-600 dark:text-gray-400">Official sample tests</div>
-							</div>
-						</a>
-						<a href="https://www.britishcouncil.org/exam/ielts/prepare" target="_blank"
-							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-							<span class="text-2xl">🇬🇧</span>
-							<div>
-								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">British Council</div>
-								<div class="text-xs text-gray-600 dark:text-gray-400">Free prep materials</div>
-							</div>
-						</a>
-						<a href="https://www.idp.com/australia/ielts/prepare/" target="_blank"
-							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-							<span class="text-2xl">🌏</span>
-							<div>
-								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IDP IELTS</div>
-								<div class="text-xs text-gray-600 dark:text-gray-400">Practice & resources</div>
-							</div>
-						</a>
-						<a href="https://www.ieltsadvantage.com/free-ielts-practice-tests/" target="_blank"
-							class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-gray-200 dark:border-gray-600">
-							<span class="text-2xl">📊</span>
-							<div>
-								<div class="text-sm font-medium text-teal-700 dark:text-teal-300">IELTS Advantage</div>
-								<div class="text-xs text-gray-600 dark:text-gray-400">Free practice tests</div>
-							</div>
-						</a>
+			<!-- Other Resources -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📁 Additional Resources</h4>
+				<div class="grid gap-2 sm:grid-cols-2">
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Get Ready for IELTS</div>
+						<div class="text-xs text-gray-500">Book + Workbook + Audio</div>
 					</div>
-				</div>
-
-				<!-- YouTube Channels -->
-				<div>
-					<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-						<span>▶️</span> YouTube Channels
-					</h4>
-					<div class="grid gap-3 sm:grid-cols-2">
-						<a href="https://www.youtube.com/@iaborameen" target="_blank"
-							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-							<span class="text-2xl">🎬</span>
-							<div>
-								<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS with Abo Rameen</div>
-								<div class="text-xs text-red-600 dark:text-red-400">Band 9 strategies</div>
-							</div>
-						</a>
-						<a href="https://www.youtube.com/@IELTSLiz" target="_blank"
-							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-							<span class="text-2xl">🎬</span>
-							<div>
-								<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS Liz</div>
-								<div class="text-xs text-red-600 dark:text-red-400">All sections covered</div>
-							</div>
-						</a>
-						<a href="https://www.youtube.com/@E2IELTS" target="_blank"
-							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-							<span class="text-2xl">🎬</span>
-							<div>
-								<div class="text-sm font-medium text-red-700 dark:text-red-300">E2 IELTS</div>
-								<div class="text-xs text-red-600 dark:text-red-400">High-quality lessons</div>
-							</div>
-						</a>
-						<a href="https://www.youtube.com/@AsadYaqub" target="_blank"
-							class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-							<span class="text-2xl">🎬</span>
-							<div>
-								<div class="text-sm font-medium text-red-700 dark:text-red-300">Asad Yaqub</div>
-								<div class="text-xs text-red-600 dark:text-red-400">Tips & mock tests</div>
-							</div>
-						</a>
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">1200 Common Words</div>
+						<div class="text-xs text-gray-500">Listening vocabulary</div>
 					</div>
-				</div>
-
-				<!-- Daily Practice Folder -->
-				<div>
-					<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-						<span>📂</span> Your IELTS Study Material (15 Days)
-					</h4>
-					<div class="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 border border-teal-200 dark:border-teal-800">
-						<p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
-							Access your prepared materials in the <strong>IELTS Tracker</strong> page. Each day includes:
-						</p>
-						<ul class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-1">
-							<li>✅ 70 vocabulary words with examples</li>
-							<li>✅ Reading strategies & practice</li>
-							<li>✅ Listening techniques</li>
-							<li>✅ Writing templates (Task 1 & 2)</li>
-							<li>✅ Speaking topics & sample answers</li>
-							<li>✅ Pronunciation guides</li>
-						</ul>
-						<button onclick="showPage('ielts')" class="mt-3 text-sm text-teal-600 dark:text-teal-400 font-medium hover:underline">
-							→ Go to IELTS Tracker
-						</button>
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">A-to-Z Listening Guide</div>
+						<div class="text-xs text-gray-500">Complete strategies</div>
+					</div>
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Reading Strategy</div>
+						<div class="text-xs text-gray-500">Tips & techniques</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	`;
 }
+
+function renderStrategiesSection() {
+	return `
+		<div class="space-y-6">
+			<!-- Reading Strategies -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📖 Reading Question Types & Strategies
+				</h4>
+				<div class="grid gap-2">
+					${[
+						{ type: 'Matching Headings', diff: 'Hard', tip: 'Skim for main idea, eliminate used headings' },
+						{ type: 'True/False/Not Given', diff: 'Hard', tip: 'TRUE=same, FALSE=opposite, NG=no info' },
+						{ type: 'Yes/No/Not Given', diff: 'Hard', tip: "About writer's OPINION only" },
+						{ type: 'Sentence Completion', diff: 'Medium', tip: 'Check word limit, exact words from passage' },
+						{ type: 'Multiple Choice', diff: 'Medium', tip: 'Eliminate wrong answers, beware distractors' },
+						{ type: 'Summary Completion', diff: 'Medium', tip: 'Answers usually in order' }
+					].map(q => `
+						<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+							<div class="flex items-center justify-between mb-1">
+								<span class="text-sm font-medium text-gray-800 dark:text-gray-200">${q.type}</span>
+								<span class="text-[10px] px-2 py-0.5 rounded ${q.diff === 'Hard' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'}">${q.diff}</span>
+							</div>
+							<div class="text-xs text-gray-500">${q.tip}</div>
+						</div>
+					`).join('')}
+				</div>
+				<div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+					<div class="text-xs font-medium text-blue-800 dark:text-blue-300 mb-1">⏱️ Time Management</div>
+					<div class="text-xs text-blue-700 dark:text-blue-400">Passage 1 (15 min) → Passage 2 (20 min) → Passage 3 (25 min)</div>
+				</div>
+			</div>
+
+			<!-- Listening Strategies -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					🎧 Listening Sections & Tips
+				</h4>
+				<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+					${[
+						{ sec: 1, type: 'Conversation', ctx: 'Social', diff: 'Easiest' },
+						{ sec: 2, type: 'Monologue', ctx: 'Social', diff: 'Easy' },
+						{ sec: 3, type: 'Conversation', ctx: 'Academic', diff: 'Medium' },
+						{ sec: 4, type: 'Lecture', ctx: 'Academic', diff: 'Hard' }
+					].map(s => `
+						<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-2 text-center border border-purple-200 dark:border-purple-800">
+							<div class="text-lg font-bold text-purple-600 dark:text-purple-400">S${s.sec}</div>
+							<div class="text-[10px] text-gray-600 dark:text-gray-400">${s.type}</div>
+							<div class="text-[10px] text-gray-500">${s.diff}</div>
+						</div>
+					`).join('')}
+				</div>
+				<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+					<div class="text-xs font-medium text-yellow-800 dark:text-yellow-300 mb-2">⚠️ Common Traps</div>
+					<ul class="text-xs text-yellow-700 dark:text-yellow-400 space-y-1">
+						<li>• Speaker changes their mind</li>
+						<li>• Distractors before real answer</li>
+						<li>• Homophones (their/there, to/two)</li>
+						<li>• Plural vs singular</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Band Score Guide -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📊 Band Score Conversion</h4>
+				<div class="grid grid-cols-2 gap-4">
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Listening</div>
+						<div class="text-xs text-gray-500 space-y-0.5">
+							<div>9.0 = 39-40 ✅</div>
+							<div>8.5 = 37-38</div>
+							<div class="font-bold text-teal-600 dark:text-teal-400">8.0 = 35-36 🎯</div>
+							<div>7.5 = 32-34</div>
+							<div>7.0 = 30-31</div>
+						</div>
+					</div>
+					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Reading</div>
+						<div class="text-xs text-gray-500 space-y-0.5">
+							<div>9.0 = 39-40 ✅</div>
+							<div>8.5 = 37-38</div>
+							<div class="font-bold text-teal-600 dark:text-teal-400">8.0 = 35-36 🎯</div>
+							<div>7.5 = 33-34</div>
+							<div>7.0 = 30-32</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+}
+
+function renderSpeakingSection() {
+	return `
+		<div class="space-y-6">
+			<!-- Speaking Parts -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">🎤 Speaking Test Structure</h4>
+				<div class="space-y-2">
+					${[
+						{ part: 1, name: 'Introduction', time: '4-5 min', tip: 'Give 2-3 sentence answers with examples' },
+						{ part: 2, name: 'Long Turn', time: '3-4 min', tip: '1 min prep → 2 min speak, cover ALL points' },
+						{ part: 3, name: 'Discussion', time: '4-5 min', tip: 'Show critical thinking, discuss both sides' }
+					].map(p => `
+						<div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+							<div class="flex items-center justify-between mb-1">
+								<span class="text-sm font-bold text-blue-800 dark:text-blue-300">Part ${p.part}: ${p.name}</span>
+								<span class="text-xs bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">${p.time}</span>
+							</div>
+							<div class="text-xs text-blue-700 dark:text-blue-400">${p.tip}</div>
+						</div>
+					`).join('')}
+				</div>
+			</div>
+
+			<!-- Cue Card Topics -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📝 Part 2 Cue Cards (Sep-Dec 2024)
+					<span class="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-0.5 rounded-full">50+ Topics</span>
+				</h4>
+				<div id="cue-cards-browser" class="space-y-3">
+					<div class="flex flex-wrap gap-1 mb-3">
+						${['people', 'places', 'events', 'objects', 'activities'].map((cat, idx) => `
+							<button onclick="showCueCardCategory('${cat}')" class="cue-cat-btn text-xs px-3 py-1 rounded-full ${idx === 0 ? 'bg-teal-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>
+						`).join('')}
+					</div>
+					<div id="cue-cards-list" class="max-h-48 overflow-y-auto space-y-1">
+						${renderCueCards('people')}
+					</div>
+				</div>
+			</div>
+
+			<!-- Fluency Tips -->
+			<div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+				<h4 class="text-sm font-medium text-green-800 dark:text-green-300 mb-2">✨ Band 8+ Fluency Tips</h4>
+				<ul class="text-xs text-green-700 dark:text-green-400 space-y-1">
+					<li>• Use fillers naturally: "Well...", "Actually...", "To be honest..."</li>
+					<li>• Paraphrase if stuck - don't stop talking</li>
+					<li>• Self-correct confidently: "I mean...", "What I meant was..."</li>
+					<li>• Use idiomatic expressions and collocations</li>
+					<li>• Vary sentence structures and vocabulary</li>
+				</ul>
+			</div>
+		</div>
+	`;
+}
+
+function renderCueCards(category) {
+	const cueCards = {
+		people: [
+			"Describe a person who has chosen a career in the medical field",
+			"Describe a person who likes to read a lot",
+			"Describe a person who makes things by hand",
+			"Describe a person who has strong opinions",
+			"Describe someone who is a role model for young people",
+			"Describe a person who encouraged you to achieve your goal",
+			"Describe a person who thinks music is important"
+		],
+		places: [
+			"Describe a crowded place you have visited",
+			"Describe an ideal place where you would like to stay",
+			"Describe a natural place (parks, mountains)",
+			"Describe a tourist attraction that few people visit",
+			"Describe a place where things are expensive",
+			"Describe an indoor/outdoor place easy for study"
+		],
+		events: [
+			"Describe a time when you lost an important item",
+			"Describe a party that you enjoyed",
+			"Describe a challenge you faced that was difficult",
+			"Describe something you did that made you feel proud",
+			"Describe a risk that ended up well",
+			"Describe when you received money as a gift"
+		],
+		objects: [
+			"Describe a prize you have received recently",
+			"Describe a picture/photograph of you that you like",
+			"Describe an important plant in your country",
+			"Describe something you own that you want to replace"
+		],
+		activities: [
+			"Describe your favourite food at a traditional festival",
+			"Describe a subject you would like to learn",
+			"Describe a sport you watched but haven't played",
+			"Describe a special meal someone made for you",
+			"Describe an enjoyable journey by public transport",
+			"Describe something you would like to learn in future"
+		]
+	};
+
+	return (cueCards[category] || []).map((card, idx) => `
+		<div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-600 text-xs text-gray-700 dark:text-gray-300">
+			${idx + 1}. ${card}
+		</div>
+	`).join('');
+}
+
+function showCueCardCategory(category) {
+	document.querySelectorAll('.cue-cat-btn').forEach(btn => {
+		btn.className = 'cue-cat-btn text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
+	});
+	event.target.className = 'cue-cat-btn text-xs px-3 py-1 rounded-full bg-teal-500 text-white';
+	document.getElementById('cue-cards-list').innerHTML = renderCueCards(category);
+}
+
+function renderWritingSection() {
+	return `
+		<div class="space-y-6">
+			<!-- Task 1 Templates -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📊 Task 1 Templates</h4>
+				<div class="grid gap-2 sm:grid-cols-2">
+					${[
+						{ type: 'Line Graph', intro: 'The line graph illustrates/shows/depicts...' },
+						{ type: 'Bar Chart', intro: 'The bar chart compares...' },
+						{ type: 'Pie Chart', intro: 'The pie chart shows the proportion of...' },
+						{ type: 'Table', intro: 'The table provides information about...' },
+						{ type: 'Process', intro: 'The diagram illustrates the process of...' },
+						{ type: 'Map', intro: 'The maps compare [location] in [time periods]...' }
+					].map(t => `
+						<div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-800">
+							<div class="text-sm font-medium text-orange-800 dark:text-orange-300 mb-1">${t.type}</div>
+							<div class="text-[11px] text-orange-700 dark:text-orange-400 italic">"${t.intro}"</div>
+						</div>
+					`).join('')}
+				</div>
+			</div>
+
+			<!-- Task 2 Essay Types -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📝 Task 2 Essay Types</h4>
+				<div class="space-y-2">
+					${[
+						{ type: 'Opinion', question: 'To what extent do you agree or disagree?', structure: 'Intro → Body 1 (reason) → Body 2 (reason) → Conclusion' },
+						{ type: 'Discussion', question: 'Discuss both views and give your opinion.', structure: 'Intro → View 1 → View 2 → Your Opinion → Conclusion' },
+						{ type: 'Problem-Solution', question: 'What problems? What solutions?', structure: 'Intro → Problems → Solutions → Conclusion' },
+						{ type: 'Advantages-Disadvantages', question: 'What are the advantages and disadvantages?', structure: 'Intro → Advantages → Disadvantages → Conclusion' }
+					].map(e => `
+						<div class="bg-pink-50 dark:bg-pink-900/20 rounded-lg p-3 border border-pink-200 dark:border-pink-800">
+							<div class="flex items-center justify-between mb-1">
+								<span class="text-sm font-medium text-pink-800 dark:text-pink-300">${e.type}</span>
+							</div>
+							<div class="text-xs text-pink-700 dark:text-pink-400 mb-1">"${e.question}"</div>
+							<div class="text-[10px] text-gray-500">${e.structure}</div>
+						</div>
+					`).join('')}
+				</div>
+			</div>
+
+			<!-- Key Phrases -->
+			<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+				<h4 class="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">🔑 Band 8+ Phrases</h4>
+				<div class="grid grid-cols-2 gap-2 text-xs">
+					<div>
+						<div class="font-medium text-purple-700 dark:text-purple-400 mb-1">Opinion:</div>
+						<ul class="text-purple-600 dark:text-purple-500 space-y-0.5">
+							<li>• I firmly believe that...</li>
+							<li>• From my perspective...</li>
+							<li>• I am convinced that...</li>
+						</ul>
+					</div>
+					<div>
+						<div class="font-medium text-purple-700 dark:text-purple-400 mb-1">Contrast:</div>
+						<ul class="text-purple-600 dark:text-purple-500 space-y-0.5">
+							<li>• Nevertheless...</li>
+							<li>• On the other hand...</li>
+							<li>• In contrast to this...</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+}
+
+function renderOnlineSection() {
+	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	
+	return `
+		<div class="space-y-6">
+			<!-- My Drive Resources -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+					📂 My Google Drive Library
+					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Complete Collection</span>
+				</h4>
+				<a href="${DRIVE_FOLDER}" target="_blank" class="block w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white rounded-lg p-4 hover:from-blue-600 hover:to-teal-600 transition-all mb-4">
+					<div class="flex items-center justify-between">
+						<div>
+							<div class="font-bold">Open IELTS Study Materials</div>
+							<div class="text-sm opacity-90">Cambridge Books, Collins Series, Makkar, Audio & More</div>
+						</div>
+						<span class="text-3xl">📚</span>
+					</div>
+				</a>
+				
+				<!-- Folder Quick Links -->
+				<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+					<div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800 text-center">
+						<span class="text-2xl">📕</span>
+						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Cambridge Books</div>
+						<div class="text-[10px] text-gray-500">Books 14-19</div>
+					</div>
+					<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border border-purple-200 dark:border-purple-800 text-center">
+						<span class="text-2xl">🎧</span>
+						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Audio Files</div>
+						<div class="text-[10px] text-gray-500">260+ Tracks</div>
+					</div>
+					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800 text-center">
+						<span class="text-2xl">📖</span>
+						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Makkar PDFs</div>
+						<div class="text-[10px] text-gray-500">Essays & Cue Cards</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- YouTube Channels (helpful free resources) -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">▶️ Recommended YouTube Channels</h4>
+				<div class="grid gap-2 sm:grid-cols-2">
+					${[
+						{ name: 'IELTS Liz', url: 'https://www.youtube.com/@IELTSLiz', desc: 'All sections covered' },
+						{ name: 'E2 IELTS', url: 'https://www.youtube.com/@E2IELTS', desc: 'High quality lessons' },
+						{ name: 'IELTS with Abo Rameen', url: 'https://www.youtube.com/@iaborameen', desc: 'Band 9 strategies' },
+						{ name: 'Asad Yaqub', url: 'https://www.youtube.com/@AsadYaqub', desc: 'Mock tests & tips' }
+					].map(ch => \`
+						<a href="\${ch.url}" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+							<span class="text-xl">🎬</span>
+							<div>
+								<div class="text-sm font-medium text-red-700 dark:text-red-300">\${ch.name}</div>
+								<div class="text-xs text-red-600 dark:text-red-400">\${ch.desc}</div>
+							</div>
+						</a>
+					\`).join('')}
+				</div>
+			</div>
+		</div>
+	`;
+}
+
+// Export new functions
+window.showResourceSection = showResourceSection;
+window.showCueCardCategory = showCueCardCategory;
