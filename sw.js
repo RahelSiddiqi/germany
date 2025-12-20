@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'study-abroad-v5.6';
+const CACHE_VERSION = 'study-abroad-v6.4';
 const CACHE_ASSETS = [
 	'/germany/',
 	'/germany/dashboard.html',

@@ -18,6 +18,70 @@
 				overflow-x: hidden;
 				max-width: 100vw;
 			}
+
+			/* Custom Slim Scrollbar */
+			.slim-scroll::-webkit-scrollbar {
+				width: 4px;
+				height: 4px;
+			}
+			.slim-scroll::-webkit-scrollbar-track {
+				background: transparent;
+				border-radius: 4px;
+			}
+			.slim-scroll::-webkit-scrollbar-thumb {
+				background: rgba(20, 184, 166, 0.4);
+				border-radius: 4px;
+			}
+			.slim-scroll::-webkit-scrollbar-thumb:hover {
+				background: rgba(20, 184, 166, 0.7);
+			}
+			/* Firefox scrollbar */
+			.slim-scroll {
+				scrollbar-width: thin;
+				scrollbar-color: rgba(20, 184, 166, 0.4) transparent;
+			}
+
+			/* Global slim scrollbar for overflow areas */
+			.overflow-y-auto::-webkit-scrollbar,
+			.overflow-x-auto::-webkit-scrollbar {
+				width: 4px;
+				height: 4px;
+			}
+			.overflow-y-auto::-webkit-scrollbar-track,
+			.overflow-x-auto::-webkit-scrollbar-track {
+				background: transparent;
+			}
+			.overflow-y-auto::-webkit-scrollbar-thumb,
+			.overflow-x-auto::-webkit-scrollbar-thumb {
+				background: rgba(156, 163, 175, 0.4);
+				border-radius: 4px;
+			}
+			.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+			.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+				background: rgba(156, 163, 175, 0.7);
+			}
+
+			/* Vocab word hover effect */
+			.vocab-word-card:hover {
+				transform: translateY(-1px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			/* Audio player custom style */
+			.audio-player-custom {
+				height: 36px;
+				border-radius: 8px;
+			}
+			.audio-player-custom::-webkit-media-controls-panel {
+				background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+			}
+
+			/* PDF viewer container */
+			.pdf-viewer-container {
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+			}
 		</style>
 		<link rel="manifest" href="manifest.json" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -417,7 +481,8 @@
 								id="reminder-toggle-btn"
 								onclick="toggleDeadlineReminders()"
 								class="text-xs text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1">
-								<span id="reminder-status-icon">⚙️</span> <span id="reminder-status-text">Reminders</span>
+								<span id="reminder-status-icon">⚙️</span>
+								<span id="reminder-status-text">Reminders</span>
 							</button>
 						</div>
 						<div id="urgent-deadlines-list" class="space-y-2">

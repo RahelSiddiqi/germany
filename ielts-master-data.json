@@ -1,474 +1,1318 @@
 {
-  "meta": {
-    "version": "2.1",
-    "lastUpdated": "2024-12-20",
-    "description": "Comprehensive IELTS 8.5+ Band Score Preparation Resources - Drive Only",
-    "driveFolder": "https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_"
-  },
-  "driveFolders": {
-    "root": "https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_",
-    "cambridgeBooks": "0. Cembridge Books",
-    "getReady": "1. Get Ready",
-    "collinsGrammarAudio": "Collins Grammar",
-    "collinsListeningAudio": "Collins Listening Audio",
-    "collinsSpeakingAudio": "Collins Speaking Audio",
-    "collinsVocabAudio": "Collins Vocab Audio",
-    "listening": "Listening",
-    "reading": "Reading",
-    "speaking": "Speaking"
-  },
-  "driveFiles": {
-    "pdfs": [
-      { "name": "300 Essays (Makkar).pdf", "category": "writing", "description": "300 IELTS Writing Task 2 Essays" },
-      { "name": "Collins Listening.pdf", "category": "listening", "description": "Collins Listening for IELTS" },
-      { "name": "Collins Reading.pdf", "category": "reading", "description": "Collins Reading for IELTS" },
-      { "name": "Collins Speaking.pdf", "category": "speaking", "description": "Collins Speaking for IELTS" },
-      { "name": "Collins Vocabulary.pdf", "category": "vocabulary", "description": "Collins Vocabulary for IELTS" },
-      { "name": "Collins Writing.pdf", "category": "writing", "description": "Collins Writing for IELTS" },
-      { "name": "Makkar Academic Reading.pdf", "category": "reading", "description": "Makkar Academic Reading Passages" },
-      { "name": "makkar essay.pdf", "category": "writing", "description": "Makkar Essay Collection" },
-      { "name": "Makkar Speaking Cue Cards.pdf", "category": "speaking", "description": "Speaking Cue Cards Sep-Dec 2024" },
-      { "name": "Reading Strategy.pdf", "category": "reading", "description": "IELTS Reading Strategies" },
-      { "name": "The 1200 Most Commonly Used Words.pdf", "category": "vocabulary", "description": "1200 Essential IELTS Words" },
-      { "name": "The-Complete-A-to-Z-Guide-to-IELTS-Listening.pdf", "category": "listening", "description": "Complete IELTS Listening Guide" }
-    ],
-    "docs": [
-      { "name": "Listening Mock 2025", "category": "listening", "description": "Latest Listening Mock Tests" },
-      { "name": "Listening Tips", "category": "listening", "description": "IELTS Listening Tips" },
-      { "name": "Parts of Speech", "category": "grammar", "description": "Grammar - Parts of Speech" },
-      { "name": "Reading Strategy", "category": "reading", "description": "Reading Strategy Guide" }
-    ]
-  },
-  "cambridgeTests": {
-    "description": "Official Cambridge IELTS Practice Tests - Available in Drive",
-    "driveFolder": "0. Cembridge Books",
-    "books": [
-      { "book": 19, "name": "Cambridge IELTS 19", "year": 2024, "new": true },
-      { "book": 18, "name": "Cambridge IELTS 18", "year": 2023, "new": true },
-      { "book": 17, "name": "Cambridge IELTS 17", "year": 2022 },
-      { "book": 16, "name": "Cambridge IELTS 16", "year": 2021 },
-      { "book": 15, "name": "Cambridge IELTS 15", "year": 2020 },
-      { "book": 14, "name": "Cambridge IELTS 14", "year": 2019 }
-    ]
-  },
-  "collinsBooks": {
-    "description": "Collins for IELTS Complete Series with Audio",
-    "books": [
-      { "name": "Collins Grammar", "file": "Collins Grammar.pdf", "audioFolder": "Collins Grammar", "audioTracks": 35, "skill": "grammar", "icon": "📗" },
-      { "name": "Collins Listening", "file": "Collins Listening.pdf", "audioFolder": "Collins Listening Audio", "audioTracks": 78, "skill": "listening", "icon": "🎧" },
-      { "name": "Collins Speaking", "file": "Collins Speaking.pdf", "audioFolder": "Collins Speaking Audio", "audioTracks": 109, "skill": "speaking", "icon": "🎤" },
-      { "name": "Collins Reading", "file": "Collins Reading.pdf", "audioFolder": null, "audioTracks": 0, "skill": "reading", "icon": "📖" },
-      { "name": "Collins Writing", "file": "Collins Writing.pdf", "audioFolder": null, "audioTracks": 0, "skill": "writing", "icon": "✍️" },
-      { "name": "Collins Vocabulary", "file": "Collins Vocabulary.pdf", "audioFolder": "Collins Vocab Audio", "audioTracks": 38, "skill": "vocabulary", "icon": "📚" }
-    ]
-  },
-  "makkarMaterials": {
-    "description": "Makkar IELTS Preparation Materials (Most Predicted)",
-    "materials": [
-      { "name": "300 Essays", "file": "300 Essays (Makkar).pdf", "type": "writing", "description": "Writing Task 2 Essays" },
-      { "name": "Academic Reading", "file": "Makkar Academic Reading.pdf", "type": "reading", "description": "Reading Passages" },
-      { "name": "Essay Collection", "file": "makkar essay.pdf", "type": "writing", "description": "Essay Topics & Samples" },
-      { "name": "Speaking Cue Cards", "file": "Makkar Speaking Cue Cards.pdf", "type": "speaking", "description": "Sep-Dec 2024" }
-    ]
-  },
-  "strategyGuides": {
-    "description": "IELTS Strategy and Tips Guides",
-    "guides": [
-      { "name": "Listening Guide", "file": "The-Complete-A-to-Z-Guide-to-IELTS-Listening.pdf", "skill": "listening" },
-      { "name": "Reading Strategy", "file": "Reading Strategy.pdf", "skill": "reading" },
-      { "name": "Listening Tips", "file": "Listening Tips", "skill": "listening" },
-      { "name": "Parts of Speech", "file": "Parts of Speech", "skill": "grammar" },
-      { "name": "1200 Essential Words", "file": "The 1200 Most Commonly Used Words.pdf", "skill": "vocabulary" }
-    ]
-  },
-  "speakingCueCards": {
-    "description": "IELTS Speaking Part 2 Cue Cards (Sep-Dec 2024)",
-    "categories": {
-      "people": [
-        "Describe a person you know who has chosen a career in the medical field",
-        "Describe a person who likes to read a lot",
-        "Describe a person who likes to make things by hand",
-        "Describe a person who has strong opinions",
-        "Describe someone (a famous person) that is a role model for young people",
-        "Describe a person who encouraged you to achieve your goal",
-        "Describe someone you know who made a good decision recently",
-        "Describe a person who thinks music is important and enjoys music",
-        "Describe a person who likes to buy goods with low prices",
-        "Describe a person who you are happy to know"
-      ],
-      "places": [
-        "Describe a crowded place you have visited",
-        "Describe an ideal and perfect place where you would like to stay",
-        "Describe a natural place (e.g. parks, mountains)",
-        "Describe a place where you have taken photos more than once",
-        "Describe a tourist attraction that very few people visit but you think is interesting",
-        "Describe an interesting place you have been to with a friend",
-        "Describe a place you have been to where things are expensive",
-        "Describe an indoor or outdoor place where it is easy for you to study",
-        "Describe a place (city/town) that is good for people to live in"
-      ],
-      "events": [
-        "Describe a time when you lost an important and valuable item",
-        "Describe a time when you answered a phone call from someone you didn't know",
-        "Describe a party that you enjoyed",
-        "Describe an occasion when you helped a family member/relative with something",
-        "Describe a time that you showed something new to others",
-        "Describe a challenge you faced that you thought was rather difficult",
-        "Describe something you did that made you feel proud",
-        "Describe a risk you took that you thought would lead to a terrible result but ended up well",
-        "Describe a time you taught something new to a younger person",
-        "Describe a time when you received money as a gift",
-        "Describe a complaint that you made, and you were satisfied with the result"
-      ],
-      "objects": [
-        "Describe a prize you have received recently",
-        "Describe a picture/photograph of you that you like",
-        "Describe an important plant in your country",
-        "Describe something you own that you want to replace"
-      ],
-      "media": [
-        "Describe a movie you watched recently",
-        "Describe an online video in which you learned something new",
-        "Describe a film character played by an actor or actress whom you admire"
-      ],
-      "activities": [
-        "Describe your favourite food at a traditional festival or a special event",
-        "Describe something you did in your study/work that has made you feel confident",
-        "Describe something that you did with someone/a group of people",
-        "Describe a subject that you would like to learn in the future",
-        "Describe a sport that you only have watched before but have not played yourself",
-        "Describe a special meal that someone made for you",
-        "Describe an enjoyable journey by public transport",
-        "Describe an activity you enjoyed in your free time when you were young",
-        "Describe something you would like to learn in the future"
-      ],
-      "abstract": [
-        "Describe an old friend you had lost touch with and got in contact with again",
-        "Describe a new development in your country or the area where you live",
-        "Describe a new law you would like to introduce in your country",
-        "Describe a piece of good news that you heard about someone you know well"
-      ]
-    }
-  },
-  "vocabularyCategories": {
-    "description": "1200+ Most Common IELTS Listening Words",
-    "categories": [
-      {
-        "name": "Days & Time",
-        "icon": "📅",
-        "words": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "weekdays", "weekend", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "fortnight", "millennium", "century", "decade", "midday", "midnight"]
-      },
-      {
-        "name": "Money & Finance",
-        "icon": "💰",
-        "words": ["cash", "debit", "credit card", "cheque", "deposit", "tuition fees", "bank statement", "withdraw", "mortgage", "budget", "income", "purchase", "refund", "interest rate", "annual fee", "current account", "low-risk investment", "grace period", "budget deficit", "coupon", "debt", "annuity", "non-refundable", "distribution costs", "duty-free"]
-      },
-      {
-        "name": "Academic Subjects",
-        "icon": "🎓",
-        "words": ["science", "politics", "history", "biology", "architecture", "law", "geography", "archaeology", "literature", "business management", "agriculture", "statistics", "mathematics", "logic", "physics", "psychology", "anthropology", "economics", "philosophy", "performing arts", "visual arts", "chemistry", "humanities"]
-      },
-      {
-        "name": "University Life",
-        "icon": "🏫",
-        "words": ["course outline", "group discussion", "handout", "research", "proofreading", "experiment", "reference", "textbook", "lecture", "tutor", "attendance", "deadline", "certificate", "diploma", "dissertation", "faculty", "supervisor", "bachelor's degree", "placement test", "overseas students", "student advisor", "teamwork", "module", "assessment", "commencement"]
-      },
-      {
-        "name": "Marketing",
-        "icon": "📊",
-        "words": ["catalogue", "interview", "newsletter", "competition", "strategies", "research method", "entertainment industry", "leadership", "management", "display", "products", "customer", "special offer", "questionnaire", "survey", "mass media", "statistic", "profit margin", "poll", "business card", "training", "trainee", "merchandise", "manufacture", "recruitment"]
-      },
-      {
-        "name": "Health & Nutrition",
-        "icon": "🏥",
-        "words": ["yoga", "tai-chi", "vegetarian", "disease", "protein", "balanced diet", "food pyramid", "vitamin", "carbohydrates", "minerals", "zinc", "medicine", "treatment", "remedy", "nursing care", "regular exercise", "rice", "pasta", "cereals", "seafood", "yoghurt", "citrus fruits"]
-      },
-      {
-        "name": "Nature",
-        "icon": "🌿",
-        "words": ["waterfall", "river", "mountain", "forest", "village", "coast", "reef", "lake", "valley", "hill", "cliff", "island", "peninsula", "earthquake", "avalanche", "tornado", "typhoon", "volcano", "erosion", "landslides", "storm", "flood", "hurricane", "jungle", "oasis", "canyon"]
-      },
-      {
-        "name": "Environment",
-        "icon": "🌍",
-        "words": ["greenhouse effect", "acid rain", "global warming", "carbon dioxide", "exhaust fumes", "deforestation", "nitrogen oxide", "smog", "climate", "pollution", "power plants", "landfill", "wind turbine", "solar power", "hydroelectric power", "renewable", "solar panels", "environmentally friendly", "fossil fuels", "drought", "contaminated", "degradation", "vegetation"]
-      },
-      {
-        "name": "Animals & Plants",
-        "icon": "🐾",
-        "words": ["birds of prey", "seabirds", "mammals", "whale", "primates", "rodents", "fish", "amphibian", "reptile", "insects", "octopus", "species", "livestock", "creature", "lion", "penguin", "mushroom", "fungus", "leaves", "seed", "bark", "trunk", "branch", "flower", "stem", "roots", "fertilizer"]
-      },
-      {
-        "name": "Countries & Languages",
-        "icon": "🌐",
-        "words": ["Egypt", "Mexico", "France", "Indonesia", "Turkey", "Germany", "China", "Greece", "Brazil", "India", "Malaysia", "New Zealand", "Singapore", "Switzerland", "United Kingdom", "Denmark", "linguistics", "bilingual", "trilingual", "Portuguese", "Mandarin", "Hindi", "Russian", "Japanese", "French"]
-      },
-      {
-        "name": "Architecture & Homes",
-        "icon": "🏠",
-        "words": ["dome", "palace", "fort", "castle", "pyramid", "lighthouse", "skyscraper", "semi-detached", "bungalow", "apartment", "condominium", "basement", "landlord", "tenant", "rent", "lease", "neighborhood", "suburb", "dormitory", "storey", "refrigerator", "microwave", "insurance"]
-      },
-      {
-        "name": "City & Places",
-        "icon": "🏙️",
-        "words": ["street", "lane", "city centre", "central station", "car park", "department store", "bridge", "temple", "embassy", "hospital", "garden", "avenue", "library", "swimming pool", "cafeteria", "parliament", "restaurant", "canteen", "sports centre", "kindergarten"]
-      },
-      {
-        "name": "Work & Jobs",
-        "icon": "💼",
-        "words": ["occupation", "profession", "designer", "architect", "engineer", "manager", "teacher", "vacancy", "professor", "specialist", "psychologist", "volunteer", "freelance", "secretary", "receptionist", "pilot", "lecturer", "accountant", "cashier", "captain", "employer", "employee", "internship", "colleague"]
-      },
-      {
-        "name": "Transport",
-        "icon": "🚗",
-        "words": ["cargo plane", "shipment", "container ship", "ferry", "hovercraft", "liner", "sailboat", "kayak", "helicopter", "seaplane", "airship", "airport", "crew", "passenger", "platform", "automobile", "double-decker bus", "coach", "truck", "lorry", "taxi", "tram", "underground", "subway"]
-      },
-      {
-        "name": "Sports & Hobbies",
-        "icon": "⚽",
-        "words": ["cricket", "baseball", "basketball", "rugby", "soccer", "hockey", "swimming", "tennis", "badminton", "stadium", "athlete", "gymnasium", "paragliding", "skydiving", "surfing", "mountain biking", "jogging", "judo", "snooker", "photography", "painting", "pottery", "gardening", "chess", "embroidery"]
-      },
-      {
-        "name": "Weather",
-        "icon": "🌤️",
-        "words": ["humid", "hot", "sticky", "breeze", "chilly", "cold", "cool", "dry", "dusty", "freezing", "warm", "wet", "weather forecast", "moisture"]
-      },
-      {
-        "name": "Arts & Media",
-        "icon": "🎭",
-        "words": ["opera", "orchestra", "concert", "symphony", "conductor", "vocalist", "audience", "festival", "carnival", "exhibition", "classical music", "theatre", "cinema", "art gallery", "museum", "ballet", "television", "radio", "graphics", "newspaper"]
-      },
-      {
-        "name": "Materials",
-        "icon": "🧱",
-        "words": ["cement", "stone", "textile", "cotton", "fabric", "wool", "leather", "bone", "paper", "wood", "glue", "composite", "fiberglass", "concrete", "wax", "silver", "gold", "feather", "plastic", "rubber", "steel", "iron", "copper", "aluminum"]
-      },
-      {
-        "name": "Common Verbs",
-        "icon": "🔤",
-        "words": ["train", "develop", "collect", "supervise", "mark", "edit", "revise", "exhibit", "donate", "surpass", "register", "support", "hunt", "persuade", "concentrate", "discuss", "suggest", "arrange", "borrow", "immigrate", "review", "learn", "analyze", "evaluate", "demonstrate"]
-      },
-      {
-        "name": "Common Adjectives",
-        "icon": "✨",
-        "words": ["energetic", "social", "ancient", "necessary", "fantastic", "exciting", "fabulous", "dull", "comfortable", "convenient", "suitable", "affordable", "mandatory", "compulsory", "temporary", "permanent", "immense", "vast", "extinct", "vulnerable", "pessimistic", "optimistic", "realistic", "practical", "flexible", "spectacular"]
-      }
-    ]
-  },
-  "writingTemplates": {
-    "task1": {
-      "description": "Academic Writing Task 1 Templates",
-      "types": [
-        {
-          "type": "Line Graph",
-          "intro": "The line graph illustrates/shows/depicts [what] [where] [when].",
-          "overview": "Overall, it is clear that [main trend 1] while [main trend 2].",
-          "keyPhrases": ["increased significantly", "decreased gradually", "remained stable", "fluctuated", "peaked at", "reached a low of", "from X to Y"]
-        },
-        {
-          "type": "Bar Chart",
-          "intro": "The bar chart compares [what] in [where] [when].",
-          "overview": "Overall, [highest category] had the highest [measure] while [lowest category] had the lowest.",
-          "keyPhrases": ["the largest proportion", "accounted for", "stood at", "compared to", "in contrast"]
-        },
-        {
-          "type": "Pie Chart",
-          "intro": "The pie chart(s) show(s) the proportion of [what] [where] [when].",
-          "overview": "Overall, [dominant segment] made up the majority while [smallest] represented the smallest share.",
-          "keyPhrases": ["comprised", "constituted", "made up", "represented", "the majority", "a quarter", "a third"]
-        },
-        {
-          "type": "Table",
-          "intro": "The table provides information about [what] [where] [when].",
-          "overview": "Overall, it can be seen that [main observation 1] and [main observation 2].",
-          "keyPhrases": ["the highest figure", "the lowest figure", "compared to", "while", "whereas"]
-        },
-        {
-          "type": "Process Diagram",
-          "intro": "The diagram illustrates the process of [what]/how [something] is made.",
-          "overview": "Overall, there are [X] main stages in the process, beginning with [first stage] and ending with [final stage].",
-          "keyPhrases": ["At the first stage", "Following this", "Subsequently", "Finally", "is then", "after which"]
-        },
-        {
-          "type": "Map",
-          "intro": "The maps compare [what] in [when: past vs present/proposed].",
-          "overview": "Overall, the area has undergone significant changes, particularly in [major change].",
-          "keyPhrases": ["has been replaced by", "was converted into", "remains unchanged", "in the north/south/east/west", "adjacent to", "opposite"]
-        }
-      ]
-    },
-    "task2": {
-      "description": "Academic Writing Task 2 Templates",
-      "types": [
-        {
-          "type": "Opinion Essay",
-          "question": "To what extent do you agree or disagree?",
-          "structure": ["Introduction (paraphrase + thesis)", "Body 1 (main reason + example)", "Body 2 (second reason + example)", "Conclusion (restate opinion)"],
-          "phrases": {
-            "agree": ["I strongly believe that", "In my opinion", "From my perspective", "I am convinced that"],
-            "disagree": ["I completely disagree with the notion that", "I do not believe that", "This view is not supported by evidence"]
-          }
-        },
-        {
-          "type": "Discussion Essay",
-          "question": "Discuss both views and give your opinion.",
-          "structure": ["Introduction (paraphrase + thesis)", "Body 1 (View 1 + reasons)", "Body 2 (View 2 + reasons)", "Body 3 (Your opinion)", "Conclusion"],
-          "phrases": ["On the one hand", "On the other hand", "However", "Nevertheless", "In contrast", "Despite this"]
-        },
-        {
-          "type": "Problem-Solution Essay",
-          "question": "What are the problems? What solutions can you suggest?",
-          "structure": ["Introduction (paraphrase + overview)", "Body 1 (Problems)", "Body 2 (Solutions)", "Conclusion"],
-          "phrases": ["One of the main problems is", "This leads to", "A possible solution would be", "This could be addressed by", "Governments should"]
-        },
-        {
-          "type": "Advantages-Disadvantages Essay",
-          "question": "What are the advantages and disadvantages?",
-          "structure": ["Introduction (paraphrase + thesis)", "Body 1 (Advantages)", "Body 2 (Disadvantages)", "Conclusion (overall view)"],
-          "phrases": ["The main advantage is", "Another benefit is", "However, there are drawbacks", "The most significant disadvantage is", "On balance"]
-        },
-        {
-          "type": "Two-Part Question",
-          "question": "Why is this? What can be done?",
-          "structure": ["Introduction (paraphrase)", "Body 1 (Answer part 1)", "Body 2 (Answer part 2)", "Conclusion"],
-          "phrases": ["There are several reasons for this", "The main cause is", "To address this issue", "Possible measures include"]
-        }
-      ]
-    }
-  },
-  "readingStrategies": {
-    "questionTypes": [
-      {
-        "type": "Matching Headings",
-        "tips": ["Read headings first", "Skim each paragraph for main idea", "Eliminate used headings", "Look for topic sentences"],
-        "difficulty": "Hard"
-      },
-      {
-        "type": "True/False/Not Given",
-        "tips": ["Read statement carefully", "Find exact location in text", "TRUE = same meaning", "FALSE = opposite meaning", "NOT GIVEN = no information"],
-        "difficulty": "Hard"
-      },
-      {
-        "type": "Yes/No/Not Given",
-        "tips": ["About writer's OPINION/CLAIM", "YES = writer agrees", "NO = writer disagrees", "NOT GIVEN = writer doesn't mention"],
-        "difficulty": "Hard"
-      },
-      {
-        "type": "Matching Features",
-        "tips": ["Read all names/features first", "Scan for proper nouns", "One feature may match multiple items"],
-        "difficulty": "Medium"
-      },
-      {
-        "type": "Sentence Completion",
-        "tips": ["Read before the gap", "Check word limit", "Answer must be grammatically correct", "Use exact words from passage"],
-        "difficulty": "Medium"
-      },
-      {
-        "type": "Summary Completion",
-        "tips": ["Read summary first for context", "Find paragraph(s) it refers to", "Check word limit", "Answers in order"],
-        "difficulty": "Medium"
-      },
-      {
-        "type": "Multiple Choice",
-        "tips": ["Read question stem carefully", "Eliminate wrong answers", "Beware of distractors", "Answer may be paraphrased"],
-        "difficulty": "Medium"
-      },
-      {
-        "type": "Short Answer",
-        "tips": ["Note word limit", "Answer with exact words from text", "Usually in order", "Question words tell you what to look for"],
-        "difficulty": "Easy"
-      }
-    ],
-    "timeManagement": {
-      "totalTime": 60,
-      "passageTime": 20,
-      "strategy": "Passage 1 (15 min) → Passage 2 (20 min) → Passage 3 (25 min)",
-      "tips": ["Don't spend too long on one question", "Guess if stuck - no penalty", "Transfer answers at the end", "Read questions before passage"]
-    }
-  },
-  "listeningStrategies": {
-    "sections": [
-      { "section": 1, "type": "Conversation", "context": "Social/Everyday", "difficulty": "Easiest" },
-      { "section": 2, "type": "Monologue", "context": "Social/Everyday", "difficulty": "Easy" },
-      { "section": 3, "type": "Conversation", "context": "Academic", "difficulty": "Medium" },
-      { "section": 4, "type": "Monologue", "context": "Academic Lecture", "difficulty": "Hardest" }
-    ],
-    "tips": [
-      "Read questions before audio plays",
-      "Predict answer types (number, name, noun, etc.)",
-      "Listen for signpost words (firstly, however, finally)",
-      "Watch for spelling and plurals",
-      "Never leave blanks - always guess",
-      "Write as you listen, don't wait",
-      "Audio plays ONCE only",
-      "You get 10 minutes at end to transfer answers"
-    ],
-    "commonTraps": [
-      "Speaker changes their mind",
-      "Distractors mentioned before real answer",
-      "Homophones (their/there, to/two/too)",
-      "Plural vs singular",
-      "Dates and numbers"
-    ]
-  },
-  "speakingStrategies": {
-    "parts": [
-      {
-        "part": 1,
-        "name": "Introduction & Interview",
-        "duration": "4-5 minutes",
-        "topics": ["Work/Study", "Home", "Hobbies", "Daily routine"],
-        "tips": ["Give extended answers (2-3 sentences)", "Add reasons and examples", "Don't memorize scripts", "Be natural and confident"]
-      },
-      {
-        "part": 2,
-        "name": "Individual Long Turn",
-        "duration": "3-4 minutes (1 min prep, 2 min speak)",
-        "tips": ["Use all 1 minute to plan", "Write keywords only", "Cover ALL bullet points", "Use past/present tenses correctly", "Add personal details"]
-      },
-      {
-        "part": 3,
-        "name": "Two-way Discussion",
-        "duration": "4-5 minutes",
-        "tips": ["Give opinions with reasons", "Use advanced vocabulary", "Discuss both sides", "Use examples from society", "Show critical thinking"]
-      }
-    ],
-    "fluencyTips": [
-      "Use fillers naturally (Well, Actually, To be honest)",
-      "Paraphrase if stuck",
-      "Self-correct confidently",
-      "Vary sentence structures",
-      "Use idiomatic expressions"
-    ]
-  },
-  "bandScoreGuide": {
-    "listening": {
-      "9": "39-40", "8.5": "37-38", "8": "35-36", "7.5": "32-34",
-      "7": "30-31", "6.5": "26-29", "6": "23-25", "5.5": "18-22"
-    },
-    "reading": {
-      "9": "39-40", "8.5": "37-38", "8": "35-36", "7.5": "33-34",
-      "7": "30-32", "6.5": "27-29", "6": "23-26", "5.5": "19-22"
-    },
-    "overall": {
-      "formula": "(L + R + W + S) / 4",
-      "rounding": "Rounded to nearest 0.5"
-    }
-  },
-  "studyPlan85": {
-    "description": "15-Day Intensive Plan for 8.5+ Band Score",
-    "dailyHours": 6,
-    "breakdown": {
-      "listening": "1.5 hours (1 full test + review)",
-      "reading": "1.5 hours (1 full test + vocabulary)",
-      "writing": "1.5 hours (1 Task 1 + 1 Task 2)",
-      "speaking": "1 hour (Part 2 practice + recording)",
-      "vocabulary": "0.5 hours (50 new words)"
-    },
-    "weeklyTests": [
-      { "day": 5, "type": "Half Mock (Listening + Reading)" },
-      { "day": 10, "type": "Full Mock Test" },
-      { "day": 14, "type": "Final Mock Test" }
-    ]
-  }
+	"meta": {
+		"version": "2.1",
+		"lastUpdated": "2024-12-20",
+		"description": "Comprehensive IELTS 8.5+ Band Score Preparation Resources - Drive Only",
+		"driveFolder": "https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_"
+	},
+	"driveFolders": {
+		"root": "https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_",
+		"cambridgeBooks": "0. Cembridge Books",
+		"getReady": "1. Get Ready",
+		"collinsGrammarAudio": "Collins Grammar",
+		"collinsListeningAudio": "Collins Listening Audio",
+		"collinsSpeakingAudio": "Collins Speaking Audio",
+		"collinsVocabAudio": "Collins Vocab Audio",
+		"listening": "Listening",
+		"reading": "Reading",
+		"speaking": "Speaking"
+	},
+	"driveFiles": {
+		"pdfs": [
+			{
+				"name": "300 Essays (Makkar).pdf",
+				"category": "writing",
+				"description": "300 IELTS Writing Task 2 Essays"
+			},
+			{
+				"name": "Collins Listening.pdf",
+				"category": "listening",
+				"description": "Collins Listening for IELTS"
+			},
+			{
+				"name": "Collins Reading.pdf",
+				"category": "reading",
+				"description": "Collins Reading for IELTS"
+			},
+			{
+				"name": "Collins Speaking.pdf",
+				"category": "speaking",
+				"description": "Collins Speaking for IELTS"
+			},
+			{
+				"name": "Collins Vocabulary.pdf",
+				"category": "vocabulary",
+				"description": "Collins Vocabulary for IELTS"
+			},
+			{
+				"name": "Collins Writing.pdf",
+				"category": "writing",
+				"description": "Collins Writing for IELTS"
+			},
+			{
+				"name": "Makkar Academic Reading.pdf",
+				"category": "reading",
+				"description": "Makkar Academic Reading Passages"
+			},
+			{
+				"name": "makkar essay.pdf",
+				"category": "writing",
+				"description": "Makkar Essay Collection"
+			},
+			{
+				"name": "Makkar Speaking Cue Cards.pdf",
+				"category": "speaking",
+				"description": "Speaking Cue Cards Sep-Dec 2024"
+			},
+			{
+				"name": "Reading Strategy.pdf",
+				"category": "reading",
+				"description": "IELTS Reading Strategies"
+			},
+			{
+				"name": "The 1200 Most Commonly Used Words.pdf",
+				"category": "vocabulary",
+				"description": "1200 Essential IELTS Words"
+			},
+			{
+				"name": "The-Complete-A-to-Z-Guide-to-IELTS-Listening.pdf",
+				"category": "listening",
+				"description": "Complete IELTS Listening Guide"
+			}
+		],
+		"docs": [
+			{
+				"name": "Listening Mock 2025",
+				"category": "listening",
+				"description": "Latest Listening Mock Tests"
+			},
+			{
+				"name": "Listening Tips",
+				"category": "listening",
+				"description": "IELTS Listening Tips"
+			},
+			{
+				"name": "Parts of Speech",
+				"category": "grammar",
+				"description": "Grammar - Parts of Speech"
+			},
+			{
+				"name": "Reading Strategy",
+				"category": "reading",
+				"description": "Reading Strategy Guide"
+			}
+		]
+	},
+	"cambridgeTests": {
+		"description": "Official Cambridge IELTS Practice Tests - Available in Drive",
+		"driveFolder": "0. Cembridge Books",
+		"books": [
+			{
+				"book": 19,
+				"name": "Cambridge IELTS 19",
+				"year": 2024,
+				"new": true
+			},
+			{
+				"book": 18,
+				"name": "Cambridge IELTS 18",
+				"year": 2023,
+				"new": true
+			},
+			{ "book": 17, "name": "Cambridge IELTS 17", "year": 2022 },
+			{ "book": 16, "name": "Cambridge IELTS 16", "year": 2021 },
+			{ "book": 15, "name": "Cambridge IELTS 15", "year": 2020 },
+			{ "book": 14, "name": "Cambridge IELTS 14", "year": 2019 }
+		]
+	},
+	"collinsBooks": {
+		"description": "Collins for IELTS Complete Series with Audio",
+		"books": [
+			{
+				"name": "Collins Grammar",
+				"file": "Collins Grammar.pdf",
+				"audioFolder": "Collins Grammar",
+				"audioTracks": 35,
+				"skill": "grammar",
+				"icon": "📗"
+			},
+			{
+				"name": "Collins Listening",
+				"file": "Collins Listening.pdf",
+				"audioFolder": "Collins Listening Audio",
+				"audioTracks": 78,
+				"skill": "listening",
+				"icon": "🎧"
+			},
+			{
+				"name": "Collins Speaking",
+				"file": "Collins Speaking.pdf",
+				"audioFolder": "Collins Speaking Audio",
+				"audioTracks": 109,
+				"skill": "speaking",
+				"icon": "🎤"
+			},
+			{
+				"name": "Collins Reading",
+				"file": "Collins Reading.pdf",
+				"audioFolder": null,
+				"audioTracks": 0,
+				"skill": "reading",
+				"icon": "📖"
+			},
+			{
+				"name": "Collins Writing",
+				"file": "Collins Writing.pdf",
+				"audioFolder": null,
+				"audioTracks": 0,
+				"skill": "writing",
+				"icon": "✍️"
+			},
+			{
+				"name": "Collins Vocabulary",
+				"file": "Collins Vocabulary.pdf",
+				"audioFolder": "Collins Vocab Audio",
+				"audioTracks": 38,
+				"skill": "vocabulary",
+				"icon": "📚"
+			}
+		]
+	},
+	"makkarMaterials": {
+		"description": "Makkar IELTS Preparation Materials (Most Predicted)",
+		"materials": [
+			{
+				"name": "300 Essays",
+				"file": "300 Essays (Makkar).pdf",
+				"type": "writing",
+				"description": "Writing Task 2 Essays"
+			},
+			{
+				"name": "Academic Reading",
+				"file": "Makkar Academic Reading.pdf",
+				"type": "reading",
+				"description": "Reading Passages"
+			},
+			{
+				"name": "Essay Collection",
+				"file": "makkar essay.pdf",
+				"type": "writing",
+				"description": "Essay Topics & Samples"
+			},
+			{
+				"name": "Speaking Cue Cards",
+				"file": "Makkar Speaking Cue Cards.pdf",
+				"type": "speaking",
+				"description": "Sep-Dec 2024"
+			}
+		]
+	},
+	"strategyGuides": {
+		"description": "IELTS Strategy and Tips Guides",
+		"guides": [
+			{
+				"name": "Listening Guide",
+				"file": "The-Complete-A-to-Z-Guide-to-IELTS-Listening.pdf",
+				"skill": "listening"
+			},
+			{
+				"name": "Reading Strategy",
+				"file": "Reading Strategy.pdf",
+				"skill": "reading"
+			},
+			{
+				"name": "Listening Tips",
+				"file": "Listening Tips",
+				"skill": "listening"
+			},
+			{
+				"name": "Parts of Speech",
+				"file": "Parts of Speech",
+				"skill": "grammar"
+			},
+			{
+				"name": "1200 Essential Words",
+				"file": "The 1200 Most Commonly Used Words.pdf",
+				"skill": "vocabulary"
+			}
+		]
+	},
+	"speakingCueCards": {
+		"description": "IELTS Speaking Part 2 Cue Cards (Sep-Dec 2024)",
+		"categories": {
+			"people": [
+				"Describe a person you know who has chosen a career in the medical field",
+				"Describe a person who likes to read a lot",
+				"Describe a person who likes to make things by hand",
+				"Describe a person who has strong opinions",
+				"Describe someone (a famous person) that is a role model for young people",
+				"Describe a person who encouraged you to achieve your goal",
+				"Describe someone you know who made a good decision recently",
+				"Describe a person who thinks music is important and enjoys music",
+				"Describe a person who likes to buy goods with low prices",
+				"Describe a person who you are happy to know"
+			],
+			"places": [
+				"Describe a crowded place you have visited",
+				"Describe an ideal and perfect place where you would like to stay",
+				"Describe a natural place (e.g. parks, mountains)",
+				"Describe a place where you have taken photos more than once",
+				"Describe a tourist attraction that very few people visit but you think is interesting",
+				"Describe an interesting place you have been to with a friend",
+				"Describe a place you have been to where things are expensive",
+				"Describe an indoor or outdoor place where it is easy for you to study",
+				"Describe a place (city/town) that is good for people to live in"
+			],
+			"events": [
+				"Describe a time when you lost an important and valuable item",
+				"Describe a time when you answered a phone call from someone you didn't know",
+				"Describe a party that you enjoyed",
+				"Describe an occasion when you helped a family member/relative with something",
+				"Describe a time that you showed something new to others",
+				"Describe a challenge you faced that you thought was rather difficult",
+				"Describe something you did that made you feel proud",
+				"Describe a risk you took that you thought would lead to a terrible result but ended up well",
+				"Describe a time you taught something new to a younger person",
+				"Describe a time when you received money as a gift",
+				"Describe a complaint that you made, and you were satisfied with the result"
+			],
+			"objects": [
+				"Describe a prize you have received recently",
+				"Describe a picture/photograph of you that you like",
+				"Describe an important plant in your country",
+				"Describe something you own that you want to replace"
+			],
+			"media": [
+				"Describe a movie you watched recently",
+				"Describe an online video in which you learned something new",
+				"Describe a film character played by an actor or actress whom you admire"
+			],
+			"activities": [
+				"Describe your favourite food at a traditional festival or a special event",
+				"Describe something you did in your study/work that has made you feel confident",
+				"Describe something that you did with someone/a group of people",
+				"Describe a subject that you would like to learn in the future",
+				"Describe a sport that you only have watched before but have not played yourself",
+				"Describe a special meal that someone made for you",
+				"Describe an enjoyable journey by public transport",
+				"Describe an activity you enjoyed in your free time when you were young",
+				"Describe something you would like to learn in the future"
+			],
+			"abstract": [
+				"Describe an old friend you had lost touch with and got in contact with again",
+				"Describe a new development in your country or the area where you live",
+				"Describe a new law you would like to introduce in your country",
+				"Describe a piece of good news that you heard about someone you know well"
+			]
+		}
+	},
+	"vocabularyCategories": {
+		"description": "1200+ Most Common IELTS Listening Words",
+		"categories": [
+			{
+				"name": "Days & Time",
+				"icon": "📅",
+				"words": [
+					"Monday",
+					"Tuesday",
+					"Wednesday",
+					"Thursday",
+					"Friday",
+					"Saturday",
+					"Sunday",
+					"weekdays",
+					"weekend",
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+					"August",
+					"September",
+					"October",
+					"November",
+					"December",
+					"fortnight",
+					"millennium",
+					"century",
+					"decade",
+					"midday",
+					"midnight"
+				]
+			},
+			{
+				"name": "Money & Finance",
+				"icon": "💰",
+				"words": [
+					"cash",
+					"debit",
+					"credit card",
+					"cheque",
+					"deposit",
+					"tuition fees",
+					"bank statement",
+					"withdraw",
+					"mortgage",
+					"budget",
+					"income",
+					"purchase",
+					"refund",
+					"interest rate",
+					"annual fee",
+					"current account",
+					"low-risk investment",
+					"grace period",
+					"budget deficit",
+					"coupon",
+					"debt",
+					"annuity",
+					"non-refundable",
+					"distribution costs",
+					"duty-free"
+				]
+			},
+			{
+				"name": "Academic Subjects",
+				"icon": "🎓",
+				"words": [
+					"science",
+					"politics",
+					"history",
+					"biology",
+					"architecture",
+					"law",
+					"geography",
+					"archaeology",
+					"literature",
+					"business management",
+					"agriculture",
+					"statistics",
+					"mathematics",
+					"logic",
+					"physics",
+					"psychology",
+					"anthropology",
+					"economics",
+					"philosophy",
+					"performing arts",
+					"visual arts",
+					"chemistry",
+					"humanities"
+				]
+			},
+			{
+				"name": "University Life",
+				"icon": "🏫",
+				"words": [
+					"course outline",
+					"group discussion",
+					"handout",
+					"research",
+					"proofreading",
+					"experiment",
+					"reference",
+					"textbook",
+					"lecture",
+					"tutor",
+					"attendance",
+					"deadline",
+					"certificate",
+					"diploma",
+					"dissertation",
+					"faculty",
+					"supervisor",
+					"bachelor's degree",
+					"placement test",
+					"overseas students",
+					"student advisor",
+					"teamwork",
+					"module",
+					"assessment",
+					"commencement"
+				]
+			},
+			{
+				"name": "Marketing",
+				"icon": "📊",
+				"words": [
+					"catalogue",
+					"interview",
+					"newsletter",
+					"competition",
+					"strategies",
+					"research method",
+					"entertainment industry",
+					"leadership",
+					"management",
+					"display",
+					"products",
+					"customer",
+					"special offer",
+					"questionnaire",
+					"survey",
+					"mass media",
+					"statistic",
+					"profit margin",
+					"poll",
+					"business card",
+					"training",
+					"trainee",
+					"merchandise",
+					"manufacture",
+					"recruitment"
+				]
+			},
+			{
+				"name": "Health & Nutrition",
+				"icon": "🏥",
+				"words": [
+					"yoga",
+					"tai-chi",
+					"vegetarian",
+					"disease",
+					"protein",
+					"balanced diet",
+					"food pyramid",
+					"vitamin",
+					"carbohydrates",
+					"minerals",
+					"zinc",
+					"medicine",
+					"treatment",
+					"remedy",
+					"nursing care",
+					"regular exercise",
+					"rice",
+					"pasta",
+					"cereals",
+					"seafood",
+					"yoghurt",
+					"citrus fruits"
+				]
+			},
+			{
+				"name": "Nature",
+				"icon": "🌿",
+				"words": [
+					"waterfall",
+					"river",
+					"mountain",
+					"forest",
+					"village",
+					"coast",
+					"reef",
+					"lake",
+					"valley",
+					"hill",
+					"cliff",
+					"island",
+					"peninsula",
+					"earthquake",
+					"avalanche",
+					"tornado",
+					"typhoon",
+					"volcano",
+					"erosion",
+					"landslides",
+					"storm",
+					"flood",
+					"hurricane",
+					"jungle",
+					"oasis",
+					"canyon"
+				]
+			},
+			{
+				"name": "Environment",
+				"icon": "🌍",
+				"words": [
+					"greenhouse effect",
+					"acid rain",
+					"global warming",
+					"carbon dioxide",
+					"exhaust fumes",
+					"deforestation",
+					"nitrogen oxide",
+					"smog",
+					"climate",
+					"pollution",
+					"power plants",
+					"landfill",
+					"wind turbine",
+					"solar power",
+					"hydroelectric power",
+					"renewable",
+					"solar panels",
+					"environmentally friendly",
+					"fossil fuels",
+					"drought",
+					"contaminated",
+					"degradation",
+					"vegetation"
+				]
+			},
+			{
+				"name": "Animals & Plants",
+				"icon": "🐾",
+				"words": [
+					"birds of prey",
+					"seabirds",
+					"mammals",
+					"whale",
+					"primates",
+					"rodents",
+					"fish",
+					"amphibian",
+					"reptile",
+					"insects",
+					"octopus",
+					"species",
+					"livestock",
+					"creature",
+					"lion",
+					"penguin",
+					"mushroom",
+					"fungus",
+					"leaves",
+					"seed",
+					"bark",
+					"trunk",
+					"branch",
+					"flower",
+					"stem",
+					"roots",
+					"fertilizer"
+				]
+			},
+			{
+				"name": "Countries & Languages",
+				"icon": "🌐",
+				"words": [
+					"Egypt",
+					"Mexico",
+					"France",
+					"Indonesia",
+					"Turkey",
+					"Germany",
+					"China",
+					"Greece",
+					"Brazil",
+					"India",
+					"Malaysia",
+					"New Zealand",
+					"Singapore",
+					"Switzerland",
+					"United Kingdom",
+					"Denmark",
+					"linguistics",
+					"bilingual",
+					"trilingual",
+					"Portuguese",
+					"Mandarin",
+					"Hindi",
+					"Russian",
+					"Japanese",
+					"French"
+				]
+			},
+			{
+				"name": "Architecture & Homes",
+				"icon": "🏠",
+				"words": [
+					"dome",
+					"palace",
+					"fort",
+					"castle",
+					"pyramid",
+					"lighthouse",
+					"skyscraper",
+					"semi-detached",
+					"bungalow",
+					"apartment",
+					"condominium",
+					"basement",
+					"landlord",
+					"tenant",
+					"rent",
+					"lease",
+					"neighborhood",
+					"suburb",
+					"dormitory",
+					"storey",
+					"refrigerator",
+					"microwave",
+					"insurance"
+				]
+			},
+			{
+				"name": "City & Places",
+				"icon": "🏙️",
+				"words": [
+					"street",
+					"lane",
+					"city centre",
+					"central station",
+					"car park",
+					"department store",
+					"bridge",
+					"temple",
+					"embassy",
+					"hospital",
+					"garden",
+					"avenue",
+					"library",
+					"swimming pool",
+					"cafeteria",
+					"parliament",
+					"restaurant",
+					"canteen",
+					"sports centre",
+					"kindergarten"
+				]
+			},
+			{
+				"name": "Work & Jobs",
+				"icon": "💼",
+				"words": [
+					"occupation",
+					"profession",
+					"designer",
+					"architect",
+					"engineer",
+					"manager",
+					"teacher",
+					"vacancy",
+					"professor",
+					"specialist",
+					"psychologist",
+					"volunteer",
+					"freelance",
+					"secretary",
+					"receptionist",
+					"pilot",
+					"lecturer",
+					"accountant",
+					"cashier",
+					"captain",
+					"employer",
+					"employee",
+					"internship",
+					"colleague"
+				]
+			},
+			{
+				"name": "Transport",
+				"icon": "🚗",
+				"words": [
+					"cargo plane",
+					"shipment",
+					"container ship",
+					"ferry",
+					"hovercraft",
+					"liner",
+					"sailboat",
+					"kayak",
+					"helicopter",
+					"seaplane",
+					"airship",
+					"airport",
+					"crew",
+					"passenger",
+					"platform",
+					"automobile",
+					"double-decker bus",
+					"coach",
+					"truck",
+					"lorry",
+					"taxi",
+					"tram",
+					"underground",
+					"subway"
+				]
+			},
+			{
+				"name": "Sports & Hobbies",
+				"icon": "⚽",
+				"words": [
+					"cricket",
+					"baseball",
+					"basketball",
+					"rugby",
+					"soccer",
+					"hockey",
+					"swimming",
+					"tennis",
+					"badminton",
+					"stadium",
+					"athlete",
+					"gymnasium",
+					"paragliding",
+					"skydiving",
+					"surfing",
+					"mountain biking",
+					"jogging",
+					"judo",
+					"snooker",
+					"photography",
+					"painting",
+					"pottery",
+					"gardening",
+					"chess",
+					"embroidery"
+				]
+			},
+			{
+				"name": "Weather",
+				"icon": "🌤️",
+				"words": [
+					"humid",
+					"hot",
+					"sticky",
+					"breeze",
+					"chilly",
+					"cold",
+					"cool",
+					"dry",
+					"dusty",
+					"freezing",
+					"warm",
+					"wet",
+					"weather forecast",
+					"moisture"
+				]
+			},
+			{
+				"name": "Arts & Media",
+				"icon": "🎭",
+				"words": [
+					"opera",
+					"orchestra",
+					"concert",
+					"symphony",
+					"conductor",
+					"vocalist",
+					"audience",
+					"festival",
+					"carnival",
+					"exhibition",
+					"classical music",
+					"theatre",
+					"cinema",
+					"art gallery",
+					"museum",
+					"ballet",
+					"television",
+					"radio",
+					"graphics",
+					"newspaper"
+				]
+			},
+			{
+				"name": "Materials",
+				"icon": "🧱",
+				"words": [
+					"cement",
+					"stone",
+					"textile",
+					"cotton",
+					"fabric",
+					"wool",
+					"leather",
+					"bone",
+					"paper",
+					"wood",
+					"glue",
+					"composite",
+					"fiberglass",
+					"concrete",
+					"wax",
+					"silver",
+					"gold",
+					"feather",
+					"plastic",
+					"rubber",
+					"steel",
+					"iron",
+					"copper",
+					"aluminum"
+				]
+			},
+			{
+				"name": "Common Verbs",
+				"icon": "🔤",
+				"words": [
+					"train",
+					"develop",
+					"collect",
+					"supervise",
+					"mark",
+					"edit",
+					"revise",
+					"exhibit",
+					"donate",
+					"surpass",
+					"register",
+					"support",
+					"hunt",
+					"persuade",
+					"concentrate",
+					"discuss",
+					"suggest",
+					"arrange",
+					"borrow",
+					"immigrate",
+					"review",
+					"learn",
+					"analyze",
+					"evaluate",
+					"demonstrate"
+				]
+			},
+			{
+				"name": "Common Adjectives",
+				"icon": "✨",
+				"words": [
+					"energetic",
+					"social",
+					"ancient",
+					"necessary",
+					"fantastic",
+					"exciting",
+					"fabulous",
+					"dull",
+					"comfortable",
+					"convenient",
+					"suitable",
+					"affordable",
+					"mandatory",
+					"compulsory",
+					"temporary",
+					"permanent",
+					"immense",
+					"vast",
+					"extinct",
+					"vulnerable",
+					"pessimistic",
+					"optimistic",
+					"realistic",
+					"practical",
+					"flexible",
+					"spectacular"
+				]
+			}
+		]
+	},
+	"writingTemplates": {
+		"task1": {
+			"description": "Academic Writing Task 1 Templates",
+			"types": [
+				{
+					"type": "Line Graph",
+					"intro": "The line graph illustrates/shows/depicts [what] [where] [when].",
+					"overview": "Overall, it is clear that [main trend 1] while [main trend 2].",
+					"keyPhrases": [
+						"increased significantly",
+						"decreased gradually",
+						"remained stable",
+						"fluctuated",
+						"peaked at",
+						"reached a low of",
+						"from X to Y"
+					]
+				},
+				{
+					"type": "Bar Chart",
+					"intro": "The bar chart compares [what] in [where] [when].",
+					"overview": "Overall, [highest category] had the highest [measure] while [lowest category] had the lowest.",
+					"keyPhrases": [
+						"the largest proportion",
+						"accounted for",
+						"stood at",
+						"compared to",
+						"in contrast"
+					]
+				},
+				{
+					"type": "Pie Chart",
+					"intro": "The pie chart(s) show(s) the proportion of [what] [where] [when].",
+					"overview": "Overall, [dominant segment] made up the majority while [smallest] represented the smallest share.",
+					"keyPhrases": [
+						"comprised",
+						"constituted",
+						"made up",
+						"represented",
+						"the majority",
+						"a quarter",
+						"a third"
+					]
+				},
+				{
+					"type": "Table",
+					"intro": "The table provides information about [what] [where] [when].",
+					"overview": "Overall, it can be seen that [main observation 1] and [main observation 2].",
+					"keyPhrases": [
+						"the highest figure",
+						"the lowest figure",
+						"compared to",
+						"while",
+						"whereas"
+					]
+				},
+				{
+					"type": "Process Diagram",
+					"intro": "The diagram illustrates the process of [what]/how [something] is made.",
+					"overview": "Overall, there are [X] main stages in the process, beginning with [first stage] and ending with [final stage].",
+					"keyPhrases": [
+						"At the first stage",
+						"Following this",
+						"Subsequently",
+						"Finally",
+						"is then",
+						"after which"
+					]
+				},
+				{
+					"type": "Map",
+					"intro": "The maps compare [what] in [when: past vs present/proposed].",
+					"overview": "Overall, the area has undergone significant changes, particularly in [major change].",
+					"keyPhrases": [
+						"has been replaced by",
+						"was converted into",
+						"remains unchanged",
+						"in the north/south/east/west",
+						"adjacent to",
+						"opposite"
+					]
+				}
+			]
+		},
+		"task2": {
+			"description": "Academic Writing Task 2 Templates",
+			"types": [
+				{
+					"type": "Opinion Essay",
+					"question": "To what extent do you agree or disagree?",
+					"structure": [
+						"Introduction (paraphrase + thesis)",
+						"Body 1 (main reason + example)",
+						"Body 2 (second reason + example)",
+						"Conclusion (restate opinion)"
+					],
+					"phrases": {
+						"agree": [
+							"I strongly believe that",
+							"In my opinion",
+							"From my perspective",
+							"I am convinced that"
+						],
+						"disagree": [
+							"I completely disagree with the notion that",
+							"I do not believe that",
+							"This view is not supported by evidence"
+						]
+					}
+				},
+				{
+					"type": "Discussion Essay",
+					"question": "Discuss both views and give your opinion.",
+					"structure": [
+						"Introduction (paraphrase + thesis)",
+						"Body 1 (View 1 + reasons)",
+						"Body 2 (View 2 + reasons)",
+						"Body 3 (Your opinion)",
+						"Conclusion"
+					],
+					"phrases": [
+						"On the one hand",
+						"On the other hand",
+						"However",
+						"Nevertheless",
+						"In contrast",
+						"Despite this"
+					]
+				},
+				{
+					"type": "Problem-Solution Essay",
+					"question": "What are the problems? What solutions can you suggest?",
+					"structure": [
+						"Introduction (paraphrase + overview)",
+						"Body 1 (Problems)",
+						"Body 2 (Solutions)",
+						"Conclusion"
+					],
+					"phrases": [
+						"One of the main problems is",
+						"This leads to",
+						"A possible solution would be",
+						"This could be addressed by",
+						"Governments should"
+					]
+				},
+				{
+					"type": "Advantages-Disadvantages Essay",
+					"question": "What are the advantages and disadvantages?",
+					"structure": [
+						"Introduction (paraphrase + thesis)",
+						"Body 1 (Advantages)",
+						"Body 2 (Disadvantages)",
+						"Conclusion (overall view)"
+					],
+					"phrases": [
+						"The main advantage is",
+						"Another benefit is",
+						"However, there are drawbacks",
+						"The most significant disadvantage is",
+						"On balance"
+					]
+				},
+				{
+					"type": "Two-Part Question",
+					"question": "Why is this? What can be done?",
+					"structure": [
+						"Introduction (paraphrase)",
+						"Body 1 (Answer part 1)",
+						"Body 2 (Answer part 2)",
+						"Conclusion"
+					],
+					"phrases": [
+						"There are several reasons for this",
+						"The main cause is",
+						"To address this issue",
+						"Possible measures include"
+					]
+				}
+			]
+		}
+	},
+	"readingStrategies": {
+		"questionTypes": [
+			{
+				"type": "Matching Headings",
+				"tips": [
+					"Read headings first",
+					"Skim each paragraph for main idea",
+					"Eliminate used headings",
+					"Look for topic sentences"
+				],
+				"difficulty": "Hard"
+			},
+			{
+				"type": "True/False/Not Given",
+				"tips": [
+					"Read statement carefully",
+					"Find exact location in text",
+					"TRUE = same meaning",
+					"FALSE = opposite meaning",
+					"NOT GIVEN = no information"
+				],
+				"difficulty": "Hard"
+			},
+			{
+				"type": "Yes/No/Not Given",
+				"tips": [
+					"About writer's OPINION/CLAIM",
+					"YES = writer agrees",
+					"NO = writer disagrees",
+					"NOT GIVEN = writer doesn't mention"
+				],
+				"difficulty": "Hard"
+			},
+			{
+				"type": "Matching Features",
+				"tips": [
+					"Read all names/features first",
+					"Scan for proper nouns",
+					"One feature may match multiple items"
+				],
+				"difficulty": "Medium"
+			},
+			{
+				"type": "Sentence Completion",
+				"tips": [
+					"Read before the gap",
+					"Check word limit",
+					"Answer must be grammatically correct",
+					"Use exact words from passage"
+				],
+				"difficulty": "Medium"
+			},
+			{
+				"type": "Summary Completion",
+				"tips": [
+					"Read summary first for context",
+					"Find paragraph(s) it refers to",
+					"Check word limit",
+					"Answers in order"
+				],
+				"difficulty": "Medium"
+			},
+			{
+				"type": "Multiple Choice",
+				"tips": [
+					"Read question stem carefully",
+					"Eliminate wrong answers",
+					"Beware of distractors",
+					"Answer may be paraphrased"
+				],
+				"difficulty": "Medium"
+			},
+			{
+				"type": "Short Answer",
+				"tips": [
+					"Note word limit",
+					"Answer with exact words from text",
+					"Usually in order",
+					"Question words tell you what to look for"
+				],
+				"difficulty": "Easy"
+			}
+		],
+		"timeManagement": {
+			"totalTime": 60,
+			"passageTime": 20,
+			"strategy": "Passage 1 (15 min) → Passage 2 (20 min) → Passage 3 (25 min)",
+			"tips": [
+				"Don't spend too long on one question",
+				"Guess if stuck - no penalty",
+				"Transfer answers at the end",
+				"Read questions before passage"
+			]
+		}
+	},
+	"listeningStrategies": {
+		"sections": [
+			{
+				"section": 1,
+				"type": "Conversation",
+				"context": "Social/Everyday",
+				"difficulty": "Easiest"
+			},
+			{
+				"section": 2,
+				"type": "Monologue",
+				"context": "Social/Everyday",
+				"difficulty": "Easy"
+			},
+			{
+				"section": 3,
+				"type": "Conversation",
+				"context": "Academic",
+				"difficulty": "Medium"
+			},
+			{
+				"section": 4,
+				"type": "Monologue",
+				"context": "Academic Lecture",
+				"difficulty": "Hardest"
+			}
+		],
+		"tips": [
+			"Read questions before audio plays",
+			"Predict answer types (number, name, noun, etc.)",
+			"Listen for signpost words (firstly, however, finally)",
+			"Watch for spelling and plurals",
+			"Never leave blanks - always guess",
+			"Write as you listen, don't wait",
+			"Audio plays ONCE only",
+			"You get 10 minutes at end to transfer answers"
+		],
+		"commonTraps": [
+			"Speaker changes their mind",
+			"Distractors mentioned before real answer",
+			"Homophones (their/there, to/two/too)",
+			"Plural vs singular",
+			"Dates and numbers"
+		]
+	},
+	"speakingStrategies": {
+		"parts": [
+			{
+				"part": 1,
+				"name": "Introduction & Interview",
+				"duration": "4-5 minutes",
+				"topics": ["Work/Study", "Home", "Hobbies", "Daily routine"],
+				"tips": [
+					"Give extended answers (2-3 sentences)",
+					"Add reasons and examples",
+					"Don't memorize scripts",
+					"Be natural and confident"
+				]
+			},
+			{
+				"part": 2,
+				"name": "Individual Long Turn",
+				"duration": "3-4 minutes (1 min prep, 2 min speak)",
+				"tips": [
+					"Use all 1 minute to plan",
+					"Write keywords only",
+					"Cover ALL bullet points",
+					"Use past/present tenses correctly",
+					"Add personal details"
+				]
+			},
+			{
+				"part": 3,
+				"name": "Two-way Discussion",
+				"duration": "4-5 minutes",
+				"tips": [
+					"Give opinions with reasons",
+					"Use advanced vocabulary",
+					"Discuss both sides",
+					"Use examples from society",
+					"Show critical thinking"
+				]
+			}
+		],
+		"fluencyTips": [
+			"Use fillers naturally (Well, Actually, To be honest)",
+			"Paraphrase if stuck",
+			"Self-correct confidently",
+			"Vary sentence structures",
+			"Use idiomatic expressions"
+		]
+	},
+	"bandScoreGuide": {
+		"listening": {
+			"9": "39-40",
+			"8.5": "37-38",
+			"8": "35-36",
+			"7.5": "32-34",
+			"7": "30-31",
+			"6.5": "26-29",
+			"6": "23-25",
+			"5.5": "18-22"
+		},
+		"reading": {
+			"9": "39-40",
+			"8.5": "37-38",
+			"8": "35-36",
+			"7.5": "33-34",
+			"7": "30-32",
+			"6.5": "27-29",
+			"6": "23-26",
+			"5.5": "19-22"
+		},
+		"overall": {
+			"formula": "(L + R + W + S) / 4",
+			"rounding": "Rounded to nearest 0.5"
+		}
+	},
+	"studyPlan85": {
+		"description": "15-Day Intensive Plan for 8.5+ Band Score",
+		"dailyHours": 6,
+		"breakdown": {
+			"listening": "1.5 hours (1 full test + review)",
+			"reading": "1.5 hours (1 full test + vocabulary)",
+			"writing": "1.5 hours (1 Task 1 + 1 Task 2)",
+			"speaking": "1 hour (Part 2 practice + recording)",
+			"vocabulary": "0.5 hours (50 new words)"
+		},
+		"weeklyTests": [
+			{ "day": 5, "type": "Half Mock (Listening + Reading)" },
+			{ "day": 10, "type": "Full Mock Test" },
+			{ "day": 14, "type": "Final Mock Test" }
+		]
+	}
 }

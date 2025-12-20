@@ -5206,177 +5206,1071 @@ function initVocabTool() {
 	const container = document.getElementById('vocab-tool-container');
 	if (!container) return;
 
+	// Enhanced vocabulary data with meanings and synonyms
+	const vocabularyData = {
+		'Academic Words': [
+			{
+				word: 'analyze',
+				meaning: 'examine in detail',
+				synonyms: ['examine', 'investigate', 'study'],
+			},
+			{
+				word: 'approach',
+				meaning: 'a way of dealing with something',
+				synonyms: ['method', 'strategy', 'technique'],
+			},
+			{
+				word: 'assess',
+				meaning: 'evaluate or estimate',
+				synonyms: ['evaluate', 'judge', 'appraise'],
+			},
+			{
+				word: 'assume',
+				meaning: 'suppose to be true without proof',
+				synonyms: ['presume', 'suppose', 'believe'],
+			},
+			{
+				word: 'authority',
+				meaning: 'power to give orders',
+				synonyms: ['power', 'control', 'command'],
+			},
+			{
+				word: 'available',
+				meaning: 'able to be used',
+				synonyms: ['accessible', 'obtainable', 'at hand'],
+			},
+			{
+				word: 'benefit',
+				meaning: 'advantage or profit',
+				synonyms: ['advantage', 'gain', 'profit'],
+			},
+			{
+				word: 'concept',
+				meaning: 'an abstract idea',
+				synonyms: ['idea', 'notion', 'theory'],
+			},
+			{
+				word: 'consistent',
+				meaning: 'unchanging, steady',
+				synonyms: ['steady', 'constant', 'uniform'],
+			},
+			{
+				word: 'constitute',
+				meaning: 'make up, form',
+				synonyms: ['compose', 'form', 'make up'],
+			},
+			{
+				word: 'context',
+				meaning: 'circumstances or setting',
+				synonyms: ['setting', 'situation', 'background'],
+			},
+			{
+				word: 'contract',
+				meaning: 'formal agreement',
+				synonyms: ['agreement', 'deal', 'pact'],
+			},
+			{
+				word: 'create',
+				meaning: 'bring into existence',
+				synonyms: ['produce', 'generate', 'make'],
+			},
+			{
+				word: 'data',
+				meaning: 'facts and statistics',
+				synonyms: ['information', 'facts', 'figures'],
+			},
+			{
+				word: 'define',
+				meaning: 'state the meaning',
+				synonyms: ['explain', 'describe', 'specify'],
+			},
+			{
+				word: 'derive',
+				meaning: 'obtain from a source',
+				synonyms: ['obtain', 'get', 'extract'],
+			},
+			{
+				word: 'distribute',
+				meaning: 'spread or hand out',
+				synonyms: ['allocate', 'disperse', 'spread'],
+			},
+			{
+				word: 'economy',
+				meaning: 'system of trade and industry',
+				synonyms: ['financial system', 'market', 'commerce'],
+			},
+			{
+				word: 'environment',
+				meaning: 'surroundings or conditions',
+				synonyms: ['surroundings', 'setting', 'habitat'],
+			},
+			{
+				word: 'establish',
+				meaning: 'set up or found',
+				synonyms: ['found', 'create', 'set up'],
+			},
+			{
+				word: 'estimate',
+				meaning: 'roughly calculate',
+				synonyms: ['assess', 'evaluate', 'approximate'],
+			},
+			{
+				word: 'evident',
+				meaning: 'clearly seen or understood',
+				synonyms: ['obvious', 'apparent', 'clear'],
+			},
+			{
+				word: 'export',
+				meaning: 'send goods abroad',
+				synonyms: ['ship', 'send overseas', 'sell abroad'],
+			},
+			{
+				word: 'factor',
+				meaning: 'element contributing to a result',
+				synonyms: ['element', 'component', 'aspect'],
+			},
+			{
+				word: 'finance',
+				meaning: 'management of money',
+				synonyms: ['funding', 'money matters', 'economics'],
+			},
+			{
+				word: 'formula',
+				meaning: 'rule or method',
+				synonyms: ['method', 'procedure', 'recipe'],
+			},
+			{
+				word: 'function',
+				meaning: 'purpose or role',
+				synonyms: ['purpose', 'role', 'use'],
+			},
+			{
+				word: 'identify',
+				meaning: 'recognize or establish',
+				synonyms: ['recognize', 'detect', 'spot'],
+			},
+			{
+				word: 'income',
+				meaning: 'money received regularly',
+				synonyms: ['earnings', 'salary', 'revenue'],
+			},
+			{
+				word: 'indicate',
+				meaning: 'point out or show',
+				synonyms: ['show', 'suggest', 'demonstrate'],
+			},
+			{
+				word: 'individual',
+				meaning: 'single person',
+				synonyms: ['person', 'human', 'single'],
+			},
+			{
+				word: 'interpret',
+				meaning: 'explain the meaning',
+				synonyms: ['explain', 'understand', 'construe'],
+			},
+			{
+				word: 'involve',
+				meaning: 'include as a necessary part',
+				synonyms: ['include', 'entail', 'require'],
+			},
+			{
+				word: 'issue',
+				meaning: 'important topic or problem',
+				synonyms: ['matter', 'problem', 'topic'],
+			},
+			{
+				word: 'labor',
+				meaning: 'work, especially physical',
+				synonyms: ['work', 'toil', 'effort'],
+			},
+			{
+				word: 'legal',
+				meaning: 'relating to law',
+				synonyms: ['lawful', 'legitimate', 'judicial'],
+			},
+			{
+				word: 'legislate',
+				meaning: 'make laws',
+				synonyms: ['enact', 'pass laws', 'decree'],
+			},
+			{
+				word: 'major',
+				meaning: 'important or significant',
+				synonyms: ['main', 'primary', 'chief'],
+			},
+			{
+				word: 'method',
+				meaning: 'way of doing something',
+				synonyms: ['approach', 'technique', 'system'],
+			},
+			{
+				word: 'occur',
+				meaning: 'happen or take place',
+				synonyms: ['happen', 'take place', 'arise'],
+			},
+		],
+		'Money & Finance': [
+			{
+				word: 'budget',
+				meaning: 'financial plan',
+				synonyms: ['financial plan', 'allocation', 'allowance'],
+			},
+			{
+				word: 'currency',
+				meaning: 'system of money',
+				synonyms: ['money', 'cash', 'legal tender'],
+			},
+			{
+				word: 'deposit',
+				meaning: 'put money in bank',
+				synonyms: ['save', 'bank', 'store'],
+			},
+			{
+				word: 'dividend',
+				meaning: 'share of profits',
+				synonyms: ['share', 'portion', 'bonus'],
+			},
+			{
+				word: 'expenditure',
+				meaning: 'spending of money',
+				synonyms: ['spending', 'outlay', 'expense'],
+			},
+			{
+				word: 'inflation',
+				meaning: 'rise in prices',
+				synonyms: ['price rise', 'cost increase', 'devaluation'],
+			},
+			{
+				word: 'interest',
+				meaning: 'charge for borrowing',
+				synonyms: ['rate', 'percentage', 'charge'],
+			},
+			{
+				word: 'investment',
+				meaning: 'putting money for profit',
+				synonyms: ['venture', 'stake', 'funding'],
+			},
+			{
+				word: 'liability',
+				meaning: 'debt or obligation',
+				synonyms: ['debt', 'obligation', 'responsibility'],
+			},
+			{
+				word: 'mortgage',
+				meaning: 'loan for property',
+				synonyms: ['home loan', 'property loan', 'financing'],
+			},
+			{
+				word: 'profit',
+				meaning: 'financial gain',
+				synonyms: ['gain', 'earnings', 'return'],
+			},
+			{
+				word: 'revenue',
+				meaning: 'income from business',
+				synonyms: ['income', 'earnings', 'proceeds'],
+			},
+			{
+				word: 'salary',
+				meaning: 'fixed regular payment',
+				synonyms: ['wage', 'pay', 'earnings'],
+			},
+			{
+				word: 'transaction',
+				meaning: 'business deal',
+				synonyms: ['deal', 'exchange', 'trade'],
+			},
+			{
+				word: 'withdraw',
+				meaning: 'take money out',
+				synonyms: ['remove', 'extract', 'take out'],
+			},
+		],
+		Education: [
+			{
+				word: 'academic',
+				meaning: 'relating to education',
+				synonyms: ['scholarly', 'educational', 'intellectual'],
+			},
+			{
+				word: 'assignment',
+				meaning: 'task or homework',
+				synonyms: ['task', 'project', 'homework'],
+			},
+			{
+				word: 'campus',
+				meaning: 'university grounds',
+				synonyms: ['grounds', 'site', 'premises'],
+			},
+			{
+				word: 'curriculum',
+				meaning: 'course of study',
+				synonyms: ['syllabus', 'program', 'course'],
+			},
+			{
+				word: 'degree',
+				meaning: 'academic qualification',
+				synonyms: ['qualification', 'diploma', 'certificate'],
+			},
+			{
+				word: 'dissertation',
+				meaning: 'long essay or thesis',
+				synonyms: ['thesis', 'treatise', 'paper'],
+			},
+			{
+				word: 'enroll',
+				meaning: 'register for a course',
+				synonyms: ['register', 'sign up', 'join'],
+			},
+			{
+				word: 'faculty',
+				meaning: 'teaching staff',
+				synonyms: ['staff', 'teachers', 'professors'],
+			},
+			{
+				word: 'graduate',
+				meaning: 'complete studies',
+				synonyms: ['finish', 'complete', 'qualify'],
+			},
+			{
+				word: 'lecture',
+				meaning: 'educational talk',
+				synonyms: ['talk', 'presentation', 'class'],
+			},
+			{
+				word: 'research',
+				meaning: 'systematic study',
+				synonyms: ['study', 'investigation', 'inquiry'],
+			},
+			{
+				word: 'scholarship',
+				meaning: 'study grant',
+				synonyms: ['grant', 'bursary', 'funding'],
+			},
+			{
+				word: 'semester',
+				meaning: 'half academic year',
+				synonyms: ['term', 'session', 'period'],
+			},
+			{
+				word: 'thesis',
+				meaning: 'written argument',
+				synonyms: ['dissertation', 'paper', 'essay'],
+			},
+			{
+				word: 'tuition',
+				meaning: 'teaching or fees',
+				synonyms: ['instruction', 'teaching', 'fees'],
+			},
+		],
+		'Health & Medicine': [
+			{
+				word: 'chronic',
+				meaning: 'long-lasting condition',
+				synonyms: ['persistent', 'long-term', 'ongoing'],
+			},
+			{
+				word: 'diagnose',
+				meaning: 'identify illness',
+				synonyms: ['identify', 'detect', 'determine'],
+			},
+			{
+				word: 'disease',
+				meaning: 'illness or sickness',
+				synonyms: ['illness', 'sickness', 'ailment'],
+			},
+			{
+				word: 'epidemic',
+				meaning: 'widespread disease',
+				synonyms: ['outbreak', 'plague', 'pandemic'],
+			},
+			{
+				word: 'immune',
+				meaning: 'resistant to infection',
+				synonyms: ['resistant', 'protected', 'invulnerable'],
+			},
+			{
+				word: 'infection',
+				meaning: 'disease-causing invasion',
+				synonyms: ['contamination', 'virus', 'disease'],
+			},
+			{
+				word: 'medication',
+				meaning: 'medical drugs',
+				synonyms: ['medicine', 'drug', 'treatment'],
+			},
+			{
+				word: 'nutrition',
+				meaning: 'food and nourishment',
+				synonyms: ['nourishment', 'diet', 'sustenance'],
+			},
+			{
+				word: 'patient',
+				meaning: 'person receiving treatment',
+				synonyms: ['sufferer', 'case', 'invalid'],
+			},
+			{
+				word: 'physician',
+				meaning: 'medical doctor',
+				synonyms: ['doctor', 'medic', 'practitioner'],
+			},
+			{
+				word: 'prescription',
+				meaning: 'written medicine order',
+				synonyms: ['order', 'direction', 'instruction'],
+			},
+			{
+				word: 'symptom',
+				meaning: 'sign of illness',
+				synonyms: ['sign', 'indication', 'manifestation'],
+			},
+			{
+				word: 'therapy',
+				meaning: 'treatment for illness',
+				synonyms: ['treatment', 'healing', 'cure'],
+			},
+			{
+				word: 'vaccine',
+				meaning: 'disease prevention drug',
+				synonyms: ['immunization', 'inoculation', 'shot'],
+			},
+			{
+				word: 'vital',
+				meaning: 'essential for life',
+				synonyms: ['essential', 'crucial', 'critical'],
+			},
+		],
+		Environment: [
+			{
+				word: 'atmosphere',
+				meaning: 'air surrounding earth',
+				synonyms: ['air', 'sky', 'climate'],
+			},
+			{
+				word: 'biodiversity',
+				meaning: 'variety of life',
+				synonyms: ['variety', 'diversity', 'wildlife'],
+			},
+			{
+				word: 'carbon',
+				meaning: 'chemical element',
+				synonyms: ['element', 'emissions', 'footprint'],
+			},
+			{
+				word: 'climate',
+				meaning: 'weather patterns',
+				synonyms: ['weather', 'conditions', 'atmosphere'],
+			},
+			{
+				word: 'conservation',
+				meaning: 'protection of nature',
+				synonyms: ['preservation', 'protection', 'saving'],
+			},
+			{
+				word: 'contaminate',
+				meaning: 'make impure',
+				synonyms: ['pollute', 'poison', 'taint'],
+			},
+			{
+				word: 'deforestation',
+				meaning: 'clearing forests',
+				synonyms: ['logging', 'clearing', 'destruction'],
+			},
+			{
+				word: 'ecosystem',
+				meaning: 'community of organisms',
+				synonyms: ['habitat', 'environment', 'biome'],
+			},
+			{
+				word: 'emission',
+				meaning: 'released substance',
+				synonyms: ['discharge', 'release', 'output'],
+			},
+			{
+				word: 'endangered',
+				meaning: 'at risk of extinction',
+				synonyms: ['threatened', 'at risk', 'vulnerable'],
+			},
+			{
+				word: 'extinction',
+				meaning: 'complete dying out',
+				synonyms: ['dying out', 'disappearance', 'annihilation'],
+			},
+			{
+				word: 'habitat',
+				meaning: 'natural home',
+				synonyms: ['environment', 'home', 'territory'],
+			},
+			{
+				word: 'pollution',
+				meaning: 'harmful contamination',
+				synonyms: ['contamination', 'impurity', 'waste'],
+			},
+			{
+				word: 'renewable',
+				meaning: 'can be replaced',
+				synonyms: ['sustainable', 'replenishable', 'green'],
+			},
+			{
+				word: 'sustainable',
+				meaning: 'maintainable long-term',
+				synonyms: ['viable', 'lasting', 'eco-friendly'],
+			},
+		],
+		Technology: [
+			{
+				word: 'algorithm',
+				meaning: 'set of instructions',
+				synonyms: ['procedure', 'formula', 'process'],
+			},
+			{
+				word: 'artificial',
+				meaning: 'made by humans',
+				synonyms: ['synthetic', 'man-made', 'manufactured'],
+			},
+			{
+				word: 'automate',
+				meaning: 'make automatic',
+				synonyms: ['mechanize', 'computerize', 'program'],
+			},
+			{
+				word: 'bandwidth',
+				meaning: 'data transfer capacity',
+				synonyms: ['capacity', 'speed', 'throughput'],
+			},
+			{
+				word: 'database',
+				meaning: 'organized data collection',
+				synonyms: ['databank', 'records', 'repository'],
+			},
+			{
+				word: 'digital',
+				meaning: 'using computer technology',
+				synonyms: ['electronic', 'computerized', 'virtual'],
+			},
+			{
+				word: 'encryption',
+				meaning: 'data protection coding',
+				synonyms: ['coding', 'encoding', 'security'],
+			},
+			{
+				word: 'hardware',
+				meaning: 'physical components',
+				synonyms: ['equipment', 'machinery', 'devices'],
+			},
+			{
+				word: 'innovation',
+				meaning: 'new method or idea',
+				synonyms: ['invention', 'novelty', 'breakthrough'],
+			},
+			{
+				word: 'interface',
+				meaning: 'point of interaction',
+				synonyms: ['connection', 'link', 'portal'],
+			},
+			{
+				word: 'network',
+				meaning: 'connected system',
+				synonyms: ['system', 'web', 'grid'],
+			},
+			{
+				word: 'optimize',
+				meaning: 'make most effective',
+				synonyms: ['improve', 'enhance', 'maximize'],
+			},
+			{
+				word: 'software',
+				meaning: 'computer programs',
+				synonyms: ['programs', 'applications', 'apps'],
+			},
+			{
+				word: 'virtual',
+				meaning: 'computer-simulated',
+				synonyms: ['digital', 'online', 'simulated'],
+			},
+			{
+				word: 'wireless',
+				meaning: 'without cables',
+				synonyms: ['cordless', 'mobile', 'radio'],
+			},
+		],
+		Business: [
+			{
+				word: 'acquisition',
+				meaning: 'buying a company',
+				synonyms: ['purchase', 'takeover', 'buyout'],
+			},
+			{
+				word: 'asset',
+				meaning: 'valuable possession',
+				synonyms: ['property', 'resource', 'possession'],
+			},
+			{
+				word: 'brand',
+				meaning: 'product identity',
+				synonyms: ['trademark', 'label', 'name'],
+			},
+			{
+				word: 'client',
+				meaning: 'customer',
+				synonyms: ['customer', 'buyer', 'patron'],
+			},
+			{
+				word: 'commerce',
+				meaning: 'trade and business',
+				synonyms: ['trade', 'business', 'trading'],
+			},
+			{
+				word: 'competitor',
+				meaning: 'rival in business',
+				synonyms: ['rival', 'opponent', 'contender'],
+			},
+			{
+				word: 'consumer',
+				meaning: 'person who buys',
+				synonyms: ['buyer', 'customer', 'purchaser'],
+			},
+			{
+				word: 'corporation',
+				meaning: 'large company',
+				synonyms: ['company', 'firm', 'enterprise'],
+			},
+			{
+				word: 'entrepreneur',
+				meaning: 'business starter',
+				synonyms: ['founder', 'innovator', 'businessperson'],
+			},
+			{
+				word: 'franchise',
+				meaning: 'licensed business',
+				synonyms: ['license', 'chain', 'branch'],
+			},
+			{
+				word: 'headquarters',
+				meaning: 'main office',
+				synonyms: ['head office', 'base', 'center'],
+			},
+			{
+				word: 'inventory',
+				meaning: 'stock of goods',
+				synonyms: ['stock', 'supplies', 'goods'],
+			},
+			{
+				word: 'merger',
+				meaning: 'combining companies',
+				synonyms: ['union', 'combination', 'consolidation'],
+			},
+			{
+				word: 'negotiate',
+				meaning: 'discuss terms',
+				synonyms: ['bargain', 'discuss', 'deal'],
+			},
+			{
+				word: 'strategy',
+				meaning: 'plan of action',
+				synonyms: ['plan', 'approach', 'policy'],
+			},
+		],
+		Society: [
+			{
+				word: 'citizen',
+				meaning: 'member of a country',
+				synonyms: ['resident', 'national', 'inhabitant'],
+			},
+			{
+				word: 'community',
+				meaning: 'group of people',
+				synonyms: ['society', 'neighborhood', 'group'],
+			},
+			{
+				word: 'culture',
+				meaning: 'customs and beliefs',
+				synonyms: ['customs', 'traditions', 'heritage'],
+			},
+			{
+				word: 'democracy',
+				meaning: 'government by people',
+				synonyms: ['republic', 'self-rule', 'freedom'],
+			},
+			{
+				word: 'discrimination',
+				meaning: 'unfair treatment',
+				synonyms: ['prejudice', 'bias', 'inequality'],
+			},
+			{
+				word: 'diversity',
+				meaning: 'variety of differences',
+				synonyms: ['variety', 'difference', 'range'],
+			},
+			{
+				word: 'equality',
+				meaning: 'being equal',
+				synonyms: ['fairness', 'parity', 'sameness'],
+			},
+			{
+				word: 'generation',
+				meaning: 'people born at same time',
+				synonyms: ['age group', 'era', 'cohort'],
+			},
+			{
+				word: 'government',
+				meaning: 'ruling authority',
+				synonyms: ['authority', 'administration', 'state'],
+			},
+			{
+				word: 'immigrant',
+				meaning: 'person moving to country',
+				synonyms: ['migrant', 'newcomer', 'settler'],
+			},
+			{
+				word: 'minority',
+				meaning: 'smaller group',
+				synonyms: ['lesser group', 'subset', 'fraction'],
+			},
+			{
+				word: 'population',
+				meaning: 'all inhabitants',
+				synonyms: ['inhabitants', 'residents', 'people'],
+			},
+			{
+				word: 'poverty',
+				meaning: 'state of being poor',
+				synonyms: ['deprivation', 'hardship', 'need'],
+			},
+			{
+				word: 'tradition',
+				meaning: 'customs passed down',
+				synonyms: ['custom', 'practice', 'convention'],
+			},
+			{
+				word: 'welfare',
+				meaning: 'health and happiness',
+				synonyms: ['wellbeing', 'benefit', 'prosperity'],
+			},
+		],
+	};
+
+	const learnedWords = JSON.parse(
+		localStorage.getItem('ielts-learned-vocab') || '{}',
+	);
+	const categories = Object.entries(vocabularyData);
+	const totalWords = categories.reduce(
+		(sum, [, words]) => sum + words.length,
+		0,
+	);
+
 	container.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
 				📚 Band 8+ Vocabulary Builder
-				<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">1200+ Words</span>
+				<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">${totalWords}+ Words</span>
 			</h3>
 
-			<!-- Listening Vocabulary Section -->
-			<div id="listening-vocab-section" class="mb-6">
-				<div class="flex items-center justify-between mb-3">
-					<h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-						🎧 IELTS Listening Vocabulary
-						<span class="text-xs text-gray-500">(from 1200 Most Common Words)</span>
-					</h4>
-					<button onclick="toggleListeningVocab()" id="toggle-listening-vocab" class="text-xs text-teal-600 dark:text-teal-400 hover:underline">Show ▼</button>
+			<!-- Vocabulary Stats -->
+			<div class="grid grid-cols-3 gap-2 mb-4">
+				<div class="text-center p-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+					<div class="text-lg font-bold text-teal-600 dark:text-teal-400">${totalWords}</div>
+					<div class="text-[10px] text-teal-700 dark:text-teal-300">Total Words</div>
 				</div>
-				<div id="listening-vocab-content" class="hidden"></div>
+				<div class="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+					<div class="text-lg font-bold text-green-600 dark:text-green-400" id="learned-count">${
+						Object.keys(learnedWords).length
+					}</div>
+					<div class="text-[10px] text-green-700 dark:text-green-300">Learned</div>
+				</div>
+				<div class="text-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+					<div class="text-lg font-bold text-orange-600 dark:text-orange-400">${
+						categories.length
+					}</div>
+					<div class="text-[10px] text-orange-700 dark:text-orange-300">Categories</div>
+				</div>
 			</div>
 
-			<div id="flashcard-container"></div>
-		</div>
-	`;
-	initFlashcards();
-	initListeningVocab();
-}
-
-async function initListeningVocab() {
-	const data = await loadListeningTestsData();
-	const content = document.getElementById('listening-vocab-content');
-	if (!content || !data?.vocabularyCategories) return;
-
-	const learnedWords = JSON.parse(
-		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
-	);
-
-	content.innerHTML = `
-		<div class="space-y-4">
 			<!-- Category Tabs -->
-			<div class="flex flex-wrap gap-2">
-				${data.vocabularyCategories
+			<div class="flex flex-wrap gap-2 mb-4 max-h-24 overflow-y-auto slim-scroll pb-1">
+				${categories
 					.map(
-						(cat, idx) => `
-					<button onclick="showVocabCategory(${idx})" class="vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors ${
+						([key, words], idx) => `
+					<button onclick="showVocabCategoryInline('${key}')" class="vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
 							idx === 0
 								? 'bg-teal-500 text-white border-teal-500'
 								: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-teal-500'
-						}">
-						${cat.name} (${cat.words.length})
+						}" data-category="${key}">
+						${key} (${words.length})
 					</button>
 				`,
 					)
 					.join('')}
 			</div>
 
-			<!-- Word Grid -->
-			<div id="vocab-category-words" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
+			<!-- Word Grid with meanings -->
+			<div id="vocab-words-grid" class="space-y-2 max-h-80 overflow-y-auto slim-scroll mb-4 p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg"></div>
 
-			<!-- Stats -->
-			<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
-				<span id="vocab-learned-count">Learned: ${
-					Object.keys(learnedWords).length
-				} words</span>
-				<button onclick="resetLearnedListeningVocab()" class="text-red-500 hover:underline">Reset Progress</button>
+			<!-- Actions -->
+			<div class="flex items-center justify-between text-xs pt-2 border-t border-gray-200 dark:border-gray-700">
+				<span class="text-gray-500 dark:text-gray-400">Click words to mark as learned ✓</span>
+				<button onclick="resetVocabProgress()" class="text-red-500 hover:underline">Reset Progress</button>
+			</div>
+
+			<!-- Flashcard Section -->
+			<div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+				<div id="flashcard-container"></div>
 			</div>
 		</div>
 	`;
 
+	// Store vocabulary data globally for other functions
+	window.ieltsVocabularyData = vocabularyData;
+
 	// Show first category
-	showVocabCategory(0);
+	showVocabCategoryInline(categories[0][0]);
+	initFlashcards();
 }
 
-async function showVocabCategory(catIdx) {
-	const data = await loadListeningTestsData();
-	if (!data?.vocabularyCategories) return;
+function showVocabCategoryInline(categoryKey) {
+	const vocabularyData = window.ieltsVocabularyData;
+	if (!vocabularyData || !vocabularyData[categoryKey]) return;
 
-	const cat = data.vocabularyCategories[catIdx];
-	if (!cat) return;
+	const words = vocabularyData[categoryKey];
 
 	// Update button styles
-	document.querySelectorAll('.vocab-cat-btn').forEach((btn, idx) => {
-		if (idx === catIdx) {
+	document.querySelectorAll('.vocab-cat-btn').forEach((btn) => {
+		if (btn.dataset.category === categoryKey) {
 			btn.className =
-				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors bg-teal-500 text-white border-teal-500';
+				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap bg-teal-500 text-white border-teal-500';
 		} else {
 			btn.className =
-				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-teal-500';
+				'vocab-cat-btn text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:border-teal-500';
 		}
 	});
 
 	const learnedWords = JSON.parse(
-		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
+		localStorage.getItem('ielts-learned-vocab') || '{}',
 	);
-	const wordsContainer = document.getElementById('vocab-category-words');
+	const wordsContainer = document.getElementById('vocab-words-grid');
 
 	if (wordsContainer) {
-		wordsContainer.innerHTML = cat.words
-			.map((word) => {
+		wordsContainer.innerHTML = words
+			.map((item) => {
+				const word = typeof item === 'string' ? item : item.word;
+				const meaning = typeof item === 'object' ? item.meaning : '';
+				const synonyms =
+					typeof item === 'object' && item.synonyms
+						? item.synonyms
+						: [];
 				const isLearned = learnedWords[word];
+
 				return `
-				<button onclick="toggleListeningWord('${word.replace(/'/g, "\\'")}')"
-					class="listening-word-btn p-2 text-xs rounded-lg border transition-all text-left ${
-						isLearned
-							? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-800 dark:text-green-300'
-							: 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-teal-500'
-					}">
-					${isLearned ? '✓ ' : ''}${word}
-				</button>
+				<div class="vocab-word-card ${
+					isLearned
+						? 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700'
+						: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-teal-400'
+				} border rounded-lg p-3 transition-all cursor-pointer" onclick="toggleVocabWordInline('${word.replace(
+					/'/g,
+					"\\'",
+				)}')">
+					<div class="flex items-start justify-between gap-2">
+						<div class="flex-1 min-w-0">
+							<div class="flex items-center gap-2 mb-1">
+								${isLearned ? '<span class="text-green-500 text-sm">✓</span>' : ''}
+								<span class="font-medium text-gray-800 dark:text-gray-200 text-sm">${word}</span>
+								<button onclick="event.stopPropagation(); speakWord('${word}')" class="text-teal-500 hover:text-teal-600 text-xs p-1" title="Listen">🔊</button>
+							</div>
+							${
+								meaning
+									? `<div class="text-xs text-gray-600 dark:text-gray-400 mb-1 italic">${meaning}</div>`
+									: ''
+							}
+							${
+								synonyms.length > 0
+									? `<div class="text-[10px] text-teal-600 dark:text-teal-400">≈ ${synonyms.join(
+											', ',
+									  )}</div>`
+									: ''
+							}
+						</div>
+					</div>
+				</div>
 			`;
 			})
 			.join('');
 	}
 }
 
-function toggleListeningWord(word) {
+function speakWord(word) {
+	if ('speechSynthesis' in window) {
+		const utterance = new SpeechSynthesisUtterance(word);
+		utterance.lang = 'en-GB';
+		utterance.rate = 0.9;
+		speechSynthesis.speak(utterance);
+	}
+}
+
+function toggleVocabWordInline(word) {
 	const learnedWords = JSON.parse(
-		localStorage.getItem('ielts-learned-listening-vocab') || '{}',
+		localStorage.getItem('ielts-learned-vocab') || '{}',
 	);
 	if (learnedWords[word]) {
 		delete learnedWords[word];
 	} else {
 		learnedWords[word] = true;
 	}
-	localStorage.setItem(
-		'ielts-learned-listening-vocab',
-		JSON.stringify(learnedWords),
-	);
+	localStorage.setItem('ielts-learned-vocab', JSON.stringify(learnedWords));
 
-	// Update count
-	const countEl = document.getElementById('vocab-learned-count');
+	// Update count display
+	const countEl = document.getElementById('learned-count');
 	if (countEl) {
-		countEl.textContent = `Learned: ${
-			Object.keys(learnedWords).length
-		} words`;
+		countEl.textContent = Object.keys(learnedWords).length;
 	}
 
 	// Re-render current category
 	const activeBtn = document.querySelector('.vocab-cat-btn.bg-teal-500');
-	if (activeBtn) {
-		const idx = Array.from(
-			document.querySelectorAll('.vocab-cat-btn'),
-		).indexOf(activeBtn);
-		showVocabCategory(idx);
+	if (activeBtn && activeBtn.dataset.category) {
+		showVocabCategoryInline(activeBtn.dataset.category);
 	}
 }
 
-function toggleListeningVocab() {
-	const content = document.getElementById('listening-vocab-content');
-	const btn = document.getElementById('toggle-listening-vocab');
-	if (content && btn) {
-		if (content.classList.contains('hidden')) {
-			content.classList.remove('hidden');
-			btn.textContent = 'Hide ▲';
-		} else {
-			content.classList.add('hidden');
-			btn.textContent = 'Show ▼';
+function resetVocabProgress() {
+	showConfirmModal({
+		title: 'Reset Progress',
+		message: 'Are you sure you want to reset all vocabulary progress? This action cannot be undone.',
+		icon: '🔄',
+		confirmText: 'Reset',
+		confirmClass: 'bg-red-500 hover:bg-red-600',
+		onConfirm: () => {
+			localStorage.removeItem('ielts-learned-vocab');
+			initVocabTool();
+			showToast('Progress reset successfully', 'success');
 		}
+	});
+}
+
+// ========================================
+// 🎨 CUSTOM CONFIRM MODAL
+// ========================================
+function showConfirmModal(options = {}) {
+	const {
+		title = 'Confirm',
+		message = 'Are you sure?',
+		icon = '⚠️',
+		confirmText = 'Confirm',
+		cancelText = 'Cancel',
+		confirmClass = 'bg-teal-500 hover:bg-teal-600',
+		onConfirm = () => {},
+		onCancel = () => {}
+	} = options;
+
+	// Remove existing modal
+	document.getElementById('custom-confirm-modal')?.remove();
+
+	const modal = document.createElement('div');
+	modal.id = 'custom-confirm-modal';
+	modal.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+	modal.innerHTML = `
+		<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeConfirmModal()"></div>
+		<div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full transform transition-all animate-modal-in">
+			<style>
+				@keyframes modal-in {
+					from { opacity: 0; transform: scale(0.9) translateY(10px); }
+					to { opacity: 1; transform: scale(1) translateY(0); }
+				}
+				.animate-modal-in { animation: modal-in 0.2s ease-out; }
+			</style>
+			<div class="p-6 text-center">
+				<div class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center mx-auto mb-4 text-3xl">
+					${icon}
+				</div>
+				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">${title}</h3>
+				<p class="text-sm text-gray-600 dark:text-gray-400 mb-6">${message}</p>
+				<div class="flex gap-3">
+					<button onclick="closeConfirmModal()" 
+						class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-colors">
+						${cancelText}
+					</button>
+					<button id="confirm-modal-btn" 
+						class="flex-1 px-4 py-2.5 text-sm font-medium text-white ${confirmClass} rounded-xl transition-colors shadow-lg">
+						${confirmText}
+					</button>
+				</div>
+			</div>
+		</div>
+	`;
+
+	document.body.appendChild(modal);
+	document.body.style.overflow = 'hidden';
+
+	// Add confirm handler
+	modal.querySelector('#confirm-modal-btn').onclick = () => {
+		closeConfirmModal();
+		onConfirm();
+	};
+
+	// ESC to close
+	const escHandler = (e) => { if (e.key === 'Escape') closeConfirmModal(); };
+	document.addEventListener('keydown', escHandler);
+	modal._escHandler = escHandler;
+}
+
+function closeConfirmModal() {
+	const modal = document.getElementById('custom-confirm-modal');
+	if (modal) {
+		if (modal._escHandler) document.removeEventListener('keydown', modal._escHandler);
+		modal.remove();
+		document.body.style.overflow = '';
 	}
 }
 
-function resetLearnedListeningVocab() {
-	if (confirm('Reset all learned listening vocabulary?')) {
-		localStorage.removeItem('ielts-learned-listening-vocab');
-		initListeningVocab();
-	}
+// Toast notification
+function showToast(message, type = 'info') {
+	const colors = {
+		success: 'from-green-500 to-teal-500',
+		error: 'from-red-500 to-orange-500',
+		info: 'from-blue-500 to-indigo-500',
+		warning: 'from-yellow-500 to-orange-500'
+	};
+	const icons = {
+		success: '✓',
+		error: '✕',
+		info: 'ℹ',
+		warning: '⚠'
+	};
+
+	const toast = document.createElement('div');
+	toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] animate-toast-in';
+	toast.innerHTML = `
+		<style>
+			@keyframes toast-in {
+				from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+				to { opacity: 1; transform: translateX(-50%) translateY(0); }
+			}
+			@keyframes toast-out {
+				to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+			}
+			.animate-toast-in { animation: toast-in 0.3s ease-out; }
+			.animate-toast-out { animation: toast-out 0.3s ease-out forwards; }
+		</style>
+		<div class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r ${colors[type]} text-white rounded-xl shadow-lg">
+			<span class="text-lg font-bold">${icons[type]}</span>
+			<span class="text-sm font-medium">${message}</span>
+		</div>
+	`;
+
+	document.body.appendChild(toast);
+	setTimeout(() => {
+		toast.classList.add('animate-toast-out');
+		setTimeout(() => toast.remove(), 300);
+	}, 3000);
 }
 
-// Export listening vocab functions
-window.toggleListeningVocab = toggleListeningVocab;
-window.showVocabCategory = showVocabCategory;
-window.toggleListeningWord = toggleListeningWord;
-window.resetLearnedListeningVocab = resetLearnedListeningVocab;
+// Export vocab functions
+window.showVocabCategoryInline = showVocabCategoryInline;
+window.toggleVocabWordInline = toggleVocabWordInline;
+window.resetVocabProgress = resetVocabProgress;
+window.speakWord = speakWord;
+window.showConfirmModal = showConfirmModal;
+window.closeConfirmModal = closeConfirmModal;
+window.showToast = showToast;
 
 function initSpeakingTool() {
 	const container = document.getElementById('speaking-tool-container');
@@ -5408,30 +6302,36 @@ function initMockTestTool() {
 	const container = document.getElementById('mock-tool-container');
 	if (!container) return;
 
+	const DRIVE_FOLDER =
+		'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+
 	container.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 space-y-6">
-			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📝 Mock Test Center</h3>
+			<div class="flex items-center justify-between">
+				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">📝 Mock Test Center</h3>
+				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-200 transition-colors">
+					📂 Open Drive
+				</a>
+			</div>
 
-			<!-- Cambridge Listening Practice -->
+			<!-- Cambridge Books Browser -->
 			<div class="border-b border-gray-200 dark:border-gray-700 pb-6">
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-					🎧 Cambridge Listening Practice
-					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Local Audio</span>
+					📕 Cambridge IELTS Books
+					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Books 14-19</span>
 				</h4>
-				<div id="cambridge-listening-container">
-					<div class="text-center text-gray-500 py-4">Loading Cambridge tests...</div>
-				</div>
+				<div id="cambridge-books-container"></div>
 			</div>
 
 			<!-- Listening Timer -->
 			<div class="border-b border-gray-200 dark:border-gray-700 pb-6">
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">🎧 Listening Test (30 min)</h4>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">🎧 Listening Test Timer (30 min)</h4>
 				<div id="listening-practice-container"></div>
 			</div>
 
 			<!-- Reading Timer -->
 			<div class="border-b border-gray-200 dark:border-gray-700 pb-6">
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📖 Reading Test (60 min)</h4>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📖 Reading Test Timer (60 min)</h4>
 				<div id="reading-practice-container"></div>
 			</div>
 
@@ -5442,218 +6342,138 @@ function initMockTestTool() {
 			</div>
 		</div>
 	`;
-	initCambridgeListening();
+	initCambridgeBooks();
 	initListeningPractice();
 	initReadingPractice();
 	initScoreTracker();
 }
 
-// Cambridge Listening Practice with local audio files
-let listeningTestsData = null;
-
-async function loadListeningTestsData() {
-	if (listeningTestsData) return listeningTestsData;
-	try {
-		const response = await fetch('ielts-listening-tests.json');
-		listeningTestsData = await response.json();
-		return listeningTestsData;
-	} catch (e) {
-		console.error('Failed to load listening tests:', e);
-		return null;
-	}
-}
-
-async function initCambridgeListening() {
-	const container = document.getElementById('cambridge-listening-container');
+// Cambridge Books with Drive Embedding
+function initCambridgeBooks() {
+	const container = document.getElementById('cambridge-books-container');
 	if (!container) return;
 
-	const data = await loadListeningTestsData();
-	if (!data || !data.tests) {
-		container.innerHTML = `<div class="text-sm text-gray-500">Cambridge tests not available. Add ielts-listening-tests.json</div>`;
-		return;
-	}
+	const DRIVE_FOLDER =
+		'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
 
 	container.innerHTML = `
 		<div class="space-y-4">
-			<!-- Test Selector -->
-			<div class="flex flex-wrap gap-2">
-				${data.tests
+			<!-- Book Selection -->
+			<div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+				${[19, 18, 17, 16, 15, 14]
 					.map(
-						(book, idx) => `
-					<button onclick="selectCambridgeBook(${idx})"
-						class="cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors ${
+						(num, idx) => `
+					<button onclick="showCambridgeBook(${num})"
+						class="cambridge-book-btn relative flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
 							idx === 0
-								? 'bg-teal-500 text-white border-teal-500'
-								: 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-500'
+								? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20'
+								: 'border-gray-200 dark:border-gray-600 hover:border-teal-400'
 						}">
-						📕 Book ${book.book}
+						${
+							num >= 18
+								? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>'
+								: ''
+						}
+						<span class="text-2xl">📕</span>
+						<span class="text-xs font-bold text-gray-800 dark:text-gray-200 mt-1">Book ${num}</span>
 					</button>
 				`,
 					)
 					.join('')}
 			</div>
 
-			<!-- Test Content -->
-			<div id="cambridge-test-content"></div>
-
-			<!-- Audio Player -->
-			<div id="cambridge-audio-player" class="hidden bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
-				<div class="flex items-center gap-3 mb-3">
-					<span class="text-2xl">🎧</span>
-					<div class="flex-1">
-						<p id="cambridge-now-playing" class="text-sm font-medium text-gray-900 dark:text-white">Select a test to begin</p>
-						<p id="cambridge-audio-info" class="text-xs text-gray-500">-</p>
-					</div>
+			<!-- Book Content Viewer -->
+			<div id="cambridge-book-viewer" class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
+				<div class="text-center text-gray-500 py-4">
+					Select a book above to view contents
 				</div>
-				<audio id="cambridge-audio" controls class="w-full" controlsList="nodownload"></audio>
-
-				<!-- Part Navigation -->
-				<div class="flex justify-center gap-2 mt-3" id="part-navigation"></div>
 			</div>
 
-			<!-- Timer for Practice -->
-			<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+			<!-- Quick Access to Audio Folder -->
+			<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
 				<div class="flex items-center justify-between">
-					<span class="text-sm text-gray-600 dark:text-gray-400">⏱️ Test Timer:</span>
-					<div class="flex items-center gap-2">
-						<span id="listening-test-timer" class="font-mono text-lg font-bold text-teal-600 dark:text-teal-400">30:00</span>
-						<button onclick="toggleListeningTestTimer()" id="listening-timer-btn" class="px-3 py-1 text-xs rounded bg-teal-500 text-white hover:bg-teal-600">▶ Start</button>
-						<button onclick="resetListeningTestTimer()" class="px-3 py-1 text-xs rounded bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300">↺</button>
+					<div>
+						<h5 class="font-medium text-purple-800 dark:text-purple-300">🎧 Cambridge Listening Audio</h5>
+						<p class="text-xs text-purple-600 dark:text-purple-400">All test audio files available in Drive</p>
 					</div>
+					<a href="${DRIVE_FOLDER}" target="_blank" class="px-4 py-2 bg-purple-500 text-white rounded-lg text-sm hover:bg-purple-600 transition-colors">
+						Open Audio →
+					</a>
 				</div>
-			</div>
-
-			<!-- Open PDF Button -->
-			<div id="cambridge-pdf-link" class="hidden">
-				<a id="cambridge-pdf-btn" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-					📄 Open Test Questions (PDF)
-				</a>
 			</div>
 		</div>
 	`;
-
-	// Load first book by default
-	selectCambridgeBook(0);
 }
 
-function selectCambridgeBook(bookIdx) {
-	if (!listeningTestsData) return;
-	const book = listeningTestsData.tests[bookIdx];
-	if (!book) return;
+function showCambridgeBook(bookNum) {
+	const viewer = document.getElementById('cambridge-book-viewer');
+	if (!viewer) return;
 
 	// Update button styles
-	document.querySelectorAll('.cambridge-book-btn').forEach((btn, idx) => {
-		if (idx === bookIdx) {
+	document.querySelectorAll('.cambridge-book-btn').forEach((btn) => {
+		const btnNum = parseInt(btn.textContent.match(/\d+/)?.[0] || 0);
+		if (btnNum === bookNum) {
 			btn.className =
-				'cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors bg-teal-500 text-white border-teal-500';
+				'cambridge-book-btn relative flex flex-col items-center p-3 rounded-lg border-2 transition-all border-teal-500 bg-teal-50 dark:bg-teal-900/20';
 		} else {
 			btn.className =
-				'cambridge-book-btn px-3 py-2 text-sm rounded-lg border transition-colors bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-teal-500';
+				'cambridge-book-btn relative flex flex-col items-center p-3 rounded-lg border-2 transition-all border-gray-200 dark:border-gray-600 hover:border-teal-400';
 		}
 	});
 
-	// Render tests for this book
-	const content = document.getElementById('cambridge-test-content');
-	if (content) {
-		content.innerHTML = `
-			<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-				${book.tests
+	const DRIVE_FOLDER =
+		'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+
+	viewer.innerHTML = `
+		<div class="space-y-4">
+			<div class="flex items-center justify-between">
+				<h5 class="font-bold text-gray-800 dark:text-gray-200">📕 Cambridge IELTS ${bookNum}</h5>
+				<span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">4 Tests • 16 Listening Parts</span>
+			</div>
+
+			<!-- Tests Grid -->
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+				${[1, 2, 3, 4]
 					.map(
-						(test, idx) => `
-					<button onclick="selectCambridgeTest(${bookIdx}, ${idx})"
-						class="cambridge-test-btn flex flex-col items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
-						<span class="text-lg mb-1">🎯</span>
-						<span class="text-sm font-medium text-gray-800 dark:text-gray-200">Test ${test.test}</span>
-						<span class="text-xs text-gray-500">${test.parts.length} parts</span>
-					</button>
+						(testNum) => `
+					<div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+						<div class="text-center mb-2">
+							<span class="text-lg">🎯</span>
+							<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Test ${testNum}</div>
+						</div>
+						<div class="space-y-1 text-xs">
+							<div class="text-gray-500">• Listening (4 parts)</div>
+							<div class="text-gray-500">• Reading (3 passages)</div>
+							<div class="text-gray-500">• Writing (2 tasks)</div>
+						</div>
+					</div>
 				`,
 					)
 					.join('')}
 			</div>
-		`;
-	}
 
-	// Update PDF link
-	const pdfLink = document.getElementById('cambridge-pdf-link');
-	const pdfBtn = document.getElementById('cambridge-pdf-btn');
-	if (pdfLink && pdfBtn && book.pdf) {
-		pdfLink.classList.remove('hidden');
-		pdfBtn.href = book.pdf;
-	}
+			<!-- Open in Drive Button -->
+			<a href="${DRIVE_FOLDER}" target="_blank"
+				class="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:from-red-600 hover:to-orange-600 transition-all font-medium">
+				📄 Open Cambridge ${bookNum} PDF & Audio in Drive
+			</a>
 
-	// Show audio player
-	document
-		.getElementById('cambridge-audio-player')
-		?.classList.remove('hidden');
+			<!-- Practice Tips -->
+			<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+				<h6 class="text-xs font-medium text-yellow-800 dark:text-yellow-300 mb-2">💡 How to Practice:</h6>
+				<ol class="text-xs text-yellow-700 dark:text-yellow-400 space-y-1">
+					<li>1. Open PDF from Drive and print or view on second screen</li>
+					<li>2. Play audio files for listening tests</li>
+					<li>3. Use the timer below to simulate real test conditions</li>
+					<li>4. Check answers and track your score</li>
+				</ol>
+			</div>
+		</div>
+	`;
 }
 
-function selectCambridgeTest(bookIdx, testIdx) {
-	if (!listeningTestsData) return;
-	const book = listeningTestsData.tests[bookIdx];
-	const test = book?.tests[testIdx];
-	if (!test) return;
-
-	// Render part navigation
-	const nav = document.getElementById('part-navigation');
-	if (nav) {
-		nav.innerHTML = test.parts
-			.map(
-				(part, idx) => `
-			<button onclick="playCambridgePart(${bookIdx}, ${testIdx}, ${idx})"
-				class="cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors ${
-					idx === 0
-						? 'bg-purple-500 text-white border-purple-500'
-						: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-purple-500'
-				}">
-				Part ${part.part}
-			</button>
-		`,
-			)
-			.join('');
-	}
-
-	// Auto-play first part
-	playCambridgePart(bookIdx, testIdx, 0);
-}
-
-function playCambridgePart(bookIdx, testIdx, partIdx) {
-	if (!listeningTestsData) return;
-	const book = listeningTestsData.tests[bookIdx];
-	const test = book?.tests[testIdx];
-	const part = test?.parts[partIdx];
-	if (!part) return;
-
-	// Update part button styles
-	document.querySelectorAll('.cambridge-part-btn').forEach((btn, idx) => {
-		if (idx === partIdx) {
-			btn.className =
-				'cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors bg-purple-500 text-white border-purple-500';
-		} else {
-			btn.className =
-				'cambridge-part-btn px-3 py-1.5 text-xs rounded-lg border transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-purple-500';
-		}
-	});
-
-	// Update audio
-	const audio = document.getElementById('cambridge-audio');
-	const nowPlaying = document.getElementById('cambridge-now-playing');
-	const audioInfo = document.getElementById('cambridge-audio-info');
-
-	if (audio) {
-		audio.src = part.audio;
-		audio
-			.play()
-			.catch((e) => console.log('Audio play requires user interaction'));
-	}
-	if (nowPlaying) {
-		nowPlaying.textContent = `Cambridge ${book.book} - Test ${test.test} - Part ${part.part}`;
-	}
-	if (audioInfo) {
-		audioInfo.textContent = `Questions ${partIdx * 10 + 1}-${
-			(partIdx + 1) * 10
-		}`;
-	}
-}
+// Export function
+window.showCambridgeBook = showCambridgeBook;
 
 // Listening Test Timer
 let listeningTimerInterval = null;
@@ -5706,10 +6526,8 @@ function updateListeningTimerDisplay() {
 	}
 }
 
-// Export Cambridge listening functions
-window.selectCambridgeBook = selectCambridgeBook;
-window.selectCambridgeTest = selectCambridgeTest;
-window.playCambridgePart = playCambridgePart;
+// Export Cambridge book functions
+window.showCambridgeBook = showCambridgeBook;
 window.toggleListeningTestTimer = toggleListeningTestTimer;
 window.resetListeningTestTimer = resetListeningTestTimer;
 
@@ -5770,7 +6588,8 @@ function initResourcesTool() {
 	const container = document.getElementById('resources-tool-container');
 	if (!container) return;
 
-	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	const DRIVE_FOLDER =
+		'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
 
 	container.innerHTML = `
 		<div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -5858,116 +6677,1028 @@ async function loadMasterData() {
 
 function showResourceSection(section) {
 	// Hide all sections
-	document.querySelectorAll('.res-section-content').forEach(el => el.classList.add('hidden'));
+	document
+		.querySelectorAll('.res-section-content')
+		.forEach((el) => el.classList.add('hidden'));
 	// Show selected
-	document.getElementById(`res-content-${section}`)?.classList.remove('hidden');
+	document
+		.getElementById(`res-content-${section}`)
+		?.classList.remove('hidden');
 	// Update button styles
-	document.querySelectorAll('.res-section-btn').forEach(btn => {
-		btn.className = 'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap';
+	document.querySelectorAll('.res-section-btn').forEach((btn) => {
+		btn.className =
+			'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 whitespace-nowrap';
 	});
-	document.getElementById(`res-sec-${section}`).className = 'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-teal-500 text-white whitespace-nowrap';
+	document.getElementById(`res-sec-${section}`).className =
+		'res-section-btn px-3 py-1.5 text-xs rounded-lg bg-teal-500 text-white whitespace-nowrap';
 }
 
 function renderBooksSection() {
-	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
-	
+	// ========================================
+	// 🚀 IELTS STUDY LIBRARY v3.0
+	// Clean, interactive file browser
+	// ========================================
+
+	const DRIVE_CONFIG = {
+		rootFolderId: '1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_',
+		get folderUrl() { return `https://drive.google.com/drive/folders/${this.rootFolderId}`; }
+	};
+
+	// ========================================
+	// 📁 FILE DATABASE - Categories with Drive links
+	// ========================================
+	const STUDY_MATERIALS = [
+		{
+			category: 'Cambridge IELTS Books',
+			icon: '📕',
+			color: 'from-red-500 to-orange-500',
+			items: [
+				{ name: 'Cambridge IELTS 19', type: 'pdf', hot: true, id: '' },
+				{ name: 'Cambridge IELTS 18', type: 'pdf', id: '' },
+				{ name: 'Cambridge IELTS 17', type: 'pdf', id: '' },
+				{ name: 'Cambridge IELTS 16', type: 'pdf', id: '' },
+				{ name: 'Cambridge IELTS 15', type: 'pdf', id: '' },
+				{ name: 'Cambridge IELTS 14', type: 'pdf', id: '' },
+			]
+		},
+		{
+			category: 'Collins Books & Audio',
+			icon: '📗',
+			color: 'from-green-500 to-teal-500',
+			items: [
+				{ name: 'Collins Listening.pdf', type: 'pdf', id: '1-g8kgqmS9UZEhTfI9FgYsDPRDUwwq8BU' },
+				{ name: 'Collins Reading.pdf', type: 'pdf', id: '' },
+				{ name: 'Collins Speaking.pdf', type: 'pdf', id: '' },
+				{ name: 'Collins Vocabulary.pdf', type: 'pdf', id: '' },
+				{ name: 'Collins Writing.pdf', type: 'pdf', id: '' },
+				{ name: 'Collins Grammar.pdf', type: 'pdf', id: '' },
+				{ name: 'Collins Listening Audio', type: 'audio', folder: true, id: '' },
+				{ name: 'Collins Speaking Audio', type: 'audio', folder: true, id: '' },
+				{ name: 'Collins Vocab Audio', type: 'audio', folder: true, id: '' },
+			]
+		},
+		{
+			category: 'Makkar Resources',
+			icon: '🔥',
+			color: 'from-orange-500 to-red-500',
+			items: [
+				{ name: '300 Essays (Makkar).pdf', type: 'pdf', hot: true, id: '' },
+				{ name: 'Makkar Academic Reading.pdf', type: 'pdf', id: '' },
+			]
+		},
+		{
+			category: 'Practice & Tips',
+			icon: '💡',
+			color: 'from-purple-500 to-pink-500',
+			items: [
+				{ name: 'Listening Tips', type: 'doc', new: true, id: '' },
+				{ name: 'Listening Mock 2025', type: 'doc', new: true, id: '' },
+				{ name: 'Reading Practice', type: 'folder', folder: true, id: '' },
+				{ name: 'Speaking Practice', type: 'folder', folder: true, id: '' },
+			]
+		}
+	];
+
+	window.DRIVE_CONFIG = DRIVE_CONFIG;
+	window.STUDY_MATERIALS = STUDY_MATERIALS;
+
 	return `
-		<div class="space-y-6">
-			<!-- Cambridge Books -->
-			<div>
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-					📕 Cambridge IELTS Books (14-19)
-					<span class="text-xs text-gray-500">+ Audio</span>
-				</h4>
-				<div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
-					${[19, 18, 17, 16, 15, 14].map(num => `
-						<div class="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-lg p-3 text-center border border-red-200 dark:border-red-800 relative">
-							${num >= 18 ? '<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1 rounded">NEW</span>' : ''}
-							<div class="text-2xl mb-1">📕</div>
-							<div class="text-xs font-bold text-gray-800 dark:text-gray-200">Book ${num}</div>
-							<div class="text-[10px] text-gray-500 mt-1">PDF + Audio</div>
-						</div>
-					`).join('')}
+		<style>
+			/* Custom Slim Scrollbar */
+			.drive-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+			.drive-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+			.drive-scroll::-webkit-scrollbar-thumb {
+				background: linear-gradient(180deg, #14b8a6, #0d9488);
+				border-radius: 10px;
+			}
+			.drive-scroll::-webkit-scrollbar-thumb:hover { background: #0f766e; }
+			.drive-scroll { scrollbar-width: thin; scrollbar-color: #14b8a6 transparent; }
+
+			/* Category Card - Dark theme focused */
+			.category-card {
+				border-radius: 16px;
+				overflow: hidden;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				border: 1px solid rgba(255,255,255,0.05);
+				background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+			}
+			.category-card:hover {
+				border-color: rgba(20, 184, 166, 0.4);
+				box-shadow: 0 8px 32px rgba(20, 184, 166, 0.15), 0 0 0 1px rgba(20, 184, 166, 0.1);
+				transform: translateY(-2px);
+			}
+
+			/* Category Header */
+			.category-header {
+				cursor: pointer;
+				transition: all 0.2s ease;
+				background: transparent;
+			}
+			.category-header:hover {
+				background: rgba(20, 184, 166, 0.05);
+			}
+			.category-header:hover .cat-icon {
+				transform: scale(1.2) rotate(-5deg);
+			}
+			.cat-icon {
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				display: inline-block;
+			}
+
+			/* Chevron rotation */
+			.cat-chevron { 
+				transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				color: #6b7280;
+			}
+			.cat-chevron.open { 
+				transform: rotate(180deg);
+				color: #14b8a6;
+			}
+
+			/* File item effects - Premium dark style */
+			.file-item {
+				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+				border-left: 3px solid transparent;
+				background: rgba(15, 23, 42, 0.5);
+			}
+			.file-item:hover {
+				border-left-color: #14b8a6;
+				background: linear-gradient(90deg, rgba(20, 184, 166, 0.15), rgba(20, 184, 166, 0.02));
+				padding-left: 24px;
+				box-shadow: inset 0 0 20px rgba(20, 184, 166, 0.05);
+			}
+			.file-item:active { 
+				transform: scale(0.98);
+				background: rgba(20, 184, 166, 0.2);
+			}
+
+			/* File icon hover - Glow effect */
+			.file-item:hover .file-icon {
+				transform: scale(1.3) rotate(-8deg);
+				filter: drop-shadow(0 0 12px rgba(20, 184, 166, 0.6));
+			}
+			.file-icon { 
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+				display: inline-block; 
+			}
+
+			/* Expand animation - Smooth grid */
+			.category-content {
+				display: grid;
+				grid-template-rows: 0fr;
+				transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			}
+			.category-content.expanded {
+				grid-template-rows: 1fr;
+			}
+			.category-content > div {
+				overflow: hidden;
+			}
+
+			/* Stagger animation for files */
+			@keyframes fileSlideIn {
+				from { opacity: 0; transform: translateX(-16px); }
+				to { opacity: 1; transform: translateX(0); }
+			}
+			.category-content.expanded .file-item {
+				animation: fileSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+				opacity: 0;
+			}
+
+			/* Badge pulse */
+			.badge-hot {
+				animation: badgePulse 2s infinite;
+			}
+			@keyframes badgePulse {
+				0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+				50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+			}
+		</style>
+
+		<div class="space-y-4">
+			<!-- Header Banner - Modern gradient -->
+			<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-5 border border-slate-700/50">
+				<div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-transparent to-blue-500/10"></div>
+				<div class="absolute top-0 right-0 w-32 h-32 bg-teal-500/20 rounded-full blur-3xl"></div>
+				<div class="relative flex items-center gap-4">
+					<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center shadow-lg shadow-teal-500/25 flex-shrink-0">
+						<span class="text-2xl">📚</span>
+					</div>
+					<div class="flex-1 min-w-0">
+						<h4 class="font-bold text-white text-lg mb-0.5">IELTS Study Library</h4>
+						<p class="text-sm text-slate-400">
+							📂 Tap to expand • 📄 Click files to open in Drive
+						</p>
+					</div>
+					<a href="${DRIVE_CONFIG.folderUrl}" target="_blank"
+						class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 hover:-translate-y-0.5 active:scale-95">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+						</svg>
+						<span class="hidden sm:inline">Browse All</span>
+					</a>
 				</div>
-				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs text-teal-600 dark:text-teal-400 hover:underline">📂 Open Cambridge folder in Drive →</a>
 			</div>
 
-			<!-- Collins Series -->
-			<div>
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-					📚 Collins for IELTS Complete Series
-					<span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">260+ Audio</span>
-				</h4>
-				<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-					${[
-						{ name: 'Grammar', icon: '📗', audio: 35, color: 'green' },
-						{ name: 'Listening', icon: '🎧', audio: 78, color: 'purple' },
-						{ name: 'Speaking', icon: '🎤', audio: 109, color: 'blue' },
-						{ name: 'Reading', icon: '📖', audio: 0, color: 'orange' },
-						{ name: 'Writing', icon: '✍️', audio: 0, color: 'pink' },
-						{ name: 'Vocabulary', icon: '📚', audio: 38, color: 'teal' }
-					].map(book => `
-						<div class="bg-${book.color}-50 dark:bg-${book.color}-900/20 rounded-lg p-3 border border-${book.color}-200 dark:border-${book.color}-800">
-							<div class="flex items-center gap-2 mb-1">
-								<span class="text-lg">${book.icon}</span>
-								<span class="text-sm font-medium text-gray-800 dark:text-gray-200">${book.name}</span>
+			<!-- Categories Grid - Dark themed -->
+			<div class="space-y-3 max-h-[550px] overflow-y-auto drive-scroll pr-1" id="study-categories">
+				${STUDY_MATERIALS.map((cat, catIdx) => `
+					<div class="category-card">
+						<!-- Category Header -->
+						<button onclick="toggleStudyCategory(${catIdx})"
+							class="category-header w-full flex items-center gap-4 p-4 text-left">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center shadow-lg flex-shrink-0">
+								<span class="cat-icon text-2xl">${cat.icon}</span>
 							</div>
-							<div class="text-xs text-gray-500">
-								PDF ${book.audio > 0 ? `+ ${book.audio} Audio` : 'Book'}
+							<div class="flex-1 min-w-0">
+								<h5 class="font-semibold text-white text-base">${cat.category}</h5>
+								<p class="text-xs text-slate-400 flex items-center gap-2">
+									<span>${cat.items.length} items</span>
+									<span class="w-1 h-1 rounded-full bg-slate-600"></span>
+									<span class="text-teal-400">Click to expand</span>
+								</p>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="text-xs text-slate-500 hidden sm:block">${cat.items.filter(i => i.hot || i.new).length > 0 ? '✨' : ''}</span>
+								<svg class="cat-chevron w-5 h-5" id="cat-chevron-${catIdx}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+								</svg>
+							</div>
+						</button>
+
+						<!-- Category Files (Expandable) -->
+						<div class="category-content" id="cat-content-${catIdx}">
+							<div>
+								<div class="border-t border-slate-700/50 bg-slate-900/50">
+									${cat.items.map((item, idx) => `
+										<button onclick="openDriveItem('${item.name.replace(/'/g, "\\'")}', '${item.type}', ${item.folder || false}, '${item.id || ''}')"
+											class="file-item w-full flex items-center gap-4 px-5 py-3.5 text-left border-b border-slate-800/50 last:border-b-0 group"
+											style="animation-delay: ${idx * 0.06}s;">
+											<span class="file-icon text-xl flex-shrink-0">
+												${item.type === 'pdf' ? '📄' :
+												  item.type === 'audio' ? '🎧' :
+												  item.type === 'doc' ? '📝' :
+												  item.folder ? '📁' : '📋'}
+											</span>
+											<span class="flex-1 text-sm text-slate-300 truncate group-hover:text-teal-400 font-medium transition-colors">
+												${item.name}
+											</span>
+											${item.hot ? '<span class="badge-hot px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex-shrink-0 shadow-lg shadow-red-500/30">🔥 HOT</span>' : ''}
+											${item.new ? '<span class="px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex-shrink-0 shadow-lg shadow-green-500/30">✨ NEW</span>' : ''}
+											${!item.hot && !item.new ? `<span class="text-[10px] text-slate-500 uppercase font-semibold tracking-wide flex-shrink-0 bg-slate-800 px-2 py-0.5 rounded">${item.type}</span>` : ''}
+											<svg class="w-5 h-5 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+											</svg>
+										</button>
+									`).join('')}
+								</div>
 							</div>
 						</div>
-					`).join('')}
-				</div>
-				<a href="${DRIVE_FOLDER}" target="_blank" class="text-xs text-teal-600 dark:text-teal-400 hover:underline mt-2 inline-block">📂 Open Collins folder in Drive →</a>
+					</div>
+				`).join('')}
 			</div>
 
-			<!-- Makkar Materials -->
-			<div>
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-					📖 Makkar IELTS (Most Predicted)
-					<span class="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">Hot 🔥</span>
-				</h4>
-				<div class="grid gap-2 sm:grid-cols-3">
-					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">300 Essays</div>
-						<div class="text-xs text-gray-500">Writing Task 2</div>
+			<!-- Quick Access Footer - Sleek dark -->
+			<div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-xl p-4 border border-slate-700/50 backdrop-blur-sm">
+				<div class="flex flex-wrap items-center justify-between gap-3">
+					<div class="flex items-center gap-3 text-xs text-slate-500">
+						<span class="flex items-center gap-1.5">
+							<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+							Updated Dec 2024
+						</span>
+						<span class="hidden sm:inline text-slate-600">•</span>
+						<span class="hidden sm:inline">Google Drive Integration</span>
 					</div>
-					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Academic Reading</div>
-						<div class="text-xs text-gray-500">358 pages</div>
-					</div>
-					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Speaking Cue Cards</div>
-						<div class="text-xs text-gray-500">Sep-Dec 2024</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Other Resources -->
-			<div>
-				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📁 Additional Resources</h4>
-				<div class="grid gap-2 sm:grid-cols-2">
-					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Get Ready for IELTS</div>
-						<div class="text-xs text-gray-500">Book + Workbook + Audio</div>
-					</div>
-					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">1200 Common Words</div>
-						<div class="text-xs text-gray-500">Listening vocabulary</div>
-					</div>
-					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">A-to-Z Listening Guide</div>
-						<div class="text-xs text-gray-500">Complete strategies</div>
-					</div>
-					<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Reading Strategy</div>
-						<div class="text-xs text-gray-500">Tips & techniques</div>
+					<div class="flex gap-2">
+						<button onclick="expandAllCategories(true)" class="px-4 py-2 text-xs text-teal-400 hover:text-teal-300 hover:bg-teal-500/10 rounded-lg transition-all font-semibold">
+							⊕ Expand All
+						</button>
+						<button onclick="expandAllCategories(false)" class="px-4 py-2 text-xs text-slate-400 hover:text-slate-300 hover:bg-slate-700/50 rounded-lg transition-all">
+							⊖ Collapse
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	`;
 }
+
+// ========================================
+// 🚀 GOOGLE DRIVE FILE RENDERER v2.0
+// Modern 2025 JS - async/await, ES6+
+// ========================================
+
+// ========================================
+// 🚀 GOOGLE DRIVE FILE RENDERER v2.0
+// Modern 2025 JS - async/await, ES6+
+// ========================================
+
+const DriveRenderer = {
+	// Configuration
+	config: {
+		rootFolderId: '1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_',
+		cacheDuration: 30 * 60 * 1000, // 30 minutes
+	},
+
+	// URL Transformation Utilities
+	urls: {
+		// Convert share link to embeddable URLs
+		// Input: https://drive.google.com/file/d/FILE_ID/view
+		// Or just: FILE_ID
+
+		getFileId(shareUrl) {
+			if (!shareUrl) return null;
+			// Already an ID (no slashes)
+			if (!shareUrl.includes('/')) return shareUrl;
+			// Extract from URL
+			const match = shareUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+			return match?.[1] || null;
+		},
+
+		// For embedding PDFs/Docs in iframe
+		getPreviewUrl(fileId) {
+			return `https://drive.google.com/file/d/${fileId}/preview`;
+		},
+
+		// For Google Docs Viewer (works better for some PDFs)
+		getDocsViewerUrl(fileId) {
+			const directUrl = `https://drive.google.com/uc?id=${fileId}&export=view`;
+			return `https://docs.google.com/gview?url=${encodeURIComponent(
+				directUrl,
+			)}&embedded=true`;
+		},
+
+		// Direct download/view link
+		getDirectUrl(fileId) {
+			return `https://drive.google.com/uc?id=${fileId}&export=view`;
+		},
+
+		// Download link
+		getDownloadUrl(fileId) {
+			return `https://drive.google.com/uc?id=${fileId}&export=download`;
+		},
+
+		// For images
+		getImageUrl(fileId) {
+			return `https://drive.google.com/uc?id=${fileId}&export=view`;
+		},
+
+		// For videos
+		getVideoUrl(fileId) {
+			return `https://drive.google.com/uc?id=${fileId}&export=view`;
+		},
+
+		// Folder browse URL
+		getFolderUrl(folderId) {
+			return `https://drive.google.com/drive/folders/${folderId}`;
+		},
+
+		// Embedded folder view
+		getEmbeddedFolderUrl(folderId) {
+			return `https://drive.google.com/embeddedfolderview?id=${folderId}#list`;
+		},
+	},
+
+	// Detect file type from name/extension
+	getFileType(fileName) {
+		const ext = fileName?.split('.')?.pop()?.toLowerCase();
+		const types = {
+			pdf: ['pdf'],
+			image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'],
+			video: ['mp4', 'webm', 'mov', 'avi', 'mkv'],
+			audio: ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac'],
+			doc: ['doc', 'docx', 'odt'],
+			sheet: ['xls', 'xlsx', 'csv', 'ods'],
+			slide: ['ppt', 'pptx', 'odp'],
+		};
+
+		for (const [type, extensions] of Object.entries(types)) {
+			if (extensions.includes(ext)) return type;
+		}
+		return 'unknown';
+	},
+
+	// Check if file might have virus scan warning (large files)
+	mightHaveVirusScanWarning(fileSize) {
+		// Google shows warning for files > 100MB
+		return fileSize && fileSize > 100 * 1024 * 1024;
+	},
+};
+
+// ========================================
+// CATEGORY TOGGLE FUNCTION (for new design)
+// ========================================
+function toggleStudyCategory(catIndex) {
+	const content = document.getElementById(`cat-content-${catIndex}`);
+	const chevron = document.getElementById(`cat-chevron-${catIndex}`);
+
+	if (content && chevron) {
+		const isExpanded = content.classList.contains('expanded');
+
+		if (isExpanded) {
+			content.classList.remove('expanded');
+			chevron.classList.remove('open');
+		} else {
+			content.classList.add('expanded');
+			chevron.classList.add('open');
+		}
+	}
+}
+
+// Expand/Collapse all categories
+function expandAllCategories(expand) {
+	const categories = document.querySelectorAll('.category-content');
+	const chevrons = document.querySelectorAll('.cat-chevron');
+	
+	categories.forEach(cat => {
+		if (expand) {
+			cat.classList.add('expanded');
+		} else {
+			cat.classList.remove('expanded');
+		}
+	});
+	
+	chevrons.forEach(chev => {
+		if (expand) {
+			chev.classList.add('open');
+		} else {
+			chev.classList.remove('open');
+		}
+	});
+}
+
+// Open file/folder in Google Drive - Opens in modal if has ID, otherwise fallback
+function openDriveItem(name, type, isFolder, fileId) {
+	// If we have a file ID, open in modal viewer
+	if (fileId && fileId.length > 10) {
+		openDriveFileModal(fileId, name, type);
+		return;
+	}
+	
+	// Fallback: Show a modal asking user to open in Drive
+	showDriveFallbackModal(name, type, isFolder);
+}
+
+// Open file in in-app modal viewer
+function openDriveFileModal(fileId, fileName, fileType) {
+	// Remove any existing modal
+	document.getElementById('drive-file-modal')?.remove();
+	
+	// Determine the embed URL based on file type
+	let embedUrl;
+	let viewerLabel;
+	
+	switch (fileType) {
+		case 'pdf':
+			// Google Docs Viewer for PDFs - most reliable
+			embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+			viewerLabel = '📄 PDF Document';
+			break;
+		case 'audio':
+			embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+			viewerLabel = '🎧 Audio File';
+			break;
+		case 'video':
+			embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+			viewerLabel = '🎬 Video';
+			break;
+		default:
+			embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+			viewerLabel = '📝 Document';
+	}
+	
+	const modal = document.createElement('div');
+	modal.id = 'drive-file-modal';
+	modal.className = 'fixed inset-0 z-[9999] flex flex-col';
+	modal.innerHTML = `
+		<style>
+			#drive-file-modal { background: #0f172a; }
+			.drive-modal-loading {
+				position: absolute; inset: 0;
+				display: flex; align-items: center; justify-content: center;
+				background: #0f172a; z-index: 10;
+			}
+		</style>
+		
+		<!-- Header -->
+		<div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-3 min-w-0 flex-1">
+				<button onclick="closeDriveFileModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+					</svg>
+					<span class="text-sm hidden sm:inline">Back</span>
+				</button>
+				<div class="h-6 w-px bg-slate-600 hidden sm:block"></div>
+				<div class="min-w-0 flex-1">
+					<h3 class="font-semibold text-white truncate text-sm sm:text-base">${fileName}</h3>
+					<p class="text-xs text-slate-400 hidden sm:block">${viewerLabel}</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-2">
+				<a href="https://drive.google.com/uc?id=${fileId}&export=download" 
+					class="flex items-center gap-1 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg transition-colors" title="Download">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+					</svg>
+					<span class="hidden sm:inline">Download</span>
+				</a>
+				<a href="https://drive.google.com/file/d/${fileId}/view" target="_blank"
+					class="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg transition-colors">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+					</svg>
+					<span class="hidden sm:inline">Open in Drive</span>
+				</a>
+				<button onclick="closeDriveFileModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+		
+		<!-- Content -->
+		<div class="flex-1 overflow-hidden relative bg-slate-900">
+			<div class="drive-modal-loading" id="drive-modal-loading">
+				<div class="text-center">
+					<div class="w-12 h-12 border-4 border-teal-500/30 border-t-teal-500 rounded-full animate-spin mx-auto mb-4"></div>
+					<p class="text-slate-400 text-sm">Loading ${viewerLabel}...</p>
+				</div>
+			</div>
+			<iframe 
+				src="${embedUrl}" 
+				class="w-full h-full border-0"
+				style="background: white;"
+				title="${fileName}"
+				onload="document.getElementById('drive-modal-loading').style.display='none'"
+				allow="autoplay; fullscreen"
+				allowfullscreen>
+			</iframe>
+		</div>
+		
+		<!-- Footer -->
+		<div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-t border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-2 text-xs text-slate-400">
+				<span class="text-teal-400">${viewerLabel}</span>
+				<span>•</span>
+				<span>Press ESC to close</span>
+			</div>
+		</div>
+	`;
+	
+	document.body.appendChild(modal);
+	document.body.style.overflow = 'hidden';
+	
+	// ESC to close
+	const escHandler = (e) => { if (e.key === 'Escape') closeDriveFileModal(); };
+	document.addEventListener('keydown', escHandler);
+	modal._escHandler = escHandler;
+}
+
+// Close the drive file modal
+function closeDriveFileModal() {
+	const modal = document.getElementById('drive-file-modal');
+	if (modal) {
+		if (modal._escHandler) {
+			document.removeEventListener('keydown', modal._escHandler);
+		}
+		modal.remove();
+		document.body.style.overflow = '';
+	}
+}
+
+// Fallback modal when no file ID available
+function showDriveFallbackModal(name, type, isFolder) {
+	const rootFolder = window.DRIVE_CONFIG?.rootFolderId || '1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	const driveUrl = `https://drive.google.com/drive/folders/${rootFolder}`;
+	
+	// Remove existing
+	document.getElementById('drive-fallback-modal')?.remove();
+	
+	const modal = document.createElement('div');
+	modal.id = 'drive-fallback-modal';
+	modal.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+	modal.innerHTML = `
+		<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDriveFallbackModal()"></div>
+		<div class="relative bg-gradient-to-b from-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-slate-700 max-w-md w-full p-6 animate-in zoom-in-95">
+			<div class="text-center">
+				<div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center shadow-lg">
+					<span class="text-3xl">${isFolder ? '📁' : type === 'pdf' ? '📄' : type === 'audio' ? '🎧' : '📝'}</span>
+				</div>
+				<h3 class="text-lg font-bold text-white mb-2">${name}</h3>
+				<p class="text-sm text-slate-400 mb-6">
+					This file will open in Google Drive where you can view, download, or play it.
+				</p>
+				<div class="flex gap-3 justify-center">
+					<button onclick="closeDriveFallbackModal()" 
+						class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-colors">
+						Cancel
+					</button>
+					<a href="${driveUrl}" target="_blank" onclick="closeDriveFallbackModal()"
+						class="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-500 hover:to-blue-500 rounded-xl transition-all shadow-lg hover:shadow-teal-500/25 flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+						</svg>
+						Open in Google Drive
+					</a>
+				</div>
+			</div>
+		</div>
+	`;
+	
+	document.body.appendChild(modal);
+	
+	// ESC to close
+	const escHandler = (e) => { if (e.key === 'Escape') closeDriveFallbackModal(); };
+	document.addEventListener('keydown', escHandler);
+	modal._escHandler = escHandler;
+}
+
+function closeDriveFallbackModal() {
+	const modal = document.getElementById('drive-fallback-modal');
+	if (modal) {
+		if (modal._escHandler) {
+			document.removeEventListener('keydown', modal._escHandler);
+		}
+		modal.remove();
+	}
+}
+
+// ========================================
+// FOLDER TOGGLE FUNCTION (legacy)
+// ========================================
+function toggleDriveFolder(folderIndex) {
+	const content = document.getElementById(`folder-content-${folderIndex}`);
+	const chevron = document.getElementById(`chevron-${folderIndex}`);
+
+	if (content && chevron) {
+		const isExpanded = content.classList.contains('expanded');
+
+		if (isExpanded) {
+			content.classList.remove('expanded');
+			chevron.classList.remove('rotated');
+		} else {
+			content.classList.add('expanded');
+			chevron.classList.add('rotated');
+		}
+	}
+}
+
+// ========================================
+// DRIVE FILE VIEWER - Renders files inline
+// ========================================
+function openDriveFile(fileId, fileName, fileType) {
+	// If no file ID, open Drive folder browser
+	if (!fileId) {
+		openDriveFolderViewer(
+			DriveRenderer.config.rootFolderId,
+			fileName || 'IELTS Files',
+		);
+		return;
+	}
+
+	// Remove existing modal
+	document.getElementById('drive-viewer-modal')?.remove();
+
+	const modal = document.createElement('div');
+	modal.id = 'drive-viewer-modal';
+	modal.className = 'fixed inset-0 z-[9999] flex flex-col';
+	modal.style.cssText = 'background: #0f172a;';
+
+	// Determine embed URL based on file type
+	const detectedType = fileType || DriveRenderer.getFileType(fileName);
+	let embedUrl, viewerLabel;
+
+	switch (detectedType) {
+		case 'pdf':
+			// Use Google Docs Viewer for PDFs - more reliable
+			embedUrl = DriveRenderer.urls.getDocsViewerUrl(fileId);
+			viewerLabel = '📄 PDF Document';
+			break;
+		case 'image':
+			embedUrl = DriveRenderer.urls.getImageUrl(fileId);
+			viewerLabel = '🖼️ Image';
+			break;
+		case 'video':
+			embedUrl = DriveRenderer.urls.getPreviewUrl(fileId);
+			viewerLabel = '🎬 Video';
+			break;
+		case 'audio':
+			embedUrl = DriveRenderer.urls.getPreviewUrl(fileId);
+			viewerLabel = '🎵 Audio';
+			break;
+		default:
+			embedUrl = DriveRenderer.urls.getPreviewUrl(fileId);
+			viewerLabel = '📝 Document';
+	}
+
+	modal.innerHTML = `
+		<style>
+			.drive-modal-scroll::-webkit-scrollbar { width: 6px; }
+			.drive-modal-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+			.drive-modal-scroll::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #14b8a6, #0d9488); border-radius: 10px; }
+		</style>
+
+		<!-- Header -->
+		<div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-3 min-w-0 flex-1">
+				<button onclick="closeDriveViewer()" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+					</svg>
+					<span class="text-sm hidden sm:inline">Back</span>
+				</button>
+				<div class="h-6 w-px bg-slate-600 hidden sm:block"></div>
+				<div class="min-w-0 flex-1">
+					<h3 class="font-semibold text-white truncate text-sm sm:text-base">${fileName}</h3>
+					<p class="text-xs text-slate-400 hidden sm:block">${viewerLabel}</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-2">
+				<a href="${DriveRenderer.urls.getDownloadUrl(fileId)}"
+					class="flex items-center gap-1 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg transition-colors" title="Download">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+					</svg>
+					<span class="hidden sm:inline">Download</span>
+				</a>
+				<a href="https://drive.google.com/file/d/${fileId}/view" target="_blank"
+					class="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg transition-colors">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+					</svg>
+					<span class="hidden sm:inline">Open in Drive</span>
+				</a>
+				<button onclick="closeDriveViewer()" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<!-- Content Area -->
+		<div class="flex-1 overflow-hidden relative bg-slate-900">
+			<!-- Loading -->
+			<div id="drive-viewer-loading" class="absolute inset-0 flex items-center justify-center bg-slate-900 z-10">
+				<div class="text-center">
+					<div class="w-12 h-12 border-4 border-teal-500/30 border-t-teal-500 rounded-full animate-spin mx-auto mb-4"></div>
+					<p class="text-slate-400 text-sm">Loading ${viewerLabel}...</p>
+				</div>
+			</div>
+
+			${
+				detectedType === 'image'
+					? `
+				<!-- Native Image Viewer -->
+				<div class="w-full h-full flex items-center justify-center p-4 overflow-auto">
+					<img src="${embedUrl}" alt="${fileName}"
+						class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+						onload="document.getElementById('drive-viewer-loading').style.display='none'"
+						onerror="this.parentElement.innerHTML='<div class=\\'text-center text-red-400\\'><p>Failed to load image</p><a href=\\'${DriveRenderer.urls.getPreviewUrl(
+							fileId,
+						)}\\' target=\\'_blank\\' class=\\'text-teal-400 underline\\'>Open in Drive</a></div>'">
+				</div>
+			`
+					: detectedType === 'video'
+					? `
+				<!-- Native Video Player -->
+				<video controls autoplay class="w-full h-full bg-black"
+					onloadeddata="document.getElementById('drive-viewer-loading').style.display='none'">
+					<source src="${DriveRenderer.urls.getDirectUrl(fileId)}" type="video/mp4">
+					Your browser doesn't support video playback.
+				</video>
+			`
+					: detectedType === 'audio'
+					? `
+				<!-- Audio with visual -->
+				<div class="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-purple-900/50 to-slate-900">
+					<div class="text-6xl mb-6">🎵</div>
+					<h3 class="text-white text-xl font-semibold mb-4">${fileName}</h3>
+					<audio controls autoplay class="w-full max-w-md"
+						onloadeddata="document.getElementById('drive-viewer-loading').style.display='none'">
+						<source src="${DriveRenderer.urls.getDirectUrl(fileId)}" type="audio/mpeg">
+					</audio>
+				</div>
+			`
+					: `
+				<!-- iFrame for PDFs/Docs -->
+				<iframe
+					src="${embedUrl}"
+					class="w-full h-full border-0"
+					style="background: white;"
+					title="${fileName}"
+					onload="document.getElementById('drive-viewer-loading').style.display='none'"
+					allow="autoplay; fullscreen"
+					allowfullscreen>
+				</iframe>
+			`
+			}
+		</div>
+
+		<!-- Footer -->
+		<div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-t border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-2 text-xs text-slate-400">
+				<span class="text-teal-400">${viewerLabel}</span>
+				<span>•</span>
+				<span>Press ESC to close</span>
+			</div>
+			<button onclick="toggleDriveFullscreen()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 px-2 py-1 hover:bg-slate-700 rounded transition-colors">
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+				</svg>
+				Fullscreen
+			</button>
+		</div>
+	`;
+
+	document.body.appendChild(modal);
+	document.body.style.overflow = 'hidden';
+
+	// ESC to close
+	const escHandler = (e) => {
+		if (e.key === 'Escape') closeDriveViewer();
+	};
+	document.addEventListener('keydown', escHandler);
+	modal._escHandler = escHandler;
+}
+
+// ========================================
+// FOLDER BROWSER - Opens Drive folder view
+// ========================================
+function openDriveFolderViewer(folderId, folderName = 'Files') {
+	const actualFolderId = folderId || DriveRenderer.config.rootFolderId;
+
+	document.getElementById('drive-viewer-modal')?.remove();
+
+	const modal = document.createElement('div');
+	modal.id = 'drive-viewer-modal';
+	modal.className = 'fixed inset-0 z-[9999] flex flex-col';
+	modal.style.cssText = 'background: #0f172a;';
+
+	modal.innerHTML = `
+		<!-- Header -->
+		<div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-3 min-w-0 flex-1">
+				<button onclick="closeDriveViewer()" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+					</svg>
+					<span class="text-sm hidden sm:inline">Back</span>
+				</button>
+				<div class="h-6 w-px bg-slate-600 hidden sm:block"></div>
+				<div class="min-w-0 flex-1">
+					<h3 class="font-semibold text-white truncate text-sm sm:text-base">📂 ${folderName}</h3>
+					<p class="text-xs text-slate-400 hidden sm:block">Click any file to open it</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-2">
+				<a href="${DriveRenderer.urls.getFolderUrl(actualFolderId)}" target="_blank"
+					class="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg transition-colors">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+					</svg>
+					<span class="hidden sm:inline">Open in Drive</span>
+				</a>
+				<button onclick="closeDriveViewer()" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<!-- Info Banner -->
+		<div class="bg-gradient-to-r from-teal-500/20 to-blue-500/20 px-4 py-2 flex items-center gap-2 border-b border-teal-500/30 flex-shrink-0">
+			<span class="text-teal-400">💡</span>
+			<span class="text-teal-200 text-xs sm:text-sm">Click any file below to preview it. Files will open in a new tab.</span>
+		</div>
+
+		<!-- Folder Content -->
+		<div class="flex-1 overflow-hidden relative">
+			<div id="drive-viewer-loading" class="absolute inset-0 flex items-center justify-center bg-slate-900 z-10">
+				<div class="text-center">
+					<div class="w-12 h-12 border-4 border-teal-500/30 border-t-teal-500 rounded-full animate-spin mx-auto mb-4"></div>
+					<p class="text-slate-400 text-sm">Loading folder...</p>
+				</div>
+			</div>
+			<iframe
+				src="${DriveRenderer.urls.getEmbeddedFolderUrl(actualFolderId)}"
+				class="w-full h-full border-0"
+				style="background: white;"
+				title="${folderName}"
+				onload="document.getElementById('drive-viewer-loading').style.display='none'"
+				allow="autoplay; fullscreen"
+				allowfullscreen>
+			</iframe>
+		</div>
+
+		<!-- Footer -->
+		<div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-t border-slate-700 flex-shrink-0">
+			<div class="flex items-center gap-2 text-xs text-slate-400">
+				<span class="text-blue-400">📂 Folder Browser</span>
+				<span>•</span>
+				<span>ESC to close</span>
+			</div>
+			<button onclick="toggleDriveFullscreen()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 px-2 py-1 hover:bg-slate-700 rounded transition-colors">
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+				</svg>
+				Fullscreen
+			</button>
+		</div>
+	`;
+
+	document.body.appendChild(modal);
+	document.body.style.overflow = 'hidden';
+
+	const escHandler = (e) => {
+		if (e.key === 'Escape') closeDriveViewer();
+	};
+	document.addEventListener('keydown', escHandler);
+	modal._escHandler = escHandler;
+}
+
+// Close viewer
+function closeDriveViewer() {
+	const modal = document.getElementById('drive-viewer-modal');
+	if (modal) {
+		if (modal._escHandler)
+			document.removeEventListener('keydown', modal._escHandler);
+		modal.remove();
+		document.body.style.overflow = '';
+	}
+}
+
+// Fullscreen toggle
+function toggleDriveFullscreen() {
+	const modal = document.getElementById('drive-viewer-modal');
+	if (!modal) return;
+
+	if (document.fullscreenElement) {
+		document.exitFullscreen();
+	} else {
+		modal.requestFullscreen().catch((err) => console.log(err));
+	}
+}
+
+// Legacy compatibility - map old function names
+function openFileBrowser(searchFor = '') {
+	openDriveFolderViewer(null, searchFor || 'IELTS Study Materials');
+}
+
+function openFileViewer(fileName, fileType, driveFileId) {
+	openDriveFile(driveFileId, fileName, fileType);
+}
+
+function closeFileViewer() {
+	closeDriveViewer();
+}
+
+function toggleFullscreen() {
+	toggleDriveFullscreen();
+}
+
+// Export to window
+window.DriveRenderer = DriveRenderer;
+window.toggleDriveFolder = toggleDriveFolder;
+window.toggleStudyCategory = toggleStudyCategory;
+window.expandAllCategories = expandAllCategories;
+window.openDriveItem = openDriveItem;
+window.openDriveFileModal = openDriveFileModal;
+window.closeDriveFileModal = closeDriveFileModal;
+window.showDriveFallbackModal = showDriveFallbackModal;
+window.closeDriveFallbackModal = closeDriveFallbackModal;
+window.openDriveFile = openDriveFile;
+window.openDriveFolderViewer = openDriveFolderViewer;
+window.closeDriveViewer = closeDriveViewer;
+window.toggleDriveFullscreen = toggleDriveFullscreen;
+window.openFileBrowser = openFileBrowser;
+window.openFileViewer = openFileViewer;
+window.closeFileViewer = closeFileViewer;
+window.toggleFullscreen = toggleFullscreen;
+window.speakWord = speakWord;
+
+// Book details functions
+function showBookDetails(bookNum) {
+	const panel = document.getElementById('book-details-panel');
+	const title = document.getElementById('book-details-title');
+	if (panel && title) {
+		panel.classList.remove('hidden');
+		title.textContent = 'Cambridge IELTS ' + bookNum;
+	}
+}
+
+function hideBookDetails() {
+	const panel = document.getElementById('book-details-panel');
+	if (panel) {
+		panel.classList.add('hidden');
+	}
+}
+
+window.showBookDetails = showBookDetails;
+window.hideBookDetails = hideBookDetails;
 
 function renderStrategiesSection() {
 	return `
@@ -5979,21 +7710,55 @@ function renderStrategiesSection() {
 				</h4>
 				<div class="grid gap-2">
 					${[
-						{ type: 'Matching Headings', diff: 'Hard', tip: 'Skim for main idea, eliminate used headings' },
-						{ type: 'True/False/Not Given', diff: 'Hard', tip: 'TRUE=same, FALSE=opposite, NG=no info' },
-						{ type: 'Yes/No/Not Given', diff: 'Hard', tip: "About writer's OPINION only" },
-						{ type: 'Sentence Completion', diff: 'Medium', tip: 'Check word limit, exact words from passage' },
-						{ type: 'Multiple Choice', diff: 'Medium', tip: 'Eliminate wrong answers, beware distractors' },
-						{ type: 'Summary Completion', diff: 'Medium', tip: 'Answers usually in order' }
-					].map(q => `
+						{
+							type: 'Matching Headings',
+							diff: 'Hard',
+							tip: 'Skim for main idea, eliminate used headings',
+						},
+						{
+							type: 'True/False/Not Given',
+							diff: 'Hard',
+							tip: 'TRUE=same, FALSE=opposite, NG=no info',
+						},
+						{
+							type: 'Yes/No/Not Given',
+							diff: 'Hard',
+							tip: "About writer's OPINION only",
+						},
+						{
+							type: 'Sentence Completion',
+							diff: 'Medium',
+							tip: 'Check word limit, exact words from passage',
+						},
+						{
+							type: 'Multiple Choice',
+							diff: 'Medium',
+							tip: 'Eliminate wrong answers, beware distractors',
+						},
+						{
+							type: 'Summary Completion',
+							diff: 'Medium',
+							tip: 'Answers usually in order',
+						},
+					]
+						.map(
+							(q) => `
 						<div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
 							<div class="flex items-center justify-between mb-1">
-								<span class="text-sm font-medium text-gray-800 dark:text-gray-200">${q.type}</span>
-								<span class="text-[10px] px-2 py-0.5 rounded ${q.diff === 'Hard' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'}">${q.diff}</span>
+								<span class="text-sm font-medium text-gray-800 dark:text-gray-200">${
+									q.type
+								}</span>
+								<span class="text-[10px] px-2 py-0.5 rounded ${
+									q.diff === 'Hard'
+										? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+										: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+								}">${q.diff}</span>
 							</div>
 							<div class="text-xs text-gray-500">${q.tip}</div>
 						</div>
-					`).join('')}
+					`,
+						)
+						.join('')}
 				</div>
 				<div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
 					<div class="text-xs font-medium text-blue-800 dark:text-blue-300 mb-1">⏱️ Time Management</div>
@@ -6008,17 +7773,41 @@ function renderStrategiesSection() {
 				</h4>
 				<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
 					${[
-						{ sec: 1, type: 'Conversation', ctx: 'Social', diff: 'Easiest' },
-						{ sec: 2, type: 'Monologue', ctx: 'Social', diff: 'Easy' },
-						{ sec: 3, type: 'Conversation', ctx: 'Academic', diff: 'Medium' },
-						{ sec: 4, type: 'Lecture', ctx: 'Academic', diff: 'Hard' }
-					].map(s => `
+						{
+							sec: 1,
+							type: 'Conversation',
+							ctx: 'Social',
+							diff: 'Easiest',
+						},
+						{
+							sec: 2,
+							type: 'Monologue',
+							ctx: 'Social',
+							diff: 'Easy',
+						},
+						{
+							sec: 3,
+							type: 'Conversation',
+							ctx: 'Academic',
+							diff: 'Medium',
+						},
+						{
+							sec: 4,
+							type: 'Lecture',
+							ctx: 'Academic',
+							diff: 'Hard',
+						},
+					]
+						.map(
+							(s) => `
 						<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-2 text-center border border-purple-200 dark:border-purple-800">
 							<div class="text-lg font-bold text-purple-600 dark:text-purple-400">S${s.sec}</div>
 							<div class="text-[10px] text-gray-600 dark:text-gray-400">${s.type}</div>
 							<div class="text-[10px] text-gray-500">${s.diff}</div>
 						</div>
-					`).join('')}
+					`,
+						)
+						.join('')}
 				</div>
 				<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
 					<div class="text-xs font-medium text-yellow-800 dark:text-yellow-300 mb-2">⚠️ Common Traps</div>
@@ -6069,10 +7858,27 @@ function renderSpeakingSection() {
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">🎤 Speaking Test Structure</h4>
 				<div class="space-y-2">
 					${[
-						{ part: 1, name: 'Introduction', time: '4-5 min', tip: 'Give 2-3 sentence answers with examples' },
-						{ part: 2, name: 'Long Turn', time: '3-4 min', tip: '1 min prep → 2 min speak, cover ALL points' },
-						{ part: 3, name: 'Discussion', time: '4-5 min', tip: 'Show critical thinking, discuss both sides' }
-					].map(p => `
+						{
+							part: 1,
+							name: 'Introduction',
+							time: '4-5 min',
+							tip: 'Give 2-3 sentence answers with examples',
+						},
+						{
+							part: 2,
+							name: 'Long Turn',
+							time: '3-4 min',
+							tip: '1 min prep → 2 min speak, cover ALL points',
+						},
+						{
+							part: 3,
+							name: 'Discussion',
+							time: '4-5 min',
+							tip: 'Show critical thinking, discuss both sides',
+						},
+					]
+						.map(
+							(p) => `
 						<div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
 							<div class="flex items-center justify-between mb-1">
 								<span class="text-sm font-bold text-blue-800 dark:text-blue-300">Part ${p.part}: ${p.name}</span>
@@ -6080,7 +7886,9 @@ function renderSpeakingSection() {
 							</div>
 							<div class="text-xs text-blue-700 dark:text-blue-400">${p.tip}</div>
 						</div>
-					`).join('')}
+					`,
+						)
+						.join('')}
 				</div>
 			</div>
 
@@ -6092,9 +7900,19 @@ function renderSpeakingSection() {
 				</h4>
 				<div id="cue-cards-browser" class="space-y-3">
 					<div class="flex flex-wrap gap-1 mb-3">
-						${['people', 'places', 'events', 'objects', 'activities'].map((cat, idx) => `
-							<button onclick="showCueCardCategory('${cat}')" class="cue-cat-btn text-xs px-3 py-1 rounded-full ${idx === 0 ? 'bg-teal-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>
-						`).join('')}
+						${['people', 'places', 'events', 'objects', 'activities']
+							.map(
+								(cat, idx) => `
+							<button onclick="showCueCardCategory('${cat}')" class="cue-cat-btn text-xs px-3 py-1 rounded-full ${
+									idx === 0
+										? 'bg-teal-500 text-white'
+										: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+								}">${
+									cat.charAt(0).toUpperCase() + cat.slice(1)
+								}</button>
+						`,
+							)
+							.join('')}
 					</div>
 					<div id="cue-cards-list" class="max-h-48 overflow-y-auto space-y-1">
 						${renderCueCards('people')}
@@ -6120,59 +7938,82 @@ function renderSpeakingSection() {
 function renderCueCards(category) {
 	const cueCards = {
 		people: [
-			"Describe a person who has chosen a career in the medical field",
-			"Describe a person who likes to read a lot",
-			"Describe a person who makes things by hand",
-			"Describe a person who has strong opinions",
-			"Describe someone who is a role model for young people",
-			"Describe a person who encouraged you to achieve your goal",
-			"Describe a person who thinks music is important"
+			'Describe a person who has chosen a career in the medical field',
+			'Describe a person who likes to read a lot',
+			'Describe a person who makes things by hand',
+			'Describe a person who has strong opinions',
+			'Describe someone who is a role model for young people',
+			'Describe a person who encouraged you to achieve your goal',
+			'Describe a person who thinks music is important',
+			'Describe a person who likes to buy goods with low prices',
+			'Describe a person you are happy to know',
+			'Describe someone who made a good decision recently',
 		],
 		places: [
-			"Describe a crowded place you have visited",
-			"Describe an ideal place where you would like to stay",
-			"Describe a natural place (parks, mountains)",
-			"Describe a tourist attraction that few people visit",
-			"Describe a place where things are expensive",
-			"Describe an indoor/outdoor place easy for study"
+			'Describe a crowded place you have visited',
+			'Describe an ideal place where you would like to stay',
+			'Describe a natural place (parks, mountains)',
+			'Describe a tourist attraction that few people visit',
+			'Describe a place where things are expensive',
+			'Describe an indoor/outdoor place easy for study',
+			'Describe a place you have taken photos more than once',
+			'Describe an interesting place you visited with a friend',
+			'Describe a city/town good for people to live in',
 		],
 		events: [
-			"Describe a time when you lost an important item",
-			"Describe a party that you enjoyed",
-			"Describe a challenge you faced that was difficult",
-			"Describe something you did that made you feel proud",
-			"Describe a risk that ended up well",
-			"Describe when you received money as a gift"
+			'Describe a time when you lost an important item',
+			'Describe a party that you enjoyed',
+			'Describe a challenge you faced that was difficult',
+			'Describe something you did that made you feel proud',
+			'Describe a risk that ended up well',
+			'Describe when you received money as a gift',
+			"Describe a time you answered a call from someone you didn't know",
+			'Describe an occasion you helped a family member',
+			'Describe a time you taught something new to a younger person',
+			'Describe a complaint you made and were satisfied with the result',
 		],
 		objects: [
-			"Describe a prize you have received recently",
-			"Describe a picture/photograph of you that you like",
-			"Describe an important plant in your country",
-			"Describe something you own that you want to replace"
+			'Describe a prize you have received recently',
+			'Describe a picture/photograph of you that you like',
+			'Describe an important plant in your country',
+			'Describe something you own that you want to replace',
+			'Describe a movie you watched recently',
+			'Describe an online video where you learned something new',
+			'Describe a film character you admire',
 		],
 		activities: [
-			"Describe your favourite food at a traditional festival",
-			"Describe a subject you would like to learn",
+			'Describe your favourite food at a traditional festival',
+			'Describe a subject you would like to learn',
 			"Describe a sport you watched but haven't played",
-			"Describe a special meal someone made for you",
-			"Describe an enjoyable journey by public transport",
-			"Describe something you would like to learn in future"
-		]
+			'Describe a special meal someone made for you',
+			'Describe an enjoyable journey by public transport',
+			'Describe something you would like to learn in future',
+			'Describe something you did with a group of people',
+			'Describe an activity you enjoyed in your free time when young',
+			'Describe something in your work/study that made you feel confident',
+		],
 	};
 
-	return (cueCards[category] || []).map((card, idx) => `
+	return (cueCards[category] || [])
+		.map(
+			(card, idx) => `
 		<div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-600 text-xs text-gray-700 dark:text-gray-300">
 			${idx + 1}. ${card}
 		</div>
-	`).join('');
+	`,
+		)
+		.join('');
 }
 
 function showCueCardCategory(category) {
-	document.querySelectorAll('.cue-cat-btn').forEach(btn => {
-		btn.className = 'cue-cat-btn text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
+	document.querySelectorAll('.cue-cat-btn').forEach((btn) => {
+		btn.className =
+			'cue-cat-btn text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
 	});
-	event.target.className = 'cue-cat-btn text-xs px-3 py-1 rounded-full bg-teal-500 text-white';
-	document.getElementById('cue-cards-list').innerHTML = renderCueCards(category);
+	event.target.className =
+		'cue-cat-btn text-xs px-3 py-1 rounded-full bg-teal-500 text-white';
+	document.getElementById('cue-cards-list').innerHTML =
+		renderCueCards(category);
 }
 
 function renderWritingSection() {
@@ -6183,18 +8024,40 @@ function renderWritingSection() {
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📊 Task 1 Templates</h4>
 				<div class="grid gap-2 sm:grid-cols-2">
 					${[
-						{ type: 'Line Graph', intro: 'The line graph illustrates/shows/depicts...' },
-						{ type: 'Bar Chart', intro: 'The bar chart compares...' },
-						{ type: 'Pie Chart', intro: 'The pie chart shows the proportion of...' },
-						{ type: 'Table', intro: 'The table provides information about...' },
-						{ type: 'Process', intro: 'The diagram illustrates the process of...' },
-						{ type: 'Map', intro: 'The maps compare [location] in [time periods]...' }
-					].map(t => `
+						{
+							type: 'Line Graph',
+							intro: 'The line graph illustrates/shows/depicts...',
+						},
+						{
+							type: 'Bar Chart',
+							intro: 'The bar chart compares...',
+						},
+						{
+							type: 'Pie Chart',
+							intro: 'The pie chart shows the proportion of...',
+						},
+						{
+							type: 'Table',
+							intro: 'The table provides information about...',
+						},
+						{
+							type: 'Process',
+							intro: 'The diagram illustrates the process of...',
+						},
+						{
+							type: 'Map',
+							intro: 'The maps compare [location] in [time periods]...',
+						},
+					]
+						.map(
+							(t) => `
 						<div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-800">
 							<div class="text-sm font-medium text-orange-800 dark:text-orange-300 mb-1">${t.type}</div>
 							<div class="text-[11px] text-orange-700 dark:text-orange-400 italic">"${t.intro}"</div>
 						</div>
-					`).join('')}
+					`,
+						)
+						.join('')}
 				</div>
 			</div>
 
@@ -6203,11 +8066,36 @@ function renderWritingSection() {
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📝 Task 2 Essay Types</h4>
 				<div class="space-y-2">
 					${[
-						{ type: 'Opinion', question: 'To what extent do you agree or disagree?', structure: 'Intro → Body 1 (reason) → Body 2 (reason) → Conclusion' },
-						{ type: 'Discussion', question: 'Discuss both views and give your opinion.', structure: 'Intro → View 1 → View 2 → Your Opinion → Conclusion' },
-						{ type: 'Problem-Solution', question: 'What problems? What solutions?', structure: 'Intro → Problems → Solutions → Conclusion' },
-						{ type: 'Advantages-Disadvantages', question: 'What are the advantages and disadvantages?', structure: 'Intro → Advantages → Disadvantages → Conclusion' }
-					].map(e => `
+						{
+							type: 'Opinion',
+							question:
+								'To what extent do you agree or disagree?',
+							structure:
+								'Intro → Body 1 (reason) → Body 2 (reason) → Conclusion',
+						},
+						{
+							type: 'Discussion',
+							question:
+								'Discuss both views and give your opinion.',
+							structure:
+								'Intro → View 1 → View 2 → Your Opinion → Conclusion',
+						},
+						{
+							type: 'Problem-Solution',
+							question: 'What problems? What solutions?',
+							structure:
+								'Intro → Problems → Solutions → Conclusion',
+						},
+						{
+							type: 'Advantages-Disadvantages',
+							question:
+								'What are the advantages and disadvantages?',
+							structure:
+								'Intro → Advantages → Disadvantages → Conclusion',
+						},
+					]
+						.map(
+							(e) => `
 						<div class="bg-pink-50 dark:bg-pink-900/20 rounded-lg p-3 border border-pink-200 dark:border-pink-800">
 							<div class="flex items-center justify-between mb-1">
 								<span class="text-sm font-medium text-pink-800 dark:text-pink-300">${e.type}</span>
@@ -6215,7 +8103,9 @@ function renderWritingSection() {
 							<div class="text-xs text-pink-700 dark:text-pink-400 mb-1">"${e.question}"</div>
 							<div class="text-[10px] text-gray-500">${e.structure}</div>
 						</div>
-					`).join('')}
+					`,
+						)
+						.join('')}
 				</div>
 			</div>
 
@@ -6246,64 +8136,105 @@ function renderWritingSection() {
 }
 
 function renderOnlineSection() {
-	const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
-	
+	const DRIVE_FOLDER =
+		'https://drive.google.com/drive/folders/1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	const DRIVE_EMBED =
+		'https://drive.google.com/embeddedfolderview?id=1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_#grid';
+
 	return `
 		<div class="space-y-6">
-			<!-- My Drive Resources -->
+			<!-- Embedded Drive Viewer -->
 			<div>
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-					📂 My Google Drive Library
-					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Complete Collection</span>
+					📂 My IELTS Study Library
+					<span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Browse Files</span>
+					<a href="${DRIVE_FOLDER}" target="_blank" class="ml-auto text-xs text-blue-600 dark:text-blue-400 hover:underline">Open in new tab ↗</a>
 				</h4>
-				<a href="${DRIVE_FOLDER}" target="_blank" class="block w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white rounded-lg p-4 hover:from-blue-600 hover:to-teal-600 transition-all mb-4">
-					<div class="flex items-center justify-between">
-						<div>
-							<div class="font-bold">Open IELTS Study Materials</div>
-							<div class="text-sm opacity-90">Cambridge Books, Collins Series, Makkar, Audio & More</div>
-						</div>
-						<span class="text-3xl">📚</span>
-					</div>
-				</a>
-				
-				<!-- Folder Quick Links -->
+
+				<!-- Embedded Google Drive Folder -->
+				<div class="bg-white dark:bg-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
+					<iframe
+						src="${DRIVE_EMBED}"
+						class="w-full h-96 border-0"
+						title="IELTS Study Materials"
+						loading="lazy">
+					</iframe>
+				</div>
+
+				<p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+					💡 Click on folders to browse. Click files to preview/download.
+				</p>
+			</div>
+
+			<!-- Quick Access Cards -->
+			<div>
+				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">📚 What's Inside</h4>
 				<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-					<div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800 text-center">
-						<span class="text-2xl">📕</span>
-						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Cambridge Books</div>
-						<div class="text-[10px] text-gray-500">Books 14-19</div>
+					<div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800">
+						<div class="text-2xl mb-1">📕</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Cambridge Books</div>
+						<div class="text-xs text-gray-500">IELTS 14-19 with Audio</div>
 					</div>
-					<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border border-purple-200 dark:border-purple-800 text-center">
-						<span class="text-2xl">🎧</span>
-						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Audio Files</div>
-						<div class="text-[10px] text-gray-500">260+ Tracks</div>
+					<div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+						<div class="text-2xl mb-1">📗</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Collins Series</div>
+						<div class="text-xs text-gray-500">6 Books + 260 Audio</div>
 					</div>
-					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800 text-center">
-						<span class="text-2xl">📖</span>
-						<div class="text-xs font-medium text-gray-800 dark:text-gray-200 mt-1">Makkar PDFs</div>
-						<div class="text-[10px] text-gray-500">Essays & Cue Cards</div>
+					<div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+						<div class="text-2xl mb-1">📖</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Makkar Materials</div>
+						<div class="text-xs text-gray-500">Essays, Reading, Cue Cards</div>
+					</div>
+					<div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border border-purple-200 dark:border-purple-800">
+						<div class="text-2xl mb-1">🎧</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Listening Audio</div>
+						<div class="text-xs text-gray-500">Mock Tests & Practice</div>
+					</div>
+					<div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+						<div class="text-2xl mb-1">📝</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">Strategy Guides</div>
+						<div class="text-xs text-gray-500">Reading & Listening Tips</div>
+					</div>
+					<div class="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-3 border border-teal-200 dark:border-teal-800">
+						<div class="text-2xl mb-1">📚</div>
+						<div class="text-sm font-medium text-gray-800 dark:text-gray-200">1200 Words</div>
+						<div class="text-xs text-gray-500">Essential Vocabulary</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- YouTube Channels (helpful free resources) -->
+			<!-- YouTube Channels -->
 			<div>
 				<h4 class="font-medium text-gray-800 dark:text-gray-200 mb-3">▶️ Recommended YouTube Channels</h4>
 				<div class="grid gap-2 sm:grid-cols-2">
-					${[
-						{ name: 'IELTS Liz', url: 'https://www.youtube.com/@IELTSLiz', desc: 'All sections covered' },
-						{ name: 'E2 IELTS', url: 'https://www.youtube.com/@E2IELTS', desc: 'High quality lessons' },
-						{ name: 'IELTS with Abo Rameen', url: 'https://www.youtube.com/@iaborameen', desc: 'Band 9 strategies' },
-						{ name: 'Asad Yaqub', url: 'https://www.youtube.com/@AsadYaqub', desc: 'Mock tests & tips' }
-					].map(ch => \`
-						<a href="\${ch.url}" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
-							<span class="text-xl">🎬</span>
-							<div>
-								<div class="text-sm font-medium text-red-700 dark:text-red-300">\${ch.name}</div>
-								<div class="text-xs text-red-600 dark:text-red-400">\${ch.desc}</div>
-							</div>
-						</a>
-					\`).join('')}
+					<a href="https://www.youtube.com/@IELTSLiz" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+						<span class="text-xl">🎬</span>
+						<div>
+							<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS Liz</div>
+							<div class="text-xs text-red-600 dark:text-red-400">All sections covered</div>
+						</div>
+					</a>
+					<a href="https://www.youtube.com/@E2IELTS" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+						<span class="text-xl">🎬</span>
+						<div>
+							<div class="text-sm font-medium text-red-700 dark:text-red-300">E2 IELTS</div>
+							<div class="text-xs text-red-600 dark:text-red-400">High quality lessons</div>
+						</div>
+					</a>
+					<a href="https://www.youtube.com/@iaborameen" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+						<span class="text-xl">🎬</span>
+						<div>
+							<div class="text-sm font-medium text-red-700 dark:text-red-300">IELTS with Abo Rameen</div>
+							<div class="text-xs text-red-600 dark:text-red-400">Band 9 strategies</div>
+						</div>
+					</a>
+					<a href="https://www.youtube.com/@AsadYaqub" target="_blank" class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-lg p-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-200 dark:border-red-800">
+						<span class="text-xl">🎬</span>
+						<div>
+							<div class="text-sm font-medium text-red-700 dark:text-red-300">Asad Yaqub</div>
+							<div class="text-xs text-red-600 dark:text-red-400">Mock tests & tips</div>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
