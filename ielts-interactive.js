@@ -6134,7 +6134,8 @@ function toggleVocabWordInline(word) {
 function resetVocabProgress() {
 	showConfirmModal({
 		title: 'Reset Progress',
-		message: 'Are you sure you want to reset all vocabulary progress? This action cannot be undone.',
+		message:
+			'Are you sure you want to reset all vocabulary progress? This action cannot be undone.',
 		icon: '🔄',
 		confirmText: 'Reset',
 		confirmClass: 'bg-red-500 hover:bg-red-600',
@@ -6142,7 +6143,7 @@ function resetVocabProgress() {
 			localStorage.removeItem('ielts-learned-vocab');
 			initVocabTool();
 			showToast('Progress reset successfully', 'success');
-		}
+		},
 	});
 }
 
@@ -6158,7 +6159,7 @@ function showConfirmModal(options = {}) {
 		cancelText = 'Cancel',
 		confirmClass = 'bg-teal-500 hover:bg-teal-600',
 		onConfirm = () => {},
-		onCancel = () => {}
+		onCancel = () => {},
 	} = options;
 
 	// Remove existing modal
@@ -6166,7 +6167,8 @@ function showConfirmModal(options = {}) {
 
 	const modal = document.createElement('div');
 	modal.id = 'custom-confirm-modal';
-	modal.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+	modal.className =
+		'fixed inset-0 z-[9999] flex items-center justify-center p-4';
 	modal.innerHTML = `
 		<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeConfirmModal()"></div>
 		<div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full transform transition-all animate-modal-in">
@@ -6184,11 +6186,11 @@ function showConfirmModal(options = {}) {
 				<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">${title}</h3>
 				<p class="text-sm text-gray-600 dark:text-gray-400 mb-6">${message}</p>
 				<div class="flex gap-3">
-					<button onclick="closeConfirmModal()" 
+					<button onclick="closeConfirmModal()"
 						class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-colors">
 						${cancelText}
 					</button>
-					<button id="confirm-modal-btn" 
+					<button id="confirm-modal-btn"
 						class="flex-1 px-4 py-2.5 text-sm font-medium text-white ${confirmClass} rounded-xl transition-colors shadow-lg">
 						${confirmText}
 					</button>
@@ -6207,7 +6209,9 @@ function showConfirmModal(options = {}) {
 	};
 
 	// ESC to close
-	const escHandler = (e) => { if (e.key === 'Escape') closeConfirmModal(); };
+	const escHandler = (e) => {
+		if (e.key === 'Escape') closeConfirmModal();
+	};
 	document.addEventListener('keydown', escHandler);
 	modal._escHandler = escHandler;
 }
@@ -6215,7 +6219,8 @@ function showConfirmModal(options = {}) {
 function closeConfirmModal() {
 	const modal = document.getElementById('custom-confirm-modal');
 	if (modal) {
-		if (modal._escHandler) document.removeEventListener('keydown', modal._escHandler);
+		if (modal._escHandler)
+			document.removeEventListener('keydown', modal._escHandler);
 		modal.remove();
 		document.body.style.overflow = '';
 	}
@@ -6227,17 +6232,18 @@ function showToast(message, type = 'info') {
 		success: 'from-green-500 to-teal-500',
 		error: 'from-red-500 to-orange-500',
 		info: 'from-blue-500 to-indigo-500',
-		warning: 'from-yellow-500 to-orange-500'
+		warning: 'from-yellow-500 to-orange-500',
 	};
 	const icons = {
 		success: '✓',
 		error: '✕',
 		info: 'ℹ',
-		warning: '⚠'
+		warning: '⚠',
 	};
 
 	const toast = document.createElement('div');
-	toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] animate-toast-in';
+	toast.className =
+		'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] animate-toast-in';
 	toast.innerHTML = `
 		<style>
 			@keyframes toast-in {
@@ -6701,7 +6707,9 @@ function renderBooksSection() {
 
 	const DRIVE_CONFIG = {
 		rootFolderId: '1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_',
-		get folderUrl() { return `https://drive.google.com/drive/folders/${this.rootFolderId}`; }
+		get folderUrl() {
+			return `https://drive.google.com/drive/folders/${this.rootFolderId}`;
+		},
 	};
 
 	// ========================================
@@ -6719,32 +6727,56 @@ function renderBooksSection() {
 				{ name: 'Cambridge IELTS 16', type: 'pdf', id: '' },
 				{ name: 'Cambridge IELTS 15', type: 'pdf', id: '' },
 				{ name: 'Cambridge IELTS 14', type: 'pdf', id: '' },
-			]
+			],
 		},
 		{
 			category: 'Collins Books & Audio',
 			icon: '📗',
 			color: 'from-green-500 to-teal-500',
 			items: [
-				{ name: 'Collins Listening.pdf', type: 'pdf', id: '1-g8kgqmS9UZEhTfI9FgYsDPRDUwwq8BU' },
+				{
+					name: 'Collins Listening.pdf',
+					type: 'pdf',
+					id: '1-g8kgqmS9UZEhTfI9FgYsDPRDUwwq8BU',
+				},
 				{ name: 'Collins Reading.pdf', type: 'pdf', id: '' },
 				{ name: 'Collins Speaking.pdf', type: 'pdf', id: '' },
 				{ name: 'Collins Vocabulary.pdf', type: 'pdf', id: '' },
 				{ name: 'Collins Writing.pdf', type: 'pdf', id: '' },
 				{ name: 'Collins Grammar.pdf', type: 'pdf', id: '' },
-				{ name: 'Collins Listening Audio', type: 'audio', folder: true, id: '' },
-				{ name: 'Collins Speaking Audio', type: 'audio', folder: true, id: '' },
-				{ name: 'Collins Vocab Audio', type: 'audio', folder: true, id: '' },
-			]
+				{
+					name: 'Collins Listening Audio',
+					type: 'audio',
+					folder: true,
+					id: '',
+				},
+				{
+					name: 'Collins Speaking Audio',
+					type: 'audio',
+					folder: true,
+					id: '',
+				},
+				{
+					name: 'Collins Vocab Audio',
+					type: 'audio',
+					folder: true,
+					id: '',
+				},
+			],
 		},
 		{
 			category: 'Makkar Resources',
 			icon: '🔥',
 			color: 'from-orange-500 to-red-500',
 			items: [
-				{ name: '300 Essays (Makkar).pdf', type: 'pdf', hot: true, id: '' },
+				{
+					name: '300 Essays (Makkar).pdf',
+					type: 'pdf',
+					hot: true,
+					id: '',
+				},
 				{ name: 'Makkar Academic Reading.pdf', type: 'pdf', id: '' },
-			]
+			],
 		},
 		{
 			category: 'Practice & Tips',
@@ -6753,10 +6785,20 @@ function renderBooksSection() {
 			items: [
 				{ name: 'Listening Tips', type: 'doc', new: true, id: '' },
 				{ name: 'Listening Mock 2025', type: 'doc', new: true, id: '' },
-				{ name: 'Reading Practice', type: 'folder', folder: true, id: '' },
-				{ name: 'Speaking Practice', type: 'folder', folder: true, id: '' },
-			]
-		}
+				{
+					name: 'Reading Practice',
+					type: 'folder',
+					folder: true,
+					id: '',
+				},
+				{
+					name: 'Speaking Practice',
+					type: 'folder',
+					folder: true,
+					id: '',
+				},
+			],
+		},
 	];
 
 	window.DRIVE_CONFIG = DRIVE_CONFIG;
@@ -6806,11 +6848,11 @@ function renderBooksSection() {
 			}
 
 			/* Chevron rotation */
-			.cat-chevron { 
+			.cat-chevron {
 				transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 				color: #6b7280;
 			}
-			.cat-chevron.open { 
+			.cat-chevron.open {
 				transform: rotate(180deg);
 				color: #14b8a6;
 			}
@@ -6827,7 +6869,7 @@ function renderBooksSection() {
 				padding-left: 24px;
 				box-shadow: inset 0 0 20px rgba(20, 184, 166, 0.05);
 			}
-			.file-item:active { 
+			.file-item:active {
 				transform: scale(0.98);
 				background: rgba(20, 184, 166, 0.2);
 			}
@@ -6837,9 +6879,9 @@ function renderBooksSection() {
 				transform: scale(1.3) rotate(-8deg);
 				filter: drop-shadow(0 0 12px rgba(20, 184, 166, 0.6));
 			}
-			.file-icon { 
-				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-				display: inline-block; 
+			.file-icon {
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				display: inline-block;
 			}
 
 			/* Expand animation - Smooth grid */
@@ -6902,12 +6944,15 @@ function renderBooksSection() {
 
 			<!-- Categories Grid - Dark themed -->
 			<div class="space-y-3 max-h-[550px] overflow-y-auto drive-scroll pr-1" id="study-categories">
-				${STUDY_MATERIALS.map((cat, catIdx) => `
+				${STUDY_MATERIALS.map(
+					(cat, catIdx) => `
 					<div class="category-card">
 						<!-- Category Header -->
 						<button onclick="toggleStudyCategory(${catIdx})"
 							class="category-header w-full flex items-center gap-4 p-4 text-left">
-							<div class="w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center shadow-lg flex-shrink-0">
+							<div class="w-12 h-12 rounded-xl bg-gradient-to-br ${
+								cat.color
+							} flex items-center justify-center shadow-lg flex-shrink-0">
 								<span class="cat-icon text-2xl">${cat.icon}</span>
 							</div>
 							<div class="flex-1 min-w-0">
@@ -6919,7 +6964,12 @@ function renderBooksSection() {
 								</p>
 							</div>
 							<div class="flex items-center gap-2">
-								<span class="text-xs text-slate-500 hidden sm:block">${cat.items.filter(i => i.hot || i.new).length > 0 ? '✨' : ''}</span>
+								<span class="text-xs text-slate-500 hidden sm:block">${
+									cat.items.filter((i) => i.hot || i.new)
+										.length > 0
+										? '✨'
+										: ''
+								}</span>
 								<svg class="cat-chevron w-5 h-5" id="cat-chevron-${catIdx}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
 								</svg>
@@ -6930,32 +6980,60 @@ function renderBooksSection() {
 						<div class="category-content" id="cat-content-${catIdx}">
 							<div>
 								<div class="border-t border-slate-700/50 bg-slate-900/50">
-									${cat.items.map((item, idx) => `
-										<button onclick="openDriveItem('${item.name.replace(/'/g, "\\'")}', '${item.type}', ${item.folder || false}, '${item.id || ''}')"
+									${cat.items
+										.map(
+											(item, idx) => `
+										<button onclick="openDriveItem('${item.name.replace(/'/g, "\\'")}', '${
+												item.type
+											}', ${item.folder || false}, '${
+												item.id || ''
+											}')"
 											class="file-item w-full flex items-center gap-4 px-5 py-3.5 text-left border-b border-slate-800/50 last:border-b-0 group"
 											style="animation-delay: ${idx * 0.06}s;">
 											<span class="file-icon text-xl flex-shrink-0">
-												${item.type === 'pdf' ? '📄' :
-												  item.type === 'audio' ? '🎧' :
-												  item.type === 'doc' ? '📝' :
-												  item.folder ? '📁' : '📋'}
+												${
+													item.type === 'pdf'
+														? '📄'
+														: item.type === 'audio'
+														? '🎧'
+														: item.type === 'doc'
+														? '📝'
+														: item.folder
+														? '📁'
+														: '📋'
+												}
 											</span>
 											<span class="flex-1 text-sm text-slate-300 truncate group-hover:text-teal-400 font-medium transition-colors">
 												${item.name}
 											</span>
-											${item.hot ? '<span class="badge-hot px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex-shrink-0 shadow-lg shadow-red-500/30">🔥 HOT</span>' : ''}
-											${item.new ? '<span class="px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex-shrink-0 shadow-lg shadow-green-500/30">✨ NEW</span>' : ''}
-											${!item.hot && !item.new ? `<span class="text-[10px] text-slate-500 uppercase font-semibold tracking-wide flex-shrink-0 bg-slate-800 px-2 py-0.5 rounded">${item.type}</span>` : ''}
+											${
+												item.hot
+													? '<span class="badge-hot px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex-shrink-0 shadow-lg shadow-red-500/30">🔥 HOT</span>'
+													: ''
+											}
+											${
+												item.new
+													? '<span class="px-2.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex-shrink-0 shadow-lg shadow-green-500/30">✨ NEW</span>'
+													: ''
+											}
+											${
+												!item.hot && !item.new
+													? `<span class="text-[10px] text-slate-500 uppercase font-semibold tracking-wide flex-shrink-0 bg-slate-800 px-2 py-0.5 rounded">${item.type}</span>`
+													: ''
+											}
 											<svg class="w-5 h-5 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
 											</svg>
 										</button>
-									`).join('')}
+									`,
+										)
+										.join('')}
 								</div>
 							</div>
 						</div>
 					</div>
-				`).join('')}
+				`,
+				).join('')}
 			</div>
 
 			<!-- Quick Access Footer - Sleek dark -->
@@ -7109,16 +7187,16 @@ function toggleStudyCategory(catIndex) {
 function expandAllCategories(expand) {
 	const categories = document.querySelectorAll('.category-content');
 	const chevrons = document.querySelectorAll('.cat-chevron');
-	
-	categories.forEach(cat => {
+
+	categories.forEach((cat) => {
 		if (expand) {
 			cat.classList.add('expanded');
 		} else {
 			cat.classList.remove('expanded');
 		}
 	});
-	
-	chevrons.forEach(chev => {
+
+	chevrons.forEach((chev) => {
 		if (expand) {
 			chev.classList.add('open');
 		} else {
@@ -7134,7 +7212,7 @@ function openDriveItem(name, type, isFolder, fileId) {
 		openDriveFileModal(fileId, name, type);
 		return;
 	}
-	
+
 	// Fallback: Show a modal asking user to open in Drive
 	showDriveFallbackModal(name, type, isFolder);
 }
@@ -7143,11 +7221,11 @@ function openDriveItem(name, type, isFolder, fileId) {
 function openDriveFileModal(fileId, fileName, fileType) {
 	// Remove any existing modal
 	document.getElementById('drive-file-modal')?.remove();
-	
+
 	// Determine the embed URL based on file type
 	let embedUrl;
 	let viewerLabel;
-	
+
 	switch (fileType) {
 		case 'pdf':
 			// Google Docs Viewer for PDFs - most reliable
@@ -7166,7 +7244,7 @@ function openDriveFileModal(fileId, fileName, fileType) {
 			embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
 			viewerLabel = '📝 Document';
 	}
-	
+
 	const modal = document.createElement('div');
 	modal.id = 'drive-file-modal';
 	modal.className = 'fixed inset-0 z-[9999] flex flex-col';
@@ -7179,7 +7257,7 @@ function openDriveFileModal(fileId, fileName, fileType) {
 				background: #0f172a; z-index: 10;
 			}
 		</style>
-		
+
 		<!-- Header -->
 		<div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700 flex-shrink-0">
 			<div class="flex items-center gap-3 min-w-0 flex-1">
@@ -7196,7 +7274,7 @@ function openDriveFileModal(fileId, fileName, fileType) {
 				</div>
 			</div>
 			<div class="flex items-center gap-2">
-				<a href="https://drive.google.com/uc?id=${fileId}&export=download" 
+				<a href="https://drive.google.com/uc?id=${fileId}&export=download"
 					class="flex items-center gap-1 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg transition-colors" title="Download">
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -7217,7 +7295,7 @@ function openDriveFileModal(fileId, fileName, fileType) {
 				</button>
 			</div>
 		</div>
-		
+
 		<!-- Content -->
 		<div class="flex-1 overflow-hidden relative bg-slate-900">
 			<div class="drive-modal-loading" id="drive-modal-loading">
@@ -7226,8 +7304,8 @@ function openDriveFileModal(fileId, fileName, fileType) {
 					<p class="text-slate-400 text-sm">Loading ${viewerLabel}...</p>
 				</div>
 			</div>
-			<iframe 
-				src="${embedUrl}" 
+			<iframe
+				src="${embedUrl}"
 				class="w-full h-full border-0"
 				style="background: white;"
 				title="${fileName}"
@@ -7236,7 +7314,7 @@ function openDriveFileModal(fileId, fileName, fileType) {
 				allowfullscreen>
 			</iframe>
 		</div>
-		
+
 		<!-- Footer -->
 		<div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-t border-slate-700 flex-shrink-0">
 			<div class="flex items-center gap-2 text-xs text-slate-400">
@@ -7246,12 +7324,14 @@ function openDriveFileModal(fileId, fileName, fileType) {
 			</div>
 		</div>
 	`;
-	
+
 	document.body.appendChild(modal);
 	document.body.style.overflow = 'hidden';
-	
+
 	// ESC to close
-	const escHandler = (e) => { if (e.key === 'Escape') closeDriveFileModal(); };
+	const escHandler = (e) => {
+		if (e.key === 'Escape') closeDriveFileModal();
+	};
 	document.addEventListener('keydown', escHandler);
 	modal._escHandler = escHandler;
 }
@@ -7270,28 +7350,39 @@ function closeDriveFileModal() {
 
 // Fallback modal when no file ID available
 function showDriveFallbackModal(name, type, isFolder) {
-	const rootFolder = window.DRIVE_CONFIG?.rootFolderId || '1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
+	const rootFolder =
+		window.DRIVE_CONFIG?.rootFolderId ||
+		'1bRy1YezKk8MHYNKjBu9To8flj3LHYv8_';
 	const driveUrl = `https://drive.google.com/drive/folders/${rootFolder}`;
-	
+
 	// Remove existing
 	document.getElementById('drive-fallback-modal')?.remove();
-	
+
 	const modal = document.createElement('div');
 	modal.id = 'drive-fallback-modal';
-	modal.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+	modal.className =
+		'fixed inset-0 z-[9999] flex items-center justify-center p-4';
 	modal.innerHTML = `
 		<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDriveFallbackModal()"></div>
 		<div class="relative bg-gradient-to-b from-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-slate-700 max-w-md w-full p-6 animate-in zoom-in-95">
 			<div class="text-center">
 				<div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center shadow-lg">
-					<span class="text-3xl">${isFolder ? '📁' : type === 'pdf' ? '📄' : type === 'audio' ? '🎧' : '📝'}</span>
+					<span class="text-3xl">${
+						isFolder
+							? '📁'
+							: type === 'pdf'
+							? '📄'
+							: type === 'audio'
+							? '🎧'
+							: '📝'
+					}</span>
 				</div>
 				<h3 class="text-lg font-bold text-white mb-2">${name}</h3>
 				<p class="text-sm text-slate-400 mb-6">
 					This file will open in Google Drive where you can view, download, or play it.
 				</p>
 				<div class="flex gap-3 justify-center">
-					<button onclick="closeDriveFallbackModal()" 
+					<button onclick="closeDriveFallbackModal()"
 						class="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-colors">
 						Cancel
 					</button>
@@ -7306,11 +7397,13 @@ function showDriveFallbackModal(name, type, isFolder) {
 			</div>
 		</div>
 	`;
-	
+
 	document.body.appendChild(modal);
-	
+
 	// ESC to close
-	const escHandler = (e) => { if (e.key === 'Escape') closeDriveFallbackModal(); };
+	const escHandler = (e) => {
+		if (e.key === 'Escape') closeDriveFallbackModal();
+	};
 	document.addEventListener('keydown', escHandler);
 	modal._escHandler = escHandler;
 }
